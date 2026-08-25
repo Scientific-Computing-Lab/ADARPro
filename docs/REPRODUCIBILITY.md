@@ -61,12 +61,24 @@ single-use quarantine record, unified-model decision, and registry uniqueness.
   source-table report.
 - Locked descriptive figures:
   `python -m adarpro.evaluation.final_figures --help`.
-- Paper source tables and figures: `make paper-figures`.
+- Paper source tables: `make paper-tables`.
+- Paper figures: `make paper-figures`.
 - Main paper and SI: `make paper`.
+- Complete manuscript audit: `make paper-check`.
 
 Paper scripts read retained authoritative CSV/Parquet/JSON artifacts and never
 rerun model selection. Quantitative figure panels are traceable through
 `paper/source_tables/figure_source_manifest.csv`.
+Figure and manuscript PDF timestamps are fixed to the date of the locked test,
+so repeated builds from an unchanged checkout are byte-reproducible.
+
+The PNAS build requires a TeX Live installation with the packages used by the
+official `pnas-new` class. On Debian/Ubuntu, `texlive-latex-extra`,
+`texlive-fonts-recommended`, and `lmodern` provide the required dependencies.
+The repository vendors the PNAS class/style files and records their origin and
+hashes in `paper/template/README.md`; it does not vendor general TeX packages.
+The reference audit can also resolve every recorded DOI against Crossref with
+`python scripts/verify_paper_references.py --online`.
 
 ## Leakage controls
 

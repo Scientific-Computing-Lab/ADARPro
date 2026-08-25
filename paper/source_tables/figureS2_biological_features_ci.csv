@@ -1,0 +1,19 @@
+feature,metric,lower,median,upper,source
+RBP suppressors,auroc,-0.0074202559073685,-0.0025694383446698,0.0025713984511075,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+RBP suppressors,auprc,-0.0146930051296076,-0.0069895500455381,-0.0001920350899339,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+RBP suppressors,f1,-0.0073066113315082,-0.0005939958855382,0.0061102608316034,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+All predicted RBP binding,auroc,-0.0428519649776506,-0.0304206065716994,-0.018520166943601,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+All predicted RBP binding,auprc,-0.0571159595183666,-0.0405293759858444,-0.0255413459356643,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+All predicted RBP binding,f1,-0.0310253504551947,-0.0163754069118065,-0.0032908268105565,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+Matched random features,auroc,-0.0330499047293288,-0.0277121942508324,-0.0224988591092477,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+Matched random features,auprc,-0.0364742774922111,-0.0294582737949963,-0.0226066548615746,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+Matched random features,f1,-0.0322927129619393,-0.0241268503371844,-0.0166786287232301,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+IRAlu geometry,auroc,-0.0078846999808298,0.001629845179846,0.0105473870136785,experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv
+IRAlu geometry,auprc,-0.0093286345915296,1.7236304358403398e-05,0.0098995358910856,experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv
+IRAlu geometry,f1,-0.0056076583749416,0.0047182223577812,0.0140832066283815,experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv
+"H3K36me3, Liver",auroc,-0.0009753389534894,0.0018566425936448,0.0046939230404686,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+"H3K36me3, Liver",auprc,0.0010754366100834,0.0050450939382538,0.0096275804150172,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+"H3K36me3, Liver",f1,-0.0002666407397434,0.0036972820906098,0.0078366405915449,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+H3K36me3 +1 Mb control,auroc,-0.0030614644896094,-0.0007793536837496,0.0018976336631644,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+H3K36me3 +1 Mb control,auprc,-0.0030739077661576,0.0022370595750611,0.0096101100208047,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+H3K36me3 +1 Mb control,f1,-0.0041546127517603,-0.0011352791184002,0.002174942066404,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv

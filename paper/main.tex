@@ -1,0 +1,156 @@
+\documentclass[9pt,twocolumn,twoside]{pnas-new}
+
+\articletype{BIOLOGICAL SCIENCES}
+\templatetype{pnasresearcharticle}
+
+\begin{document}
+
+\title{Systematic dissection of endogenous A-to-I RNA editing reveals substrate- and target-level determinants of predictability}
+
+\author[a,1]{Author list pending}
+\affil[a]{Affiliations pending author confirmation}
+
+\leadauthor{Author list pending}
+
+\significancestatement{A-to-I RNA editing depends on both the double-stranded RNA substrate and the fate of an individual adenosine, yet predictors often compress these scales into a single representation. We systematically tested biological annotations, supervision schemes, and neural representations under pair-disjoint evaluation. Robust information was concentrated in balanced substrate-level supervision and an explicit target-and-helix-partner view; several plausible bulk molecular-context measurements did not add reproducible signal. The resulting frozen predictor improved every tissue endpoint on a one-use held-out benchmark while reducing false positives at matched recall. These findings establish an information hierarchy for editing prediction and identify the measurements needed to move from tissue averages toward cellular mechanism.}
+
+\authorcontributions{Author contributions pending author confirmation.}
+\authordeclaration{Competing-interest declaration pending author confirmation.}
+\correspondingauthor{Corresponding author and e-mail pending author confirmation.}
+
+\keywords{A-to-I RNA editing $|$ ADAR $|$ inverted Alu $|$ graph neural network $|$ leakage-free machine learning}
+
+\begin{abstract}
+Endogenous adenosine-to-inosine (A-to-I) RNA editing is determined by local chemistry, double-stranded RNA architecture, and cellular state. Which of these factors provides predictive information beyond a structure-aware sequence model is unresolved. We organized a leakage-safe campaign around 884 human inverted-Alu substrates, preserving the published global pair-disjoint benchmark while testing biological context, supervision, representation, and integration hypotheses only within development pairs. The dominant gains came from two organizing principles. First, sampling RNA pairs before sites while training on all high- and low-editing observations corrected the effective supervision imposed by site-rich substrates. Second, an explicit target- and helix-partner-aligned local encoder recovered information diluted by whole-duplex pooling; an identically sized shifted-window control failed. Experimental and predicted RBP binding combined with bulk expression, transcript and repeat annotations, current bulk H3K36me3 overlap, RNA foundation-model embeddings, and several higher-capacity formulations did not provide robust incremental information under the tested measurements. A preregistered joint end-to-end model also failed to surpass fixed prediction-level integration. We therefore froze ADARPro as an equal-logit ensemble of independently trained whole-duplex and target-local predictors. In a single canonical-test evaluation, ADARPro improved macro AUROC, AUPRC, and F1 by 0.0277, 0.0261, and 0.0253 over reproduced published AdarEdit, with positive pair-bootstrap intervals in every context and fewer false positives at matched recall. These results reveal a hierarchy of measurable information for editing: substrate-organized supervision and target-centered representation dominate the presently available bulk context annotations.
+\end{abstract}
+
+\dates{This manuscript was compiled on August 25, 2026}
+\doi{DOI pending}
+
+\maketitle
+\thispagestyle{firststyle}
+\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+\Firstpage
+
+Adenosine deaminases acting on RNA (ADARs) convert adenosine to inosine in double-stranded RNA (dsRNA), altering RNA sequence interpretation and distinguishing endogenous duplexes from immunogenic nonself RNA \cite{Bass2002,Nishikura2016,Eisenberg2018,Liddicoat2015,Mannion2014}. In primates, the great majority of detected editing occurs in paired Alu elements, whose abundance and orientation create a vast repertoire of imperfect endogenous duplexes \cite{Levanon2004,Athanasiadis2004,Kim2004,Bazak2014Hundred,Porath2014}. Yet editing is highly selective. Related adenosines in apparently compatible structures can have sharply different editing levels, and the same locus can vary across tissues \cite{Tan2017,Picardi2015}. This selectivity has motivated models based on local sequence preference, pairing state, and predicted secondary structure \cite{Eggington2011,Wong2001,Lehmann2000,Bazak2014Editability}.\Endparasplit
+
+AdarEdit made this problem explicit as graph learning over full inverted-Alu substrates \cite{Rosenwasser2026AdarEdit}. Its compact graph attention network represents nucleotide identity, local and global sequence, predicted secondary structure, base-pair topology, geometry, thermodynamics, and motifs. On a strict benchmark in which whole Alu pairs are assigned globally to train, validation, or test, it achieved strong tissue-resolved prediction. The remaining errors, however, could have at least three origins. They might reflect missing biology---protein occupancy, transcript processing, chromatin, or tissue state. They might arise because the model underuses existing labels or pools away the fate of the focal adenosine. Or they might require a structured interaction between substrate realization and local chemical editability.
+
+These explanations are often difficult to distinguish by proposing one additional model. A biologically named feature can be redundant with sequence, noisy at the relevant scale, or mismatched to the assayed tissue. Conversely, a larger architecture can improve apparent performance by exploiting duplicated substrates unless evaluation respects the RNA pair as the biological unit. We therefore treated prediction as an information-dissection problem: which biological measurements and computational choices contribute incremental signal under identical pair-disjoint conditions, and which fail to do so at their available resolution?
+
+We preserved the 884-substrate benchmark and quarantined its canonical test throughout discovery. Within development pairs, all comparisons used grouped folds, cross-fitted predictions, fold-isolated selection, and whole-pair bootstrap intervals. The search spanned RBP occupancy and abundance, genomic and transcript context, chromatin, richer labels, substrate-wide learning, cross-tissue sharing, RNA foundation models, local and global representations, and joint versus prediction-level integration. This design reveals a coherent hierarchy. Editing prediction benefits most from organizing supervision around the substrate and retaining a representation centered on the target and its paired partner. Several plausible bulk context variables do not measurably improve this benchmark, while a fixed combination of the two robust views yields a material, one-use held-out gain.
+
+\section*{Results}
+
+\subsection*{A leakage-safe hypothesis map separates biological scales}
+
+The benchmark contains four individual GTEx tissue endpoints---artery tibial, brain/cerebellum, liver, and skeletal muscle---plus Combined, a pooled endpoint rather than a fifth tissue. Sites with EditingIndex at least 15\% are positive, those below 1\% are negative, and intermediate observations are excluded from the canonical binary task. Whole inverted-Alu pairs define the grouping variable. The fixed global split contains 566 training, 139 validation, and 179 test pairs with zero pair overlap (Fig.~\ref{fig:overview}).
+
+We organized candidate explanations into four axes: biological context, supervision, representation, and integration. Each direction was required to state why its information was not already recoverable from the AdarEdit graph, its leakage risks, and an advance-or-terminate criterion. During development, the canonical test files were guarded by a stateful quarantine; all learned transformations, thresholds, and candidate decisions excluded the outer pair fold. Thus the grouped out-of-fold (OOF) scores are an internal instrument for estimating incremental signal, not a replacement for the published held-out AdarEdit benchmark.
+
+The resulting evidence map was selective (Fig.~\ref{fig:evidence}). Expanded pair-first supervision and a target-aligned local view produced reproducible gains, and their fixed combination was complementary. Cross-tissue sharing and continuous/ordinal auxiliary learning showed smaller or metric-specific effects. The tested bulk biological annotations, a frozen RNA language-model representation, and increased decoder complexity did not clear promotion criteria. Importantly, these outcomes describe incremental predictive information in a particular measurement and benchmark; they do not establish that the corresponding biology is absent.
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=\textwidth]{figures/figure1_systematic_dissection.pdf}
+\caption{\textbf{Biological and experimental organization of the ADARPro campaign.} (A) Endogenous editing can be separated conceptually into tissue-dependent substrate realization and target-dependent chemical selectivity. (B) The prespecified research tree tested biological context, supervision, representation, and integration. (C) Entire inverted-Alu pairs were partitioned globally. Feature and model selection used five pair-disjoint development folds; code, weights, thresholds, and hashes were frozen before a single canonical-test evaluation. Combined is a pooled endpoint and was not assigned a fabricated tissue state.}
+\label{fig:overview}
+\end{figure*}
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/figure2_evidence_map.pdf}
+\caption{\textbf{An evidence map of incremental predictive information.} Points show pair-bootstrap median changes in AUROC relative to each experiment's prespecified same-fold development reference; bars are 95\% intervals. Pair-first expanded supervision is shown for muscle versus the original internal reference; target-local and ensemble comparisons use the expanded pair-balanced model; other entries use their documented controls. Colors encode the development decision, not biological importance. Exact estimands and source artifacts are provided in SI Appendix, Table S2 and the figure source table. No development delta is added to a published test score.}
+\label{fig:evidence}
+\end{figure*}
+
+\subsection*{Pair-first expanded supervision corrects the effective learning problem}
+
+The canonical benchmark contains one balanced sampled row set, but the underlying training-pair tables contain additional high-confidence observations with EditingIndex below 1\% or at least 15\%. Simply adding those rows changes how frequently each duplex appears: pairs with many assayed sites can dominate stochastic optimization, even though they are not independent biological units. We therefore sampled a pair uniformly, selected a class with equal probability, and then sampled one eligible site from that pair and class. This ``pair-first'' procedure adds valid supervision while controlling the contribution of site-rich substrates.
+
+Against the identical-fold internal AdarEdit reference, pair-first expanded training improved AUROC by 0.0117--0.0428, AUPRC by 0.0137--0.0473, and F1 by 0.0069--0.0423 across the five endpoints (Fig.~\ref{fig:principles}B). Every pair-bootstrap interval for these three metrics excluded zero. The largest gain occurred in muscle, the smallest canonical endpoint. The result reflects two linked corrections---recovery of discarded high/low labels and substrate-balanced weighting---and does not imply that the lower internal OOF score is a more authoritative baseline than published AdarEdit.
+
+Continuous and ordinal EditingIndex supervision asked whether intermediate observations could provide still richer ordering information. A binary/ordinal/continuous multitask head added a small AUROC signal over pair-balanced binary training (muscle median $\Delta$AUROC 0.0081, 95\% pair interval 0.0010--0.0151) but negligible F1 improvement and poorer transport when combined under natural prevalence. It was retained as evidence that editing intensity carries some ranking information, but it was not promoted into the final predictor.
+
+\subsection*{Target-and-partner alignment recovers information diluted by global pooling}
+
+AdarEdit represents the full duplex and averages nucleotide embeddings. This captures substrate context but can dilute patterns around one focal adenosine. We constructed a deterministic 65-position view centered jointly on the target and its dot-bracket-aligned helix partner. A two-layer dilated convolutional encoder represents nucleotide identity, pairing state, and relative position before fusion with the graph representation.
+
+In muscle development OOF predictions, the aligned local model reached AUROC 0.9045, AUPRC 0.8936, and F1 0.8337, versus 0.8885, 0.8730, and 0.8208 for the pair-balanced whole-duplex model. A matched-capacity negative control centered the same network 96 nucleotides away. It fell to AUROC 0.7122, AUPRC 0.6943, and F1 0.7028 (Fig.~\ref{fig:principles}C). Aligned-minus-shifted pair-bootstrap differences were 0.1926 AUROC, 0.1993 AUPRC, and 0.1311 F1, each with a favorable interval. The signal therefore depends on alignment to the edited nucleotide and its partner, rather than on adding generic convolutional capacity.
+
+The local model did not subsume the global graph. Equal averaging of their logits---without searching an ensemble weight---improved over the pair-balanced graph by 0.0256 AUROC, 0.0308 AUPRC, and 0.0139 F1 in muscle and by 0.0182, 0.0214, and 0.0179 in liver (Fig.~\ref{fig:principles}D). All six pair-bootstrap intervals excluded zero. This complementarity identifies two measurable views: whole-duplex state and target-centered selectivity.
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=\textwidth]{figures/figure3_organizing_principles.pdf}
+\caption{\textbf{Two robust organizing principles and their integration.} (A) The selected ADARPro predictor combines independently trained pair-balanced whole-duplex and target/partner-aligned local components by a fixed 0.5/0.5 logit mean. (B) Pair-first expanded supervision improves the same-fold development reference across all endpoints; points and bars are pair-bootstrap medians and 95\% intervals. (C) In muscle OOF data, alignment to the target and helix partner is decisive: an identical encoder shifted by 96 nt fails. (D) The equal-logit ensemble improves its whole-duplex component in muscle and liver. These are controlled development comparisons, not canonical-test estimates.}
+\label{fig:principles}
+\end{figure*}
+
+\subsection*{Present bulk context measurements do not resolve the remaining variation}
+
+The original hypothesis was that protein occupancy and tissue abundance suppress the realization of intrinsically editable sites. We evaluated replicated ENCODE eCLIP peaks, PrismNet and RBPNet binding predictions, literature-prioritized suppressors and enhancers, GTEx tissue abundance, binding-by-abundance interactions, and randomized and shuffled controls \cite{VanNostrand2020,Sun2021PrismNet,Horlacher2023RBPNet,GTEx2020}. Because Alu-derived reads are prone to multimapping, absence of an eCLIP peak was treated as uncertain rather than evidence of absence. Nonetheless, neither experimental occupancy nor predictors that avoid this particular absence problem added robust within-tissue residual signal. In matched cross-tissue switches, tissue identity nearly saturated the limited task; current binding-by-bulk-abundance features did not establish a transferable mechanism. This constrains the tested formulation, not the established capacity of RBPs to regulate editing \cite{Freund2020,QuinonesValdez2019,Park2026,Yi2026}.
+
+Genomic architecture exposed a more informative substrate-level pattern. The genomic gap between Alu arms---discarded when model inputs join the arms by a fixed separator---correlated with a pair's edited-site fraction in every individual tissue (Spearman $\rho=-0.33$ to $-0.48$). Geometry plus graph summaries predicted pair-level engagement with $R^2=0.050$ in muscle and 0.239--0.277 in the other tissues. Yet a cross-fitted engagement gate improved AUPRC by only 0.0085, not F1 robustly, and worsened Brier score; a joint context model was stopped after decreasing F1. Thus substrate realization is measurable, but these static annotations did not improve the leading site predictor.
+
+Similarly, transcript/repeat annotations and exact-tissue bulk H3K36me3 peak overlap did not give stable AUROC/F1 gains; H2A.Z lacked a sufficiently matched resource. A recent chromatin association therefore remains a motivation for donor- or cell-matched quantitative assays rather than evidence that bulk overlap should improve prediction \cite{Cai2026}. Frozen RiNALMo embeddings \cite{Penic2025} did not add ranking signal to the selected graph, and scaling the frozen language model did not change that conclusion. Direct joint prediction of all adenosines lost 0.066 AUROC and 0.060 F1 in its futility analysis. A shared four-tissue model had modest macro gains (0.0087 AUROC, 0.0116 AUPRC, 0.0075 F1) but missed its two prespecified 0.01 promotion gates and worsened mean calibration. Together, these results locate the robust, currently usable information more narrowly than the hypothesis landscape suggests.
+
+\subsection*{Joint end-to-end learning does not automatically exploit complementary views}
+
+Before opening the canonical test, we preregistered a separate experiment asking whether the successful principles could be learned more effectively in one connected network. The model jointly trained a three-layer graph encoder, explicit focal-node state, aligned local encoder, pairwise representation interactions, and a training-only substrate head. Its 65,698 parameters were fewer than the 80,138 parameters across the two ensemble components. Architecture, seed, staged decision rules, and comparator hashes were frozen prospectively.
+
+The joint model did not surpass the immutable ensemble on the 5,967-row, 585-pair muscle development set. AUROC/AUPRC/F1 were 0.9072/0.8922/0.8317, versus 0.9142/0.9040/0.8347 for the ensemble; ranking was worse in every outer fold. Pair-bootstrap intervals for joint-minus-ensemble AUROC and AUPRC were entirely adverse, and Brier score increased by 0.0205 (95\% interval 0.0135--0.0276). Prespecified repair and replication branches were therefore not opened. This negative result is informative: at the available pair-level sample size, independently optimized global and local views are more reliably combined after training than through the tested low-capacity joint representation.
+
+\subsection*{The frozen predictor improves every canonical endpoint}
+
+Following development selection, ten component fits were trained on published training pairs; epochs and thresholds were selected only from the published validation partition. The code revision, configurations, checkpoints, thresholds, and equal weights were hashed into a final manifest. One authorization then exposed the canonical test for exactly one evaluation; no test-driven adjustment followed.
+
+ADARPro improved all three primary metrics in all five endpoints (Fig.~\ref{fig:locked}A). Macro-average gains over reproduced supplied-checkpoint AdarEdit were 0.0277 AUROC, 0.0261 AUPRC, and 0.0253 F1. F1 increased from 0.8671 to 0.8870 in artery, 0.8689 to 0.8902 in brain, 0.8541 to 0.8812 in liver, 0.8139 to 0.8541 in muscle, and 0.8674 to 0.8852 in Combined. Every context had a positive 95\% whole-pair bootstrap interval for AUROC, AUPRC, and F1. Brier score also improved in every endpoint.
+
+The gain was not obtained by simply suppressing positives. At frozen validation thresholds, ADARPro corrected 32.0--50.6\% of baseline false positives while damaging 1.7--5.9\% of baseline true positives (Fig.~\ref{fig:locked}C). When its threshold was chosen to match the published baseline recall exactly, it avoided 126, 119, 158, 68, and 148 false positives in artery, brain, liver, muscle, and Combined, respectively; every clustered interval excluded zero (Fig.~\ref{fig:locked}D). The largest ranking and F1 gains occurred in muscle, where the original endpoint was weakest, but improvement was not confined to that tissue.
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=\textwidth]{figures/figure4_locked_validation.pdf}
+\caption{\textbf{Single-use canonical held-out validation.} (A) ADARPro minus reproduced published AdarEdit for AUROC, AUPRC, and F1; bars are 95\% whole-pair bootstrap intervals. (B) Absolute held-out F1 for the two predictors. (C) Fraction of baseline false positives corrected and baseline true positives damaged at the frozen validation thresholds. (D) Number of false positives avoided when ADARPro recall is matched exactly to the published baseline. Combined is a pooled endpoint. All values were generated after the final manifest was frozen and the one-use quarantine authorization was consumed.}
+\label{fig:locked}
+\end{figure*}
+
+\section*{Discussion}
+
+This study asked where incremental predictive information for endogenous A-to-I editing resides. The answer is neither ``more annotations'' nor ``a larger network.'' Within the present benchmark and measurements, the strongest information is organized at two levels. The substrate is the correct unit for supervision: it determines dependence among observations and prevents site-rich Alu pairs from controlling the loss. The individual target remains the correct unit for chemical selectivity: its local sequence, pairing pattern, and helix partner must survive whole-duplex aggregation. These views are complementary, and their fixed prediction-level integration generalized across every locked endpoint.
+
+The systematic negative evidence sharpens this picture. Cell-line RBP occupancy combined with bulk tissue expression does not reliably resolve tissue-specific realization in these data. Bulk chromatin peak overlap and static transcript annotations identify plausible context but do not yet provide sufficiently matched signal. Generic foundation-model embeddings and direct all-site decoding do not automatically improve a task-specific structure graph. These observations do not argue against RBP, chromatin, structural, or cellular regulation. They distinguish biological relevance from the information content of currently available proxies. The missing layer may be conditional on donor, cell state, isoform, transcriptional timing, or in-vivo RNA conformation---quantities that tissue medians and binary peak overlap cannot recover.
+
+The results also qualify a common assumption in multimodal learning: placing validated components in one end-to-end graph need not outperform independent views. The preregistered unified model had matched principles and lower total parameter count, yet it lost ranking and calibration to the ensemble. With only hundreds of independent Alu pairs, joint optimization may entangle gradients or fit pair-specific interactions that separate models regularize implicitly. This does not prove that all unified architectures will fail; it establishes that the tested representation-level interaction did not justify further test access.
+
+Several limitations bound interpretation. The benchmark comprises graph-buildable human inverted-Alu substrates and four tissue summaries, not donor-resolved measurements or all editing biologies. Predicted secondary structure is an ensemble surrogate for the in-vivo conformations seen by ADAR. The canonical task excludes intermediate sites and is balanced, so natural-prevalence analyses remain secondary. Experimental occupancy resources derive largely from K562 and HepG2 and have repeat-mapping limitations. Finally, the held-out partition is strict but belongs to the same benchmark construction; independent cohort validation remains necessary.
+
+The resulting model improvement is therefore a validation of an information hierarchy, not its sole contribution. AdarEdit already captures much of intrinsic duplex compatibility. Better prediction follows when the learning problem respects substrate-level dependence and when target-centered chemistry is represented explicitly. Substrate realization is detectable through Alu geometry, but the available context proxies are too coarse to become a reliable predictive stage. The next decisive experiment is not indiscriminate architecture growth; it is matched donor- or cell-level measurement of editing, transcript processing, in-vivo structure, ADAR state, and candidate regulators on the same substrates. Such data would test whether realized editability can be separated mechanistically from local chemical potential.
+
+\matmethods{
+\subsection*{Benchmark and labels}
+We used the AdarEdit v2 reproducibility release at upstream revision \texttt{5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5}. The benchmark contains 884 graph-buildable inverted-Alu pairs. Human labels were edited for EditingIndex $\geq15\%$, non-edited for EditingIndex $<1\%$, and intermediate otherwise. The canonical binary task excludes intermediate observations. Pair identities and the fixed 566/139/179 train/validation/test assignment were verified before analysis. Combined was treated only as its published pooled endpoint.
+
+\subsection*{Development protocol}
+All discovery used the original train plus validation pairs divided into five outer folds by pair ID. Learned preprocessing, feature selection, checkpoint choice, and threshold choice were fitted without the outer fold. Predictions were concatenated only after every row was scored by a model that had not trained on its pair. The canonical test was inaccessible to candidate scripts through a stateful quarantine. Development OOF metrics estimate same-fold incremental effects; published supplied-checkpoint test metrics remain the authoritative reference.
+
+\subsection*{Models}
+The pair-balanced component retained the compact AdarEdit graph attention encoder and trained from the expanded high/low site pool using equal class and uniform pair-first sampling. The local component encoded a 65-position target/partner-aligned representation with two dilated convolutional layers and fused it with the graph embedding. The selected probability was $\sigma[(\operatorname{logit}p_{\mathrm{pair}}+\operatorname{logit}p_{\mathrm{local}})/2]$; the 0.5/0.5 weights were fixed rather than searched. The shifted-window control preserved architecture and optimization while moving the local center 96 nt. Full feature definitions, model dimensions, optimization, and all comparator protocols are in SI Appendix, Supplementary Methods.
+
+\subsection*{Statistics and final evaluation}
+Metrics were AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, MCC, and Brier score. Thresholds maximized validation F1 within each frozen training run. Uncertainty used 2,000 paired bootstrap replicates that resampled whole Alu pairs and retained all their sites. For matched-recall analysis, the candidate threshold was selected to equal the supplied-checkpoint baseline recall on the final predictions; the reported uncertainty resampled pairs. Before final evaluation, code, inputs, weights, selected epochs, thresholds, and checkpoint SHA-256 values were frozen in a manifest. The test authorization was consumed once and no post-test model selection or tuning occurred. Natural-prevalence results use all eligible high/low rows from development pairs under their unchanged pair assignment and are secondary to the canonical balanced task.
+}
+
+\showmatmethods{}
+
+\dataavail{Code, experiment configurations, registries, source tables, figure scripts, retained derived artifacts, frozen checkpoints, and complete provenance are available at \url{https://github.com/Scientific-Computing-Lab/ADARPro}. Large third-party downloads and deterministic matrices omitted from GitHub are listed with source URLs, roles, checksums, and regeneration instructions in the repository data manifest. The AdarEdit source benchmark is available from \url{https://github.com/Scientific-Computing-Lab/AdarEdit}. No new human participants were recruited and no new primary sequencing data were generated.}
+
+\acknow{Acknowledgments and funding information pending author confirmation.}
+\showacknow{}
+
+\bibsplit[15]
+\bibliography{references}
+
+\end{document}

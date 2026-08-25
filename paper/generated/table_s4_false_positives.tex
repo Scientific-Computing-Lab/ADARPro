@@ -1,0 +1,16 @@
+\begin{table}[p]
+\centering
+\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation thresholds. The final column re-thresholds ADARPro to match published-baseline recall exactly.}\label{tab:falsepositives}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Context & Baseline FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
+\midrule
+Artery & 460 & 202 (43.9\%) & 42 & 113 (4.9\%) & 126 \\
+Brain & 425 & 164 (38.6\%) & 55 & 73 (3.3\%) & 119 \\
+Liver & 399 & 202 (50.6\%) & 43 & 121 (5.9\%) & 158 \\
+MuscleSkeletal & 188 & 83 (44.1\%) & 41 & 28 (4.3\%) & 68 \\
+Combined & 459 & 147 (32.0\%) & 116 & 38 (1.7\%) & 148 \\
+\bottomrule
+\end{tabular}}
+\end{table}

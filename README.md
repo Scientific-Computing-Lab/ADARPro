@@ -65,6 +65,25 @@ The full decision trail is indexed in
 [`docs/CAMPAIGN_INDEX.md`](docs/CAMPAIGN_INDEX.md). The scientific synthesis is
 in [`reports/FINAL_REPORT.md`](reports/FINAL_REPORT.md).
 
+## Manuscript
+
+The PNAS Research Report manuscript is available as
+[`paper/main.pdf`](paper/main.pdf), with the complete campaign, controls, and
+fold-level evidence organized in
+[`paper/supplementary.pdf`](paper/supplementary.pdf). Their LaTeX sources,
+official-template provenance, verified BibTeX, claim-to-artifact audit, and
+programmatically generated figure and table sources are retained in
+[`paper/`](paper/). Author, affiliation, contribution, funding, and
+correspondence fields remain explicit placeholders pending author approval.
+
+```bash
+make paper-check
+```
+
+This regenerates every paper figure and SI table, compiles both PDFs, verifies
+the bibliography and PNAS field limits, and checks quantitative and claim
+traceability.
+
 ## Repository map
 
 | Path | Contents |

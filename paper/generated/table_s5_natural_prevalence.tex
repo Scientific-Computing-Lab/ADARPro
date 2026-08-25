@@ -1,0 +1,19 @@
+\begin{table}[p]
+\centering
+\caption{Secondary natural-prevalence development evaluation. All eligible high/low observations from unchanged development pairs are included; fold-specific validation thresholds are used.}\label{tab:natural}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Context & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
+\midrule
+MuscleSkeletal & Internal reference & 54289 & 0.8478 & 0.2711 & 0.2328 & 0.1351 & 0.8415 & 15804 \\
+MuscleSkeletal & Pair-balanced & 54289 & 0.8900 & 0.3659 & 0.2868 & 0.1714 & 0.8773 & 12441 \\
+MuscleSkeletal & Target-local & 54289 & 0.9072 & 0.4166 & 0.3125 & 0.1900 & 0.8800 & 11007 \\
+MuscleSkeletal & Fixed ensemble & 54289 & 0.9165 & 0.4540 & 0.3621 & 0.2306 & 0.8422 & 8245 \\
+Liver & Internal reference & 38096 & 0.8915 & 0.6732 & 0.6246 & 0.4906 & 0.8592 & 6690 \\
+Liver & Pair-balanced & 38096 & 0.9094 & 0.7128 & 0.6418 & 0.5056 & 0.8785 & 6442 \\
+Liver & Target-local & 38096 & 0.9200 & 0.7432 & 0.6602 & 0.5265 & 0.8851 & 5969 \\
+Liver & Fixed ensemble & 38096 & 0.9290 & 0.7687 & 0.6684 & 0.5306 & 0.9028 & 5988 \\
+\bottomrule
+\end{tabular}}
+\end{table}

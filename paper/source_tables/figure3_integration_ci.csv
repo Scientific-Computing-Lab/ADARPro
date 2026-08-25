@@ -1,0 +1,7 @@
+candidate,reference,metric,lower,median,upper,context
+pair_balanced,pair_local_ensemble,auprc,0.0236075880153964,0.0307802675140507,0.0383734123635873,MuscleSkeletal
+pair_balanced,pair_local_ensemble,auroc,0.0207333414648133,0.0256119825126074,0.0304961239504359,MuscleSkeletal
+pair_balanced,pair_local_ensemble,f1,0.0045189819701178,0.0139482777107979,0.0233764298878589,MuscleSkeletal
+pair_balanced,pair_local_ensemble,auprc,0.0171481642031511,0.0213873258800146,0.0262644645555968,Liver
+pair_balanced,pair_local_ensemble,auroc,0.0154696034991172,0.0182468870764787,0.0215363052966113,Liver
+pair_balanced,pair_local_ensemble,f1,0.013535444156043,0.0179323602112738,0.0225113224460623,Liver

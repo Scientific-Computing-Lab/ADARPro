@@ -1,0 +1,30 @@
+\begin{table}[p]
+\centering
+\caption{Preregistered unified-model comparison on muscle development data. The unified architecture was rejected before canonical-test access.}\label{tab:unified}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
+\midrule
+Internal reference & 0.8456 & 0.8256 & 0.7783 & 0.7238 & 0.8415 & 0.6894 & 0.1695 \\
+Unified end-to-end & 0.9072 & 0.8922 & 0.8317 & 0.8074 & 0.8575 & 0.8022 & 0.1372 \\
+Frozen ensemble & 0.9142 & 0.9040 & 0.8347 & 0.8273 & 0.8422 & 0.8299 & 0.1168 \\
+Target-local & 0.9045 & 0.8936 & 0.8337 & 0.7920 & 0.8800 & 0.7765 & 0.1286 \\
+\bottomrule
+\end{tabular}}
+\vspace{6pt}
+
+\begin{tabular}{lr}
+\toprule
+Metric & Unified $-$ ensemble, points [95\% CI] \\
+\midrule
+AUROC & -0.72 [-1.29, -0.15] \\
+AUPRC & -1.18 [-2.02, -0.43] \\
+F1 & -0.30 [-1.25, +0.66] \\
+PRECISION & -1.99 [-3.00, -0.99] \\
+RECALL & +1.52 [+0.21, +2.91] \\
+SPECIFICITY & -2.77 [-3.96, -1.60] \\
+BRIER & +2.05 [+1.35, +2.76] \\
+\bottomrule
+\end{tabular}
+\end{table}

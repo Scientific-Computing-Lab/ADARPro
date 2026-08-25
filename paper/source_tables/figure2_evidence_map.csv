@@ -1,0 +1,13 @@
+hypothesis,group,status,metric,lower,median,upper,source
+Pair-first expanded supervision,Supervision,selected,auroc,0.0318687318848734,0.0428842908098503,0.0549520748600918,experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv
+Target-aligned local view,Representation,selected,auroc,0.0079643672602631,0.0160534969865358,0.0237968842460269,experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv
+Fixed global + local ensemble,Integration,selected,auroc,0.0207333414648133,0.0256119825126074,0.0304961239504359,experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv
+Shared four-tissue training,Integration,limited,auroc,0.005799924638794,0.0086761225547433,0.0115201750012142,experiments/runs/joint_multilabel/vs_independent/global_pair_bootstrap_ci.csv
+Continuous/ordinal auxiliary loss,Supervision,limited,auroc,0.0010012215245237,0.0081120546560084,0.0151385709086304,experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv
+Substrate-engagement gate,Biology × AI,limited,auroc,-0.0002856265354657,0.0064618421642501,0.012677440110504,experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv
+IRAlu/transcript architecture,Biology,not promoted,auroc,-0.0078846999808298,0.001629845179846,0.0105473870136785,experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv
+H3K36me3 peak overlap,Biology,not promoted,auroc,-0.0009753389534894,0.0018566425936448,0.0046939230404686,experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+RBP suppressor panel,Biology,not promoted,auroc,-0.0074202559073685,-0.0025694383446698,0.0025713984511075,experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+RiNALMo target embedding,Representation,not promoted,auroc,-0.0050658572100241,-0.000531776207562,0.0038723313307465,experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv
+Substrate-wide all-A decoder,Representation,terminated,auroc,-0.0925436083452747,-0.0663551019259572,-0.0437950956542971,experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv
+Unified end-to-end model,Integration,terminated,auroc,-0.0129207887340212,-0.0072339973643226,-0.001482356636803,experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv

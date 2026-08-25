@@ -1,0 +1,25 @@
+claim_id,epistemic_status,claim,authoritative_artifact
+C01,reproduction,"884 pairs; 566/139/179 train/validation/test; zero pair overlap",data/human/Combined/train.metadata.csv; data/human/Combined/valid.metadata.csv; data/human/Combined/test.metadata.csv; provenance/verify_split_2026-08-21.txt
+C02,published canonical baseline,"Supplied Baseline GAT AUROC/AUPRC/F1 by endpoint",results/adarpro/baseline_reproduction.csv
+C03,development OOF,"Pair-first expanded supervision improves all five endpoints",experiments/runs/richer_supervision/binary_pair_balanced/*/pair_bootstrap_ci.csv
+C04,development OOF,"Target-aligned local representation improves the pair-balanced component in Muscle",experiments/runs/richer_supervision/local_full_comparison/MuscleSkeletal/pair_bootstrap_ci.csv
+C05,mechanistic control,"Aligned local encoder decisively outperforms a 96-nt shifted control",experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv
+C06,development OOF,"Fixed pair-local ensemble improves the pair-balanced component in Muscle",experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv
+C07,development OOF replication,"Fixed pair-local ensemble improves the pair-balanced component in Liver",experiments/runs/richer_supervision/pair_local_ensemble_comparison/Liver/pair_bootstrap_ci.csv
+C08,natural-prevalence secondary,"Fixed ensemble improves Muscle and Liver under natural prevalence",experiments/runs/richer_supervision/natural_prevalence/pair_local_comparison
+C09,development OOF,"Continuous/ordinal auxiliary learning adds limited ranking signal",experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv
+C10,development OOF,"Shared four-tissue model misses the precommitted macro promotion gates",experiments/runs/joint_multilabel/vs_independent/global_pair_bootstrap_ci.csv
+C11,development OOF,"Direct all-adenosine decoder meets futility stopping criterion",experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv
+C12,exploratory/mechanistic,"Inter-arm gap correlates with pair edited fraction",data/derived/features/genomic_context.parquet; reports/11_iralus_and_transcript_context.md; reports/16_richer_supervision_and_substrate_context.md
+C13,development OOF,"Current RBP suppressor panel does not add robust residual signal",experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv
+C14,development OOF,"Current bulk H3K36me3 overlap does not add robust AUROC/F1",experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv
+C15,development OOF,"Frozen RiNALMo target embedding does not add ranking signal",experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv
+C16,preregistered development,"Unified end-to-end model does not outperform frozen ensemble",experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv
+C17,selection diagnostic,"Final component checkpoints and thresholds selected on published validation",models/frozen_ensemble/Artery/summary.json; models/frozen_ensemble/Brain/summary.json; models/frozen_ensemble/Combined/summary.json; models/frozen_ensemble/Liver/summary.json; models/frozen_ensemble/MuscleSkeletal/summary.json
+C18,frozen provenance,"Fixed 0.5/0.5 weights; code/checkpoint/input hashes",provenance/final_pipeline_manifest.json
+C19,canonical held-out,"ADARPro improves AUROC/AUPRC/F1 in every endpoint",results/adarpro/final_locked_test/metrics.csv
+C20,canonical held-out,"All endpoint AUROC/AUPRC/F1 pair-bootstrap intervals are positive",results/adarpro/final_locked_test/*_pair_bootstrap_ci.csv
+C21,canonical held-out,"False-positive rescue exceeds TP damage at frozen thresholds",paper/source_tables/figure4_error_transitions.csv; results/adarpro/final_locked_test/Artery_predictions.parquet; results/adarpro/final_locked_test/Brain_predictions.parquet; results/adarpro/final_locked_test/Combined_predictions.parquet; results/adarpro/final_locked_test/Liver_predictions.parquet; results/adarpro/final_locked_test/MuscleSkeletal_predictions.parquet
+C22,canonical held-out,"ADARPro avoids 68-158 false positives at matched baseline recall",paper/source_tables/figure4_matched_recall.csv; results/adarpro/final_locked_test/Artery_predictions.parquet; results/adarpro/final_locked_test/Brain_predictions.parquet; results/adarpro/final_locked_test/Combined_predictions.parquet; results/adarpro/final_locked_test/Liver_predictions.parquet; results/adarpro/final_locked_test/MuscleSkeletal_predictions.parquet
+C23,canonical held-out,"Brier score improves in every endpoint",results/adarpro/final_locked_test/metrics.csv
+C24,quarantine,"Canonical test authorization was consumed exactly once",provenance/test_quarantine.json

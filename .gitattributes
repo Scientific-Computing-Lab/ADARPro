@@ -10,3 +10,9 @@
 *.png binary
 *.pdf binary
 *.gz  binary
+
+# Matplotlib SVG paths and unmodified journal-vendor files intentionally retain
+# upstream trailing spaces; do not flag those generated/vendor bytes as source
+# whitespace errors.
+paper/figures/*.svg whitespace=-blank-at-eol
+paper/template/* whitespace=-blank-at-eol

@@ -1,0 +1,184 @@
+\documentclass[9pt,twoside,lineno]{pnas-new}
+\usepackage{longtable}
+
+\templatetype{pnassupportinginfo}
+
+% Compatibility shim: the current v1.47 class scopes the first-page line
+% counter inside its page-style definition, while the current SI style refers
+% to the counter directly. Define it only when the class has not done so.
+\makeatletter
+\@ifundefined{PNAS@linecount}{\newcount\PNAS@linecount\PNAS@linecount\@ne}{}
+\makeatother
+
+\title{Supporting Information for: Systematic dissection of endogenous A-to-I RNA editing reveals substrate- and target-level determinants of predictability}
+\author{Author list pending}
+\correspondingauthor{Corresponding author and e-mail pending author confirmation.}
+
+\begin{document}
+
+\maketitle
+\SItext
+
+This appendix documents the complete ADARPro hypothesis campaign, including negative and terminated branches. We use four epistemic labels throughout: \emph{exploratory} for hypothesis-generating analyses; \emph{development OOF} for pair-disjoint cross-fitted comparisons used in selection; \emph{selection diagnostic} for published-validation quantities used to choose epochs or thresholds; and \emph{canonical held-out} for the single evaluation performed after the final manifest was frozen. Natural-prevalence analyses are secondary development robustness checks. These categories are not interchangeable.
+
+\section*{Supplementary Methods}
+
+\subsection*{AdarEdit reproduction and immutable benchmark}
+
+The upstream AdarEdit repository was cloned and preserved at the immutable revision recorded in the repository provenance. Environment, GPU, package, input-file, and supplied-checkpoint provenance are recorded in the public repository. Running the upstream split verifier recovered 884 graph-buildable human inverted-Alu pairs: 566 train, 139 validation, and 179 test, with no pair shared between partitions. Supplied Baseline GAT checkpoints reproduced the published metrics for artery tibial, brain/cerebellum, liver, skeletal muscle, and Combined. The latter pools observations from multiple GTEx tissues and was not treated as a fifth tissue when constructing tissue covariates.
+
+Each model-ready example contains the two Alu arms joined in transcript orientation, a focal adenosine, predicted dot-bracket structure, and a binary label derived from EditingIndex. Positive examples have EditingIndex $\geq15\%$ and negative examples have EditingIndex $<1\%$; the canonical task excludes observations between these thresholds. Graph nodes encode nucleotide and structure-derived features, and edges represent backbone and predicted pairing relations. RNA secondary structures were generated in the AdarEdit construction pipeline with ViennaRNA \cite{Lorenz2011}.
+
+\subsection*{Coordinate recovery and authoritative site table}
+
+Genomic coordinates were reconstructed by reusing the original strand-aware transformations that map local sequence positions to \textit{hg38}/GRCh38 intervals. Pair coordinates came from \texttt{Pair\_Alu\_withStrand.bed}; raw tissue tables supplied focal positions and EditingIndex. We retained both \texttt{site\_id = chromosome:position:strand} and the robust within-benchmark key \texttt{(pair\_id, local\_position)}. Quality checks required the focal base to be adenosine in transcript orientation, deterministic one-to-one model-row mapping, consistent strand, and identical site identity across tissues. The resulting \texttt{site\_master.parquet} records labels, continuous editing values where available, sequence, structure, coordinates, folds, OOF predictions, and provenance.
+
+\subsection*{Test quarantine and development folds}
+
+The canonical test paths and SHA-256 values were registered before candidate development. The quarantine library denies access to protected paths unless a single-use authorization matches the frozen final manifest. Research used the union of published train and validation pairs, divided into five deterministic outer folds by pair ID. Within each outer iteration, the corresponding inner fold selected checkpoints and thresholds. Preprocessing, dimensionality reduction, feature selection, and fitted residual models were learned only from the outer training data. A row entered an OOF table only after prediction by a model that had not trained on its pair.
+
+The grouped OOF reference is intentionally a development instrument: each outer model sees fewer pairs than the final published-train fit. Its absolute performance must therefore not be substituted for or described as more authoritative than the supplied-checkpoint benchmark. Development conclusions are expressed as paired differences under the same folds. The final scientific comparison is the one-use canonical held-out evaluation.
+
+\subsection*{Metrics and clustered inference}
+
+We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, Matthews correlation coefficient (MCC), and Brier score. Unless otherwise noted, a threshold was selected on fold-internal validation data by maximum F1 and applied unchanged to the outer fold. Paired confidence intervals were computed from 2,000 bootstrap replicates that sampled pair IDs with replacement and retained all rows belonging to each sampled pair. The paired difference was candidate minus comparator; for Brier score and false-positive count, negative values favor the candidate.
+
+False-positive rescue rate is the proportion of comparator false positives changed to true negatives. TP damage is the proportion of comparator true positives changed to false negatives. For matched-recall analysis, the candidate threshold was set to reproduce the baseline's aggregate recall, and pair-bootstrap intervals quantified the change in false positives. Natural-prevalence analyses included every eligible high/low row from development pairs without downsampling while retaining the fixed pair partition.
+
+\subsection*{Pair-first expanded supervision}
+
+The expanded pool contains all eligible high- and low-editing observations from training pairs. The pair-first sampler draws a pair uniformly, draws a class with probability 0.5, and then draws an eligible site of that class within the pair. If a pair lacks the requested class, it draws from its available class. The canonical-row epoch update budget was retained so that gains could not be attributed simply to more optimizer steps. The compact graph architecture and optimizer settings matched the internal reference unless an experiment explicitly varied them.
+
+This design addresses effective sample size. Site rows from the same duplex share sequence, structure, genomic context, and often tissue-dependent behavior. Uniform row sampling weights a pair in proportion to the number of available sites. Uniform pair-first sampling instead makes each substrate's expected contribution comparable while exploiting additional valid labels.
+
+\subsection*{Target-local representation and fixed ensemble}
+
+For each focal adenosine, the local representation spans $\pm32$ positions and aligns sequence context at the target with context around its dot-bracket-paired nucleotide. Channels encode nucleotide identity, pairing state, valid-position masks, focal/partner indicators, and signed relative position. A two-layer dilated one-dimensional convolutional encoder produces a compact local embedding, which is fused with the graph representation for the target-local component. The control uses the identical encoder, feature dimensions, and optimization but shifts the center 96 nt from the focal site.
+
+The pair-balanced graph and aligned target-local models were trained independently. Their probabilities were clipped only for numerical stability, transformed to logits, averaged with fixed weights 0.5 and 0.5, and mapped back through the sigmoid. No ensemble-weight search, stacking model, or test-time fitting was performed.
+
+\subsection*{Biological-context feature families}
+
+\paragraph*{RBP evidence.} Candidate regulators were prioritized independently from predictive outcomes using known ADAR interaction, dsRNA binding, perturbation evidence, nuclear localization, Alu association, tissue expression, and assay availability. Experimental occupancy used replicated/high-confidence ENCODE eCLIP peaks \cite{VanNostrand2020}; predictive occupancy used PrismNet and RBPNet where compatible \cite{Sun2021PrismNet,Horlacher2023RBPNet}. Features included focal overlap, nearest-peak distance, local-window signal, duplex burden, arm asymmetry, partner occupancy, and regulator-class aggregates. GTEx median expression \cite{GTEx2020} supplied tissue abundance and binding-by-expression interactions. Combined received no fabricated tissue vector. Controls included randomized RBP identities, shuffled tissue vectors, matched-dimensional noise, expression without binding, and binding without expression.
+
+\paragraph*{Genomic and transcript context.} Reconstructed pair intervals yielded genomic arm gap, arm lengths, orientation, repeat subfamily/divergence, neighborhood composition, overlap counts, and transcript-region annotations. Residual models included baseline logit plus standardized context variables fitted inside each fold. Pair-engagement analyses predicted the fraction of eligible sites edited within a pair.
+
+\paragraph*{Chromatin.} Exact-tissue ENCODE/Roadmap-compatible H3K36me3 tracks were harmonized to the benchmark assembly and summarized as target, local, arm, and pair-overlap features. Binary peak absence was not treated as proof of absent chromatin activity. H2A.Z was audited but not tested as a powered tissue-matched comparison because an adequately aligned resource was unavailable. The tested formulation addresses incremental information from bulk peak overlap, not chromatin causality \cite{Cai2026,ENCODE2020}.
+
+\paragraph*{RNA representation.} ViennaRNA ensemble summaries, graph-inferable controls, and frozen RiNALMo target/substrate embeddings were fitted without fine-tuning \cite{Penic2025}. A larger 150M-parameter frozen model followed the same protocol. The task-specific pretraining audit identified over 288,000 benchmark-excluded, opposite-orientation Alu pairs within GENCODE transcript spans, but connectivity, isoform, foldability, and sequence-redundancy filters were not sufficiently resolved to make this a leakage-safe training corpus; it remained a feasibility result.
+
+\subsection*{Alternative learning formulations}
+
+The continuous/ordinal/binary model used a shared encoder with canonical binary, ordinal-bin, and continuous EditingIndex heads. Loss weights, label transforms, and promotion criteria were fixed within development. The substrate-wide model predicted every candidate adenosine from one encoded pair and was subject to a prespecified two-fold futility boundary. The shared four-tissue model used a masked multilabel output so missing tissue outcomes did not contribute to the loss. A hierarchical engagement gate multiplied a cross-fitted site probability by a low-capacity estimate of substrate engagement. All branches used pair-grouped folds.
+
+\subsection*{Preregistered unified end-to-end architecture}
+
+The unified candidate was specified after the initial campaign but before test access. One shared three-layer graph attention encoder produced a whole-duplex mean embedding and the focal nucleotide's final node state. The aligned local CNN encoded target and partner windows. Global, focal, and local views were projected to 32 dimensions; the views and all pairwise elementwise interactions entered a 64-unit fusion layer and a final binary head. A training-only global binary head had fixed loss weight 0.25. The connected model had 65,698 trainable parameters, compared with 80,138 across the two independent ensemble components. It used pair-first class-balanced training, 1,000 epochs, Adam with learning rate $10^{-3}$ and weight decay $10^{-4}$, batch size 256, and seed 20260821. The primary comparator and its prediction hash were immutable. Conditional repair, replication, and all-context stages could open only under preregistered criteria.
+
+\subsection*{Final training and one-use evaluation}
+
+For each endpoint, pair-balanced and local components were fitted on the published training pairs for 1,000 epochs. Published validation data selected the component checkpoints and one ensemble threshold per endpoint. All ten checkpoints, histories, configurations, selected epochs, thresholds, input hashes, code revision, and weights were recorded in a final manifest. The manifest SHA-256 was \texttt{dd04f9786d52f57653da31b12dc777d10aa4247dfccd2b2c59ddff64ad395a1c}; the bound code revision was \texttt{0f50fac33bec8bad325e6745d83ceaacebe42fc1}. The quarantine authorization was consumed at 2026-08-25 04:28:30 UTC and records exactly one evaluation. No subsequent development decision used canonical outcomes.
+
+\section*{Supplementary Results}
+
+\subsection*{Two evaluation regimes answer different questions}
+
+Figure~\ref{fig:s1} contrasts the evaluation regimes. The supplied-checkpoint canonical test reproduces the published AdarEdit result and is the final target. Grouped development OOF estimates ask whether a candidate adds information when candidate and reference are trained under the same reduced folds. The latter scores are lower in absolute terms because each outer model trains on fewer development pairs. Their value lies in paired attribution, not in redefining AdarEdit performance.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS1_development_regime.pdf}
+\caption{\textbf{Canonical and development evaluation regimes.} Absolute supplied-checkpoint canonical-test performance is the authoritative benchmark. The internal pair-disjoint OOF reference is used only for same-fold candidate comparison and residual analysis.}
+\label{fig:s1}
+\end{figure}
+
+\subsection*{Baseline residuals and RBP/context hypotheses}
+
+Cross-fitted errors were cataloged only in development data. High-confidence false positives did not show a robust, matched enrichment for the literature-prioritized suppressor panel after controlling for baseline probability, tissue, structural status, and pair characteristics. eCLIP analyses were particularly limited by repeat mappability; predicted binding removed the peak-absence ambiguity but did not rescue the central signal. Binding alone, abundance alone, and their interaction failed their randomized and shuffled controls (Fig.~\ref{fig:s2}).
+
+Across sites observed in multiple individual tissues, label-switching cases hold intrinsic sequence and predicted structure fixed. Bulk tissue expression had strong directional ordering, making tissue identity a difficult negative control: it nearly predicted switch direction by itself. The available four tissue summaries therefore could not distinguish an RBP-specific mechanism from generic tissue ordering. This branch was terminated rather than enlarged.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS2_biological_feature_controls.pdf}
+\caption{\textbf{Bulk biological-context formulations and controls.} Pair-bootstrap development effects for representative RBP, genomic-context, and chromatin comparisons. Intervals crossing zero were not promoted. The figure summarizes predictive evidence at the tested measurement resolution and does not test whether each mechanism exists biologically.}
+\label{fig:s2}
+\end{figure}
+
+\subsection*{Substrate realization is measurable but not yet actionable}
+
+The inter-arm genomic gap correlated negatively with edited-site fraction in all four tissues, and context-plus-graph summaries predicted pair engagement beyond graph-inferable controls. This supports a substrate-level component in the phenotype. Direct use was weaker: the outer-isolated engagement gate gave a small AUPRC gain but no robust F1 gain and worsened calibration; the neural auxiliary-engagement model decreased F1 and was stopped. Transcript-region, repeat-subfamily, divergence, and neighborhood variables in a broad residual panel similarly failed to generalize. Exact-tissue H3K36me3 overlap yielded a small liver AUPRC signal without robust AUROC/F1 or engagement gain. These measurements appear too static or coarse to estimate whether a duplex is formed, retained, localized, and encountered by ADAR.
+
+\subsection*{Richer labels help primarily through pair-balanced binary supervision}
+
+Pair-first expanded binary supervision improved the same-fold internal reference in every endpoint (Table~\ref{tab:pairbalance}). Continuous/ordinal auxiliary learning yielded a smaller ranking and calibration signal, but did not materially improve F1 over pair-balanced binary learning. Adding its predictor to the selected ensemble reduced natural-prevalence F1. The direct all-A decoder performed substantially worse over two full folds and met the futility rule. A relative within-pair rank feature helped the original weaker encoder but neither beat pair-balanced training nor its within-pair shuffled-rank control. These results separate the value of more valid labels from the value of a higher-capacity joint decoder.
+
+\subsection*{Shared tissue learning and foundation representations are limited}
+
+The four-tissue masked model improved macro AUROC/AUPRC/F1 by 0.0087/0.0116/0.0075 relative to independently trained pair-balanced models, with its largest benefit in muscle. It missed both prespecified macro promotion gates and increased mean Brier score, so it was retained as limited evidence for transfer rather than included in the final candidate. Frozen RiNALMo target embeddings and a larger frozen variant did not improve AUROC/AUPRC beyond graph and matched controls. These findings leave task-specific pretraining and sample-matched tissue modeling open, but do not support generic frozen embeddings as an additive feature here.
+
+\subsection*{Natural prevalence confirms practical false-positive reduction}
+
+The canonical benchmark is balanced by construction. On all eligible high/low observations from development pairs, positive prevalence is lower, making precision and false-positive control more demanding. In muscle, the fixed ensemble reached AUROC/AUPRC/F1 0.9165/0.4540/0.3621, improvements of 0.0265/0.0880/0.0752 over the pair-balanced component, and removed 4,196 false positives at a cost of 103 true positives. Liver gains were 0.0196/0.0558/0.0265. These are secondary OOF results, not a replacement benchmark (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}).
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS3_natural_prevalence.pdf}
+\caption{\textbf{Secondary natural-prevalence development evaluation.} Performance for the internal reference, pair-balanced graph, target-local component, and fixed ensemble using all eligible high/low observations from unchanged muscle and liver development pairs.}
+\label{fig:s3}
+\end{figure}
+
+\subsection*{The unified model fails its preregistered promotion rule}
+
+The unified model's AUROC and AUPRC were below the fixed ensemble in every outer fold. Aggregate unified-minus-ensemble differences were $-0.0070$ AUROC, $-0.0118$ AUPRC, and $-0.0029$ F1; Brier increased from 0.1168 to 0.1372. At frozen fold thresholds it corrected 105 of 516 ensemble false positives but created 189 new false positives. Because both ranking intervals were adverse and calibration worsened, the conditional no-auxiliary repair was not scientifically authorized; liver replication and all-context confirmation were not run (Fig.~\ref{fig:s4}; Table~\ref{tab:unified}). This preserves the preregistered decision boundary and avoids outcome-driven architecture search.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS4_unified_negative_result.pdf}
+\caption{\textbf{Preregistered unified end-to-end experiment.} The connected model did not outperform the previously frozen prediction-level ensemble in muscle development OOF comparison. Bars are 95\% whole-pair bootstrap intervals for unified minus ensemble; lower Brier is better.}
+\label{fig:s4}
+\end{figure}
+
+\subsection*{Canonical ranking, error correction, and calibration}
+
+The frozen ensemble improved the ROC and precision--recall curves in all five endpoints (Fig.~\ref{fig:s5}). Exact performance is given in Table~\ref{tab:lockedmetrics}. Pair-bootstrap AUROC, AUPRC, and F1 intervals were positive for every endpoint, with the largest gain in muscle. At frozen thresholds, false-positive rescue substantially exceeded TP damage; at recall exactly matched to the published baseline, 68--158 false positives were avoided depending on endpoint (Table~\ref{tab:falsepositives}). Reliability curves and lower Brier scores show that the ranking improvement did not come at the cost of calibration (Fig.~\ref{fig:s6}).
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS5_locked_curves.pdf}
+\caption{\textbf{ROC and precision--recall curves from the one-use canonical test.} ADARPro and supplied-checkpoint AdarEdit are shown for the four individual tissue endpoints and Combined.}
+\label{fig:s5}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/figureS6_locked_calibration.pdf}
+\caption{\textbf{Canonical-test calibration.} Reliability curves and Brier scores for ADARPro and supplied-checkpoint AdarEdit. Brier score was lower for ADARPro in every endpoint.}
+\label{fig:s6}
+\end{figure}
+
+\input{generated/table_s1_locked_metrics.tex}
+\input{generated/table_s2_evidence_map.tex}
+\input{generated/table_s3_pair_balance.tex}
+\input{generated/table_s4_false_positives.tex}
+\input{generated/table_s5_natural_prevalence.tex}
+\input{generated/table_s6_unified.tex}
+
+\section*{Complete campaign taxonomy and registry}
+
+Table~\ref{tab:taxonomy} records every ranked research direction, including branches deferred because the required measurement was unavailable rather than because a negative result was obtained. Table~\ref{tab:registry} summarizes the immutable one-row-per-run registry. The complete registry at \texttt{experiments/experiments.csv} contains the code revision, input hashes, fold definition, seed, features, hyperparameters, artifact path, serialized metrics, and test-access flag for all 128 runs. Exact fold-level tables, OOF predictions, bootstrap replicates, ablations, and control outputs are retained under \texttt{experiments/runs/}; the chronological interpretation and stopping decisions are preserved in reports 00--20. Together these machine-readable artifacts constitute the complete fold-level supplement rather than a selected subset reconstructed for publication.
+
+\input{generated/table_s7_experiment_taxonomy.tex}
+\input{generated/table_s8_registry.tex}
+
+\section*{Campaign interpretation and future tests}
+
+The complete campaign supports a two-scale predictive hierarchy. Pair geometry and edited-site fraction indicate that substrates differ in realization or engagement, but current bulk proxies cannot estimate that state precisely enough to improve the site classifier. Conditional on the represented substrate, explicit target-and-partner features provide substantial local information. The final predictor therefore integrates the two empirically robust views without claiming that it measures cellular environment directly.
+
+The next high-information study would pair donor- or cell-resolved editing measurements with transcript abundance, intron retention and splicing, ADAR1 isoforms, interferon state, quantitative chromatin, and in-vivo structure from the same biological samples. Perturbation of ILF2/ILF3/ZFR-family regulators on preselected high-intrinsic-editability substrates would distinguish occupancy correlation from causal suppression. Task-specific pretraining on benchmark-excluded inverted-Alu pairs is also feasible, but only after transcript connectivity and sequence-redundancy controls ensure that pretraining cannot reveal held-out pair identity.
+
+\FloatBarrier
+
+\bibliography{references}
+
+\end{document}
