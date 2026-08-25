@@ -1,12 +1,12 @@
 scale,hypothesis,status,interpretation
 Substrate-aware learning,Pair-first expanded supervision,selected,Corrects label use and pair weighting
 Target selectivity,Aligned target + helix-partner view,selected,Survives shifted-window control
-Integration,Fixed equal-logit global + local,selected,Complementary same-fold predictions
-Substrate realization,Pair geometry / editing burden,supported,"State is measurable, not yet actionable"
+Integration,Fixed whole-duplex + local-augmented logits,selected,Complementary same-fold predictions
+Substrate propensity,Pair geometry / editing burden,"supported, not yet actionable",Editing burden is learnable; latent state unresolved
 Supervision,Continuous + ordinal auxiliary labels,limited,Ranking benefit; no useful F1 gain
 Target selectivity,Focal node / contact geometry,limited,Points toward aligned local view
-Cross-tissue,Shared four-tissue training,limited,Transfer below promotion gate
-Substrate realization,Hierarchical engagement gate,limited,Small ranking gain; unstable classification
+Cross-tissue,Shared four-tissue training,limited,Transfer below promotion criterion
+Substrate propensity,Hierarchical engagement gate,limited,Small ranking gain; unstable classification
 Biological context,Bulk H3K36me3 overlap,limited,Context-specific AUPRC only
 Biological context,RBP binding × bulk expression,not supported,No reproducible residual gain
 Biological context,Transcript / repeat annotation panel,not supported,No robust site-level increment
@@ -15,4 +15,5 @@ Representation,Substrate-wide all-A decoder,not supported,Stopped at prespecifie
 Capacity,Larger / deeper graph networks,not supported,Capacity alone did not generalize
 Integration,Unified end-to-end architecture,not supported,Inferior to frozen ensemble
 Cellular state,Matched donor/cell multimodality,deferred,Required measurements unavailable
-RNA state,Matched in-vivo structure / isoforms,deferred,Required measurements unavailable
+RNA state,Matched in vivo structure / isoforms,deferred,Required measurements unavailable
+Capacity,Graph Transformer / GATv2 expansion,not pursued,Superseded by controlled lower-capacity evidence

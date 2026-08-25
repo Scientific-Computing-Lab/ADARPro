@@ -8,18 +8,19 @@ hypotheses under pair-disjoint development evaluation. The study retains both
 successful and negative experiments.
 
 The evidence supports a hierarchical picture. Whole-duplex sequence and
-structure encode intrinsic competence; genomic geometry and pair-level models
-show that substrate realization is measurable, although current bulk context
-proxies do not estimate that state well enough to improve the leading site
-classifier. Pair-first learning respects the substrate as the statistical unit,
-while a target/helix-partner-aligned representation recovers nucleotide-level
-information diluted by whole-duplex pooling.
+structure encode intrinsic competence. Genomic geometry and pair-level models
+identify reproducible variation in substrate editing burden, consistent with a
+realization or engagement dimension, although current bulk context proxies do
+not resolve the underlying cellular state well enough to improve the leading
+site classifier. Pair-first learning respects the substrate as the statistical
+unit, while a target/helix-partner-aligned representation recovers
+nucleotide-level information diluted by whole-duplex pooling.
 
 The frozen predictor is an unchanged 50:50 equal-logit ensemble of two
-independently trained models: the pair-balanced whole-duplex graph model and
-the target/helix-partner-local model. A separately preregistered unified
-end-to-end architecture was developed before test access and rejected on
-development data alone.
+independently trained models: a pair-first whole-duplex-only graph model and a
+second pair-first graph model internally augmented with a target/helix-partner
+local encoder. A separately preregistered unified end-to-end architecture was
+developed before test access and rejected on development data alone.
 
 ## Locked canonical result
 
@@ -35,11 +36,12 @@ with the frozen ADARPro ensemble on the original published task and split.
 | Skeletal muscle | 0.8688 | 0.9144 | 0.8757 | 0.9207 | 0.8139 | 0.8541 |
 | Combined | 0.9331 | 0.9491 | 0.9356 | 0.9513 | 0.8674 | 0.8852 |
 
-Macro-average gains were **+0.0277 AUROC, +0.0261 AUPRC, and +0.0253 F1**.
-Every context had a positive pair-clustered 95% interval for all three
-differences. At matched reproduced-baseline recall, ADARPro avoided 126, 119,
-158, 68, and 148 false positives, respectively, with positive clustered
-intervals in every context.
+Mean gains across the five reported benchmark endpoints were **+0.0277 AUROC,
++0.0261 AUPRC, and +0.0253 F1**.
+Every endpoint had a positive pair-clustered 95% interval for all three
+differences. In a post-test descriptive analysis at matched
+reproduced-baseline recall, ADARPro avoided 126, 119, 158, 68, and 148 false
+positives, respectively, with positive clustered intervals throughout.
 
 These held-out results are the authoritative performance claim. The lower
 absolute grouped out-of-fold scores in development are an internal research
@@ -53,11 +55,12 @@ not replace or redefine the published benchmark.
 - Recovering all valid high/low labels and correcting pair weighting each made
   an independent contribution in the existing same-fold ablation.
 - Inter-arm geometry and low-capacity pair models predicted substrate editing
-  burden, but available static/bulk context did not translate this state into a
-  stronger site classifier.
-- An aligned target/helix-partner local view added complementary signal. An
-  identical network centered 96 nt away failed decisively, ruling out generic
-  additional CNN capacity as the explanation.
+  burden, but available static/bulk context did not resolve the latent cellular
+  state well enough to strengthen site classification.
+- A graph model augmented with an aligned target/helix-partner local view added
+  complementary information. An otherwise identical model centered 96 nt away
+  failed decisively, ruling out generic additional CNN capacity as the
+  explanation.
 - Fixed prediction-level integration outperformed the preregistered unified
   joint model at the available effective pair-level sample size.
 - Tested eCLIP/PrismNet/RBPNet × bulk GTEx representations, current bulk

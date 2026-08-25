@@ -65,27 +65,434 @@ Context & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier 
 
 
 def evidence_map() -> None:
-    df = pd.read_csv(SOURCE / "figure2_evidence_map.csv")
+    def select(
+        path: str, metric: str, *, invert: bool = False, **selectors: str
+    ) -> pd.Series:
+        frame = pd.read_csv(ROOT / path)
+        selected = frame[frame["metric"] == metric]
+        for column, value in selectors.items():
+            selected = selected[selected[column] == value]
+        if len(selected) != 1:
+            raise RuntimeError(
+                f"Expected one synthesis row in {path}: {metric}, {selectors}"
+            )
+        row = selected.iloc[0].copy()
+        if invert:
+            row[["lower", "median", "upper"]] = -row[
+                ["upper", "median", "lower"]
+            ].to_numpy()
+        return row
+
+    def effect(metric: str, row: pd.Series) -> str:
+        label = {"auroc": "AUROC", "auprc": "AUPRC", "f1": "F1", "r2": r"$R^2$"}[metric]
+        return f"$\\Delta${label} {interval(row)}"
+
+    rows: list[dict[str, str]] = []
+
+    def add(
+        hypothesis: str,
+        axis: str,
+        comparator: str,
+        primary: str,
+        secondary: str,
+        status: str,
+        interpretation: str,
+        source: str,
+    ) -> None:
+        rows.append(
+            {
+                "hypothesis": hypothesis,
+                "axis": axis,
+                "comparator": comparator,
+                "primary_effect": primary,
+                "secondary_behavior": secondary,
+                "status": status,
+                "interpretation": interpretation,
+                "source": source,
+            }
+        )
+
+    supervision = "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
+    add(
+        "Additional valid high/low labels",
+        "Supervision",
+        "Original internal reference; same folds",
+        effect(
+            "auroc",
+            select(
+                supervision,
+                "auroc",
+                candidate="expanded_site",
+                reference="development_reference",
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                supervision,
+                "f1",
+                candidate="expanded_site",
+                reference="development_reference",
+            ),
+        ),
+        "Selected",
+        "Additional valid labels contribute independently.",
+        supervision,
+    )
+    add(
+        "Pair-first weighting",
+        "Statistical unit",
+        "Expanded row-wise sampling; identical labels",
+        effect(
+            "auroc",
+            select(
+                supervision,
+                "auroc",
+                candidate="expanded_site",
+                reference="expanded_pair",
+                invert=True,
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                supervision,
+                "f1",
+                candidate="expanded_site",
+                reference="expanded_pair",
+                invert=True,
+            ),
+        ),
+        "Selected",
+        "Correcting substrate weight adds a second gain.",
+        supervision,
+    )
+    multitask = "experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv"
+    add(
+        "Continuous + ordinal auxiliary labels",
+        "Supervision",
+        "Pair-first binary model",
+        effect(
+            "auroc",
+            select(
+                multitask,
+                "auroc",
+                candidate="expanded_pair",
+                reference="multitask_pair",
+                invert=True,
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                multitask,
+                "f1",
+                candidate="expanded_pair",
+                reference="multitask_pair",
+                invert=True,
+            ),
+        ),
+        "Limited",
+        "Small ranking/calibration gain; negligible F1 and adverse natural-prevalence integration.",
+        multitask,
+    )
+
+    focal = (
+        "experiments/runs/richer_supervision/pooling_comparison/pair_bootstrap_ci.csv"
+    )
+    add(
+        "Explicit focal-node retention",
+        "Representation",
+        "Pair-first whole-duplex pooling",
+        effect("auroc", select(focal, "auroc", candidate="focal", reference="pair")),
+        effect("f1", select(focal, "f1", candidate="focal", reference="pair")),
+        "Limited",
+        "Localized ranking information; insufficient standalone F1.",
+        focal,
+    )
+    geometry = (
+        "experiments/runs/target_geometry_residual/MuscleSkeletal/pair_bootstrap_ci.csv"
+    )
+    add(
+        "Target/contact geometry",
+        "Representation",
+        "Cross-fitted baseline logit",
+        effect(
+            "auroc",
+            select(geometry, "auroc", model="baseline_plus_multiscale_structure"),
+        ),
+        effect(
+            "f1", select(geometry, "f1", model="baseline_plus_multiscale_structure")
+        ),
+        "Limited",
+        "Ranking and calibration localized the missing target information.",
+        geometry,
+    )
+    local = "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Aligned target/helix-partner representation",
+        "Representation",
+        "Pair-first whole-duplex-only predictor",
+        effect(
+            "auroc",
+            select(
+                local, "auroc", candidate="aligned_local", reference="pair_balanced"
+            ),
+        ),
+        effect(
+            "f1",
+            select(local, "f1", candidate="aligned_local", reference="pair_balanced"),
+        ),
+        "Selected",
+        "Graph-plus-local fusion adds target-centered information.",
+        local,
+    )
+    add(
+        "96-nt shifted local window",
+        "Capacity control",
+        "Pair-first whole-duplex-only predictor",
+        effect(
+            "auroc",
+            select(
+                local, "auroc", candidate="shifted_local", reference="pair_balanced"
+            ),
+        ),
+        effect(
+            "f1",
+            select(local, "f1", candidate="shifted_local", reference="pair_balanced"),
+        ),
+        "Not supported",
+        "Matched capacity without target alignment collapses performance.",
+        local,
+    )
+    ensemble = "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Fixed equal-logit integration",
+        "Integration",
+        "Whole-duplex-only predictor; muscle",
+        effect(
+            "auroc",
+            select(
+                ensemble,
+                "auroc",
+                candidate="pair_balanced",
+                reference="pair_local_ensemble",
+                invert=True,
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                ensemble,
+                "f1",
+                candidate="pair_balanced",
+                reference="pair_local_ensemble",
+                invert=True,
+            ),
+        ),
+        "Selected",
+        "Independently optimized whole-duplex and local-augmented predictors are complementary; replicated in liver.",
+        ensemble,
+    )
+
+    engagement_table = pd.read_csv(SOURCE / "figure2_pair_engagement.csv")
+    min_effect = 100 * engagement_table["delta_r2_median"].min()
+    max_effect = 100 * engagement_table["delta_r2_median"].max()
+    add(
+        "Pair geometry and editing burden",
+        "Substrate propensity",
+        "Geometry + graph summaries vs graph summaries",
+        rf"$\Delta R^2$ {min_effect:+.2f} to {max_effect:+.2f} points (4 tissues)",
+        "All four pair-clustered 95% intervals exclude 0",
+        "Supported, not yet actionable",
+        "Pair-level burden is learnable and consistent with variation in realization/engagement.",
+        "paper/source_tables/figure2_pair_engagement.csv",
+    )
+    gate = "experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Cross-fitted engagement gate",
+        "Biology × AI",
+        "Pair-first site predictor",
+        effect(
+            "auprc", select(gate, "auprc", model="expanded_plus_combined_engagement")
+        ),
+        effect("f1", select(gate, "f1", model="expanded_plus_combined_engagement")),
+        "Limited",
+        "Small ranking gain; F1 interval crosses 0 and Brier worsens.",
+        gate,
+    )
+    shared = (
+        "experiments/runs/joint_multilabel/vs_independent/global_pair_bootstrap_ci.csv"
+    )
+    add(
+        "Shared four-tissue learning",
+        "Transfer",
+        "Independent tissue models; mean across 4 tissues",
+        effect("auroc", select(shared, "auroc", context="macro")),
+        effect("f1", select(shared, "f1", context="macro")),
+        "Limited",
+        "Transfer improves ranking but misses promotion criteria and worsens mean Brier.",
+        shared,
+    )
+
+    chromatin = "experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv"
+    add(
+        "Bulk H3K36me3 occupancy",
+        "Biological context",
+        "Cross-fitted baseline logit; liver",
+        effect(
+            "auprc",
+            select(
+                chromatin, "auprc", model="baseline_plus_h3k36me3_multiscale_occupancy"
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                chromatin, "f1", model="baseline_plus_h3k36me3_multiscale_occupancy"
+            ),
+        ),
+        "Limited",
+        "AUPRC-only effect; no stable AUROC, F1, or pair-level gain.",
+        chromatin,
+    )
+    rbp = "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "RBP binding × bulk abundance",
+        "Biological context",
+        "Cross-fitted baseline logit",
+        effect(
+            "auroc", select(rbp, "auroc", model="baseline_plus_biological_suppressors")
+        ),
+        effect("f1", select(rbp, "f1", model="baseline_plus_biological_suppressors")),
+        "Not supported",
+        "No reproducible residual gain; broader predicted panels were adverse.",
+        rbp,
+    )
+    genomic = (
+        "experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv"
+    )
+    add(
+        "Transcript/repeat annotation panel",
+        "Biological context",
+        "Cross-fitted baseline logit",
+        effect(
+            "auroc",
+            select(genomic, "auroc", model="baseline_plus_architecture_and_intrinsic"),
+        ),
+        effect(
+            "f1",
+            select(genomic, "f1", model="baseline_plus_architecture_and_intrinsic"),
+        ),
+        "Not supported",
+        "Broad site-level annotations do not improve the graph representation.",
+        genomic,
+    )
+    rinalmo = "experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Frozen RiNALMo target embedding",
+        "Representation",
+        "Recalibrated cross-fitted baseline",
+        effect(
+            "auroc",
+            select(
+                rinalmo,
+                "auroc",
+                candidate="foundation_target",
+                reference="base_recalibrated",
+            ),
+        ),
+        effect(
+            "f1",
+            select(
+                rinalmo,
+                "f1",
+                candidate="foundation_target",
+                reference="base_recalibrated",
+            ),
+        ),
+        "Not supported",
+        "Metric-specific F1 change without ranking gain; larger frozen model confirmed no promotion.",
+        rinalmo,
+    )
+    all_a = "experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Substrate-wide all-A decoder",
+        "Representation",
+        "Pair-first predictor on identical rows",
+        effect(
+            "auroc",
+            select(all_a, "auroc", candidate="control", reference="pair_balanced"),
+        ),
+        effect(
+            "f1", select(all_a, "f1", candidate="control", reference="pair_balanced")
+        ),
+        "Not supported",
+        "Stopped at the prespecified two-fold futility criterion.",
+        all_a,
+    )
+    unified = "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
+    add(
+        "Unified end-to-end architecture",
+        "Integration",
+        "Immutable fixed ensemble",
+        effect(
+            "auroc",
+            select(unified, "auroc", candidate="unified", reference="frozen_ensemble"),
+        ),
+        effect(
+            "f1",
+            select(unified, "f1", candidate="unified", reference="frozen_ensemble"),
+        ),
+        "Not supported",
+        "Ranking and calibration were worse; preregistered later stages remained closed.",
+        unified,
+    )
+    add(
+        "Larger/deeper graph capacity",
+        "Capacity",
+        "Supplied Bio-aware vs compact checkpoints",
+        "No common OOF effect estimate",
+        "Not uniformly better across endpoints",
+        "Not supported",
+        "Generic capacity did not provide a consistent advantage.",
+        "results/adaredit_baseline_metrics.csv",
+    )
+
+    df = pd.DataFrame(rows)
+    SOURCE.mkdir(parents=True, exist_ok=True)
+    df.to_csv(SOURCE / "table_s2_evidence_synthesis.csv", index=False)
     lines = [
-        f"{tex(row['scale'])} & {tex(row['hypothesis'])} & {tex(row['status'].title())} & "
-        f"{tex(row['interpretation'])} \\\\"
+        f"{tex(row['axis'])} & {tex(row['hypothesis'])} & {tex(row['comparator'])} & "
+        f"{row['primary_effect']} & {tex(row['secondary_behavior'])} & "
+        f"{tex(row['status'])} & {tex(row['interpretation'])} \\\\"
         for _, row in df.iterrows()
     ]
     write(
         "table_s2_evidence_map.tex",
-        r"""\begin{table}[H]
-\centering
-\caption{Development evidence map. ``Not supported'' refers only to the tested measurement and formulation; deferred hypotheses lacked appropriately matched data and were not tested. Quantitative comparisons and their prespecified references are reported in the corresponding sections and source tables.}\label{tab:evidencemap}
-\begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.25\textwidth}p{0.12\textwidth}X}
+        r"""\begin{landscape}
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{longtable}{p{0.10\linewidth}p{0.15\linewidth}p{0.16\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.11\linewidth}p{0.16\linewidth}}
+\caption{Development evidence synthesis. Every quantitative row states its own comparator; heterogeneous effects are not rankable across rows. Values are percentage-point medians with 95\% pair-clustered bootstrap intervals unless noted. ``Not supported'' refers only to the tested measurement and formulation.}\label{tab:evidencemap}\\
 \toprule
-Scale & Tested formulation & Evidence status & Interpretation \\
+Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Table continued}}\\
+\toprule
+Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
+\midrule
+\endhead
 """
         + "\n".join(lines)
         + r"""
 \bottomrule
-\end{tabularx}
-\end{table}""",
+\end{longtable}
+\endgroup
+\end{landscape}""",
     )
 
 
@@ -130,10 +537,10 @@ def supervision_decomposition() -> None:
         "table_s4_supervision_decomposition.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are whole-pair bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
+\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are pair-clustered bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
 \begin{tabular}{lrrrrr}
 \toprule
-Metric & Original reference & All high/low, site-balanced & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
+Metric & Original reference & All high/low, row-wise & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
 \midrule
 """
         + "\n".join(rows)
@@ -160,7 +567,7 @@ def substrate_realization() -> None:
         "table_s3_substrate_realization.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Substrate realization is measurable in development pairs. Spearman $\rho$ relates genomic inter-arm gap to edited-site fraction. The low-capacity pair model combines genomic geometry with graph-derived summaries; $\Delta R^2$ is relative to graph summaries alone with a 95\% whole-pair bootstrap interval. ``Any high'' denotes whether a pair contains at least one site with EditingIndex $\geq15\%$.}\label{tab:substraterealization}
+\caption{Pair geometry identifies a reproducible component of substrate-level editing burden. Spearman $\rho$ relates genomic inter-arm gap to edited-site fraction. The low-capacity pair model combines genomic geometry with graph-derived summaries; $\Delta R^2$ is relative to graph summaries alone with a 95\% pair-clustered bootstrap interval. ``Any high'' denotes whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes do not directly measure molecular realization or engagement.}\label{tab:substraterealization}
 \begin{tabular}{lrrrrr}
 \toprule
 Context & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
@@ -181,7 +588,7 @@ def target_controls() -> None:
     for label, frame, model in [
         ("Whole-duplex pair model", alignment, "pair_balanced"),
         ("Explicit focal node", focal, "focal"),
-        ("Aligned target + partner", alignment, "aligned_local"),
+        ("Graph + aligned target/helix-partner", alignment, "aligned_local"),
         ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
     ]:
         row = frame[frame.model == model].iloc[0]
@@ -219,7 +626,7 @@ def pair_balance() -> None:
         "table_s5_pair_balance.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Pair-first expanded supervision versus the same-fold internal AdarEdit reference. Values are percentage-point median differences with 95\% whole-pair bootstrap intervals.}\label{tab:pairbalance}
+\caption{Pair-first expanded supervision versus the same-fold internal AdarEdit reference. Values are percentage-point median differences with 95\% pair-clustered bootstrap intervals.}\label{tab:pairbalance}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
@@ -250,7 +657,7 @@ def false_positive_table() -> None:
         "table_s9_false_positives.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation thresholds. The final column re-thresholds ADARPro to match published-baseline recall exactly.}\label{tab:falsepositives}
+\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation-selected thresholds. The final column is a post-test descriptive analysis that rethresholds ADARPro to match published-baseline recall exactly.}\label{tab:falsepositives}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
@@ -269,8 +676,8 @@ def natural_prevalence() -> None:
     df = pd.read_csv(SOURCE / "figureS3_natural_prevalence_metrics.csv")
     names = {
         "development_reference": "Internal reference",
-        "pair_balanced": "Pair-balanced",
-        "local": "Target-local",
+        "pair_balanced": "Pair-first whole-duplex",
+        "local": "Local-augmented graph",
         "pair_local_ensemble": "Fixed ensemble",
     }
     rows = []
@@ -306,7 +713,7 @@ def unified() -> None:
     names = {
         "frozen_ensemble": "Frozen ensemble",
         "unified": "Unified end-to-end",
-        "local": "Target-local",
+        "local": "Local-augmented graph",
         "development_reference": "Internal reference",
     }
     metric_rows = []
@@ -326,7 +733,7 @@ def unified() -> None:
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Preregistered unified-model comparison on muscle development data. The unified architecture was rejected before canonical-test access.}\label{tab:unified}
+\caption{Preregistered unified-model comparison on skeletal-muscle development data. The unified architecture was rejected before canonical-test access. Pair-clustered intervals compare the unified model with the immutable ensemble.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
@@ -370,39 +777,73 @@ def experiment_taxonomy() -> None:
         "deferred_missing_authorized_site_by_donor_outcomes": "Deferred: no matched donor outcomes",
         "deferred_future_corpus_not_benchmark_ready": "Deferred: corpus not benchmark-ready",
         "terminated_after_fixed_150m_confirmation": "Terminated after 150M-model confirmation",
-        "deferred_after_target_local_controlled_gain": "Deferred after lower-cost local gain",
+        "deferred_after_target_local_controlled_gain": "Not pursued after target-aligned lower-capacity gain",
         "deferred_missing_matched_state_and_outcomes": "Deferred: no matched state/outcomes",
-        "deprioritized": "Deprioritized after RBP branch",
+        "deprioritized": "Deferred: matched perturbation data unavailable",
         "pair_local_equal_logit_selected": "Selected final integration",
         "terminated_after_preregistered_primary": "Terminated after preregistered primary",
         "terminated": "Terminated",
     }
+    evidence_names = {
+        "terminate_sitewise_broad_panel_advance_geometry_as_engagement": "Supported pair-level; site panel not supported",
+        "validated_across_all_five_endpoints_selected_component": "Selected",
+        "terminated_from_primary_retain_secondary_ranking_result": "Limited",
+        "terminated_from_primary_secondary_shared_signal": "Limited",
+        "terminated_after_stronger_model_control": "Not supported",
+        "terminated_current_formulations": "Not supported",
+        "advance_to_local_fusion_not_standalone": "Limited; informed selected model",
+        "validated_complementary_ranking_signal_retain_for_fixed_ensemble": "Limited; complementary",
+        "validated_selected_successor_component": "Selected",
+        "terminated_current_bulk_peak_overlap_formulation": "Limited",
+        "stopped_direct_fusion_after_three_fold_futility": "Limited",
+        "defer_public_icshape_for_coverage_and_context_mismatch": "Deferred",
+        "deferred_missing_authorized_site_by_donor_outcomes": "Deferred",
+        "deferred_future_corpus_not_benchmark_ready": "Deferred",
+        "terminated_after_fixed_150m_confirmation": "Not supported",
+        "deferred_after_target_local_controlled_gain": "Not pursued; superseded",
+        "deferred_missing_matched_state_and_outcomes": "Deferred",
+        "deprioritized": "Deferred",
+        "pair_local_equal_logit_selected": "Selected",
+        "terminated_after_preregistered_primary": "Not supported",
+        "terminated": "Not supported",
+    }
     rows = []
     for _, row in df.sort_values("rank").iterrows():
         axis = tex(row["frontier"]).replace(" x ", r" $\times$ ")
-        direction = tex(row["direction"]).replace(" x ", r" $\times$ ")
+        direction = (
+            tex(row["direction"])
+            .replace(" x ", r" $\times$ ")
+            .replace("In-vivo", "In vivo")
+            .replace(
+                "Calibration/stacking/ensemble",
+                "Fixed prediction-level equal-logit integration",
+            )
+        )
         rows.append(
-            f"{row['rank']:g} & {axis} & "
-            f"{direction} & {tex(status_names[row['initial_status']])} \\\\"
+            f"{axis} & {direction} & {tex(evidence_names[row['initial_status']])} & "
+            f"{tex(status_names[row['initial_status']])} \\\\"
         )
     write(
         "table_s10_experiment_taxonomy.tex",
-        r"""\begin{longtable}{p{0.06\textwidth}p{0.14\textwidth}p{0.33\textwidth}p{0.37\textwidth}}
-\caption{Complete ranked performance-frontier taxonomy and final campaign decision. Full hypotheses, data sources, leakage risks, promotion rules, kill rules, and result summaries are retained in \texttt{experiments/performance\_frontier\_opportunities.csv}.}\label{tab:taxonomy}\\
+        r"""\begingroup
+\setlength{\tabcolsep}{4.5pt}
+\begin{longtable}{p{0.15\textwidth}p{0.34\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
+\caption{Complete paper-facing hypothesis taxonomy and final campaign disposition. Historical priorities, data sources, leakage risks, promotion criteria, prespecified stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
 \toprule
-Rank & Axis & Direction & Final disposition \\
+Axis & Hypothesis & Evidence status & Final disposition \\
 \midrule
 \endfirsthead
-\multicolumn{4}{l}{\textit{Table S7 continued}}\\
+\multicolumn{4}{l}{\textit{Table continued}}\\
 \toprule
-Rank & Axis & Direction & Final disposition \\
+Axis & Hypothesis & Evidence status & Final disposition \\
 \midrule
 \endhead
 """
         + "\n".join(rows)
         + r"""
 \bottomrule
-\end{longtable}""",
+\end{longtable}
+\endgroup""",
     )
 
 

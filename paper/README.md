@@ -30,6 +30,8 @@ non-base dependencies are supplied by `texlive-latex-extra`,
   epistemic status, authoritative artifact, selector, and manuscript use.
 - `claim_traceability.csv` maps principal numerical claims to campaign
   artifacts and labels their epistemic status.
+- `EPISTEMIC_CLAIM_AUDIT.md` records the inferential boundary for every major
+  scientific claim, and `TERMINOLOGY_AUDIT.md` fixes paper-facing vocabulary.
 - `reference_audit.csv` records DOI-level bibliographic verification.
 - `scripts/render_paper_figures.py` and `scripts/render_paper_tables.py`
   regenerate the publication outputs.

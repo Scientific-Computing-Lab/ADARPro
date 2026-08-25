@@ -48,7 +48,7 @@ python scripts/build_release_manifest.py --verify
 ```
 
 `make verify` runs this sequence. The split check must report zero pair overlap.
-The authoritative-result check validates the final metrics, pair-bootstrap
+The authoritative-result check validates the final metrics, pair-clustered bootstrap
 direction, false-positive counts, frozen manifest/checkpoint hashes,
 single-use quarantine record, unified-model decision, and registry uniqueness.
 

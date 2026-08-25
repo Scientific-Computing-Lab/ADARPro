@@ -9,10 +9,10 @@ frozen ADARPro checkpoints, locked-test predictions/bootstrap tables, and every
 table needed for the paper.
 
 The canonical binary task defines edited sites as EditingIndex ≥15% and
-non-edited sites as EditingIndex <1%; 1–15% observations are excluded from the
+nonedited sites as EditingIndex <1%; 1–15% observations are excluded from the
 canonical task but used in prespecified secondary richer-supervision analyses.
 The four biological tissues are Artery Tibial, Brain/Cerebellum, Liver, and
-Muscle Skeletal. `Combined` is a pooled GTEx endpoint.
+skeletal muscle. `Combined` is a pooled GTEx endpoint.
 
 ## External resources not stored in Git
 

@@ -32,20 +32,20 @@ pooled GTEx endpoint, not a fifth tissue.
 | Pair geometry | Genomic arm separation and substrate geometry mark duplex realization | Actual inter-arm gap correlated with edited-site fraction (Spearman −0.33 to −0.48); pair models beat graph-inferable summaries | Retain biological insight; direct predictive integration insufficient | Development pair-level |
 | Substrate engagement | A latent pair-level engagement layer gates site editing | Outer-isolated gate: small AUPRC improvement, nonrobust F1, worse Brier; neural auxiliary variant stopped after adverse folds | Do not promote | Development OOF/control |
 | Chromatin | Cotranscriptional state, especially H3K36me3, adds substrate-realization information | Exact-tissue peak overlap small/inconsistent; Liver AUPRC signal did not generalize across metrics/endpoints; H2A.Z lacked fair matched coverage | Terminate current bulk peak-overlap formulation; finer matched data remain open | Development OOF/mechanistic |
-| Expanded pair-balanced supervision | All eligible high/low observations are useful if site-rich pairs cannot dominate | AUROC/AUPRC/F1 improved in all five contexts; pair-clustered intervals favorable | **Advance and select** | Same-fold development OOF |
-| Continuous/ordinal multitask | Intermediate and continuous EditingIndex enrich supervision | Small ranking/calibration signal; negligible standalone F1 beyond pair-balanced; ensemble reduced natural-prevalence F1 | Do not include in final model | Development OOF + natural prevalence |
+| Expanded pair-first supervision | All eligible high/low observations are useful if site-rich pairs cannot dominate | AUROC/AUPRC/F1 improved in all five contexts; pair-clustered intervals favorable | **Advance and select** | Same-fold development OOF |
+| Continuous/ordinal multitask | Intermediate and continuous EditingIndex enrich supervision | Small ranking/calibration signal; negligible standalone F1 beyond pair-first binary training; ensemble reduced natural-prevalence F1 | Do not include in final model | Development OOF + natural prevalence |
 | All-A substrate decoder | Jointly decoding all adenosines exploits within-pair structure | Prespecified two-fold futility: −6.64 AUROC, −6.73 AUPRC, −5.99 F1 points | Terminate | Development OOF |
-| Within-pair rank | Relative site ordering captures substrate-wide editing propensity | Helped weaker original encoder; no value beyond pair-balanced or shuffled-rank control | Terminate as redundant | Development OOF/control |
+| Within-pair rank | Relative site ordering captures substrate-wide editing propensity | Helped weaker original encoder; no value beyond pair-first training or shuffled-rank control | Terminate as redundant | Development OOF/control |
 | Shared cross-tissue model | Cross-context transfer helps low-data tissues | Macro +0.87 AUROC, +1.16 AUPRC, +0.75 F1 points; missed both +1-point promotion gates and worsened Brier | Retain secondary evidence; do not select | Development OOF |
 | Focal-node representation | Explicit target state survives whole-graph pooling | Complementary development ranking signal | Retain as principle | Development OOF |
 | Target/partner local encoder | Aligned local sequence/pairing patterns add information omitted by global mean pooling | Improved Muscle and Liver; centered +96-nt network failed; aligned-minus-shifted intervals strongly favorable | **Advance and select** | Development OOF/control |
 | RNA foundation model | Frozen RiNALMo supplies missing transferable RNA representation | 35M and 150M embeddings failed to improve ranking beyond selected graph/matched controls | Terminate frozen-embedding formulation | Development OOF/control |
 | IRAlu-specific pretraining | Large task-matched unlabeled corpus may enable future transfer | >288,000 benchmark-excluded opposite-orientation pairs found; isoform connectivity, foldability, and redundancy controls unresolved | Defer as a new-data program | Feasibility only |
-| In-vivo structure | Cellular structural state explains realized versus predicted duplexes | No tissue/donor-matched scalable structural resource supports a powered benchmark test | Defer; not a negative result | Resource feasibility |
+| In vivo structure | Cellular structural state explains realized versus predicted duplexes | No tissue/donor-matched scalable structural resource supports a powered benchmark test | Defer; not a negative result | Resource feasibility |
 | Donor/sample state | Matched ADAR, interferon, splicing, and composition resolve tissue averaging | Editing outcomes are not available donor-matched at benchmark scale | Defer; not a negative result | Resource feasibility |
-| Fixed prediction integration | Global pair-balanced and aligned-local predictors contain complementary errors | Prespecified 50:50 equal-logit fusion improved ranking/F1 and natural-prevalence performance; no weight search | **Select and freeze** | Development OOF/validation |
+| Fixed prediction integration | Pair-first whole-duplex-only and local-augmented graph predictors contain complementary errors | Prespecified 50:50 equal-logit fusion improved ranking/F1 and natural-prevalence performance; no weight search | **Select and freeze** | Development OOF/validation |
 | Unified end-to-end model | Joint representations exploit the same principles better than fixed prediction fusion | Preregistered 65,698-parameter model underperformed ensemble in AUROC/AUPRC in every fold; worse Brier; repair gate not opened | Reject before test access | Preregistered development |
-| Final canonical evaluation | Frozen selected model improves original published benchmark | Positive AUROC/AUPRC/F1 pair-bootstrap intervals in all five endpoints; matched-recall FP reductions | Final locked result | One-use canonical test |
+| Final canonical evaluation | Frozen selected model improves original published benchmark | Positive AUROC/AUPRC/F1 pair-clustered intervals in all five endpoints; descriptive matched-recall FP reductions | Final locked result | One-use canonical test |
 
 ## Report trail
 
@@ -65,7 +65,7 @@ pooled GTEx endpoint, not a fifth tissue.
 | `11_iralus_and_transcript_context.md` | Repeat, transcript, geometry, and engagement results |
 | `12_ensemble_context_pilot.md` | Context/ensemble pilot |
 | `13_donor_level_feasibility.md` | Sample-level outcome/resource feasibility |
-| `14_invivo_structure_feasibility.md` | In-vivo structure feasibility |
+| `14_invivo_structure_feasibility.md` | In vivo structure feasibility |
 | `15_rna_foundation_model_audit.md` | RiNALMo model/resource and empirical audit |
 | `16_richer_supervision_and_substrate_context.md` | Expanded supervision, multitask, shared, all-A, focal/local results |
 | `17_iralus_pretraining_feasibility.md` | Task-specific pretraining corpus audit |

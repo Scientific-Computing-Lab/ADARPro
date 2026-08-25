@@ -1,27 +1,38 @@
-\begin{table}[H]
-\centering
-\caption{Development evidence map. ``Not supported'' refers only to the tested measurement and formulation; deferred hypotheses lacked appropriately matched data and were not tested. Quantitative comparisons and their prespecified references are reported in the corresponding sections and source tables.}\label{tab:evidencemap}
-\begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.25\textwidth}p{0.12\textwidth}X}
+\begin{landscape}
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{longtable}{p{0.10\linewidth}p{0.15\linewidth}p{0.16\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.11\linewidth}p{0.16\linewidth}}
+\caption{Development evidence synthesis. Every quantitative row states its own comparator; heterogeneous effects are not rankable across rows. Values are percentage-point medians with 95\% pair-clustered bootstrap intervals unless noted. ``Not supported'' refers only to the tested measurement and formulation.}\label{tab:evidencemap}\\
 \toprule
-Scale & Tested formulation & Evidence status & Interpretation \\
+Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
-Substrate-aware learning & Pair-first expanded supervision & Selected & Corrects label use and pair weighting \\
-Target selectivity & Aligned target + helix-partner view & Selected & Survives shifted-window control \\
-Integration & Fixed equal-logit global + local & Selected & Complementary same-fold predictions \\
-Substrate realization & Pair geometry / editing burden & Supported & State is measurable, not yet actionable \\
-Supervision & Continuous + ordinal auxiliary labels & Limited & Ranking benefit; no useful F1 gain \\
-Target selectivity & Focal node / contact geometry & Limited & Points toward aligned local view \\
-Cross-tissue & Shared four-tissue training & Limited & Transfer below promotion gate \\
-Substrate realization & Hierarchical engagement gate & Limited & Small ranking gain; unstable classification \\
-Biological context & Bulk H3K36me3 overlap & Limited & Context-specific AUPRC only \\
-Biological context & RBP binding × bulk expression & Not Supported & No reproducible residual gain \\
-Biological context & Transcript / repeat annotation panel & Not Supported & No robust site-level increment \\
-Representation & Frozen RNA-language embeddings & Not Supported & No consistent incremental utility \\
-Representation & Substrate-wide all-A decoder & Not Supported & Stopped at prespecified futility gate \\
-Capacity & Larger / deeper graph networks & Not Supported & Capacity alone did not generalize \\
-Integration & Unified end-to-end architecture & Not Supported & Inferior to frozen ensemble \\
-Cellular state & Matched donor/cell multimodality & Deferred & Required measurements unavailable \\
-RNA state & Matched in-vivo structure / isoforms & Deferred & Required measurements unavailable \\
+\endfirsthead
+\multicolumn{7}{l}{\textit{Table continued}}\\
+\toprule
+Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
+\midrule
+\endhead
+Supervision & Additional valid high/low labels & Original internal reference; same folds & $\Delta$AUROC +2.04 [+1.06, +3.00] & $\Delta$F1 +1.42 [+0.21, +2.57] & Selected & Additional valid labels contribute independently. \\
+Statistical unit & Pair-first weighting & Expanded row-wise sampling; identical labels & $\Delta$AUROC +2.27 [+1.25, +3.36] & $\Delta$F1 +2.85 [+1.68, +4.01] & Selected & Correcting substrate weight adds a second gain. \\
+Supervision & Continuous + ordinal auxiliary labels & Pair-first binary model & $\Delta$AUROC +0.81 [+0.10, +1.51] & $\Delta$F1 +0.08 [-0.71, +0.86] & Limited & Small ranking/calibration gain; negligible F1 and adverse natural-prevalence integration. \\
+Representation & Explicit focal-node retention & Pair-first whole-duplex pooling & $\Delta$AUROC +1.26 [+0.52, +2.03] & $\Delta$F1 +0.43 [-0.59, +1.45] & Limited & Localized ranking information; insufficient standalone F1. \\
+Representation & Target/contact geometry & Cross-fitted baseline logit & $\Delta$AUROC +1.05 [+0.46, +1.61] & $\Delta$F1 +0.19 [-0.66, +1.09] & Limited & Ranking and calibration localized the missing target information. \\
+Representation & Aligned target/helix-partner representation & Pair-first whole-duplex-only predictor & $\Delta$AUROC +1.61 [+0.80, +2.38] & $\Delta$F1 +1.31 [+0.27, +2.30] & Selected & Graph-plus-local fusion adds target-centered information. \\
+Capacity control & 96-nt shifted local window & Pair-first whole-duplex-only predictor & $\Delta$AUROC -17.65 [-19.69, -15.70] & $\Delta$F1 -11.80 [-13.37, -10.36] & Not supported & Matched capacity without target alignment collapses performance. \\
+Integration & Fixed equal-logit integration & Whole-duplex-only predictor; muscle & $\Delta$AUROC +2.56 [+2.07, +3.05] & $\Delta$F1 +1.39 [+0.45, +2.34] & Selected & Independently optimized whole-duplex and local-augmented predictors are complementary; replicated in liver. \\
+Substrate propensity & Pair geometry and editing burden & Geometry + graph summaries vs graph summaries & $\Delta R^2$ +4.12 to +21.64 points (4 tissues) & All four pair-clustered 95\% intervals exclude 0 & Supported, not yet actionable & Pair-level burden is learnable and consistent with variation in realization/engagement. \\
+Biology × AI & Cross-fitted engagement gate & Pair-first site predictor & $\Delta$AUPRC +0.84 [+0.19, +1.47] & $\Delta$F1 +0.41 [-0.14, +0.95] & Limited & Small ranking gain; F1 interval crosses 0 and Brier worsens. \\
+Transfer & Shared four-tissue learning & Independent tissue models; mean across 4 tissues & $\Delta$AUROC +0.87 [+0.58, +1.15] & $\Delta$F1 +0.75 [+0.37, +1.13] & Limited & Transfer improves ranking but misses promotion criteria and worsens mean Brier. \\
+Biological context & Bulk H3K36me3 occupancy & Cross-fitted baseline logit; liver & $\Delta$AUPRC +0.50 [+0.11, +0.96] & $\Delta$F1 +0.37 [-0.03, +0.78] & Limited & AUPRC-only effect; no stable AUROC, F1, or pair-level gain. \\
+Biological context & RBP binding × bulk abundance & Cross-fitted baseline logit & $\Delta$AUROC -0.26 [-0.74, +0.26] & $\Delta$F1 -0.06 [-0.73, +0.61] & Not supported & No reproducible residual gain; broader predicted panels were adverse. \\
+Biological context & Transcript/repeat annotation panel & Cross-fitted baseline logit & $\Delta$AUROC -0.41 [-1.69, +0.90] & $\Delta$F1 -0.90 [-2.31, +0.38] & Not supported & Broad site-level annotations do not improve the graph representation. \\
+Representation & Frozen RiNALMo target embedding & Recalibrated cross-fitted baseline & $\Delta$AUROC -0.05 [-0.51, +0.39] & $\Delta$F1 +0.70 [+0.06, +1.34] & Not supported & Metric-specific F1 change without ranking gain; larger frozen model confirmed no promotion. \\
+Representation & Substrate-wide all-A decoder & Pair-first predictor on identical rows & $\Delta$AUROC -6.64 [-9.25, -4.38] & $\Delta$F1 -5.99 [-8.78, -3.65] & Not supported & Stopped at the prespecified two-fold futility criterion. \\
+Integration & Unified end-to-end architecture & Immutable fixed ensemble & $\Delta$AUROC -0.72 [-1.29, -0.15] & $\Delta$F1 -0.30 [-1.25, +0.66] & Not supported & Ranking and calibration were worse; preregistered later stages remained closed. \\
+Capacity & Larger/deeper graph capacity & Supplied Bio-aware vs compact checkpoints & No common OOF effect estimate & Not uniformly better across endpoints & Not supported & Generic capacity did not provide a consistent advantage. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+\endgroup
+\end{landscape}

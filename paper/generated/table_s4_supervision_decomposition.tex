@@ -1,9 +1,9 @@
 \begin{table}[H]
 \centering
-\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are whole-pair bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
+\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are pair-clustered bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
 \begin{tabular}{lrrrrr}
 \toprule
-Metric & Original reference & All high/low, site-balanced & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
+Metric & Original reference & All high/low, row-wise & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
 \midrule
 AUROC & 0.8456 & 0.8659 & +2.04 [+1.06, +3.00] & 0.8885 & +2.27 [+1.25, +3.36] \\
 AUPRC & 0.8256 & 0.8520 & +2.63 [+1.25, +4.17] & 0.8730 & +2.08 [+0.76, +3.55] \\

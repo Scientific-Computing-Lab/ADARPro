@@ -1,4 +1,4 @@
 quantity,value,source
 pair_model_logit_weight,0.5,provenance/final_pipeline_manifest.json
-target_local_logit_weight,0.5,provenance/final_pipeline_manifest.json
+local_augmented_graph_logit_weight,0.5,provenance/final_pipeline_manifest.json
 shifted_control_offset_nt,96.0,experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/summary.json

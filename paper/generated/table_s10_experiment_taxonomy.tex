@@ -1,35 +1,38 @@
-\begin{longtable}{p{0.06\textwidth}p{0.14\textwidth}p{0.33\textwidth}p{0.37\textwidth}}
-\caption{Complete ranked performance-frontier taxonomy and final campaign decision. Full hypotheses, data sources, leakage risks, promotion rules, kill rules, and result summaries are retained in \texttt{experiments/performance\_frontier\_opportunities.csv}.}\label{tab:taxonomy}\\
+\begingroup
+\setlength{\tabcolsep}{4.5pt}
+\begin{longtable}{p{0.15\textwidth}p{0.34\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
+\caption{Complete paper-facing hypothesis taxonomy and final campaign disposition. Historical priorities, data sources, leakage risks, promotion criteria, prespecified stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
 \toprule
-Rank & Axis & Direction & Final disposition \\
+Axis & Hypothesis & Evidence status & Final disposition \\
 \midrule
 \endfirsthead
-\multicolumn{4}{l}{\textit{Table S7 continued}}\\
+\multicolumn{4}{l}{\textit{Table continued}}\\
 \toprule
-Rank & Axis & Direction & Final disposition \\
+Axis & Hypothesis & Evidence status & Final disposition \\
 \midrule
 \endhead
-1 & Biology & IRAlu architecture + transcript state & Broad panel terminated; geometry retained mechanistically \\
-1.8 & AI & Expanded high/low supervision & Selected component \\
-2 & AI & Continuous + ordinal + binary multi-task & Limited ranking signal; not selected \\
-2.2 & Biology $\times$ AI & Expanded cross-tissue shared supervision & Limited shared signal; not selected \\
-2.5 & Biology $\times$ AI & Cross-fitted all-adenosine substrate profile & Terminated after stronger-model control \\
-3 & Biology $\times$ AI & Substrate-wide multi-A + engagement latent & Terminated in tested formulation \\
-3.4 & Biology $\times$ AI & Target-centered ADAR contact geometry & Advanced to aligned local encoder \\
-3.45 & AI & Focal-node + global graph pooling & Validated fallback/complementary view \\
-3.5 & AI & Target-local multiscale CNN + graph fusion & Selected component \\
-4 & Biology & Chromatin/co-transcriptional state & Bulk peak-overlap formulation terminated \\
-5 & Biology $\times$ AI & Hierarchical engagement $\times$ site chemistry & Stopped for futility \\
-6 & Biology & In-vivo/ensemble RNA structure & Deferred: coverage/context mismatch \\
-7 & Biology $\times$ AI & Donor/sample-level multimodal model & Deferred: no matched donor outcomes \\
-7.5 & AI & Self-supervised IRAlu pretraining & Deferred: corpus not benchmark-ready \\
-8 & AI & Frozen RNA foundation-model fusion & Terminated after 150M-model confirmation \\
-8.5 & AI & Graph Transformer / GATv2 multi-scale encoder & Deferred after lower-cost local gain \\
-9 & Biology & ADAR isoform/IFN/localization state & Deferred: no matched state/outcomes \\
-10 & Biology & Cell-matched perturbation RBP effects & Deprioritized after RBP branch \\
-11 & AI & Calibration/stacking/ensemble & Selected final integration \\
-11.5 & AI $\times$ Biology & Unified end-to-end representation learning & Terminated after preregistered primary \\
-12 & AI & Larger/deeper GNN alone & Terminated \\
-13 & Biology & Generic RBP binding $\times$ bulk GTEx & Terminated \\
+Biology & IRAlu architecture + transcript state & Supported pair-level; site panel not supported & Broad panel terminated; geometry retained mechanistically \\
+AI & Expanded high/low supervision & Selected & Selected component \\
+AI & Continuous + ordinal + binary multi-task & Limited & Limited ranking signal; not selected \\
+Biology $\times$ AI & Expanded cross-tissue shared supervision & Limited & Limited shared signal; not selected \\
+Biology $\times$ AI & Cross-fitted all-adenosine substrate profile & Not supported & Terminated after stronger-model control \\
+Biology $\times$ AI & Substrate-wide multi-A + engagement latent & Not supported & Terminated in tested formulation \\
+Biology $\times$ AI & Target-centered ADAR contact geometry & Limited; informed selected model & Advanced to aligned local encoder \\
+AI & Focal-node + global graph pooling & Limited; complementary & Validated fallback/complementary view \\
+AI & Target-local multiscale CNN + graph fusion & Selected & Selected component \\
+Biology & Chromatin/co-transcriptional state & Limited & Bulk peak-overlap formulation terminated \\
+Biology $\times$ AI & Hierarchical engagement $\times$ site chemistry & Limited & Stopped for futility \\
+Biology & In vivo/ensemble RNA structure & Deferred & Deferred: coverage/context mismatch \\
+Biology $\times$ AI & Donor/sample-level multimodal model & Deferred & Deferred: no matched donor outcomes \\
+AI & Self-supervised IRAlu pretraining & Deferred & Deferred: corpus not benchmark-ready \\
+AI & Frozen RNA foundation-model fusion & Not supported & Terminated after 150M-model confirmation \\
+AI & Graph Transformer / GATv2 multi-scale encoder & Not pursued; superseded & Not pursued after target-aligned lower-capacity gain \\
+Biology & ADAR isoform/IFN/localization state & Deferred & Deferred: no matched state/outcomes \\
+Biology & Cell-matched perturbation RBP effects & Deferred & Deferred: matched perturbation data unavailable \\
+AI & Fixed prediction-level equal-logit integration & Selected & Selected final integration \\
+AI $\times$ Biology & Unified end-to-end representation learning & Not supported & Terminated after preregistered primary \\
+AI & Larger/deeper GNN alone & Not supported & Terminated \\
+Biology & Generic RBP binding $\times$ bulk GTEx & Not supported & Terminated \\
 \bottomrule
 \end{longtable}
+\endgroup

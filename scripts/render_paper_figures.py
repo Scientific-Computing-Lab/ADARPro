@@ -196,36 +196,47 @@ def figure1(output: Path, source: Path) -> None:
     )
     rounded_box(
         ax_a,
-        (0.06, 0.82),
-        0.85,
-        0.13,
-        "Cell / tissue state\nADAR activity · processing · regulator state",
-        COLORS["pale_amber"],
-        COLORS["amber"],
-        7.7,
+        (0.02, 0.79),
+        0.40,
+        0.14,
+        "Intrinsic duplex properties\nsequence + predicted\nsecondary structure",
+        COLORS["pale_blue"],
+        COLORS["blue"],
+        6.9,
         "bold",
     )
     rounded_box(
         ax_a,
-        (0.10, 0.52),
-        0.77,
-        0.20,
+        (0.58, 0.79),
+        0.40,
+        0.14,
+        "Cell / transcript state\nprocessing + ADAR\nregulators",
+        COLORS["pale_amber"],
+        COLORS["amber"],
+        6.9,
+        "bold",
+    )
+    rounded_box(
+        ax_a,
+        (0.12, 0.49),
+        0.76,
+        0.18,
         "",
-        COLORS["pale_blue"],
-        COLORS["blue"],
+        "#F2F5F6",
+        COLORS["gray"],
         8.5,
         "bold",
     )
-    ax_a.plot([0.19, 0.78], [0.62, 0.62], color=COLORS["navy"], lw=1.2)
+    ax_a.plot([0.22, 0.78], [0.565, 0.565], color=COLORS["navy"], lw=1.2)
     left = Polygon(
         [
-            [0.21, 0.59],
-            [0.40, 0.59],
-            [0.40, 0.56],
-            [0.46, 0.62],
-            [0.40, 0.68],
-            [0.40, 0.65],
-            [0.21, 0.65],
+            [0.24, 0.545],
+            [0.41, 0.545],
+            [0.41, 0.525],
+            [0.47, 0.565],
+            [0.41, 0.605],
+            [0.41, 0.585],
+            [0.24, 0.585],
         ],
         closed=True,
         color=COLORS["sky"],
@@ -233,13 +244,13 @@ def figure1(output: Path, source: Path) -> None:
     )
     right = Polygon(
         [
-            [0.76, 0.59],
-            [0.57, 0.59],
-            [0.57, 0.56],
-            [0.51, 0.62],
-            [0.57, 0.68],
-            [0.57, 0.65],
-            [0.76, 0.65],
+            [0.76, 0.545],
+            [0.59, 0.545],
+            [0.59, 0.525],
+            [0.53, 0.565],
+            [0.59, 0.605],
+            [0.59, 0.585],
+            [0.76, 0.585],
         ],
         closed=True,
         color=COLORS["teal"],
@@ -247,12 +258,12 @@ def figure1(output: Path, source: Path) -> None:
     )
     ax_a.add_patch(left)
     ax_a.add_patch(right)
-    for x in np.linspace(0.43, 0.54, 7):
-        ax_a.plot([x, 0.97 - x], [0.595, 0.645], color=COLORS["gray"], lw=0.65)
+    for x in np.linspace(0.44, 0.56, 7):
+        ax_a.plot([x, 1.0 - x], [0.545, 0.585], color=COLORS["gray"], lw=0.65)
     ax_a.text(
-        0.49,
-        0.695,
-        "Inverted-Alu duplex: intrinsic competence",
+        0.50,
+        0.635,
+        "Realized substrate (latent cellular state)",
         ha="center",
         va="center",
         fontsize=8.5,
@@ -261,39 +272,19 @@ def figure1(output: Path, source: Path) -> None:
     )
     rounded_box(
         ax_a,
-        (0.16, 0.20),
-        0.65,
-        0.17,
+        (0.17, 0.21),
+        0.66,
+        0.16,
         "Target-local selectivity\nsequence · pairing · helix partner",
         COLORS["pale_green"],
         COLORS["green"],
         8.4,
         "bold",
     )
-    ax_a.scatter(
-        [0.485],
-        [0.325],
-        s=85,
-        color=COLORS["red"],
-        edgecolor="white",
-        linewidth=1.0,
-        zorder=5,
-    )
-    ax_a.text(
-        0.485,
-        0.325,
-        "A",
-        color="white",
-        ha="center",
-        va="center",
-        fontsize=8,
-        fontweight="bold",
-        zorder=6,
-    )
     rounded_box(
         ax_a,
-        (0.27, 0.035),
-        0.43,
+        (0.28, 0.025),
+        0.44,
         0.09,
         "Observed editing",
         "#F4F6F7",
@@ -302,9 +293,10 @@ def figure1(output: Path, source: Path) -> None:
         "bold",
     )
     for start, end in [
-        ((0.49, 0.82), (0.49, 0.73)),
-        ((0.49, 0.52), (0.49, 0.38)),
-        ((0.49, 0.20), (0.49, 0.13)),
+        ((0.24, 0.79), (0.37, 0.67)),
+        ((0.78, 0.79), (0.63, 0.67)),
+        ((0.50, 0.49), (0.50, 0.38)),
+        ((0.50, 0.21), (0.50, 0.13)),
     ]:
         ax_a.add_patch(
             FancyArrowPatch(
@@ -317,16 +309,16 @@ def figure1(output: Path, source: Path) -> None:
             )
         )
     ax_a.text(
-        0.33,
-        0.775,
-        "substrate realization / engagement",
+        0.25,
+        0.735,
+        "whole-duplex graph:\nsubstantial information",
         ha="center",
         va="center",
         fontsize=6.6,
         color=COLORS["gray"],
     )
     ax_a.text(
-        0.33,
+        0.50,
         0.445,
         "which adenosine is selected?",
         ha="center",
@@ -335,8 +327,8 @@ def figure1(output: Path, source: Path) -> None:
         color=COLORS["gray"],
     )
     ax_a.text(
-        0.81,
-        0.765,
+        0.75,
+        0.735,
         "bulk proxies:\nlimited resolution",
         ha="center",
         va="center",
@@ -344,13 +336,22 @@ def figure1(output: Path, source: Path) -> None:
         color=COLORS["amber"],
     )
     ax_a.text(
-        0.81,
-        0.435,
+        0.80,
+        0.425,
         "aligned local view:\nrobust increment",
         ha="center",
         va="center",
         fontsize=6.3,
         color=COLORS["green"],
+    )
+    ax_a.text(
+        0.50,
+        0.505,
+        "editing burden + geometry provide an indirect readout",
+        ha="center",
+        va="center",
+        fontsize=6.1,
+        color=COLORS["gray"],
     )
     ax_a.set_xlim(0, 1)
     ax_a.set_ylim(0, 1)
@@ -493,15 +494,15 @@ def evidence_table() -> pd.DataFrame:
         ),
         (
             "Integration",
-            "Fixed equal-logit global + local",
+            "Fixed whole-duplex + local-augmented logits",
             "selected",
             "Complementary same-fold predictions",
         ),
         (
-            "Substrate realization",
+            "Substrate propensity",
             "Pair geometry / editing burden",
-            "supported",
-            "State is measurable, not yet actionable",
+            "supported, not yet actionable",
+            "Editing burden is learnable; latent state unresolved",
         ),
         (
             "Supervision",
@@ -519,10 +520,10 @@ def evidence_table() -> pd.DataFrame:
             "Cross-tissue",
             "Shared four-tissue training",
             "limited",
-            "Transfer below promotion gate",
+            "Transfer below promotion criterion",
         ),
         (
-            "Substrate realization",
+            "Substrate propensity",
             "Hierarchical engagement gate",
             "limited",
             "Small ranking gain; unstable classification",
@@ -577,9 +578,15 @@ def evidence_table() -> pd.DataFrame:
         ),
         (
             "RNA state",
-            "Matched in-vivo structure / isoforms",
+            "Matched in vivo structure / isoforms",
             "deferred",
             "Required measurements unavailable",
+        ),
+        (
+            "Capacity",
+            "Graph Transformer / GATv2 expansion",
+            "not pursued",
+            "Superseded by controlled lower-capacity evidence",
         ),
     ]
     return pd.DataFrame(
@@ -661,10 +668,19 @@ def figure2(output: Path, source: Path) -> None:
     gap, engagement = substrate_realization_tables(source)
     status_colors = {
         "selected": COLORS["green"],
-        "supported": COLORS["teal"],
+        "supported, not yet actionable": COLORS["teal"],
         "limited": COLORS["amber"],
         "not supported": COLORS["red"],
         "deferred": COLORS["purple"],
+        "not pursued": COLORS["gray"],
+    }
+    status_markers = {
+        "selected": "o",
+        "supported, not yet actionable": "D",
+        "limited": "^",
+        "not supported": "X",
+        "deferred": "s",
+        "not pursued": "P",
     }
     figure = plt.figure(figsize=(7.0, 7.0))
     grid = figure.add_gridspec(
@@ -682,12 +698,12 @@ def figure2(output: Path, source: Path) -> None:
         fontweight="bold",
     )
     headers = [
-        "Biological / learning scale",
+        "Scale",
         "Tested formulation",
         "Status",
         "Interpretation",
     ]
-    xpos = [0.01, 0.24, 0.625, 0.66]
+    xpos = [0.01, 0.23, 0.61, 0.735]
     for index, (x, header) in enumerate(zip(xpos, headers)):
         ax_a.text(
             x,
@@ -699,7 +715,7 @@ def figure2(output: Path, source: Path) -> None:
             va="bottom",
             ha="center" if index == 2 else "left",
         )
-    row_height = 0.051
+    row_height = 0.048
     for index, row in frame.iterrows():
         y = 0.91 - index * row_height
         if index % 2 == 0:
@@ -708,35 +724,44 @@ def figure2(output: Path, source: Path) -> None:
             )
         ax_a.text(xpos[0], y, row["scale"], fontsize=6.3, va="center")
         ax_a.text(xpos[1], y, row["hypothesis"], fontsize=6.3, va="center")
-        ax_a.scatter([0.625], [y], s=28, color=status_colors[row["status"]], zorder=3)
+        ax_a.scatter(
+            [0.59],
+            [y],
+            s=27,
+            marker=status_markers[row["status"]],
+            color=status_colors[row["status"]],
+            zorder=3,
+        )
+        display_status = (
+            "Supported*"
+            if row["status"] == "supported, not yet actionable"
+            else row["status"].capitalize()
+        )
+        ax_a.text(
+            xpos[2],
+            y,
+            display_status,
+            fontsize=5.7,
+            va="center",
+            color=status_colors[row["status"]],
+        )
         ax_a.text(xpos[3], y, row["interpretation"], fontsize=6.15, va="center")
-    from matplotlib.lines import Line2D
-
-    ax_a.legend(
-        handles=[
-            Line2D(
-                [0],
-                [0],
-                marker="o",
-                linestyle="none",
-                color=color,
-                label=status.title(),
-            )
-            for status, color in status_colors.items()
-        ],
-        frameon=False,
-        ncol=5,
-        fontsize=5.8,
-        loc="upper right",
-        bbox_to_anchor=(1.0, 1.025),
+    ax_a.text(
+        0.99,
+        0.035,
+        "Status reflects prespecified same-fold comparisons.",
+        ha="right",
+        va="bottom",
+        fontsize=5.9,
+        color=COLORS["gray"],
     )
     ax_a.text(
         0.99,
-        0.015,
-        "Status reflects prespecified same-fold comparisons and controls; deferred hypotheses were not tested.",
+        0.010,
+        "*Reproducible observation not yet actionable for site prediction; deferred hypotheses were not tested.",
         ha="right",
         va="bottom",
-        fontsize=6.4,
+        fontsize=5.6,
         color=COLORS["gray"],
     )
     ax_a.set_xlim(0, 1)
@@ -761,7 +786,10 @@ def figure2(output: Path, source: Path) -> None:
     ax_b.set_xlabel("Mean log$_{10}$(inter-arm gap + 1) within octile")
     ax_b.set_ylabel("Mean edited-site fraction")
     ax_b.set_title(
-        "Pair geometry tracks realized editing burden", loc="left", fontweight="bold"
+        "Geometry tracks\nsubstrate-level editing burden",
+        loc="left",
+        fontweight="bold",
+        fontsize=8.3,
     )
     ax_b.legend(frameon=False, fontsize=6.1)
     clean_axis(ax_b, "both")
@@ -795,9 +823,12 @@ def figure2(output: Path, source: Path) -> None:
     ax_c.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS[:4]])
     ax_c.invert_yaxis()
-    ax_c.set_xlabel("Geometry + graph − graph-only ΔR²\n(95% pair-bootstrap interval)")
+    ax_c.set_xlabel("Geometry + graph − graph-only ΔR²\n(95% pair-clustered interval)")
     ax_c.set_title(
-        "Low-capacity models recover pair state", loc="left", fontweight="bold"
+        "Geometry improves\npair-level burden models",
+        loc="left",
+        fontweight="bold",
+        fontsize=8.3,
     )
     ax_c.set_xlim(-0.01, 0.34)
     clean_axis(ax_c)
@@ -848,8 +879,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     rounded_box(
         axis,
-        (0.02, 0.60),
-        0.26,
+        (0.01, 0.59),
+        0.19,
         0.20,
         "All high/low sites\npair-first sampler",
         COLORS["pale_green"],
@@ -859,10 +890,10 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     rounded_box(
         axis,
-        (0.38, 0.72),
-        0.27,
-        0.15,
-        "Whole-duplex GAT\nglobal representation",
+        (0.27, 0.68),
+        0.33,
+        0.19,
+        "Component 1\nwhole-duplex GAT → logit",
         COLORS["pale_blue"],
         COLORS["blue"],
         7.2,
@@ -870,19 +901,19 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     rounded_box(
         axis,
-        (0.38, 0.49),
-        0.27,
-        0.15,
-        "Aligned local CNN\ntarget + helix partner",
+        (0.27, 0.35),
+        0.43,
+        0.23,
+        "Component 2\nwhole-duplex GAT + aligned\ntarget/helix-partner CNN\nrepresentation fusion → logit",
         "#F1ECF7",
         COLORS["purple"],
-        7.2,
+        6.6,
         "bold",
     )
     rounded_box(
         axis,
-        (0.76, 0.60),
-        0.21,
+        (0.78, 0.53),
+        0.20,
         0.20,
         f"Equal-logit mean\n{weights[0]:.1f} / {weights[1]:.1f}",
         COLORS["pale_amber"],
@@ -891,10 +922,10 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         "bold",
     )
     for start, end in [
-        ((0.28, 0.70), (0.38, 0.79)),
-        ((0.28, 0.70), (0.38, 0.56)),
-        ((0.65, 0.79), (0.76, 0.70)),
-        ((0.65, 0.56), (0.76, 0.70)),
+        ((0.20, 0.69), (0.27, 0.77)),
+        ((0.20, 0.69), (0.27, 0.47)),
+        ((0.60, 0.77), (0.78, 0.65)),
+        ((0.70, 0.47), (0.78, 0.65)),
     ]:
         axis.add_patch(
             FancyArrowPatch(
@@ -907,17 +938,17 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
             )
         )
     axis.text(
-        0.51,
-        0.31,
+        0.49,
+        0.25,
         "independently trained components",
         ha="center",
         fontsize=7,
         color=COLORS["gray"],
     )
     axis.text(
-        0.51,
-        0.17,
-        "No ensemble-weight search",
+        0.52,
+        0.10,
+        "No weight search · no stacker · no post-test fitting",
         ha="center",
         fontsize=8,
         fontweight="bold",
@@ -970,7 +1001,7 @@ def figure3(output: Path, source: Path) -> None:
                     "source": "provenance/final_pipeline_manifest.json",
                 },
                 {
-                    "quantity": "target_local_logit_weight",
+                    "quantity": "local_augmented_graph_logit_weight",
                     "value": weights[1],
                     "source": "provenance/final_pipeline_manifest.json",
                 },
@@ -1004,7 +1035,7 @@ def figure3(output: Path, source: Path) -> None:
     model_order = ["development_reference", "expanded_site", "expanded_pair"]
     model_labels = [
         "Original\nreference",
-        "All high/low\nsite-balanced",
+        "All high/low\nrow-wise",
         "All high/low\npair-first",
     ]
     x = np.arange(3)
@@ -1028,6 +1059,24 @@ def figure3(output: Path, source: Path) -> None:
         fontweight="bold",
     )
     ax_a.legend(frameon=False, ncol=3, fontsize=6.2)
+    ax_a.text(
+        0.5,
+        0.755,
+        "+ valid labels",
+        ha="center",
+        va="bottom",
+        fontsize=6.2,
+        color=COLORS["gray"],
+    )
+    ax_a.text(
+        1.5,
+        0.755,
+        "+ pair-aware weighting",
+        ha="center",
+        va="bottom",
+        fontsize=6.2,
+        color=COLORS["gray"],
+    )
     clean_axis(ax_a, "y")
 
     panel_label(ax_b, "B")
@@ -1052,7 +1101,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_b.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_b.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_b.invert_yaxis()
-    ax_b.set_xlabel("Pair-balanced − internal reference (points)")
+    ax_b.set_xlabel("Pair-first − internal reference (points)")
     ax_b.set_title("Pair-first gains replicate", loc="left", fontweight="bold")
     ax_b.legend(frameon=False, ncol=3, loc="upper right")
     clean_axis(ax_b)
@@ -1060,10 +1109,10 @@ def figure3(output: Path, source: Path) -> None:
     panel_label(ax_c, "C")
     representation_rows = []
     for label, frame, model in [
-        ("Whole duplex", alignment_metrics, "pair_balanced"),
-        ("Focal node", focal_metrics, "focal"),
-        ("Aligned local", alignment_metrics, "aligned_local"),
-        (f"Shifted +{shift_nt} nt", alignment_metrics, "shifted_local"),
+        ("Whole-duplex\nonly", alignment_metrics, "pair_balanced"),
+        ("Focal-node\ngraph", focal_metrics, "focal"),
+        ("Graph +\naligned local", alignment_metrics, "aligned_local"),
+        (f"Graph + shifted\n+{shift_nt} nt", alignment_metrics, "shifted_local"),
     ]:
         row = frame[frame.model == model].iloc[0]
         representation_rows.append(
@@ -1085,7 +1134,8 @@ def figure3(output: Path, source: Path) -> None:
             label=metric.upper(),
             zorder=2,
         )
-    ax_c.set_xticks(x, representations.representation, rotation=17, ha="right")
+    ax_c.set_xticks(x, representations.representation, rotation=0, ha="center")
+    ax_c.tick_params(axis="x", labelsize=6.2)
     ax_c.set_ylim(0.64, 0.94)
     ax_c.set_ylabel("Development OOF performance")
     ax_c.set_title(
@@ -1123,21 +1173,38 @@ def figure3(output: Path, source: Path) -> None:
     ax_d.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_d.set_yticks(range(3), metrics)
     ax_d.set_xlabel(
-        "Fixed ensemble − global pair model\n(percentage points; 95% pair CI)"
+        "Fixed ensemble − whole-duplex-only predictor\n(points; 95% pair-clustered CI)"
     )
     ax_d.set_title(
-        "Global and local views are complementary",
+        "Independently optimized views are complementary",
         loc="left",
         fontweight="bold",
     )
-    ax_d.text(
-        0.99,
-        0.90,
-        "Skeletal muscle (solid) · Liver (light)",
-        transform=ax_d.transAxes,
-        ha="right",
-        fontsize=6.5,
-        color=COLORS["gray"],
+    ax_d.legend(
+        handles=[
+            plt.Line2D(
+                [0],
+                [0],
+                marker="o",
+                color=COLORS["gray"],
+                lw=1.2,
+                label="Skeletal muscle",
+            ),
+            plt.Line2D(
+                [0],
+                [0],
+                marker="o",
+                color=COLORS["gray"],
+                lw=1.2,
+                alpha=0.45,
+                label="Liver",
+            ),
+        ],
+        frameon=False,
+        ncol=2,
+        fontsize=6.2,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.25),
     )
     ax_d.set_xlim(0, 3.8)
     clean_axis(ax_d)
@@ -1218,9 +1285,9 @@ def figure4(output: Path, source: Path) -> None:
     ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
     ax_a.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_a.invert_yaxis()
-    ax_a.set_xlabel("ADARPro − published AdarEdit (percentage points; 95% pair CI)")
+    ax_a.set_xlabel("ADARPro − published AdarEdit (points; 95% pair-clustered CI)")
     ax_a.set_title(
-        "One-use canonical test: improvement in every endpoint",
+        "Single-use canonical held-out evaluation",
         loc="left",
         fontweight="bold",
     )
@@ -1273,7 +1340,7 @@ def figure4(output: Path, source: Path) -> None:
     ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_c.invert_yaxis()
     ax_c.set_xticks([0.00, 0.01, 0.02, 0.03])
-    ax_c.set_xlabel("Brier-score reduction (95% pair CI)")
+    ax_c.set_xlabel("Brier-score reduction (95% pair-clustered CI)")
     ax_c.set_title(
         "Calibration-sensitive error decreases", loc="left", fontweight="bold"
     )
@@ -1286,20 +1353,26 @@ def figure4(output: Path, source: Path) -> None:
         100 * transitions.fp_rescue_rate,
         height=0.27,
         color=COLORS["teal"],
-        label="Baseline FP rescued",
+        label="FP rescued",
     )
     ax_d.barh(
         y + 0.15,
         100 * transitions.tp_damage_rate,
         height=0.27,
         color=COLORS["red"],
-        label="Baseline TP damaged",
+        label="TP damaged",
     )
     ax_d.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_d.invert_yaxis()
     ax_d.set_xlabel("Sites (%) at frozen threshold")
     ax_d.set_title("FP rescue exceeds TP damage", loc="left", fontweight="bold")
-    ax_d.legend(frameon=False, loc="upper right", fontsize=6.2)
+    ax_d.legend(
+        frameon=False,
+        loc="lower right",
+        ncol=1,
+        fontsize=5.7,
+        borderaxespad=0.4,
+    )
     clean_axis(ax_d)
     ax_d.set_xlim(0, 56)
 
@@ -1318,9 +1391,11 @@ def figure4(output: Path, source: Path) -> None:
     ax_e.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_e.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_e.invert_yaxis()
-    ax_e.set_xlabel("False positives avoided")
+    ax_e.set_xlabel("False positives avoided at matched recall")
     ax_e.set_title(
-        "FP reduction persists at matched recall", loc="left", fontweight="bold"
+        "Post-test descriptive matched-recall analysis",
+        loc="left",
+        fontweight="bold",
     )
     clean_axis(ax_e)
     figure.subplots_adjust(left=0.12, right=0.99, top=0.97, bottom=0.07)
@@ -1341,7 +1416,12 @@ def supplementary_figures(output: Path, source: Path) -> None:
     copy_source(dev, source, "figureS1_development_metrics.csv")
     figure, axes = plt.subplots(1, 3, figsize=(7.0, 2.45), sharey=True)
     models = ["development_reference", "pair_balanced", "local", "pair_local_ensemble"]
-    labels = ["Internal\nreference", "Pair-first", "Target-local", "Fixed\nensemble"]
+    labels = [
+        "Internal\nreference",
+        "Pair-first",
+        "Local-aug.\ngraph",
+        "Fixed\nensemble",
+    ]
     for axis, metric in zip(axes, ["auroc", "auprc", "f1"]):
         for j, context in enumerate(["MuscleSkeletal", "Liver"]):
             subset = dev[dev.context == context].set_index("model").loc[models]
@@ -1452,7 +1532,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     )
     clean_axis(axis)
     figure.suptitle(
-        "Tested bulk biological annotations did not add robust residual information",
+        "Tested biological annotations did not add robust residual information",
         fontweight="bold",
         fontsize=10,
     )
@@ -1477,7 +1557,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "local",
         "pair_local_ensemble",
     ]
-    model_labels = ["Internal ref.", "Pair-first", "Local", "Ensemble"]
+    model_labels = ["Internal ref.", "Pair-first", "Local-aug. graph", "Ensemble"]
     for axis, context in zip(axes, ["MuscleSkeletal", "Liver"]):
         subset = natural[natural.context == context].set_index("model").loc[model_order]
         x = np.arange(4)

@@ -405,7 +405,7 @@ def add_protocol_claims() -> None:
     comparison = json.loads(comparison_path.read_text(encoding="utf-8"))
     add(
         "bootstrap_replicates",
-        "Pair-bootstrap replicate count",
+        "Pair-clustered bootstrap replicate count",
         comparison["bootstrap_replicates"],
         f"{comparison['bootstrap_replicates']:,}",
         "replicates",
@@ -595,7 +595,7 @@ def add_supervision_claims() -> None:
                     value,
                     f"{100 * value:+.2f}",
                     "percentage points",
-                    "development OOF pair bootstrap",
+                    "development OOF pair-clustered bootstrap",
                     ci_path,
                     f"candidate={source_candidate}; reference={source_reference}; metric={metric}; transformed={invert}",
                     "Results; Figure 3; Table S4",
@@ -619,7 +619,7 @@ def add_supervision_claims() -> None:
                     value,
                     f"{100 * value:+.2f}",
                     "percentage points",
-                    "development OOF pair bootstrap",
+                    "development OOF pair-clustered bootstrap",
                     path,
                     f"metric={metric}; column={part}",
                     "Results; Figure 3; Table S5",
@@ -729,7 +729,7 @@ def add_local_and_unified_claims() -> None:
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "development OOF pair bootstrap",
+                "development OOF pair-clustered bootstrap",
                 alignment_ci_path,
                 f"candidate=aligned_local; reference=shifted_local; metric={metric}; column={part}",
                 "Results; Figure 3",
@@ -757,7 +757,7 @@ def add_local_and_unified_claims() -> None:
                     value,
                     f"{value:.4f}",
                     "metric difference",
-                    "development OOF pair bootstrap",
+                    "development OOF pair-clustered bootstrap",
                     path,
                     f"candidate=pair_balanced; reference=pair_local_ensemble; metric={metric}; sign inverted",
                     "Results; Figure 3",
@@ -808,7 +808,7 @@ def add_local_and_unified_claims() -> None:
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "preregistered development OOF pair bootstrap",
+                "preregistered development OOF pair-clustered bootstrap",
                 unified_ci_path,
                 f"candidate=unified; reference=frozen_ensemble; metric={metric}; column={part}",
                 "Results; Figure S4; Table S8",
@@ -833,11 +833,11 @@ def add_limited_branch_claims() -> None:
         for part, value in (("Lower", low), ("Median", med), ("Upper", high)):
             add(
                 f"multitask_delta_{metric}_{part.lower()}",
-                f"Multitask minus pair-balanced {metric} {part.lower()}",
+                f"Multitask minus pair-first binary {metric} {part.lower()}",
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "development OOF pair bootstrap",
+                "development OOF pair-clustered bootstrap",
                 multitask_path,
                 f"stored candidate=expanded_pair; reference=multitask_pair; metric={metric}; sign inverted",
                 "Results; SI richer-supervision section",
@@ -860,7 +860,7 @@ def add_limited_branch_claims() -> None:
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "development OOF pair bootstrap",
+                "development OOF pair-clustered bootstrap",
                 shared_path,
                 f"context=macro; metric={metric}; column={part}",
                 "Results; SI cross-tissue section",
@@ -880,11 +880,11 @@ def add_limited_branch_claims() -> None:
             value = float(row[part])
             add(
                 f"all_a_delta_{metric}_{part}",
-                f"All-A decoder minus pair-balanced {metric} {part}",
+                f"All-A decoder minus pair-first {metric} {part}",
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "development OOF pair bootstrap",
+                "development OOF pair-clustered bootstrap",
                 all_a_path,
                 f"candidate=control; reference=pair_balanced; metric={metric}; column={part}",
                 "Results; SI substrate-wide section",
@@ -908,12 +908,107 @@ def add_limited_branch_claims() -> None:
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "development OOF pair bootstrap",
+                "development OOF pair-clustered bootstrap",
                 gate_path,
                 f"model=expanded_plus_combined_engagement; metric={metric}; column={part}",
                 "Results; SI substrate-realization section",
                 "direct four-decimal formatting",
                 f"EngagementGateDelta{METRIC_MACRO[metric]}{part.title()}",
+            )
+
+
+def add_synthesis_table_claims() -> None:
+    """Add quantitative branches surfaced in the SI evidence synthesis."""
+
+    specifications = [
+        (
+            "target_geometry",
+            ROOT
+            / "experiments/runs/target_geometry_residual/MuscleSkeletal/pair_bootstrap_ci.csv",
+            {"model": "baseline_plus_multiscale_structure"},
+            "development OOF pair-clustered bootstrap",
+        ),
+        (
+            "focal_node",
+            ROOT
+            / "experiments/runs/richer_supervision/pooling_comparison/pair_bootstrap_ci.csv",
+            {"candidate": "focal", "reference": "pair"},
+            "development OOF pair-clustered bootstrap",
+        ),
+        (
+            "h3k36me3_liver",
+            ROOT / "experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv",
+            {"model": "baseline_plus_h3k36me3_multiscale_occupancy"},
+            "development OOF pair-clustered bootstrap",
+        ),
+        (
+            "rbp_suppressors",
+            ROOT
+            / "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv",
+            {"model": "baseline_plus_biological_suppressors"},
+            "development OOF pair-clustered bootstrap",
+        ),
+        (
+            "transcript_repeat_panel",
+            ROOT
+            / "experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv",
+            {"model": "baseline_plus_architecture_and_intrinsic"},
+            "development OOF pair-clustered bootstrap",
+        ),
+        (
+            "rinalmo_target",
+            ROOT
+            / "experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv",
+            {"candidate": "foundation_target", "reference": "base_recalibrated"},
+            "development OOF pair-clustered bootstrap",
+        ),
+    ]
+    for prefix, path, selectors, status in specifications:
+        frame = pd.read_csv(path)
+        for column, value in selectors.items():
+            frame = frame[frame[column] == value]
+        for metric in ("auroc", "auprc", "f1"):
+            row = frame[frame.metric == metric].iloc[0]
+            selector = "; ".join(f"{key}={value}" for key, value in selectors.items())
+            for part in ("lower", "median", "upper"):
+                value = float(row[part])
+                add(
+                    f"synthesis_{prefix}_{metric}_{part}",
+                    f"SI evidence synthesis {prefix} {metric} {part}",
+                    value,
+                    f"{100 * value:+.2f}",
+                    "percentage points",
+                    status,
+                    path,
+                    f"{selector}; metric={metric}; column={part}",
+                    "Table S2 evidence synthesis",
+                    "two decimals after multiplication by 100",
+                )
+
+    for context in INDIVIDUAL_TISSUES:
+        path = (
+            ROOT
+            / f"experiments/runs/pair_engagement_ablation/{context}/pair_bootstrap_ci.csv"
+        )
+        frame = pd.read_csv(path)
+        row = frame[
+            (frame.model == "combined_16")
+            & (frame.reference == "graph_intrinsic")
+            & (frame.metric == "r2")
+        ].iloc[0]
+        for part in ("lower", "median", "upper"):
+            value = float(row[part])
+            add(
+                f"synthesis_pair_burden_{context}_r2_{part}",
+                f"{context} geometry plus graph minus graph-only R2 {part}",
+                value,
+                f"{100 * value:+.2f}",
+                "R2 percentage points",
+                "development pair-level OOF pair-clustered bootstrap",
+                path,
+                f"model=combined_16; reference=graph_intrinsic; metric=r2; column={part}",
+                "Figure 2; Table S2; Table S3",
+                "two decimals after multiplication by 100",
             )
 
 
@@ -945,6 +1040,7 @@ def main() -> None:
     add_substrate_claims()
     add_local_and_unified_claims()
     add_limited_branch_claims()
+    add_synthesis_table_claims()
     write_outputs()
 
 
