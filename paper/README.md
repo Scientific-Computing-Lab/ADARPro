@@ -12,8 +12,8 @@ From the repository root:
 make paper
 ```
 
-This regenerates all quantitative figures and SI tables from retained
-authoritative artifacts, then builds:
+This regenerates all quantitative figures, the numerical claim ledger and
+LaTeX macros, and SI tables from retained authoritative artifacts, then builds:
 
 - `paper/main.pdf`
 - `paper/supplementary.pdf`
@@ -26,6 +26,8 @@ non-base dependencies are supplied by `texlive-latex-extra`,
 
 - `source_tables/` contains the data used by every quantitative panel.
 - `generated/` contains deterministic LaTeX tables.
+- `numerical_claim_ledger.csv` records each reported value, display rounding,
+  epistemic status, authoritative artifact, selector, and manuscript use.
 - `claim_traceability.csv` maps principal numerical claims to campaign
   artifacts and labels their epistemic status.
 - `reference_audit.csv` records DOI-level bibliographic verification.

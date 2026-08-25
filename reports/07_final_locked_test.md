@@ -24,7 +24,7 @@ guard consumed its authorization on 2026-08-25 at 04:28:30 UTC and records
 | Context | Model | AUROC | AUPRC | F1 | Precision | Recall | Specificity | MCC | Brier |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Artery | Published AdarEdit | 0.9238 | 0.9262 | 0.8671 | 0.8345 | 0.9023 | 0.7930 | 0.7025 | 0.1077 |
-|  | Frozen ensemble | 0.9477 | 0.9485 | 0.8870 | 0.8840 | 0.8899 | 0.8650 | 0.7553 | 0.0879 |
+|  | Frozen ensemble | 0.9477 | 0.9485 | 0.8869 | 0.8840 | 0.8899 | 0.8650 | 0.7553 | 0.0879 |
 | Brain | Published AdarEdit | 0.9301 | 0.9286 | 0.8689 | 0.8371 | 0.9032 | 0.8021 | 0.7114 | 0.1050 |
 |  | Frozen ensemble | 0.9508 | 0.9504 | 0.8902 | 0.8741 | 0.9069 | 0.8529 | 0.7622 | 0.0855 |
 | Liver | Published AdarEdit | 0.9092 | 0.9242 | 0.8541 | 0.8368 | 0.8721 | 0.7788 | 0.6559 | 0.1196 |

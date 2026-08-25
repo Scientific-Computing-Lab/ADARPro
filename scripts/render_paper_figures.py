@@ -21,7 +21,7 @@ CONTEXT_LABELS = {
     "Artery": "Artery",
     "Brain": "Brain",
     "Liver": "Liver",
-    "MuscleSkeletal": "Muscle skeletal",
+    "MuscleSkeletal": "Skeletal muscle",
     "Combined": "Combined",
 }
 COLORS = {
@@ -196,18 +196,18 @@ def figure1(output: Path, source: Path) -> None:
     )
     rounded_box(
         ax_a,
-        (0.06, 0.79),
+        (0.06, 0.82),
         0.85,
         0.13,
-        "Tissue / cellular state\nADAR activity · processing · occupancy",
+        "Cell / tissue state\nADAR activity · processing · regulator state",
         COLORS["pale_amber"],
         COLORS["amber"],
-        8.4,
+        7.7,
         "bold",
     )
     rounded_box(
         ax_a,
-        (0.10, 0.48),
+        (0.10, 0.52),
         0.77,
         0.20,
         "",
@@ -216,16 +216,16 @@ def figure1(output: Path, source: Path) -> None:
         8.5,
         "bold",
     )
-    ax_a.plot([0.19, 0.78], [0.58, 0.58], color=COLORS["navy"], lw=1.2)
+    ax_a.plot([0.19, 0.78], [0.62, 0.62], color=COLORS["navy"], lw=1.2)
     left = Polygon(
         [
-            [0.21, 0.55],
-            [0.40, 0.55],
-            [0.40, 0.52],
-            [0.46, 0.58],
-            [0.40, 0.64],
-            [0.40, 0.61],
-            [0.21, 0.61],
+            [0.21, 0.59],
+            [0.40, 0.59],
+            [0.40, 0.56],
+            [0.46, 0.62],
+            [0.40, 0.68],
+            [0.40, 0.65],
+            [0.21, 0.65],
         ],
         closed=True,
         color=COLORS["sky"],
@@ -233,13 +233,13 @@ def figure1(output: Path, source: Path) -> None:
     )
     right = Polygon(
         [
-            [0.76, 0.55],
-            [0.57, 0.55],
-            [0.57, 0.52],
-            [0.51, 0.58],
-            [0.57, 0.64],
-            [0.57, 0.61],
-            [0.76, 0.61],
+            [0.76, 0.59],
+            [0.57, 0.59],
+            [0.57, 0.56],
+            [0.51, 0.62],
+            [0.57, 0.68],
+            [0.57, 0.65],
+            [0.76, 0.65],
         ],
         closed=True,
         color=COLORS["teal"],
@@ -248,11 +248,11 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.add_patch(left)
     ax_a.add_patch(right)
     for x in np.linspace(0.43, 0.54, 7):
-        ax_a.plot([x, 0.97 - x], [0.555, 0.605], color=COLORS["gray"], lw=0.65)
+        ax_a.plot([x, 0.97 - x], [0.595, 0.645], color=COLORS["gray"], lw=0.65)
     ax_a.text(
         0.49,
-        0.655,
-        "Inverted-Alu RNA substrate",
+        0.695,
+        "Inverted-Alu duplex: intrinsic competence",
         ha="center",
         va="center",
         fontsize=8.5,
@@ -261,10 +261,10 @@ def figure1(output: Path, source: Path) -> None:
     )
     rounded_box(
         ax_a,
-        (0.16, 0.16),
+        (0.16, 0.20),
         0.65,
         0.17,
-        "Target-centered view\nlocal sequence + helix partner",
+        "Target-local selectivity\nsequence · pairing · helix partner",
         COLORS["pale_green"],
         COLORS["green"],
         8.4,
@@ -272,7 +272,7 @@ def figure1(output: Path, source: Path) -> None:
     )
     ax_a.scatter(
         [0.485],
-        [0.285],
+        [0.325],
         s=85,
         color=COLORS["red"],
         edgecolor="white",
@@ -281,7 +281,7 @@ def figure1(output: Path, source: Path) -> None:
     )
     ax_a.text(
         0.485,
-        0.285,
+        0.325,
         "A",
         color="white",
         ha="center",
@@ -290,7 +290,22 @@ def figure1(output: Path, source: Path) -> None:
         fontweight="bold",
         zorder=6,
     )
-    for start, end in [((0.49, 0.79), (0.49, 0.69)), ((0.49, 0.48), (0.49, 0.34))]:
+    rounded_box(
+        ax_a,
+        (0.27, 0.035),
+        0.43,
+        0.09,
+        "Observed editing",
+        "#F4F6F7",
+        COLORS["gray"],
+        8.2,
+        "bold",
+    )
+    for start, end in [
+        ((0.49, 0.82), (0.49, 0.73)),
+        ((0.49, 0.52), (0.49, 0.38)),
+        ((0.49, 0.20), (0.49, 0.13)),
+    ]:
         ax_a.add_patch(
             FancyArrowPatch(
                 start,
@@ -302,31 +317,40 @@ def figure1(output: Path, source: Path) -> None:
             )
         )
     ax_a.text(
-        0.49,
-        0.735,
-        "realization / engagement",
+        0.33,
+        0.775,
+        "substrate realization / engagement",
         ha="center",
         va="center",
-        fontsize=7.2,
+        fontsize=6.6,
         color=COLORS["gray"],
     )
     ax_a.text(
-        0.49,
-        0.405,
-        "local chemical selectivity",
+        0.33,
+        0.445,
+        "which adenosine is selected?",
         ha="center",
         va="center",
-        fontsize=7.2,
+        fontsize=6.6,
         color=COLORS["gray"],
     )
     ax_a.text(
-        0.49,
-        0.06,
-        "Prediction must respect both shared substrate state\nand the fate of a specific nucleotide.",
+        0.81,
+        0.765,
+        "bulk proxies:\nlimited resolution",
         ha="center",
         va="center",
-        color=COLORS["navy"],
-        fontsize=8,
+        fontsize=6.3,
+        color=COLORS["amber"],
+    )
+    ax_a.text(
+        0.81,
+        0.435,
+        "aligned local view:\nrobust increment",
+        ha="center",
+        va="center",
+        fontsize=6.3,
+        color=COLORS["green"],
     )
     ax_a.set_xlim(0, 1)
     ax_a.set_ylim(0, 1)
@@ -454,205 +478,330 @@ def figure1(output: Path, source: Path) -> None:
 
 
 def evidence_table() -> pd.DataFrame:
-    rows: list[dict[str, object]] = []
+    rows = [
+        (
+            "Substrate-aware learning",
+            "Pair-first expanded supervision",
+            "selected",
+            "Corrects label use and pair weighting",
+        ),
+        (
+            "Target selectivity",
+            "Aligned target + helix-partner view",
+            "selected",
+            "Survives shifted-window control",
+        ),
+        (
+            "Integration",
+            "Fixed equal-logit global + local",
+            "selected",
+            "Complementary same-fold predictions",
+        ),
+        (
+            "Substrate realization",
+            "Pair geometry / editing burden",
+            "supported",
+            "State is measurable, not yet actionable",
+        ),
+        (
+            "Supervision",
+            "Continuous + ordinal auxiliary labels",
+            "limited",
+            "Ranking benefit; no useful F1 gain",
+        ),
+        (
+            "Target selectivity",
+            "Focal node / contact geometry",
+            "limited",
+            "Points toward aligned local view",
+        ),
+        (
+            "Cross-tissue",
+            "Shared four-tissue training",
+            "limited",
+            "Transfer below promotion gate",
+        ),
+        (
+            "Substrate realization",
+            "Hierarchical engagement gate",
+            "limited",
+            "Small ranking gain; unstable classification",
+        ),
+        (
+            "Biological context",
+            "Bulk H3K36me3 overlap",
+            "limited",
+            "Context-specific AUPRC only",
+        ),
+        (
+            "Biological context",
+            "RBP binding × bulk expression",
+            "not supported",
+            "No reproducible residual gain",
+        ),
+        (
+            "Biological context",
+            "Transcript / repeat annotation panel",
+            "not supported",
+            "No robust site-level increment",
+        ),
+        (
+            "Representation",
+            "Frozen RNA-language embeddings",
+            "not supported",
+            "No consistent incremental utility",
+        ),
+        (
+            "Representation",
+            "Substrate-wide all-A decoder",
+            "not supported",
+            "Stopped at prespecified futility gate",
+        ),
+        (
+            "Capacity",
+            "Larger / deeper graph networks",
+            "not supported",
+            "Capacity alone did not generalize",
+        ),
+        (
+            "Integration",
+            "Unified end-to-end architecture",
+            "not supported",
+            "Inferior to frozen ensemble",
+        ),
+        (
+            "Cellular state",
+            "Matched donor/cell multimodality",
+            "deferred",
+            "Required measurements unavailable",
+        ),
+        (
+            "RNA state",
+            "Matched in-vivo structure / isoforms",
+            "deferred",
+            "Required measurements unavailable",
+        ),
+    ]
+    return pd.DataFrame(
+        rows, columns=["scale", "hypothesis", "status", "interpretation"]
+    )
 
-    def add(
-        label: str,
-        group: str,
-        status: str,
-        source_path: str,
-        metric: str = "auroc",
-        invert: bool = False,
-        **selectors: str,
-    ) -> None:
-        row = read_ci(source_path, metric, **selectors)
-        lower, median, upper = (
-            float(row["lower"]),
-            float(row["median"]),
-            float(row["upper"]),
+
+def substrate_realization_tables(source: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    gap_rows = []
+    model_rows = []
+    for context in CONTEXTS[:4]:
+        pair_path = (
+            ROOT
+            / f"experiments/runs/pair_engagement/{context}/oof_pair_predictions.parquet"
         )
-        if invert:
-            lower, median, upper = -upper, -median, -lower
-        rows.append(
+        pairs = pd.read_parquet(pair_path)
+        pairs = pairs[pairs["model"] == "training_mean"]
+        pairs = pairs[
+            ["pair_id", "edited_fraction", "geometry__genomic_gap"]
+        ].drop_duplicates("pair_id")
+        pairs["gap_log10"] = np.log10(1 + pairs["geometry__genomic_gap"])
+        pairs["gap_bin"] = pd.qcut(
+            pairs["gap_log10"], 8, labels=False, duplicates="drop"
+        )
+        summary = (
+            pairs.groupby("gap_bin", observed=True)
+            .agg(
+                gap_log10=("gap_log10", "mean"),
+                edited_fraction=("edited_fraction", "mean"),
+                n_pairs=("pair_id", "nunique"),
+            )
+            .reset_index()
+        )
+        summary["context"] = context
+        summary["spearman"] = (
+            pairs[["geometry__genomic_gap", "edited_fraction"]]
+            .corr(method="spearman")
+            .iloc[0, 1]
+        )
+        summary["source"] = pair_path.relative_to(ROOT).as_posix()
+        gap_rows.append(summary)
+
+        metrics_path = (
+            ROOT / f"experiments/runs/pair_engagement_ablation/{context}/metrics.csv"
+        )
+        ci_path = (
+            ROOT
+            / f"experiments/runs/pair_engagement_ablation/{context}/pair_bootstrap_ci.csv"
+        )
+        metrics = pd.read_csv(metrics_path).set_index("model")
+        ci = pd.read_csv(ci_path)
+        delta = ci[
+            (ci.model == "combined_16")
+            & (ci.reference == "graph_intrinsic")
+            & (ci.metric == "r2")
+        ].iloc[0]
+        model_rows.append(
             {
-                "hypothesis": label,
-                "group": group,
-                "status": status,
-                "metric": metric,
-                "lower": lower,
-                "median": median,
-                "upper": upper,
-                "source": source_path,
+                "context": context,
+                "graph_only_r2": metrics.loc["graph_intrinsic", "r2"],
+                "geometry_plus_graph_r2": metrics.loc["combined_16", "r2"],
+                "delta_r2_lower": delta["lower"],
+                "delta_r2_median": delta["median"],
+                "delta_r2_upper": delta["upper"],
+                "any_high_auroc": metrics.loc["combined_16", "any_edited_auroc"],
+                "source": metrics_path.relative_to(ROOT).as_posix(),
             }
         )
-
-    add(
-        "Pair-first expanded supervision",
-        "Supervision",
-        "selected",
-        "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv",
-        candidate="expanded_pair",
-        reference="development_reference",
-    )
-    add(
-        "Target-aligned local view",
-        "Representation",
-        "selected",
-        "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv",
-        candidate="aligned_local",
-        reference="pair_balanced",
-    )
-    add(
-        "Fixed global + local ensemble",
-        "Integration",
-        "selected",
-        "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv",
-        invert=True,
-        candidate="pair_balanced",
-        reference="pair_local_ensemble",
-    )
-    add(
-        "Shared four-tissue training",
-        "Integration",
-        "limited",
-        "experiments/runs/joint_multilabel/vs_independent/global_pair_bootstrap_ci.csv",
-        context="macro",
-    )
-    add(
-        "Continuous/ordinal auxiliary loss",
-        "Supervision",
-        "limited",
-        "experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv",
-        invert=True,
-        candidate="expanded_pair",
-        reference="multitask_pair",
-    )
-    add(
-        "Substrate-engagement gate",
-        "Biology × AI",
-        "limited",
-        "experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv",
-        model="expanded_plus_combined_engagement",
-    )
-    add(
-        "IRAlu/transcript architecture",
-        "Biology",
-        "not promoted",
-        "experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv",
-        model="baseline_plus_geometry",
-    )
-    add(
-        "H3K36me3 peak overlap",
-        "Biology",
-        "not promoted",
-        "experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv",
-        model="baseline_plus_h3k36me3_multiscale_occupancy",
-    )
-    add(
-        "RBP suppressor panel",
-        "Biology",
-        "not promoted",
-        "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv",
-        model="baseline_plus_biological_suppressors",
-    )
-    add(
-        "RiNALMo target embedding",
-        "Representation",
-        "not promoted",
-        "experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv",
-        candidate="foundation_target",
-        reference="base_recalibrated",
-    )
-    add(
-        "Substrate-wide all-A decoder",
-        "Representation",
-        "terminated",
-        "experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv",
-        candidate="control",
-        reference="pair_balanced",
-    )
-    add(
-        "Unified end-to-end model",
-        "Integration",
-        "terminated",
-        "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv",
-        candidate="unified",
-        reference="frozen_ensemble",
-    )
-    return pd.DataFrame(rows)
+    gap = pd.concat(gap_rows, ignore_index=True)
+    models = pd.DataFrame(model_rows)
+    copy_source(gap, source, "figure2_gap_editing_burden.csv")
+    copy_source(models, source, "figure2_pair_engagement.csv")
+    return gap, models
 
 
 def figure2(output: Path, source: Path) -> None:
     frame = evidence_table()
     copy_source(frame, source, "figure2_evidence_map.csv")
-    colors = {
+    gap, engagement = substrate_realization_tables(source)
+    status_colors = {
         "selected": COLORS["green"],
+        "supported": COLORS["teal"],
         "limited": COLORS["amber"],
-        "not promoted": COLORS["gray"],
-        "terminated": COLORS["red"],
+        "not supported": COLORS["red"],
+        "deferred": COLORS["purple"],
     }
-    frame = frame.iloc[::-1].reset_index(drop=True)
-    figure, axis = plt.subplots(figsize=(7.0, 4.8))
-    y = np.arange(len(frame))
-    for index, row in frame.iterrows():
-        axis.errorbar(
-            100 * row["median"],
-            index,
-            xerr=np.array(
-                [
-                    [100 * (row["median"] - row["lower"])],
-                    [100 * (row["upper"] - row["median"])],
-                ]
-            ),
-            fmt="o",
-            ms=5.2,
-            capsize=2.2,
-            color=colors[row["status"]],
-            ecolor=colors[row["status"]],
-            zorder=3,
-        )
-    axis.axvline(0, color=COLORS["ink"], lw=0.8)
-    axis.set_yticks(y, frame["hypothesis"])
-    axis.set_xlabel("Pair-disjoint development ΔAUROC (percentage points)")
-    axis.set_title(
-        "Incremental information is concentrated in supervision and target-local representation",
+    figure = plt.figure(figsize=(7.0, 7.0))
+    grid = figure.add_gridspec(
+        2, 2, height_ratios=[1.48, 0.78], hspace=0.36, wspace=0.36
+    )
+    ax_a = figure.add_subplot(grid[0, :])
+    ax_b = figure.add_subplot(grid[1, 0])
+    ax_c = figure.add_subplot(grid[1, 1])
+
+    panel_label(ax_a, "A")
+    ax_a.set_axis_off()
+    ax_a.set_title(
+        "Evidence map: what the benchmark can and cannot currently resolve",
         loc="left",
         fontweight="bold",
     )
-    axis.set_xlim(-8.5, 6.5)
-    clean_axis(axis)
+    headers = [
+        "Biological / learning scale",
+        "Tested formulation",
+        "Status",
+        "Interpretation",
+    ]
+    xpos = [0.01, 0.24, 0.625, 0.66]
+    for index, (x, header) in enumerate(zip(xpos, headers)):
+        ax_a.text(
+            x,
+            0.94,
+            header,
+            fontsize=7.1,
+            fontweight="bold",
+            color=COLORS["navy"],
+            va="bottom",
+            ha="center" if index == 2 else "left",
+        )
+    row_height = 0.051
+    for index, row in frame.iterrows():
+        y = 0.91 - index * row_height
+        if index % 2 == 0:
+            ax_a.add_patch(
+                plt.Rectangle((0, y - 0.034), 1, row_height, color="#F6F8F9", lw=0)
+            )
+        ax_a.text(xpos[0], y, row["scale"], fontsize=6.3, va="center")
+        ax_a.text(xpos[1], y, row["hypothesis"], fontsize=6.3, va="center")
+        ax_a.scatter([0.625], [y], s=28, color=status_colors[row["status"]], zorder=3)
+        ax_a.text(xpos[3], y, row["interpretation"], fontsize=6.15, va="center")
     from matplotlib.lines import Line2D
 
-    legend = [
-        Line2D(
-            [0],
-            [0],
-            marker="o",
-            color="none",
-            markerfacecolor=color,
-            markeredgecolor=color,
-            label=label.title(),
-        )
-        for label, color in colors.items()
-    ]
-    axis.legend(
-        handles=legend,
+    ax_a.legend(
+        handles=[
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="none",
+                color=color,
+                label=status.title(),
+            )
+            for status, color in status_colors.items()
+        ],
         frameon=False,
-        ncol=4,
-        loc="lower center",
-        bbox_to_anchor=(0.5, -0.23),
+        ncol=5,
+        fontsize=5.8,
+        loc="upper right",
+        bbox_to_anchor=(1.0, 1.025),
     )
-    axis.text(
-        0.995,
-        0.01,
-        "95% Alu-pair bootstrap intervals; comparisons use their prespecified same-fold reference",
-        transform=axis.transAxes,
+    ax_a.text(
+        0.99,
+        0.015,
+        "Status reflects prespecified same-fold comparisons and controls; deferred hypotheses were not tested.",
         ha="right",
         va="bottom",
-        fontsize=6.8,
+        fontsize=6.4,
         color=COLORS["gray"],
     )
-    figure.subplots_adjust(left=0.36, right=0.98, top=0.91, bottom=0.20)
+    ax_a.set_xlim(0, 1)
+    ax_a.set_ylim(0, 1)
+
+    panel_label(ax_b, "B")
+    for context, color in zip(
+        CONTEXTS[:4],
+        [COLORS["blue"], COLORS["purple"], COLORS["teal"], COLORS["amber"]],
+    ):
+        subset = gap[gap.context == context]
+        rho = subset.spearman.iloc[0]
+        ax_b.plot(
+            subset.gap_log10,
+            subset.edited_fraction,
+            marker="o",
+            ms=3.2,
+            lw=1.1,
+            color=color,
+            label=f"{CONTEXT_LABELS[context]}  ρ={rho:.2f}",
+        )
+    ax_b.set_xlabel("Mean log$_{10}$(inter-arm gap + 1) within octile")
+    ax_b.set_ylabel("Mean edited-site fraction")
+    ax_b.set_title(
+        "Pair geometry tracks realized editing burden", loc="left", fontweight="bold"
+    )
+    ax_b.legend(frameon=False, fontsize=6.1)
+    clean_axis(ax_b, "both")
+
+    panel_label(ax_c, "C")
+    ordered = engagement.set_index("context").loc[CONTEXTS[:4]]
+    y = np.arange(4)
+    ax_c.errorbar(
+        ordered.delta_r2_median,
+        y,
+        xerr=np.vstack(
+            [
+                ordered.delta_r2_median - ordered.delta_r2_lower,
+                ordered.delta_r2_upper - ordered.delta_r2_median,
+            ]
+        ),
+        fmt="o",
+        ms=4.5,
+        capsize=2,
+        color=COLORS["teal"],
+    )
+    for index, (_, row) in enumerate(ordered.iterrows()):
+        ax_c.text(
+            row.delta_r2_upper + 0.008,
+            index,
+            f"R²={row.geometry_plus_graph_r2:.2f}",
+            va="center",
+            fontsize=6.4,
+            color=COLORS["gray"],
+        )
+    ax_c.axvline(0, color=COLORS["ink"], lw=0.7)
+    ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS[:4]])
+    ax_c.invert_yaxis()
+    ax_c.set_xlabel("Geometry + graph − graph-only ΔR²\n(95% pair-bootstrap interval)")
+    ax_c.set_title(
+        "Low-capacity models recover pair state", loc="left", fontweight="bold"
+    )
+    ax_c.set_xlim(-0.01, 0.34)
+    clean_axis(ax_c)
+    figure.subplots_adjust(left=0.09, right=0.99, top=0.97, bottom=0.08)
     save(figure, output, "figure2_evidence_map")
 
 
@@ -797,12 +946,20 @@ def figure3(output: Path, source: Path) -> None:
 
     pair = pair_balance_table()
     integration = local_integration_table()
+    supervision = pd.read_csv(
+        ROOT / "experiments/runs/richer_supervision/pair_balance_comparison/metrics.csv"
+    )
+    focal_metrics = pd.read_csv(
+        ROOT / "experiments/runs/richer_supervision/pooling_comparison/metrics.csv"
+    )
     alignment_metrics = pd.read_csv(
         ROOT
         / "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/metrics.csv"
     )
     copy_source(pair, source, "figure3_pair_balance_ci.csv")
     copy_source(integration, source, "figure3_integration_ci.csv")
+    copy_source(supervision, source, "figure3_supervision_decomposition.csv")
+    copy_source(focal_metrics, source, "figure3_focal_metrics.csv")
     copy_source(alignment_metrics, source, "figure3_alignment_metrics.csv")
     copy_source(
         pd.DataFrame(
@@ -828,23 +985,52 @@ def figure3(output: Path, source: Path) -> None:
         "figure3_model_specification.csv",
     )
 
-    figure = plt.figure(figsize=(7.0, 7.1))
+    figure = plt.figure(figsize=(7.0, 7.6))
     grid = figure.add_gridspec(
-        3, 2, height_ratios=[0.72, 1.05, 0.72], hspace=0.55, wspace=0.38
+        3, 2, height_ratios=[1.0, 1.0, 0.72], hspace=0.62, wspace=0.48
     )
-    ax_a = figure.add_subplot(grid[0, :])
-    ax_b = figure.add_subplot(grid[1, 0])
-    ax_c = figure.add_subplot(grid[1, 1])
-    ax_d = figure.add_subplot(grid[2, :])
-    architecture_panel(ax_a, weights)
-    panel_label(ax_a, "A")
+    ax_a = figure.add_subplot(grid[0, 0])
+    ax_b = figure.add_subplot(grid[0, 1])
+    ax_c = figure.add_subplot(grid[1, 0])
+    ax_d = figure.add_subplot(grid[1, 1])
+    ax_e = figure.add_subplot(grid[2, :])
 
-    panel_label(ax_b, "B")
     metric_colors = {
         "auroc": COLORS["blue"],
         "auprc": COLORS["teal"],
         "f1": COLORS["green"],
     }
+    panel_label(ax_a, "A")
+    model_order = ["development_reference", "expanded_site", "expanded_pair"]
+    model_labels = [
+        "Original\nreference",
+        "All high/low\nsite-balanced",
+        "All high/low\npair-first",
+    ]
+    x = np.arange(3)
+    for metric in ["auroc", "auprc", "f1"]:
+        values = supervision.set_index("model").loc[model_order, metric]
+        ax_a.plot(
+            x,
+            values,
+            marker="o",
+            lw=1.4,
+            ms=4.2,
+            color=metric_colors[metric],
+            label=metric.upper(),
+        )
+    ax_a.set_xticks(x, model_labels)
+    ax_a.set_ylim(0.75, 0.905)
+    ax_a.set_ylabel("Muscle development OOF")
+    ax_a.set_title(
+        "Label expansion and pair weighting both help",
+        loc="left",
+        fontweight="bold",
+    )
+    ax_a.legend(frameon=False, ncol=3, fontsize=6.2)
+    clean_axis(ax_a, "y")
+
+    panel_label(ax_b, "B")
     positions = np.arange(len(CONTEXTS))
     for offset, metric in zip([-0.18, 0, 0.18], ["auroc", "auprc", "f1"]):
         subset = pair[pair.metric == metric].set_index("context").loc[CONTEXTS]
@@ -867,38 +1053,45 @@ def figure3(output: Path, source: Path) -> None:
     ax_b.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_b.invert_yaxis()
     ax_b.set_xlabel("Pair-balanced − internal reference (points)")
-    ax_b.set_title("Pair-first expanded supervision", loc="left", fontweight="bold")
-    ax_b.legend(frameon=False, ncol=3, loc="lower right")
+    ax_b.set_title("Pair-first gains replicate", loc="left", fontweight="bold")
+    ax_b.legend(frameon=False, ncol=3, loc="upper right")
     clean_axis(ax_b)
 
     panel_label(ax_c, "C")
-    shown = alignment_metrics[
-        alignment_metrics.model.isin(
-            ["pair_balanced", "aligned_local", "shifted_local"]
+    representation_rows = []
+    for label, frame, model in [
+        ("Whole duplex", alignment_metrics, "pair_balanced"),
+        ("Focal node", focal_metrics, "focal"),
+        ("Aligned local", alignment_metrics, "aligned_local"),
+        (f"Shifted +{shift_nt} nt", alignment_metrics, "shifted_local"),
+    ]:
+        row = frame[frame.model == model].iloc[0]
+        representation_rows.append(
+            {
+                "representation": label,
+                **{metric: row[metric] for metric in ["auroc", "auprc", "f1"]},
+            }
         )
-    ].copy()
-    labels = {
-        "pair_balanced": "Global pair",
-        "aligned_local": "Aligned local",
-        "shifted_local": f"Shifted +{shift_nt} nt",
-    }
-    x = np.arange(3)
+    representations = pd.DataFrame(representation_rows)
+    copy_source(representations, source, "figure3_representation_metrics.csv")
+    x = np.arange(len(representations))
     width = 0.24
     for index, metric in enumerate(["auroc", "auprc", "f1"]):
-        values = [shown.loc[shown.model == model, metric].iloc[0] for model in labels]
         ax_c.bar(
             x + (index - 1) * width,
-            values,
+            representations[metric],
             width=width,
             color=metric_colors[metric],
             label=metric.upper(),
             zorder=2,
         )
-    ax_c.set_xticks(x, labels.values(), rotation=16, ha="right")
+    ax_c.set_xticks(x, representations.representation, rotation=17, ha="right")
     ax_c.set_ylim(0.64, 0.94)
     ax_c.set_ylabel("Development OOF performance")
     ax_c.set_title(
-        "Alignment, not added capacity, carries signal", loc="left", fontweight="bold"
+        "Target alignment resolves selectivity",
+        loc="left",
+        fontweight="bold",
     )
     clean_axis(ax_c, "y")
     ax_c.legend(frameon=False, ncol=3, loc="upper right")
@@ -930,25 +1123,28 @@ def figure3(output: Path, source: Path) -> None:
     ax_d.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_d.set_yticks(range(3), metrics)
     ax_d.set_xlabel(
-        "Fixed ensemble − global pair model (percentage points; 95% pair CI)"
+        "Fixed ensemble − global pair model\n(percentage points; 95% pair CI)"
     )
     ax_d.set_title(
-        "Global and target-local predictors are complementary",
+        "Global and local views are complementary",
         loc="left",
         fontweight="bold",
     )
     ax_d.text(
         0.99,
-        0.04,
-        "Muscle Skeletal (solid)    Liver (light)",
+        0.90,
+        "Skeletal muscle (solid) · Liver (light)",
         transform=ax_d.transAxes,
         ha="right",
-        fontsize=7,
+        fontsize=6.5,
         color=COLORS["gray"],
     )
-    ax_d.set_xlim(0, 3.6)
+    ax_d.set_xlim(0, 3.8)
     clean_axis(ax_d)
-    figure.subplots_adjust(left=0.09, right=0.98, top=0.97, bottom=0.08)
+
+    panel_label(ax_e, "E")
+    architecture_panel(ax_e, weights)
+    figure.subplots_adjust(left=0.09, right=0.98, top=0.97, bottom=0.06)
     save(figure, output, "figure3_organizing_principles")
 
 
@@ -983,14 +1179,15 @@ def final_tables(
 
 def figure4(output: Path, source: Path) -> None:
     metrics, confidence, transitions, matched = final_tables(source)
-    figure = plt.figure(figsize=(7.0, 6.0))
+    figure = plt.figure(figsize=(7.0, 7.0))
     grid = figure.add_gridspec(
-        2, 3, height_ratios=[1.12, 0.88], hspace=0.48, wspace=0.52
+        3, 2, height_ratios=[1.12, 0.82, 0.88], hspace=0.52, wspace=0.42
     )
     ax_a = figure.add_subplot(grid[0, :])
     ax_b = figure.add_subplot(grid[1, 0])
     ax_c = figure.add_subplot(grid[1, 1])
-    ax_d = figure.add_subplot(grid[1, 2])
+    ax_d = figure.add_subplot(grid[2, 0])
+    ax_e = figure.add_subplot(grid[2, 1])
 
     panel_label(ax_a, "A")
     metric_colors = {
@@ -1031,7 +1228,6 @@ def figure4(output: Path, source: Path) -> None:
     clean_axis(ax_a)
 
     panel_label(ax_b, "B")
-    x = np.arange(len(CONTEXTS))
     base = (
         metrics[metrics.model == "published_baseline_reproduced"]
         .set_index("context")
@@ -1042,44 +1238,75 @@ def figure4(output: Path, source: Path) -> None:
         .set_index("context")
         .loc[CONTEXTS]
     )
-    ax_b.plot(x, base.f1, "o--", color=COLORS["gray"], lw=1.2, ms=4, label="AdarEdit")
-    ax_b.plot(x, cand.f1, "o-", color=COLORS["green"], lw=1.5, ms=4, label="ADARPro")
-    ax_b.set_xticks(x, ["Art.", "Brain", "Liver", "Muscle", "Comb."], rotation=0)
-    ax_b.set_ylim(0.79, 0.905)
-    ax_b.set_ylabel("F1")
+    y = np.arange(len(CONTEXTS))
+    for index, context in enumerate(CONTEXTS):
+        ax_b.plot(
+            [base.loc[context, "f1"], cand.loc[context, "f1"]],
+            [index, index],
+            color="#CBD3D8",
+            lw=2,
+            zorder=1,
+        )
+    ax_b.scatter(base.f1, y, color=COLORS["gray"], s=24, label="AdarEdit", zorder=2)
+    ax_b.scatter(cand.f1, y, color=COLORS["green"], s=24, label="ADARPro", zorder=3)
+    ax_b.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
+    ax_b.invert_yaxis()
+    ax_b.set_xlim(0.80, 0.905)
+    ax_b.set_xlabel("F1")
     ax_b.set_title("Absolute held-out F1", loc="left", fontweight="bold")
-    ax_b.legend(frameon=False)
-    clean_axis(ax_b, "y")
+    ax_b.legend(frameon=False, ncol=2, fontsize=6.2)
+    clean_axis(ax_b)
 
     panel_label(ax_c, "C")
+    brier = confidence[confidence.metric == "brier"].set_index("context").loc[CONTEXTS]
+    reduction = -brier["median"]
+    ax_c.errorbar(
+        reduction,
+        y,
+        xerr=np.vstack([reduction + brier["upper"], -brier["lower"] - reduction]),
+        fmt="o",
+        ms=4.5,
+        capsize=2,
+        color=COLORS["purple"],
+    )
+    ax_c.axvline(0, color=COLORS["ink"], lw=0.7)
+    ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
+    ax_c.invert_yaxis()
+    ax_c.set_xticks([0.00, 0.01, 0.02, 0.03])
+    ax_c.set_xlabel("Brier-score reduction (95% pair CI)")
+    ax_c.set_title(
+        "Calibration-sensitive error decreases", loc="left", fontweight="bold"
+    )
+    clean_axis(ax_c)
+
+    panel_label(ax_d, "D")
     transitions = transitions.set_index("context").loc[CONTEXTS]
-    y = np.arange(len(CONTEXTS))
-    ax_c.barh(
+    ax_d.barh(
         y - 0.15,
         100 * transitions.fp_rescue_rate,
         height=0.27,
         color=COLORS["teal"],
         label="Baseline FP rescued",
     )
-    ax_c.barh(
+    ax_d.barh(
         y + 0.15,
         100 * transitions.tp_damage_rate,
         height=0.27,
         color=COLORS["red"],
         label="Baseline TP damaged",
     )
-    ax_c.set_yticks(y, ["Art.", "Brain", "Liver", "Muscle", "Comb."])
-    ax_c.invert_yaxis()
-    ax_c.set_xlabel("Sites (%) at frozen threshold")
-    ax_c.set_title("FP rescue vs. TP damage", loc="left", fontweight="bold")
-    ax_c.legend(frameon=False, loc="upper right", fontsize=6.2)
-    clean_axis(ax_c)
-    ax_c.set_xlim(0, 56)
+    ax_d.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
+    ax_d.invert_yaxis()
+    ax_d.set_xlabel("Sites (%) at frozen threshold")
+    ax_d.set_title("FP rescue exceeds TP damage", loc="left", fontweight="bold")
+    ax_d.legend(frameon=False, loc="upper right", fontsize=6.2)
+    clean_axis(ax_d)
+    ax_d.set_xlim(0, 56)
 
-    panel_label(ax_d, "D")
+    panel_label(ax_e, "E")
     matched = matched.set_index("context").loc[CONTEXTS]
     avoided = -matched["median"]
-    ax_d.errorbar(
+    ax_e.errorbar(
         avoided,
         y,
         xerr=np.vstack([avoided + matched["upper"], -matched["lower"] - avoided]),
@@ -1088,13 +1315,15 @@ def figure4(output: Path, source: Path) -> None:
         capsize=2,
         color=COLORS["blue"],
     )
-    ax_d.axvline(0, color=COLORS["ink"], lw=0.7)
-    ax_d.set_yticks(y, ["Art.", "Brain", "Liver", "Muscle", "Comb."])
-    ax_d.invert_yaxis()
-    ax_d.set_xlabel("False positives avoided")
-    ax_d.set_title("Matched-recall FP reduction", loc="left", fontweight="bold")
-    clean_axis(ax_d)
-    figure.subplots_adjust(left=0.10, right=0.99, top=0.97, bottom=0.10)
+    ax_e.axvline(0, color=COLORS["ink"], lw=0.7)
+    ax_e.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
+    ax_e.invert_yaxis()
+    ax_e.set_xlabel("False positives avoided")
+    ax_e.set_title(
+        "FP reduction persists at matched recall", loc="left", fontweight="bold"
+    )
+    clean_axis(ax_e)
+    figure.subplots_adjust(left=0.12, right=0.99, top=0.97, bottom=0.07)
     save(figure, output, "figure4_locked_validation")
 
 
@@ -1186,13 +1415,16 @@ def supplementary_figures(output: Path, source: Path) -> None:
             )
     negative = pd.DataFrame(selected)
     copy_source(negative, source, "figureS2_biological_features_ci.csv")
-    figure, axes = plt.subplots(1, 3, figsize=(7.0, 3.0), sharey=True)
-    for axis, metric in zip(axes, ["auroc", "auprc", "f1"]):
-        subset = negative[negative.metric == metric].iloc[::-1]
-        y = np.arange(len(subset))
+    figure, axis = plt.subplots(figsize=(7.0, 3.7))
+    feature_order = [spec[0] for spec in specs][::-1]
+    y = np.arange(len(feature_order))
+    for offset, metric in zip([-0.16, 0, 0.16], ["auroc", "auprc", "f1"]):
+        subset = (
+            negative[negative.metric == metric].set_index("feature").loc[feature_order]
+        )
         axis.errorbar(
             100 * subset["median"],
-            y,
+            y + offset,
             xerr=np.vstack(
                 [
                     100 * (subset["median"] - subset["lower"]),
@@ -1202,19 +1434,29 @@ def supplementary_figures(output: Path, source: Path) -> None:
             fmt="o",
             ms=4,
             capsize=2,
-            color=COLORS["gray"],
+            color={
+                "auroc": COLORS["blue"],
+                "auprc": COLORS["teal"],
+                "f1": COLORS["green"],
+            }[metric],
+            label=metric.upper(),
         )
-        axis.axvline(0, color=COLORS["ink"], lw=0.7)
-        axis.set_title(metric.upper())
-        axis.set_xlabel("Δ points")
-        axis.set_yticks(y, subset.feature if axis is axes[0] else [])
-        clean_axis(axis)
+    axis.axvline(0, color=COLORS["ink"], lw=0.7)
+    axis.set_xlabel("Candidate − same-fold reference (percentage points)")
+    axis.set_yticks(y, feature_order)
+    axis.legend(
+        frameon=False,
+        ncol=3,
+        loc="upper center",
+        bbox_to_anchor=(0.68, -0.18),
+    )
+    clean_axis(axis)
     figure.suptitle(
         "Tested bulk biological annotations did not add robust residual information",
         fontweight="bold",
         fontsize=10,
     )
-    figure.tight_layout()
+    figure.tight_layout(rect=(0, 0.08, 1, 0.95))
     save(figure, output, "figureS2_biological_feature_controls")
 
     # S3: natural-prevalence robustness.

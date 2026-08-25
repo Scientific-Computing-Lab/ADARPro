@@ -1,4 +1,4 @@
-.PHONY: install test lint split results manifest verify paper-figures paper-tables paper paper-check clean-paper
+.PHONY: install test lint split results manifest verify paper-figures paper-claims paper-tables paper paper-check clean-paper
 
 install:
 	python -m pip install -e '.[dev,tables]'
@@ -24,10 +24,13 @@ verify: split results test lint manifest
 paper-figures:
 	python scripts/render_paper_figures.py
 
+paper-claims:
+	python scripts/build_paper_claim_ledger.py
+
 paper-tables:
 	python scripts/render_paper_tables.py
 
-paper: paper-figures paper-tables
+paper: paper-figures paper-claims paper-tables
 	cd paper && SOURCE_DATE_EPOCH=1787632110 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 	cd paper && SOURCE_DATE_EPOCH=1787632110 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
 

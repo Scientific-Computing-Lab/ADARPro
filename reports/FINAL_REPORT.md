@@ -282,7 +282,7 @@ The authorization was consumed once; the quarantine now records
 
 | Context | Published F1 | ADARpro F1 | ΔF1 | Published AUROC | ADARpro AUROC | ΔAUROC |
 |---|---:|---:|---:|---:|---:|---:|
-| Artery | 0.8671 | 0.8870 | +0.0199 | 0.9238 | 0.9477 | +0.0239 |
+| Artery | 0.8671 | 0.8869 | +0.0199 | 0.9238 | 0.9477 | +0.0239 |
 | Brain | 0.8689 | 0.8902 | +0.0213 | 0.9301 | 0.9508 | +0.0206 |
 | Liver | 0.8541 | 0.8812 | +0.0271 | 0.9092 | 0.9414 | +0.0322 |
 | Muscle Skeletal | 0.8139 | 0.8541 | +0.0401 | 0.8688 | 0.9144 | +0.0456 |

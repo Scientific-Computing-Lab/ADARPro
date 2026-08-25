@@ -45,10 +45,10 @@ def verify_pnas_fields() -> None:
         raise AssertionError("significance statement must contain 50--120 words")
     if not keywords or not 3 <= len(keywords.group(1).split(r"$|$")) <= 5:
         raise AssertionError("manuscript must contain 3--5 keywords")
-    if "an internal instrument for estimating incremental signal" not in main:
+    if "not a replacement for published AdarEdit performance" not in main:
         raise AssertionError("development/canonical regime distinction is absent")
     if (
-        "One authorization then exposed the canonical test for exactly one evaluation"
+        "A single authorization then exposed the canonical test for one evaluation"
         not in main
     ):
         raise AssertionError("single-use canonical-test statement is absent")
@@ -66,6 +66,26 @@ def verify_claim_traceability() -> None:
             paths = list(ROOT.glob(item)) if "*" in item else [ROOT / item]
             if not paths or any(not path.exists() for path in paths):
                 raise AssertionError(f"{row['claim_id']}: missing artifact {item}")
+
+    ledger_path = PAPER / "numerical_claim_ledger.csv"
+    with ledger_path.open(newline="", encoding="utf-8") as handle:
+        ledger = list(csv.DictReader(handle))
+    if len(ledger) < 300 or len({row["claim_id"] for row in ledger}) != len(ledger):
+        raise AssertionError(
+            "numerical claim ledger is incomplete or has duplicate IDs"
+        )
+    for row in ledger:
+        artifact = ROOT / row["authoritative_artifact"]
+        if not artifact.exists():
+            raise AssertionError(
+                f"{row['claim_id']}: missing numerical source {artifact}"
+            )
+    generated = PAPER / "generated/quantitative_claims.tex"
+    if (
+        not generated.exists()
+        or "\\ArteryADARProFOne}{0.8869}" not in generated.read_text(encoding="utf-8")
+    ):
+        raise AssertionError("generated quantitative macros are absent or stale")
 
 
 def verify_manifest(path: Path, file_column: str, rooted: bool) -> None:
@@ -99,6 +119,10 @@ def verify_quantitative_sources() -> None:
     left = locked[columns].sort_values(["context", "model"]).reset_index(drop=True)
     right = source[columns].sort_values(["context", "model"]).reset_index(drop=True)
     pd.testing.assert_frame_equal(left, right, check_exact=True)
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    if "| Artery | 0.9238 | 0.9477 | 0.9262 | 0.9485 | 0.8671 | 0.8869 |" not in readme:
+        raise AssertionError("README canonical table is not synchronized")
 
 
 def verify_template_provenance() -> None:

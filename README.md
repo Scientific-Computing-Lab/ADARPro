@@ -7,12 +7,13 @@ supervision, representation, transfer, pretraining, and integration
 hypotheses under pair-disjoint development evaluation. The study retains both
 successful and negative experiments.
 
-The evidence supports two organizing principles. First, editing outcomes are
-structured at the RNA-substrate level: training on all eligible high/low sites
-with pair-first sampling improves the effective supervision. Second, the fate
-of an individual adenosine contains target-centered information that is partly
-diluted by a whole-duplex pooled representation. A compact representation
-aligned to the target and its helix partner adds complementary signal.
+The evidence supports a hierarchical picture. Whole-duplex sequence and
+structure encode intrinsic competence; genomic geometry and pair-level models
+show that substrate realization is measurable, although current bulk context
+proxies do not estimate that state well enough to improve the leading site
+classifier. Pair-first learning respects the substrate as the statistical unit,
+while a target/helix-partner-aligned representation recovers nucleotide-level
+information diluted by whole-duplex pooling.
 
 The frozen predictor is an unchanged 50:50 equal-logit ensemble of two
 independently trained models: the pair-balanced whole-duplex graph model and
@@ -28,10 +29,10 @@ with the frozen ADARPro ensemble on the original published task and split.
 
 | Context | AdarEdit AUROC | ADARPro AUROC | AdarEdit AUPRC | ADARPro AUPRC | AdarEdit F1 | ADARPro F1 |
 |---|---:|---:|---:|---:|---:|---:|
-| Artery | 0.9238 | 0.9477 | 0.9262 | 0.9485 | 0.8671 | 0.8870 |
+| Artery | 0.9238 | 0.9477 | 0.9262 | 0.9485 | 0.8671 | 0.8869 |
 | Brain | 0.9301 | 0.9508 | 0.9286 | 0.9504 | 0.8689 | 0.8902 |
 | Liver | 0.9092 | 0.9414 | 0.9242 | 0.9500 | 0.8541 | 0.8812 |
-| Muscle Skeletal | 0.8688 | 0.9144 | 0.8757 | 0.9207 | 0.8139 | 0.8541 |
+| Skeletal muscle | 0.8688 | 0.9144 | 0.8757 | 0.9207 | 0.8139 | 0.8541 |
 | Combined | 0.9331 | 0.9491 | 0.9356 | 0.9513 | 0.8674 | 0.8852 |
 
 Macro-average gains were **+0.0277 AUROC, +0.0261 AUPRC, and +0.0253 F1**.
@@ -49,6 +50,11 @@ not replace or redefine the published benchmark.
 
 - Pair-first expanded high/low supervision improved all five development
   endpoints under the same-fold internal comparison.
+- Recovering all valid high/low labels and correcting pair weighting each made
+  an independent contribution in the existing same-fold ablation.
+- Inter-arm geometry and low-capacity pair models predicted substrate editing
+  burden, but available static/bulk context did not translate this state into a
+  stronger site classifier.
 - An aligned target/helix-partner local view added complementary signal. An
   identical network centered 96 nt away failed decisively, ruling out generic
   additional CNN capacity as the explanation.

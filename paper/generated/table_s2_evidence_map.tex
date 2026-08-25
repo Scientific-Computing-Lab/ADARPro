@@ -1,23 +1,27 @@
-\begin{table}[p]
+\begin{table}[H]
 \centering
-\caption{Development evidence map. Values are percentage-point changes in AUROC with 95\% whole-pair bootstrap intervals. Each row uses its preregistered or documented same-fold comparator; these heterogeneous estimands are an evidence synthesis, not a ranking of effect sizes.}\label{tab:evidencemap}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llll}
+\caption{Development evidence map. ``Not supported'' refers only to the tested measurement and formulation; deferred hypotheses lacked appropriately matched data and were not tested. Quantitative comparisons and their prespecified references are reported in the corresponding sections and source tables.}\label{tab:evidencemap}
+\begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.25\textwidth}p{0.12\textwidth}X}
 \toprule
-Axis & Hypothesis & Decision & $\Delta$AUROC [95\% CI] \\
+Scale & Tested formulation & Evidence status & Interpretation \\
 \midrule
-Supervision & Pair-first expanded supervision & Selected & +4.29 [+3.19, +5.50] \\
-Representation & Target-aligned local view & Selected & +1.61 [+0.80, +2.38] \\
-Integration & Fixed global + local ensemble & Selected & +2.56 [+2.07, +3.05] \\
-Integration & Shared four-tissue training & Limited & +0.87 [+0.58, +1.15] \\
-Supervision & Continuous/ordinal auxiliary loss & Limited & +0.81 [+0.10, +1.51] \\
-Biology × AI & Substrate-engagement gate & Limited & +0.65 [-0.03, +1.27] \\
-Biology & IRAlu/transcript architecture & Not Promoted & +0.16 [-0.79, +1.05] \\
-Biology & H3K36me3 peak overlap & Not Promoted & +0.19 [-0.10, +0.47] \\
-Biology & RBP suppressor panel & Not Promoted & -0.26 [-0.74, +0.26] \\
-Representation & RiNALMo target embedding & Not Promoted & -0.05 [-0.51, +0.39] \\
-Representation & Substrate-wide all-A decoder & Terminated & -6.64 [-9.25, -4.38] \\
-Integration & Unified end-to-end model & Terminated & -0.72 [-1.29, -0.15] \\
+Substrate-aware learning & Pair-first expanded supervision & Selected & Corrects label use and pair weighting \\
+Target selectivity & Aligned target + helix-partner view & Selected & Survives shifted-window control \\
+Integration & Fixed equal-logit global + local & Selected & Complementary same-fold predictions \\
+Substrate realization & Pair geometry / editing burden & Supported & State is measurable, not yet actionable \\
+Supervision & Continuous + ordinal auxiliary labels & Limited & Ranking benefit; no useful F1 gain \\
+Target selectivity & Focal node / contact geometry & Limited & Points toward aligned local view \\
+Cross-tissue & Shared four-tissue training & Limited & Transfer below promotion gate \\
+Substrate realization & Hierarchical engagement gate & Limited & Small ranking gain; unstable classification \\
+Biological context & Bulk H3K36me3 overlap & Limited & Context-specific AUPRC only \\
+Biological context & RBP binding × bulk expression & Not Supported & No reproducible residual gain \\
+Biological context & Transcript / repeat annotation panel & Not Supported & No robust site-level increment \\
+Representation & Frozen RNA-language embeddings & Not Supported & No consistent incremental utility \\
+Representation & Substrate-wide all-A decoder & Not Supported & Stopped at prespecified futility gate \\
+Capacity & Larger / deeper graph networks & Not Supported & Capacity alone did not generalize \\
+Integration & Unified end-to-end architecture & Not Supported & Inferior to frozen ensemble \\
+Cellular state & Matched donor/cell multimodality & Deferred & Required measurements unavailable \\
+RNA state & Matched in-vivo structure / isoforms & Deferred & Required measurements unavailable \\
 \bottomrule
-\end{tabular}}
+\end{tabularx}
 \end{table}

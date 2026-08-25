@@ -11,10 +11,15 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "paper" / "source_tables"
 OUTPUT = ROOT / "paper" / "generated"
+CONTEXT_LABELS = {"MuscleSkeletal": "Skeletal muscle"}
 
 
 def tex(value: object) -> str:
     return str(value).replace("_", r"\_").replace("%", r"\%")
+
+
+def context_label(value: object) -> str:
+    return CONTEXT_LABELS.get(str(value), str(value))
 
 
 def interval(row: pd.Series, scale: float = 100.0) -> str:
@@ -35,14 +40,14 @@ def locked_metrics() -> None:
     lines = []
     for _, row in df.iterrows():
         lines.append(
-            f"{tex(row['context'])} & {model_names[row['model']]} & "
+            f"{tex(context_label(row['context']))} & {model_names[row['model']]} & "
             f"{row['auroc']:.4f} & {row['auprc']:.4f} & {row['f1']:.4f} & "
             f"{row['precision']:.4f} & {row['recall']:.4f} & "
             f"{row['specificity']:.4f} & {row['brier']:.4f} \\\\"
         )
     write(
         "table_s1_locked_metrics.tex",
-        r"""\begin{table}[p]
+        r"""\begin{table}[H]
 \centering
 \caption{Complete one-use canonical held-out metrics. Thresholds were frozen from the published validation partition before test access. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
 \resizebox{\textwidth}{!}{%
@@ -62,25 +67,141 @@ Context & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier 
 def evidence_map() -> None:
     df = pd.read_csv(SOURCE / "figure2_evidence_map.csv")
     lines = [
-        f"{tex(row['group'])} & {tex(row['hypothesis'])} & {tex(row['status'].title())} & "
-        f"{interval(row)} \\\\"
+        f"{tex(row['scale'])} & {tex(row['hypothesis'])} & {tex(row['status'].title())} & "
+        f"{tex(row['interpretation'])} \\\\"
         for _, row in df.iterrows()
     ]
     write(
         "table_s2_evidence_map.tex",
-        r"""\begin{table}[p]
+        r"""\begin{table}[H]
 \centering
-\caption{Development evidence map. Values are percentage-point changes in AUROC with 95\% whole-pair bootstrap intervals. Each row uses its preregistered or documented same-fold comparator; these heterogeneous estimands are an evidence synthesis, not a ranking of effect sizes.}\label{tab:evidencemap}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llll}
+\caption{Development evidence map. ``Not supported'' refers only to the tested measurement and formulation; deferred hypotheses lacked appropriately matched data and were not tested. Quantitative comparisons and their prespecified references are reported in the corresponding sections and source tables.}\label{tab:evidencemap}
+\begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.25\textwidth}p{0.12\textwidth}X}
 \toprule
-Axis & Hypothesis & Decision & $\Delta$AUROC [95\% CI] \\
+Scale & Tested formulation & Evidence status & Interpretation \\
 \midrule
 """
         + "\n".join(lines)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabularx}
+\end{table}""",
+    )
+
+
+def supervision_decomposition() -> None:
+    metrics = pd.read_csv(SOURCE / "figure3_supervision_decomposition.csv").set_index(
+        "model"
+    )
+    ci = pd.read_csv(
+        ROOT
+        / "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
+    )
+    labels = {
+        "auroc": "AUROC",
+        "auprc": "AUPRC",
+        "f1": "F1",
+    }
+    rows = []
+    for metric, label in labels.items():
+        add_labels = ci[
+            (ci.candidate == "expanded_site")
+            & (ci.reference == "development_reference")
+            & (ci.metric == metric)
+        ].iloc[0]
+        add_pair = (
+            ci[
+                (ci.candidate == "expanded_site")
+                & (ci.reference == "expanded_pair")
+                & (ci.metric == metric)
+            ]
+            .iloc[0]
+            .copy()
+        )
+        add_pair[["lower", "median", "upper"]] = -add_pair[
+            ["upper", "median", "lower"]
+        ].to_numpy()
+        rows.append(
+            f"{label} & {metrics.loc['development_reference', metric]:.4f} & "
+            f"{metrics.loc['expanded_site', metric]:.4f} & {interval(add_labels)} & "
+            f"{metrics.loc['expanded_pair', metric]:.4f} & {interval(add_pair)} \\\\"
+        )
+    write(
+        "table_s4_supervision_decomposition.tex",
+        r"""\begin{table}[H]
+\centering
+\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are whole-pair bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
+\begin{tabular}{lrrrrr}
+\toprule
+Metric & Original reference & All high/low, site-balanced & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}
+\end{table}""",
+    )
+
+
+def substrate_realization() -> None:
+    gap = pd.read_csv(SOURCE / "figure2_gap_editing_burden.csv")
+    models = pd.read_csv(SOURCE / "figure2_pair_engagement.csv").set_index("context")
+    rows = []
+    for context, group in gap.groupby("context", sort=False):
+        row = models.loc[context]
+        rows.append(
+            f"{tex(context_label(context))} & {group['spearman'].iloc[0]:.3f} & "
+            f"{row['graph_only_r2']:.3f} & {row['geometry_plus_graph_r2']:.3f} & "
+            f"{100 * row['delta_r2_median']:+.2f} [{100 * row['delta_r2_lower']:+.2f}, {100 * row['delta_r2_upper']:+.2f}] & "
+            f"{row['any_high_auroc']:.3f} \\\\"
+        )
+    write(
+        "table_s3_substrate_realization.tex",
+        r"""\begin{table}[H]
+\centering
+\caption{Substrate realization is measurable in development pairs. Spearman $\rho$ relates genomic inter-arm gap to edited-site fraction. The low-capacity pair model combines genomic geometry with graph-derived summaries; $\Delta R^2$ is relative to graph summaries alone with a 95\% whole-pair bootstrap interval. ``Any high'' denotes whether a pair contains at least one site with EditingIndex $\geq15\%$.}\label{tab:substraterealization}
+\begin{tabular}{lrrrrr}
+\toprule
+Context & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}
+\end{table}""",
+    )
+
+
+def target_controls() -> None:
+    alignment = pd.read_csv(SOURCE / "figure3_alignment_metrics.csv")
+    focal = pd.read_csv(SOURCE / "figure3_focal_metrics.csv")
+    rows = []
+    for label, frame, model in [
+        ("Whole-duplex pair model", alignment, "pair_balanced"),
+        ("Explicit focal node", focal, "focal"),
+        ("Aligned target + partner", alignment, "aligned_local"),
+        ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
+    ]:
+        row = frame[frame.model == model].iloc[0]
+        rows.append(
+            f"{label} & {row['auroc']:.4f} & {row['auprc']:.4f} & {row['f1']:.4f} & {row['brier']:.4f} \\\\"
+        )
+    write(
+        "table_s6_target_controls.tex",
+        r"""\begin{table}[H]
+\centering
+\caption{Target-representation controls in muscle development OOF data. All values are evaluated on the same canonical development rows.}\label{tab:targetcontrols}
+\begin{tabular}{lrrrr}
+\toprule
+Representation & AUROC & AUPRC & F1 & Brier \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}
 \end{table}""",
     )
 
@@ -91,12 +212,12 @@ def pair_balance() -> None:
     for context, group in df.groupby("context", sort=False):
         values = {row.metric: interval(row) for _, row in group.iterrows()}
         rows.append(
-            f"{tex(context)} & {values['auroc']} & {values['auprc']} & "
+            f"{tex(context_label(context))} & {values['auroc']} & {values['auprc']} & "
             f"{values['f1']} \\\\"
         )
     write(
-        "table_s3_pair_balance.tex",
-        r"""\begin{table}[p]
+        "table_s5_pair_balance.tex",
+        r"""\begin{table}[H]
 \centering
 \caption{Pair-first expanded supervision versus the same-fold internal AdarEdit reference. Values are percentage-point median differences with 95\% whole-pair bootstrap intervals.}\label{tab:pairbalance}
 \resizebox{\textwidth}{!}{%
@@ -120,14 +241,14 @@ def false_positive_table() -> None:
     for _, row in errors.iterrows():
         mr = matched.loc[row["context"]]
         rows.append(
-            f"{tex(row['context'])} & {int(row['baseline_fp'])} & {int(row['fp_rescued'])} "
+            f"{tex(context_label(row['context']))} & {int(row['baseline_fp'])} & {int(row['fp_rescued'])} "
             rf"({100 * row['fp_rescue_rate']:.1f}\%) & {int(row['new_fp'])} & "
             rf"{int(row['tp_damaged'])} ({100 * row['tp_damage_rate']:.1f}\%) & "
             f"{int(mr['false_positives_avoided'])} \\\\"
         )
     write(
-        "table_s4_false_positives.tex",
-        r"""\begin{table}[p]
+        "table_s9_false_positives.tex",
+        r"""\begin{table}[H]
 \centering
 \caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation thresholds. The final column re-thresholds ADARPro to match published-baseline recall exactly.}\label{tab:falsepositives}
 \resizebox{\textwidth}{!}{%
@@ -155,13 +276,13 @@ def natural_prevalence() -> None:
     rows = []
     for _, row in df.iterrows():
         rows.append(
-            f"{tex(row['context'])} & {names[row['model']]} & {int(row['n'])} & "
+            f"{tex(context_label(row['context']))} & {names[row['model']]} & {int(row['n'])} & "
             f"{row['auroc']:.4f} & {row['auprc']:.4f} & {row['f1']:.4f} & "
             f"{row['precision']:.4f} & {row['recall']:.4f} & {int(row['fp'])} \\\\"
         )
     write(
-        "table_s5_natural_prevalence.tex",
-        r"""\begin{table}[p]
+        "table_s7_natural_prevalence.tex",
+        r"""\begin{table}[H]
 \centering
 \caption{Secondary natural-prevalence development evaluation. All eligible high/low observations from unchanged development pairs are included; fold-specific validation thresholds are used.}\label{tab:natural}
 \resizebox{\textwidth}{!}{%
@@ -202,8 +323,8 @@ def unified() -> None:
         f"{metric.upper()} & {interval(lookup[metric])} \\\\" for metric in order
     ]
     write(
-        "table_s6_unified.tex",
-        r"""\begin{table}[p]
+        "table_s8_unified.tex",
+        r"""\begin{table}[H]
 \centering
 \caption{Preregistered unified-model comparison on muscle development data. The unified architecture was rejected before canonical-test access.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
@@ -265,7 +386,7 @@ def experiment_taxonomy() -> None:
             f"{direction} & {tex(status_names[row['initial_status']])} \\\\"
         )
     write(
-        "table_s7_experiment_taxonomy.tex",
+        "table_s10_experiment_taxonomy.tex",
         r"""\begin{longtable}{p{0.06\textwidth}p{0.14\textwidth}p{0.33\textwidth}p{0.37\textwidth}}
 \caption{Complete ranked performance-frontier taxonomy and final campaign decision. Full hypotheses, data sources, leakage risks, promotion rules, kill rules, and result summaries are retained in \texttt{experiments/performance\_frontier\_opportunities.csv}.}\label{tab:taxonomy}\\
 \toprule
@@ -325,14 +446,16 @@ def manifest() -> None:
 def main() -> None:
     locked_metrics()
     evidence_map()
+    supervision_decomposition()
     pair_balance()
+    substrate_realization()
+    target_controls()
     false_positive_table()
     natural_prevalence()
     unified()
     experiment_taxonomy()
-    registry_summary()
     manifest()
-    print("PASS: rendered 8 SI tables from authoritative artifacts")
+    print("PASS: rendered 10 SI tables from authoritative artifacts")
 
 
 if __name__ == "__main__":
