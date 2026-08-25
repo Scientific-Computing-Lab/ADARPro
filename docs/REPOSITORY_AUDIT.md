@@ -22,4 +22,16 @@ status, split result, test/lint result, result-table build, figure build, and
 paper/SI compilation below. The publication release commit will update this
 section after all checks pass.
 
-Status: pending clean-clone verification.
+## Phase I verification
+
+The GitHub-hosted commit `c93dc8e` was cloned into a new temporary directory
+and verified on 2026-08-25. The editable package installed in the pinned
+environment; the 884-pair split check passed; all 120 tests passed; Ruff passed;
+128 AdarEdit result evaluations were regenerated; the authoritative locked
+result, freeze, quarantine, and 128-run registry passed their integrity checks;
+the 1,724-file release manifest verified; and seven development figures plus
+their source tables were regenerated outside the checkout. The clone remained
+clean.
+
+Status: **Phase I complete**. A second fresh-clone audit will be recorded after
+the manuscript and Supplementary Information are added.
