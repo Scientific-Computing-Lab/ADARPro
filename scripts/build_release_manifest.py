@@ -8,6 +8,18 @@ import hashlib
 from pathlib import Path
 
 EXCLUDED_PARTS = {".git", "__pycache__", ".pytest_cache", ".ruff_cache", "build"}
+EXCLUDED_SUFFIXES = {
+    ".aux",
+    ".bbl",
+    ".bcf",
+    ".blg",
+    ".fdb_latexmk",
+    ".fls",
+    ".log",
+    ".out",
+    ".run.xml",
+    ".toc",
+}
 
 
 def digest(path: Path) -> str:
@@ -25,6 +37,10 @@ def records(root: Path, output: Path) -> list[str]:
             continue
         relative = path.relative_to(root)
         if any(part in EXCLUDED_PARTS for part in relative.parts):
+            continue
+        if any(part.endswith(".egg-info") for part in relative.parts):
+            continue
+        if any(path.name.endswith(suffix) for suffix in EXCLUDED_SUFFIXES):
             continue
         if path.resolve() == output.resolve():
             continue
