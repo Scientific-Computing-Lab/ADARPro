@@ -35,3 +35,14 @@ clean.
 
 Status: **Phase I complete**. A second fresh-clone audit will be recorded after
 the manuscript and Supplementary Information are added.
+
+## Publication-package preflight
+
+The PNAS main manuscript, Supporting Information, quantitative figure source
+tables, deterministic renderers, DOI-audited bibliography, and claim-level
+traceability table passed the pinned-environment preflight on 2026-08-25. The
+preflight included all 120 tests, Ruff, the authoritative-result/freeze/
+quarantine checks, generation of 128 evaluation rows, four main and six SI
+figures, eight SI tables, both LaTeX builds, and static plus live Crossref
+reference verification. A final clean-clone status is added only after the
+publication commit has been fetched from GitHub and tested independently.
