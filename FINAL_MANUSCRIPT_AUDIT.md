@@ -7,7 +7,7 @@ Audit date: 2026-08-25 UTC
 - **Title:** *Machine-learning dissection of endogenous A-to-I RNA editing
   reveals substrate- and target-level determinants of predictability*
 - **Format:** official 2025 PNAS `pnasresearcharticle` template
-- **Main manuscript:** `paper/main.tex` and `paper/main.pdf` (7 pages)
+- **Main manuscript:** `paper/main.tex` and `paper/main.pdf` (8 pages)
 - **Supporting Information:** `paper/supplementary.tex` and
   `paper/supplementary.pdf` (11 pages)
 - **Numerical source of truth:** `paper/numerical_claim_ledger.csv` (441 claims)
@@ -156,7 +156,7 @@ Bibliographic capitalization preserves RNA, ADAR, Alu, and model names.
 
 - Abstract: 230 words; Significance Statement: 92 words; five keywords.
 - Canonical split: 884 pairs with zero within-split or cross-tissue pair leakage.
-- Main manuscript: 7 pages; Supporting Information: 11 pages.
+- Main manuscript: 8 pages; Supporting Information: 11 pages.
 - Canonical split, authoritative-result, freeze, quarantine, and registry checks:
   passed.
 - Python tests: 120 passed; Ruff: passed.
@@ -164,16 +164,19 @@ Bibliographic capitalization preserves RNA, ADAR, Alu, and model names.
   hashes, claim traceability, and manuscript compilation: passed.
 - Static and live Crossref reference audit: passed for 35 records and 30 cited
   keys.
-- PDF structural checks: passed for the main manuscript and SI.
+- PDF structural checks: passed for the main manuscript and SI. The PNAS
+  first-page mode is explicitly terminated with the template-prescribed
+  `\Parasplit` transition; a rendered bounding-box check confirms that no text
+  falls beyond any edge of the 585-point-wide main-paper pages.
 - Release manifest: 1,821 curated files verified.
 - Fresh-clone reproduction: passed at publication-content commit
   `5f0b68b6b60a4bbed2c0eb6047017d344137bb27`. The remote clone installed through
   the declared project extras, passed `make verify` and `make paper-check`,
-  regenerated the 7-page manuscript and 11-page SI, and remained clean.
+  regenerated the manuscript and SI, and remained clean.
 
-The PNAS class emits its known `LastPage` duplicate-label and output-routine box
-warnings. No manuscript-body overflow, unresolved citation, or unresolved
-cross-reference is present.
+The PNAS class emits its known `LastPage` duplicate-label and first-page
+title-block box warnings. No manuscript-body overflow, unresolved citation, or
+unresolved cross-reference is present.
 
 ## Remaining author-supplied fields
 

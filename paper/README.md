@@ -20,7 +20,9 @@ LaTeX macros, and SI tables from retained authoritative artifacts, then builds:
 
 The PNAS class requires a normal TeX Live installation. On Debian/Ubuntu the
 non-base dependencies are supplied by `texlive-latex-extra`,
-`texlive-fonts-recommended`, and `lmodern`.
+`texlive-fonts-recommended`, and `lmodern`. `make paper-check` additionally
+uses Poppler's `pdftotext` to verify that rendered text remains within every
+main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
 
 ## Traceability
 

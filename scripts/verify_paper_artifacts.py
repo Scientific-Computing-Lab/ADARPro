@@ -6,6 +6,10 @@ from __future__ import annotations
 import csv
 import hashlib
 import re
+import shutil
+import subprocess
+import tempfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pandas as pd
@@ -155,15 +159,62 @@ def verify_compilation() -> None:
             raise AssertionError(f"unresolved LaTeX problem in {log}")
 
 
+def verify_main_pdf_page_bounds() -> None:
+    """Reject rendered main-paper text that falls beyond a physical page edge."""
+    executable = shutil.which("pdftotext")
+    if executable is None:
+        raise AssertionError(
+            "pdftotext is required for the PDF page-boundary check "
+            "(install poppler-utils)"
+        )
+    pdf = PAPER / "main.pdf"
+    with tempfile.TemporaryDirectory(prefix="adarpro-pdf-bounds-") as tmpdir:
+        bbox = Path(tmpdir) / "main.html"
+        subprocess.run(
+            [executable, "-bbox-layout", str(pdf), str(bbox)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        root = ET.parse(bbox).getroot()
+
+    violations: list[str] = []
+    pages = [element for element in root.iter() if element.tag.endswith("page")]
+    for page_number, page in enumerate(pages, start=1):
+        width = float(page.attrib["width"])
+        height = float(page.attrib["height"])
+        for word in (element for element in page.iter() if element.tag.endswith("word")):
+            x_min = float(word.attrib["xMin"])
+            x_max = float(word.attrib["xMax"])
+            y_min = float(word.attrib["yMin"])
+            y_max = float(word.attrib["yMax"])
+            tolerance = 0.5
+            if (
+                x_min < -tolerance
+                or x_max > width + tolerance
+                or y_min < -tolerance
+                or y_max > height + tolerance
+            ):
+                content = "".join(word.itertext()).strip()
+                violations.append(
+                    f"page {page_number}: {content!r} at "
+                    f"({x_min:.2f}, {y_min:.2f})--({x_max:.2f}, {y_max:.2f})"
+                )
+    if violations:
+        details = "\n".join(violations[:10])
+        raise AssertionError(f"main-paper content exceeds page bounds:\n{details}")
+
+
 def main() -> None:
     verify_pnas_fields()
     verify_claim_traceability()
     verify_quantitative_sources()
     verify_template_provenance()
     verify_compilation()
+    verify_main_pdf_page_bounds()
     print(
         "PASS: PNAS limits, claim traceability, quantitative source hashes, "
-        "and manuscript builds verified"
+        "manuscript builds, and main-paper page bounds verified"
     )
 
 

@@ -31,7 +31,7 @@ The manuscript keeps the two evaluation regimes separate:
 
 ## Publication package
 
-- PNAS source/PDF: `paper/main.tex`, `paper/main.pdf` (7 pages).
+- PNAS source/PDF: `paper/main.tex`, `paper/main.pdf` (8 pages).
 - SI source/PDF: `paper/supplementary.tex`, `paper/supplementary.pdf` (11 pages).
 - Four main and six supplementary figures in PDF, SVG, and PNG.
 - Ten generated SI tables and machine-readable source tables.
