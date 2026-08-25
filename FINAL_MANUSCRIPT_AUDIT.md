@@ -11,7 +11,7 @@ Audit date: 2026-08-25 UTC
 - **Supporting Information:** `paper/supplementary.tex` and
   `paper/supplementary.pdf` (11 pages)
 - **Numerical source of truth:** `paper/numerical_claim_ledger.csv` (441 claims)
-- **Publication-content commit:** `5f0b68b6b60a4bbed2c0eb6047017d344137bb27`
+- **Publication-content commit:** `8b6dafbf5660dc2a1c77fd9fcaa0e9467d209b5a`
 
 The publication-content commit is recorded rather than the audit commit because
 a commit cannot contain its own identifier. The repository HEAD accompanying
@@ -170,9 +170,9 @@ Bibliographic capitalization preserves RNA, ADAR, Alu, and model names.
   falls beyond any edge of the 585-point-wide main-paper pages.
 - Release manifest: 1,821 curated files verified.
 - Fresh-clone reproduction: passed at publication-content commit
-  `5f0b68b6b60a4bbed2c0eb6047017d344137bb27`. The remote clone installed through
-  the declared project extras, passed `make verify` and `make paper-check`,
-  regenerated the manuscript and SI, and remained clean.
+  `8b6dafbf5660dc2a1c77fd9fcaa0e9467d209b5a`. The remote clone passed
+  `make verify` and `make paper-check`, regenerated the 8-page manuscript and
+  11-page SI, passed the rendered page-boundary check, and remained clean.
 
 The PNAS class emits its known `LastPage` duplicate-label and first-page
 title-block box warnings. No manuscript-body overflow, unresolved citation, or
