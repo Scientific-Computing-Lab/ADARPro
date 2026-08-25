@@ -61,7 +61,9 @@ paper are included.
 ## Quality-control status
 
 The publication preflight passed in the pinned project environment. The same
-checks are rerun from a fresh GitHub clone before release handoff:
+checks passed from a fresh clone of the GitHub-hosted publication commit
+`aa406d00fecb9df7246343b7574a0cd12fd06a42` at
+`/tmp/adarpro-publication-XIuhkZ/ADARPro`:
 
 - editable installation from repository metadata;
 - 884-pair split and zero-overlap verification;
@@ -75,16 +77,19 @@ checks are rerun from a fresh GitHub clone before release handoff:
   quantitative-source audits;
 - visual inspection of every main and supplementary PDF page.
 
-The preflight result was 884 substrates with no within-split or cross-tissue
-leakage, 120 passing tests, a clean Ruff check, 128 regenerated evaluations,
-10 regenerated vector figures, eight regenerated SI tables, two successful
-PNAS LaTeX builds, 35 DOI-audited bibliography records, and passing scientific,
+The result was 884 substrates with no within-split or cross-tissue leakage,
+120 passing tests, a clean Ruff check, 128 regenerated evaluations, 10
+regenerated vector figures, eight regenerated SI tables, two successful PNAS
+LaTeX builds, 35 DOI-audited bibliography records, and passing scientific,
 quarantine, provenance, figure-source, claim-traceability, and formatting
-audits.
+audits. The rebuilt main paper has seven pages and the SI has 19 pages. The
+clone remained clean after regeneration, confirming that reported outputs are
+reproducible byte for byte in the pinned environment.
 
-The exact final Git SHA and fresh-clone path/status are recorded in the release
-handoff because a Git commit cannot embed its own identifier. No force push is
-used.
+The publication-content SHA above is the commit subjected to the complete
+clean-clone audit. The final handoff also reports the subsequent audit-only
+commit containing this record and the refreshed integrity manifest, because a
+Git commit cannot embed its own identifier. No force push was used.
 
 ## Remaining submission placeholders
 

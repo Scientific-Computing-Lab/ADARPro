@@ -33,8 +33,7 @@ the 1,724-file release manifest verified; and seven development figures plus
 their source tables were regenerated outside the checkout. The clone remained
 clean.
 
-Status: **Phase I complete**. A second fresh-clone audit will be recorded after
-the manuscript and Supplementary Information are added.
+Status: **Phase I complete**.
 
 ## Publication-package preflight
 
@@ -46,3 +45,17 @@ quarantine checks, generation of 128 evaluation rows, four main and six SI
 figures, eight SI tables, both LaTeX builds, and static plus live Crossref
 reference verification. A final clean-clone status is added only after the
 publication commit has been fetched from GitHub and tested independently.
+
+## Phase II verification
+
+The GitHub-hosted publication commit
+`aa406d00fecb9df7246343b7574a0cd12fd06a42` was cloned into
+`/tmp/adarpro-publication-XIuhkZ/ADARPro` and verified on 2026-08-25. The
+editable package installed in the pinned environment; the complete `make
+verify` and `make paper-check` workflows passed; the live Crossref audit
+passed for all 35 DOI records; the main paper and SI compiled to seven and 19
+pages, respectively; and the regenerated clone remained clean.
+
+Status: **Phases I and II complete**. The handoff identifies the final
+audit-only commit that contains this record and the corresponding refreshed
+release-integrity manifest.
