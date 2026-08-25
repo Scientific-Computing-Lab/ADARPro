@@ -1,0 +1,11 @@
+{
+  "bootstrap_replicates": 1000,
+  "candidates": [
+    "two_way",
+    "three_way"
+  ],
+  "canonical_test_access": false,
+  "pairs": 597,
+  "rows": 54289,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

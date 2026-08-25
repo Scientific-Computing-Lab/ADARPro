@@ -1,0 +1,41 @@
+{
+  "canonical_test_access": false,
+  "checkpoint_sha256": {
+    "local": "648f3067c8be16305a86c7f625b48b40cba1e824955b5616468f25af043218ff",
+    "pair": "5d231fec17fec0354055762c0d1ec0cab87c5048a9b5e7ff17c36724bcc9d16e"
+  },
+  "checkpoints": {
+    "local": "models/frozen/Brain/binary_pair_balanced_local/best.pth",
+    "pair": "models/frozen/Brain/binary_pair_balanced/best.pth"
+  },
+  "components": {
+    "local": "binary_pair_balanced_local",
+    "pair": "binary_pair_balanced"
+  },
+  "context": "Brain",
+  "ensemble": "fixed equal-logit average",
+  "scope": "published validation only; canonical test remains sealed",
+  "selection_f1": 0.8836006207966891,
+  "threshold": 0.42500000000000004,
+  "validation_metrics": {
+    "auprc": 0.933900464061331,
+    "auroc": 0.945503434749905,
+    "balanced_accuracy": 0.8804573913048384,
+    "f1": 0.8836006207966891,
+    "fn": 179,
+    "fp": 271,
+    "mcc": 0.7619038851821284,
+    "n": 3766,
+    "precision": 0.8630621526023244,
+    "recall": 0.9051404345521993,
+    "specificity": 0.8557743480574774,
+    "tn": 1608,
+    "tp": 1708
+  },
+  "validation_pairs": 118,
+  "validation_rows": 3766,
+  "weights": [
+    0.5,
+    0.5
+  ]
+}

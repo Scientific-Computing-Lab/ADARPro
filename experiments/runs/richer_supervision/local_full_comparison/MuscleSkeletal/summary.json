@@ -1,0 +1,12 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "pair_balanced",
+    "focal",
+    "local"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "Muscle canonical development OOF; fixed target-local comparison"
+}

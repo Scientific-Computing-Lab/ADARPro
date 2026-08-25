@@ -1,0 +1,17 @@
+{
+  "canonical_test_access": false,
+  "context": "Liver",
+  "edited_fraction_quantiles": {
+    "0.0": 0.0,
+    "0.25": 0.07198085419734904,
+    "0.5": 0.18245838668373882,
+    "0.75": 0.3016611902154071,
+    "1.0": 1.0
+  },
+  "feature_counts": {
+    "full": 62,
+    "intrinsic": 16
+  },
+  "pairs": 508,
+  "scope": "development pairs only; outer pair folds"
+}

@@ -1,0 +1,78 @@
+{
+  "audit_chain_head": "1decf325effb6894e8fdd681070b390a58a4f37ef82aa0a496a3c1ad21487ed2",
+  "created_utc": "2026-08-21T17:57:47.952226+00:00",
+  "development_splits": [
+    "train",
+    "valid"
+  ],
+  "final_locked_test": {
+    "authorization_sha256": null,
+    "consumed_utc": "2026-08-25T04:28:30.092202+00:00",
+    "evaluations_consumed": 1,
+    "freeze_manifest": {
+      "frozen_utc": "2026-08-25T04:28:26.406928+00:00",
+      "path": "provenance/final_pipeline_manifest.json",
+      "sha256": "dd04f9786d52f57653da31b12dc777d10aa4247dfccd2b2c59ddff64ad395a1c"
+    }
+  },
+  "published_reproduction": {
+    "last_result_sha256": "e68e8002ce7a9a01f515008374e9e8bd7e2b16b473d649776829c6392a7c12d0",
+    "runs": 1
+  },
+  "repository": ".",
+  "schema_version": 1,
+  "state": "final_consumed",
+  "test_artifacts": [
+    {
+      "bytes": 7145724,
+      "path": "data/human/Artery/test.jsonl",
+      "sha256": "27621a48125df0328acde6308c3f078bca2f1fb835142a23dd4c169941d3d0bf"
+    },
+    {
+      "bytes": 184026,
+      "path": "data/human/Artery/test.metadata.csv",
+      "sha256": "9d185f12a35e71cb4f4baa37032bc885583d9439d98c2fb3eddaf8e60d410e2e"
+    },
+    {
+      "bytes": 6809262,
+      "path": "data/human/Brain/test.jsonl",
+      "sha256": "c2e95092d91c929f85c52fee55b587ed6572c2db4ffc470d23f180baeefe2a5b"
+    },
+    {
+      "bytes": 175343,
+      "path": "data/human/Brain/test.metadata.csv",
+      "sha256": "411f948abde90061428e402be6ed46ed98cf5737a1c3f58ab4609804d15a25ac"
+    },
+    {
+      "bytes": 6202612,
+      "path": "data/human/Liver/test.jsonl",
+      "sha256": "d261e04803d5fadb06ea3ec6cbae8c225ab630e5bc8c33272d18ae0ff11362af"
+    },
+    {
+      "bytes": 159501,
+      "path": "data/human/Liver/test.metadata.csv",
+      "sha256": "7714ebcd82ac8a88808cee7cb86e1c95b77f42415d3754c6752d8a413eb5c75c"
+    },
+    {
+      "bytes": 2130242,
+      "path": "data/human/MuscleSkeletal/test.jsonl",
+      "sha256": "10c0e1462e0c7b992e1a7ece1cc51f84a6ca2fafa28322ddf62b2016e6de8933"
+    },
+    {
+      "bytes": 54774,
+      "path": "data/human/MuscleSkeletal/test.metadata.csv",
+      "sha256": "f673447a998593f71f17d30fc33e79f763bd736112fc44e67af25fdc9fdacac1"
+    },
+    {
+      "bytes": 7267843,
+      "path": "data/human/Combined/test.jsonl",
+      "sha256": "8228d28c4b92afe4d014d0fa9549a586ebc8acf4677b2bc5b29002df6bdb1dbf"
+    },
+    {
+      "bytes": 186776,
+      "path": "data/human/Combined/test.metadata.csv",
+      "sha256": "89b3ff16afaf6df6f80f0074996db7136bdd39264f859a690231518b2264f4f8"
+    }
+  ],
+  "upstream_revision": "5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5"
+}

@@ -1,0 +1,14 @@
+{
+  "architecture": "compact GAT global mean embedding concatenated with itself; matched-width negative control for focal-node pooling",
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "inner_fold": 3,
+  "loss": "binary BCE",
+  "mode": "binary_pair_balanced_duplicate_pool",
+  "outer_fold": 2,
+  "per_epoch_samples": 3579,
+  "sampler": "equal absent/high states; uniform pair then uniform site within pair; canonical-training-row-sized update budget",
+  "selection": "canonical inner-fold binary F1 and threshold"
+}

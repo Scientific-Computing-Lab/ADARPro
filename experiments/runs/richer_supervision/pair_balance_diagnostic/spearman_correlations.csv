@@ -1,0 +1,7 @@
+covariate,outcome,spearman,p_value
+raw_site_count,pair_gain_vs_development_reference,-0.032275649059750056,0.43587537912376695
+canonical_site_count,pair_gain_vs_development_reference,0.0010884502028683269,0.9790421440661884
+raw_high_fraction,pair_gain_vs_development_reference,-0.029707710127549622,0.4732783987496333
+raw_site_count,pair_gain_vs_site_balanced,-0.13091787108243394,0.0015067710146128724
+canonical_site_count,pair_gain_vs_site_balanced,0.06970240043511566,0.0921199790556415
+raw_high_fraction,pair_gain_vs_site_balanced,0.1543050161815225,0.00017923341862981007

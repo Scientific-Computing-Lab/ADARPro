@@ -1,0 +1,17 @@
+{
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "epochs": 1000,
+  "inner_fold": 3,
+  "mode": "joint_multilabel_pair_balanced",
+  "outer_fold": 2,
+  "per_tissue_samples": {
+    "Artery": 11498,
+    "Brain": 11628,
+    "Liver": 9304,
+    "MuscleSkeletal": 3579
+  },
+  "sampler": "per tissue/state: uniform pair then uniform site; repeated graphs collapsed to exact loss weights",
+  "selection": "macro F1 across four individual tissues on inner fold",
+  "total_label_weight_per_epoch": 36009
+}

@@ -1,0 +1,13 @@
+{
+  "bootstrap_replicates": 2000,
+  "canonical_test_access": false,
+  "completed_folds": [
+    0,
+    1,
+    2
+  ],
+  "pairs": 352,
+  "rows": 3579,
+  "scope": "completed development outer folds only",
+  "stop_reason": "Stopped after three complete outer folds: anchor underperformed focal in two folds and did not show a stable ranking or F1 gain."
+}

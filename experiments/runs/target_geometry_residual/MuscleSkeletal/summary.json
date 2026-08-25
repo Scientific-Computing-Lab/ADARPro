@@ -1,0 +1,16 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "feature_sets": {
+    "baseline_logit": 0,
+    "baseline_plus_contact_core": 7,
+    "baseline_plus_contact_full": 52,
+    "baseline_plus_multiscale_structure": 47
+  },
+  "matched_random_dimension": 52,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF predictions only",
+  "selection": "nested pair folds; C and threshold selected on inner fold"
+}

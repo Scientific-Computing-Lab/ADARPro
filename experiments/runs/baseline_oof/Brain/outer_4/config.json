@@ -1,0 +1,32 @@
+{
+  "architecture": "upstream Baseline GAT: RNAEditingGNN(8,32,1,4)",
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "Brain",
+  "epochs": 1000,
+  "inner_selection_fold": 0,
+  "optimizer": "Adam(lr=1e-3,weight_decay=1e-4)",
+  "outer_fold": 4,
+  "partition_pair_sha256": {
+    "outer": "4b3aba2b36b5fc3ae47f0a645f33793c78350335549fa4dc50fa3ce94d1b4583",
+    "selection": "d55b41b41b0a69def03eb0d6cef1151f7b7d6371d011d332d350f05573664753",
+    "train": "480e77884b9526d27fbc6e8098b3cd6946f108ff34e4a1915ccd243c4e94b2bb"
+  },
+  "partition_pairs": {
+    "outer": 123,
+    "selection": 123,
+    "train": 366
+  },
+  "partition_rows": {
+    "outer": 3870,
+    "selection": 3874,
+    "train": 11647
+  },
+  "seed": 20260821,
+  "selection": "maximum inner-fold F1; 33 thresholds from 0.1 to 0.9",
+  "training_folds": [
+    1,
+    2,
+    3
+  ]
+}

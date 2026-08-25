@@ -1,0 +1,102 @@
+{
+  "benchmark_overlapping_alus_excluded": 1805,
+  "benchmark_pairs_listed": 905,
+  "canonical_test_labels_accessed": false,
+  "genome_build": "GRCh38",
+  "interpretation": "Transcript-span containment leaves a large candidate pool but is only a permissive transcription proxy. Isoform connectivity, expression, redundancy control, foldability and chromosome-aware contamination checks remain required.",
+  "opposite_orientation_nonoverlapping_pair_counts": {
+    "1000": 501152,
+    "10000": 4700792,
+    "2000": 991945,
+    "5000": 2406873
+  },
+  "remaining_alus": 1281016,
+  "repeatmasker_alus": 1282821,
+  "scope": "outcome-independent RepeatMasker upper-bound audit; all repeats overlapping any canonical benchmark arm excluded",
+  "top_chromosomes_5kb": [
+    [
+      "chr1",
+      202959
+    ],
+    [
+      "chr19",
+      190273
+    ],
+    [
+      "chr7",
+      154345
+    ],
+    [
+      "chr17",
+      149365
+    ],
+    [
+      "chr2",
+      124421
+    ],
+    [
+      "chr16",
+      123664
+    ],
+    [
+      "chr12",
+      122430
+    ],
+    [
+      "chr3",
+      103342
+    ],
+    [
+      "chr10",
+      96278
+    ],
+    [
+      "chr6",
+      87971
+    ]
+  ],
+  "top_chromosomes_transcript_compatible_1kb": [
+    [
+      "chr1",
+      26970
+    ],
+    [
+      "chr19",
+      25737
+    ],
+    [
+      "chr17",
+      20774
+    ],
+    [
+      "chr7",
+      17774
+    ],
+    [
+      "chr16",
+      17529
+    ],
+    [
+      "chr2",
+      17444
+    ],
+    [
+      "chr12",
+      16632
+    ],
+    [
+      "chr3",
+      14416
+    ],
+    [
+      "chr10",
+      12055
+    ],
+    [
+      "chr5",
+      11872
+    ]
+  ],
+  "within_1kb_transcript_compatible_fraction": 0.5747876891641658,
+  "within_1kb_transcript_compatible_pairs": 288056
+}

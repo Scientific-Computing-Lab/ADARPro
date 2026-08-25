@@ -1,0 +1,7 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "pairs": 659,
+  "rows": 60037,
+  "scope": "four-tissue joint grouped OOF; global pair-clustered bootstrap"
+}

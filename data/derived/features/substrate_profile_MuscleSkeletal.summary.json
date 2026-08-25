@@ -1,0 +1,8 @@
+{
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "maximum_recomputed_focal_difference": 7.510185241699219e-06,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "every adenosine on development substrates; fold-held-out Baseline GAT only"
+}

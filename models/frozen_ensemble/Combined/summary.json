@@ -1,0 +1,41 @@
+{
+  "canonical_test_access": false,
+  "checkpoint_sha256": {
+    "local": "4db7a54dcf407d9d5f6be9a3fa85bac264debad8326f9c538250f81aa66fc983",
+    "pair": "f4d8111412355b5104dc64c59c8eeca82568be37f1cc5a2caf7ca8aa88f937a2"
+  },
+  "checkpoints": {
+    "local": "models/frozen/Combined/binary_pair_balanced_local/best.pth",
+    "pair": "models/frozen/Combined/binary_pair_balanced/best.pth"
+  },
+  "components": {
+    "local": "binary_pair_balanced_local",
+    "pair": "binary_pair_balanced"
+  },
+  "context": "Combined",
+  "ensemble": "fixed equal-logit average",
+  "scope": "published validation only; canonical test remains sealed",
+  "selection_f1": 0.8842051802945657,
+  "threshold": 0.35,
+  "validation_metrics": {
+    "auprc": 0.9412046778034246,
+    "auroc": 0.9477311910482292,
+    "balanced_accuracy": 0.8803874132407902,
+    "f1": 0.8842051802945657,
+    "fn": 132,
+    "fp": 324,
+    "mcc": 0.7637368394258037,
+    "n": 3793,
+    "precision": 0.8430992736077482,
+    "recall": 0.9295248264815803,
+    "specificity": 0.83125,
+    "tn": 1596,
+    "tp": 1741
+  },
+  "validation_pairs": 139,
+  "validation_rows": 3793,
+  "weights": [
+    0.5,
+    0.5
+  ]
+}

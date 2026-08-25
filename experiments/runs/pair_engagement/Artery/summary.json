@@ -1,0 +1,17 @@
+{
+  "canonical_test_access": false,
+  "context": "Artery",
+  "edited_fraction_quantiles": {
+    "0.0": 0.0,
+    "0.25": 0.141321044546851,
+    "0.5": 0.27906976744186046,
+    "0.75": 0.4207535885167464,
+    "1.0": 1.0
+  },
+  "feature_counts": {
+    "full": 62,
+    "intrinsic": 16
+  },
+  "pairs": 607,
+  "scope": "development pairs only; outer pair folds"
+}

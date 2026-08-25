@@ -1,0 +1,46 @@
+{
+  "combined_expression": "not assigned",
+  "contexts": {
+    "Artery": 19170,
+    "Brain": 19391,
+    "Combined": 19098,
+    "Liver": 15509,
+    "MuscleSkeletal": 5967
+  },
+  "oof_contexts_available": [
+    "MuscleSkeletal"
+  ],
+  "pairs": 705,
+  "predicted_feature_count": 920,
+  "predicted_rbp_genes": [
+    "DROSHA",
+    "HNRNPC",
+    "HNRNPM",
+    "IGF2BP1",
+    "ILF3",
+    "MATR3",
+    "RBFOX2",
+    "TIA1",
+    "TROVE2",
+    "XRCC6"
+  ],
+  "prismnet_feature_count": 611,
+  "prismnet_genes": [
+    "AUH",
+    "DROSHA",
+    "FXR1",
+    "HNRNPC",
+    "HNRNPM",
+    "IGF2BP1",
+    "ILF3",
+    "PUS1",
+    "RBFOX2",
+    "SLBP",
+    "TIA1",
+    "TROVE2",
+    "XRCC6"
+  ],
+  "rows": 79135,
+  "scope": "development train+valid only",
+  "total_columns": 2637
+}

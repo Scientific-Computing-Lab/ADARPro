@@ -1,0 +1,19 @@
+{
+  "gencode": {
+    "genome_build": "GRCh38",
+    "local_path": "data/external/annotations/gencode.v46.annotation.gtf.gz",
+    "release": "GENCODE v46 / Ensembl 112",
+    "sha256": "82b0e52bc4956486528152e3850660b3c41767ab103d87949e41d38f92ef8b38",
+    "source": "https://www.gencodegenes.org/human/release_46.html"
+  },
+  "repeatmasker": {
+    "genome_build": "GRCh38",
+    "local_path": "data/external/annotations/rmsk.hg38.txt.gz",
+    "records_all_repeats": 5683690,
+    "records_sine_alu": 1282821,
+    "sha256": "db60e6aa7ac175f8f5465cd01b48b550e67e1fb0fd828608d8343481867bb276",
+    "source": "UCSC Genome Browser rmsk table"
+  },
+  "retrieval_recorded_utc": "2026-08-21",
+  "usage": "Outcome-independent IRAlu subfamily/divergence/neighborhood and transcript/isoform/splice annotations. Canonical test records were not read during development feature construction."
+}

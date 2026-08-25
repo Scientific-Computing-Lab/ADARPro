@@ -1,0 +1,7 @@
+search_date,database,query,result_count,retained_scope_note
+2026-08-21,PubMed,"(A-to-I RNA editing[Title/Abstract] OR ADAR[Title/Abstract]) AND (ILF3[Title/Abstract] OR ILF2[Title/Abstract] OR STRBP[Title/Abstract] OR ZFR[Title/Abstract])",6,"DZF-family and ADAR-specific search; includes Freund 2020, Zn72D/ZFR 2020, and Yi 2026"
+2026-08-21,PubMed,"(RNA editing[Title/Abstract] OR ADAR[Title/Abstract]) AND (TROVE2[Title/Abstract] OR Ro60[Title/Abstract] OR XRCC6[Title/Abstract] OR DROSHA[Title/Abstract] OR MATR3[Title/Abstract] OR HNRNPC[Title/Abstract])",28,"Seeded non-DZF candidates; screened titles/abstracts for direct perturbation or interaction evidence"
+2026-08-21,PubMed,"(RNA editing[Title/Abstract] OR ADAR[Title/Abstract]) AND (RNA-binding protein[Title/Abstract] OR RBP[Title/Abstract]) AND 2024:2026[dp]",36,"Current broad RBP-regulation search"
+2026-08-21,PubMed,"(A-to-I editing[Title/Abstract] OR ADAR[Title/Abstract]) AND (H3K36me3[Title/Abstract] OR H2A.Z[Title/Abstract] OR chromatin[Title/Abstract])",20,"Future context-layer search; not mixed into the primary RBP experiment"
+2026-08-21,PubMed,"(A-to-I editing[Title/Abstract] OR ADAR[Title/Abstract]) AND (competition[Title/Abstract] OR competes[Title/Abstract] OR shielding[Title/Abstract])",16,"Competitive/shielding-mechanism search"
+2026-08-22,PubMed/OpenAlex,"(inverted Alu OR IRAlu) AND (distance OR spacing OR architecture) AND (ADAR OR RNA editing)",20,"Performance-frontier follow-up; retained Bazak et al. 2014 as independent support for the pair-gap signal"

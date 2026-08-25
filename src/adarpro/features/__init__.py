@@ -1,0 +1,1 @@
+"""Modular feature assembly."""

@@ -1,0 +1,16 @@
+{
+  "resource": "AdarEdit per-site GTEx editing tables",
+  "source_url": "https://drive.google.com/drive/folders/1KkGElOF-Peg0xzJWehONI5JfRKEAAdT_?usp=drive_link",
+  "repository_description": "GTEx per-site tables used to construct the strict human benchmark",
+  "genome_build": "GRCh38/hg38",
+  "original_retrieval_date": null,
+  "local_cache_validation_date": "2026-08-21",
+  "retrieval_note": "Reused from a prior local AdarEdit audit. A second independent local copy had identical SHA-256 hashes for all five files; original download timestamps were not treated as reliable retrieval provenance.",
+  "files": [
+    {"name": "Artery_Site_in_PairAlu_cov100.csv", "sha256": "cc376b859e9ae19e119142cedf39361c3393a9b04fd8d89ce4dea7e10dbcef4a"},
+    {"name": "Brain_Site_in_PairAlu_cov100.csv", "sha256": "8f9ca06e73b8fefb2dd3c251ff071e6230df0ddddc010eb4b984fb78c6f2ed10"},
+    {"name": "Combined_Site_in_PairAlu_cov100.csv", "sha256": "4b922b325e20895fe935d6affe3bfc7259e215b9f7d2753dc6803ca5785578b3"},
+    {"name": "Liver_Site_in_PairAlu_cov100.csv", "sha256": "e89d3c784088dd47e972c0128730effecf8259688fef7ef624f6bc452119c65d"},
+    {"name": "MuscleSkeletal_Site_in_PairAlu_cov100.csv", "sha256": "c645830981b31b6e3b6621b1482e216341c75dfbca602732e01c44b9728bea18"}
+  ]
+}

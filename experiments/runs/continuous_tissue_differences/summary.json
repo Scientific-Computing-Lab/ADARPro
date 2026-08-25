@@ -1,0 +1,19 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "models": [
+    "binding_without_expression",
+    "tissue_pair",
+    "tissue_pair_plus_all_rbp",
+    "tissue_pair_plus_eclip",
+    "tissue_pair_plus_matched_random",
+    "tissue_pair_plus_negative_controls",
+    "tissue_pair_plus_prismnet",
+    "tissue_pair_plus_rbpnet",
+    "tissue_pair_plus_suppressors"
+  ],
+  "paired_observations": 205199,
+  "pairs": 615,
+  "scope": "continuous EditingIndex differences on individual tissues; Combined excluded",
+  "sites": 41197
+}

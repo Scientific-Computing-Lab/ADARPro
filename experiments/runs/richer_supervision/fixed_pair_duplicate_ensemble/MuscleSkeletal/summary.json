@@ -1,0 +1,40 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.879919343670494,
+    "auroc": 0.8935910843030684,
+    "balanced_accuracy": 0.819828006448494,
+    "f1": 0.8252992559042381,
+    "fn": 383,
+    "fp": 697,
+    "mcc": 0.6420962485095539,
+    "n": 5967,
+    "precision": 0.7854064039408867,
+    "recall": 0.8694614860259032,
+    "specificity": 0.7701945268710847,
+    "tn": 2336,
+    "tp": 2551
+  },
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "development_reference_metrics": {
+    "auprc": 0.8255536650764205,
+    "auroc": 0.8455705148389304,
+    "balanced_accuracy": 0.7654648559101418,
+    "f1": 0.7782505910165485,
+    "fn": 465,
+    "fp": 942,
+    "mcc": 0.5363916460948537,
+    "n": 5967,
+    "precision": 0.723834652594547,
+    "recall": 0.8415132924335378,
+    "specificity": 0.6894164193867458,
+    "tn": 2091,
+    "tp": 2469
+  },
+  "ensemble": "fixed 50:50 average in logit space",
+  "left_mode": "binary_pair_balanced",
+  "pairs": 585,
+  "right_mode": "binary_pair_balanced_duplicate_pool",
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF only"
+}

@@ -1,0 +1,17 @@
+{
+  "architecture": "unified_target_local_interaction_aux_v1",
+  "auxiliary_global_loss_weight": 0.25,
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "fold_seed": 20263824,
+  "inner_fold": 4,
+  "optimizer": "Adam(lr=1e-3, weight_decay=1e-4)",
+  "outer_fold": 3,
+  "per_epoch_samples": 3579,
+  "sampler": "equal high/low; uniform pair then uniform site within pair",
+  "selection": "canonical inner-fold binary F1 and threshold",
+  "trainable_parameters": 65698,
+  "training_split": "three development folds; expanded raw high/low sites"
+}

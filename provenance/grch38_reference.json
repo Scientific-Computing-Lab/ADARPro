@@ -1,0 +1,11 @@
+{
+  "resource": "Homo sapiens GRCh38 primary assembly",
+  "source": "Ensembl release 84 primary assembly FASTA via the HISAT2 GRCh38 index-build recipe",
+  "source_url": "ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz",
+  "genome_build": "GRCh38",
+  "original_retrieval_date": null,
+  "local_cache_validation_date": "2026-08-21",
+  "retrieval_note": "Reused an indexed local reference cache; original download timestamp is unavailable.",
+  "file": "GRCh38.primary_assembly.genome.fa",
+  "sha256": "e49b92b3e4f321bf254c042f25b726d9931c4d74c7523e8b6bb530e63b0cfd4b"
+}

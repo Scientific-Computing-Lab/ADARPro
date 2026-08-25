@@ -1,0 +1,32 @@
+{
+  "architecture": "upstream Baseline GAT: RNAEditingGNN(8,32,1,4)",
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "Artery",
+  "epochs": 1000,
+  "inner_selection_fold": 2,
+  "optimizer": "Adam(lr=1e-3,weight_decay=1e-4)",
+  "outer_fold": 1,
+  "partition_pair_sha256": {
+    "outer": "3e991ddb78a51b2faed8e598b9e89af36780c7c3b04c0ceefdac2071247a4095",
+    "selection": "ac38b5e6f73a8755023fced01f63eacf914537e38196d10db40956287cdcf993",
+    "train": "b7e3aeee2b7d00a1292257c41ffa4ef6353b8df1a783fbebe37411f38033e48a"
+  },
+  "partition_pairs": {
+    "outer": 123,
+    "selection": 118,
+    "train": 366
+  },
+  "partition_rows": {
+    "outer": 3834,
+    "selection": 3845,
+    "train": 11491
+  },
+  "seed": 20260821,
+  "selection": "maximum inner-fold F1; 33 thresholds from 0.1 to 0.9",
+  "training_folds": [
+    0,
+    3,
+    4
+  ]
+}

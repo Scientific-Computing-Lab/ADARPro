@@ -1,0 +1,20 @@
+gene,encode_eclip_experiment_count,selected_grch38_combined_track_count,has_selected_track,selection_rule
+ADAR,1,1,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+ILF3,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+ILF2,0,0,False,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+STRBP,0,0,False,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+ZFR,0,0,False,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+XRCC6,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+TROVE2,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+DROSHA,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+MATR3,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+AUH,2,0,False,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+PUS1,1,1,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+FXR1,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+PABPC1,0,0,False,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+HNRNPC,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+HNRNPM,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+RBFOX2,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+TIA1,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+IGF2BP1,2,2,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control
+SLBP,1,1,True,released replicated GRCh38 peaks; archived ADAR allowed only as labeled positive control

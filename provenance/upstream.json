@@ -1,0 +1,259 @@
+{
+  "canonical_inputs": [
+    {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Artery/best.pth",
+      "sha256": "e06f0a07f1749e3fba4ace5287a7d6e33a688ef7bff09a40f55040fa8e6987a0"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Brain/best.pth",
+      "sha256": "0fadd0dc07c9b88c1e7696610cdd448e63af43a5e63386b44399139e7f08a1b2"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Combined/best.pth",
+      "sha256": "aa6202b80f21d003413bb9fbfa94c09fea56fc319a0a5de8b564803e229f02cf"
+    },
+    {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Liver/best.pth",
+      "sha256": "1c1c1f3773ed50162fbd7fbfc45219408febd72bfecc92992af247683d396729"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_MuscleSkeletal/best.pth",
+      "sha256": "aad0112a331cfea6965e28332d4569e25decdd281f16f959c2ac59d3c7cac0b5"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Octopus/best.pth",
+      "sha256": "e7bddea58eab39665661c9223cc41a09291da03dfd3d314b3009f0e2d0f464d1"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Ptychodera/best.pth",
+      "sha256": "07da16bf1660069dd3441b1ecd959a98cc83ed52d5a57b66e58ee0bcc0e3f06d"
+    },
+    {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Strongylocentrotus/best.pth",
+      "sha256": "ac70a50f07c5eebddf2c81a5e4eeda8e93b125638a57e9ea26892b9e3f9d803a"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Artery/best.pth",
+      "sha256": "9a3ad2e38554249035d7f57806e311c47ab3c167349cd4213d160fbfa06fd340"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Brain/best.pth",
+      "sha256": "1d615ed4358807c7750ac1552fc9bcc63217909ecc5247cdda49cacb913e7bd1"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Combined/best.pth",
+      "sha256": "cbb82d94562df3b540ebeab19ffa5fc696ed0fe2a6ab9137a7387ed11169992d"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Liver/best.pth",
+      "sha256": "c54100a93e9eda2e38871b5b5a058dfe478b3fef73b45e7bb9222bc784bb770c"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_MuscleSkeletal/best.pth",
+      "sha256": "25968fa9694e61d5223829951f976610468001afd4eba4421134d2efcae08f81"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Octopus/best.pth",
+      "sha256": "eb97da1bed6caa9e0e01465f085f4e023f9aae57cabe253f2fa0df852fcde9ba"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Ptychodera/best.pth",
+      "sha256": "41dec0e7ea3a2bafe5fc5011546dc55dc94414cfbd83dfdd84dba24c18a87ed2"
+    },
+    {
+      "bytes": 2938505,
+      "path": "checkpoints/bioaware_Strongylocentrotus/best.pth",
+      "sha256": "5734f7446567bd684f5f9b55652944ec0e61d2b5e4d61159822750d71e390e47"
+    },
+    {
+      "bytes": 7145724,
+      "path": "data/human/Artery/test.jsonl",
+      "sha256": "27621a48125df0328acde6308c3f078bca2f1fb835142a23dd4c169941d3d0bf"
+    },
+    {
+      "bytes": 184026,
+      "path": "data/human/Artery/test.metadata.csv",
+      "sha256": "9d185f12a35e71cb4f4baa37032bc885583d9439d98c2fb3eddaf8e60d410e2e"
+    },
+    {
+      "bytes": 22876251,
+      "path": "data/human/Artery/train.jsonl",
+      "sha256": "2f1a54884f880bea2389623de11618d8e7a839493c1b3eaa2377fde90f3fbf0b"
+    },
+    {
+      "bytes": 602097,
+      "path": "data/human/Artery/train.metadata.csv",
+      "sha256": "545fe86db36e4d80975e003d7364709f3b3c3ffb2f038ce34058b1b755c34e45"
+    },
+    {
+      "bytes": 5781381,
+      "path": "data/human/Artery/valid.jsonl",
+      "sha256": "0e93f0edc785bbfb79dc759cd1b080390698928ddd6fedcf1e2f91563b660d85"
+    },
+    {
+      "bytes": 152539,
+      "path": "data/human/Artery/valid.metadata.csv",
+      "sha256": "2d8a4f58d2fccc6b146316bea77d069cf0d4236ef7ffca2c526db08023a23e9f"
+    },
+    {
+      "bytes": 6809262,
+      "path": "data/human/Brain/test.jsonl",
+      "sha256": "c2e95092d91c929f85c52fee55b587ed6572c2db4ffc470d23f180baeefe2a5b"
+    },
+    {
+      "bytes": 175343,
+      "path": "data/human/Brain/test.metadata.csv",
+      "sha256": "411f948abde90061428e402be6ed46ed98cf5737a1c3f58ab4609804d15a25ac"
+    },
+    {
+      "bytes": 23376866,
+      "path": "data/human/Brain/train.jsonl",
+      "sha256": "ae4b61fdd339ccf02f9b842c177dc6ed75fe0c9ce01471da50e8506249fdf936"
+    },
+    {
+      "bytes": 615278,
+      "path": "data/human/Brain/train.metadata.csv",
+      "sha256": "9776a132a2ec5e4cecfe280babad5f76b50eb18371aa5d41682145b9170fc69c"
+    },
+    {
+      "bytes": 5638739,
+      "path": "data/human/Brain/valid.jsonl",
+      "sha256": "505f514ff02d8d8a564c65d0c25372307f1528011e45c903857c29d6abd4edb6"
+    },
+    {
+      "bytes": 148284,
+      "path": "data/human/Brain/valid.metadata.csv",
+      "sha256": "8926d4bc734cf978bfbf50198c6850c86f53ee0fc57edb440ed560aa971d0298"
+    },
+    {
+      "bytes": 7267843,
+      "path": "data/human/Combined/test.jsonl",
+      "sha256": "8228d28c4b92afe4d014d0fa9549a586ebc8acf4677b2bc5b29002df6bdb1dbf"
+    },
+    {
+      "bytes": 186776,
+      "path": "data/human/Combined/test.metadata.csv",
+      "sha256": "89b3ff16afaf6df6f80f0074996db7136bdd39264f859a690231518b2264f4f8"
+    },
+    {
+      "bytes": 22903115,
+      "path": "data/human/Combined/train.jsonl",
+      "sha256": "9afc6cbd04717b5f3ed66dade7c18d70722322f83ff1f5280fb9986806466f0a"
+    },
+    {
+      "bytes": 602710,
+      "path": "data/human/Combined/train.metadata.csv",
+      "sha256": "df976fa789b6c2295505df9a0f9d972eb929b0be5ce4c3af6b933de322bcdb53"
+    },
+    {
+      "bytes": 5681710,
+      "path": "data/human/Combined/valid.jsonl",
+      "sha256": "f82984631df749fd5ae2cfbd1cca0f5290eaf21c23d9df418baf384add330509"
+    },
+    {
+      "bytes": 149340,
+      "path": "data/human/Combined/valid.metadata.csv",
+      "sha256": "8f10278754c3ab2c055f6c2ba31c0cd17b1401e83049b4cd609295e4e0f64fb2"
+    },
+    {
+      "bytes": 6202612,
+      "path": "data/human/Liver/test.jsonl",
+      "sha256": "d261e04803d5fadb06ea3ec6cbae8c225ab630e5bc8c33272d18ae0ff11362af"
+    },
+    {
+      "bytes": 159501,
+      "path": "data/human/Liver/test.metadata.csv",
+      "sha256": "7714ebcd82ac8a88808cee7cb86e1c95b77f42415d3754c6752d8a413eb5c75c"
+    },
+    {
+      "bytes": 18680630,
+      "path": "data/human/Liver/train.jsonl",
+      "sha256": "a6c22c5d2cbab0ce4b11fc51e37f216a4936015af4af0653a0806f64db3a11a6"
+    },
+    {
+      "bytes": 491699,
+      "path": "data/human/Liver/train.metadata.csv",
+      "sha256": "fd426c9575d746840aac1aa208e708abd887bc2f0e4b527988d78a6c7773eacb"
+    },
+    {
+      "bytes": 4522842,
+      "path": "data/human/Liver/valid.jsonl",
+      "sha256": "7de928eee98b6e7a15514e6d06959ff9dd61da882b01c624d1485cb1cf71994e"
+    },
+    {
+      "bytes": 118805,
+      "path": "data/human/Liver/valid.metadata.csv",
+      "sha256": "6b1f2f6995fa08280d804b7e88a3c3f695153b00707e7c2e1963e9c73fa7fb7e"
+    },
+    {
+      "bytes": 2130242,
+      "path": "data/human/MuscleSkeletal/test.jsonl",
+      "sha256": "10c0e1462e0c7b992e1a7ece1cc51f84a6ca2fafa28322ddf62b2016e6de8933"
+    },
+    {
+      "bytes": 54774,
+      "path": "data/human/MuscleSkeletal/test.metadata.csv",
+      "sha256": "f673447a998593f71f17d30fc33e79f763bd736112fc44e67af25fdc9fdacac1"
+    },
+    {
+      "bytes": 7002397,
+      "path": "data/human/MuscleSkeletal/train.jsonl",
+      "sha256": "7463d2abf2d106d0386bc2c1b4f671ee91a4afa46ee1923488d1b4bfc41a0605"
+    },
+    {
+      "bytes": 184132,
+      "path": "data/human/MuscleSkeletal/train.metadata.csv",
+      "sha256": "bc6af316bfa3ade323ebb436c9916b1e65e6b422405a055009d3c3abb35bce16"
+    },
+    {
+      "bytes": 1927812,
+      "path": "data/human/MuscleSkeletal/valid.jsonl",
+      "sha256": "96e73170e9863c1d20ee67fd2504d7c125578f3014f1b8c6e8f83fe6ed6ae3a2"
+    },
+    {
+      "bytes": 50820,
+      "path": "data/human/MuscleSkeletal/valid.metadata.csv",
+      "sha256": "8ec77700b37d7640e9964064cfc40e72460ac755774e460d230df30c26d3421a"
+    },
+    {
+      "bytes": 44984,
+      "path": "data/raw/alu_pairs/Pair_Alu_withStrand.bed",
+      "sha256": "e58935a092e8c84af0132566f038f7c4c354baed9b581e5fe8052d684101b2c3"
+    },
+    {
+      "bytes": 3743643,
+      "path": "data_construction/human_alu/published_site_selection.tsv.gz",
+      "sha256": "002a47cb06668d5ecfa10fb71f46ba65d28b44cdf8584a52f9c5226fb090e05d"
+    },
+    {
+      "bytes": 13859,
+      "path": "data_construction/split/global_pair_split.json",
+      "sha256": "2884808c05f2026938f19a54e3745f8334d178d8697f7fa84a91c804f19109e4"
+    }
+  ],
+  "captured_utc": "2026-08-21T17:57:48.489589+00:00",
+  "checkout_date": "2026-08-21",
+  "conda": "conda 23.1.0",
+  "cuda_driver_gpu": "NVIDIA GeForce RTX 3090, 535.309.01, 24576 MiB",
+  "git_branch": "adarpro",
+  "git_revision": "5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5",
+  "kernel": "Linux clark-lev-tr-4 5.15.0-187-generic #197-Ubuntu SMP Fri Jul 17 19:17:01 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+  "platform": "Linux-5.15.0-187-generic-x86_64-with-glibc2.35",
+  "python": "3.10.18 (main, Jun  5 2025, 13:14:17) [GCC 11.2.0]",
+  "repository_url": "https://github.com/Scientific-Computing-Lab/AdarEdit.git"
+}

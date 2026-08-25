@@ -1,0 +1,39 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.32105802904557157,
+    "auroc": 0.8679607317894997,
+    "balanced_accuracy": 0.7887478905837224,
+    "f1": 0.2658075789013869,
+    "fn": 500,
+    "fp": 12946,
+    "mcc": 0.28977908389194446,
+    "n": 54289,
+    "precision": 0.15825747724317296,
+    "recall": 0.8295841854124063,
+    "specificity": 0.7479115957550384,
+    "tn": 38409,
+    "tp": 2434
+  },
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "development_reference_metrics": {
+    "auprc": 0.2711082433080154,
+    "auroc": 0.847814801696121,
+    "balanced_accuracy": 0.7668865264621199,
+    "f1": 0.23284764464563587,
+    "fn": 465,
+    "fp": 15804,
+    "mcc": 0.2554026508941167,
+    "n": 54289,
+    "precision": 0.13511738630766704,
+    "recall": 0.8415132924335378,
+    "specificity": 0.6922597604907019,
+    "tn": 35551,
+    "tp": 2469
+  },
+  "mode": "binary_natural",
+  "pairs": 597,
+  "prevalence": 0.05404409733095102,
+  "rows": 54289,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

@@ -1,0 +1,29 @@
+{
+  "best_epoch": 74,
+  "canonical_test_access": false,
+  "checkpoint": "models/frozen/Brain/binary_pair_balanced_local/best.pth",
+  "checkpoint_sha256": "648f3067c8be16305a86c7f625b48b40cba1e824955b5616468f25af043218ff",
+  "context": "Brain",
+  "mode": "binary_pair_balanced_local",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.25,
+  "train_pairs": 495,
+  "train_raw_rows": 39075,
+  "validation_metrics": {
+    "auprc": 0.9214020884441363,
+    "auroc": 0.9362606196341287,
+    "balanced_accuracy": 0.8762110888398338,
+    "f1": 0.8793371310201968,
+    "fn": 189,
+    "fp": 277,
+    "mcc": 0.7533201516249404,
+    "n": 3766,
+    "precision": 0.859746835443038,
+    "recall": 0.8998410174880763,
+    "specificity": 0.8525811601915912,
+    "tn": 1602,
+    "tp": 1698
+  },
+  "validation_pairs": 118,
+  "validation_rows": 3766
+}

@@ -1,0 +1,12 @@
+{
+  "candidate": "expanded_plus_relative_rank",
+  "canonical_test_access": false,
+  "pairs": 585,
+  "references": [
+    "expanded_reference",
+    "expanded_recalibrated",
+    "expanded_plus_shuffled_rank"
+  ],
+  "rows": 5967,
+  "scope": "completed outer-isolated profile-gate control contrasts"
+}

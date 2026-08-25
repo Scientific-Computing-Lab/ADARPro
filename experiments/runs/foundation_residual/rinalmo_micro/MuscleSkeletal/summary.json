@@ -1,0 +1,14 @@
+{
+  "base_components": [
+    "binary_pair_balanced",
+    "binary_pair_balanced_target_pool"
+  ],
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "components_per_foundation_view": 16,
+  "context": "MuscleSkeletal",
+  "maximum_recomputed_outer_difference": 2.9325546166969474e-06,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "outer-isolated development gate; no outer pair enters either neural component, PCA or gate fitting"
+}

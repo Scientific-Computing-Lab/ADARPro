@@ -1,0 +1,32 @@
+{
+  "architecture": "upstream Baseline GAT: RNAEditingGNN(8,32,1,4)",
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "inner_selection_fold": 2,
+  "optimizer": "Adam(lr=1e-3,weight_decay=1e-4)",
+  "outer_fold": 1,
+  "partition_pair_sha256": {
+    "outer": "7f9c87b4148d87c9f27d585c0264e0e7aa4ac96bb46862263981895ff9e44fc5",
+    "selection": "83da4c4a7666953f443fb15be009b55ba4900882aa6385c23b6337af4df21f0f",
+    "train": "b160b9ece6c968b7c1ce7f6417067d6e7652cdc840ebe5cea133ec9239eb8c6c"
+  },
+  "partition_pairs": {
+    "outer": 117,
+    "selection": 119,
+    "train": 349
+  },
+  "partition_rows": {
+    "outer": 1193,
+    "selection": 1192,
+    "train": 3582
+  },
+  "seed": 20260821,
+  "selection": "maximum inner-fold F1; 33 thresholds from 0.1 to 0.9",
+  "training_folds": [
+    0,
+    3,
+    4
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "canonical_test_access": false,
+  "features": {
+    "geometry__": 9,
+    "intrinsic__": 7,
+    "intrinsic_site__": 6,
+    "repeat__": 35,
+    "site__": 9,
+    "transcript__": 11
+  },
+  "gtf_candidate_transcripts": 2624,
+  "input_hashes": {
+    "gencode_gtf": "82b0e52bc4956486528152e3850660b3c41767ab103d87949e41d38f92ef8b38",
+    "repeatmasker": "db60e6aa7ac175f8f5465cd01b48b550e67e1fb0fd828608d8343481867bb276",
+    "site_master": "8f1f93191debe16a97b42b62e5293ffd545477c16d06d7e4e93fd0c94a1676c0"
+  },
+  "output_sha256": "814ace54a5704987c11359f799b1a6474dab9b1606407dbeed9dee573d05c2b9",
+  "pairs": 705,
+  "prespecified_neighbor_windows_nt": [
+    1000,
+    5000,
+    10000,
+    50000
+  ],
+  "repeatmasker_alu_records": 1282821,
+  "rows": 79135,
+  "scope": "outcome-independent features on canonical train+valid examples only"
+}

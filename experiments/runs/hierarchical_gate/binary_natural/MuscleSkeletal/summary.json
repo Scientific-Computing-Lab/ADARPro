@@ -1,0 +1,9 @@
+{
+  "base_mode": "binary_natural",
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "maximum_recomputed_outer_difference": 1.1324882507324219e-05,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "outer-isolated development gate; no outer pair enters either stage"
+}

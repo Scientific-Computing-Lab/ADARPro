@@ -1,0 +1,12 @@
+{
+  "array_sha256": "ddc9ef18f82437c9e9174fb9e329e19d8a609cadb947b5dbd31d7f32cde55362",
+  "canonical_test_access": false,
+  "checkpoint_sha256": "910c73aa722061e8904a9b0d58e1e664c075fa78683fa364fcf099ae3f81ddf9",
+  "context": "MuscleSkeletal",
+  "dtype": "float16",
+  "embedding_width": 480,
+  "index_sha256": "503da6b97ccf877efd0895fdebae64858ed1b78c8be64b270650d180243acdd9",
+  "local_radius": 16,
+  "pairs": 585,
+  "sites": 5967
+}

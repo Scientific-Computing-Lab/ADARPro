@@ -1,0 +1,67 @@
+{
+  "authoritative_final_target": "Published/supplied-checkpoint AdarEdit canonical-test benchmark at upstream 5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5",
+  "canonical_test_access": false,
+  "comparison_baseline": {
+    "family": "pair_balanced_plus_target_local_equal_logit",
+    "weights": [
+      0.5,
+      0.5
+    ],
+    "liver_oof_predictions": "experiments/runs/richer_supervision/fixed_pair_local_ensemble/Liver/oof_predictions.parquet",
+    "liver_oof_predictions_sha256": "718ef552e62a320ea3bcdced01f71614ef3421ffb2a1ca6d035e3d7366be1bd9",
+    "muscle_oof_predictions": "experiments/runs/richer_supervision/fixed_pair_local_ensemble/MuscleSkeletal/oof_predictions.parquet",
+    "muscle_oof_predictions_sha256": "85fbc8826efdce06cd061f87f482409ad597f015aca0be769b775bc0ebeeb8f7",
+    "status": "immutable first-class comparator"
+  },
+  "created_utc": "2026-08-24T22:15:00Z",
+  "evidence_audit_revision": "a6fd4923df68a1dad35dcf29e0764f392a46b3cb",
+  "primary_candidate": {
+    "architecture": {
+      "auxiliary_global_loss_weight": 0.25,
+      "dropout": 0.2,
+      "fusion": "32-dimensional projections of global graph, focal-node and aligned-local views; concatenate the three projections and all three elementwise pair interactions; 64-unit fusion MLP; one final logit",
+      "global_encoder": "unchanged three-layer compact GAT, hidden_dim=32, heads=4",
+      "global_preservation": "training-only binary auxiliary head from the global graph embedding; not used at inference",
+      "local_encoder": "unchanged target/helix-partner-aligned +/-32 nt two-layer dilated CNN",
+      "name": "unified_target_local_interaction_aux_v1",
+      "target_view": "final GAT embedding of the uniquely marked focal nucleotide"
+    },
+    "supervision": "binary high/low labels from every eligible training-pair observation; equal classes; uniform pair then site sampling; canonical-training-row-sized epoch budget",
+    "training": {
+      "batch_size": 256,
+      "checkpoint_selection": "maximum inner-fold canonical binary F1",
+      "epochs": 1000,
+      "learning_rate": 0.001,
+      "optimizer": "Adam",
+      "seed": 20260821,
+      "threshold_selection": "inner fold only",
+      "weight_decay": 0.0001
+    }
+  },
+  "rationale": {
+    "excluded": [
+      "continuous/ordinal auxiliary labels: negligible F1 and adverse natural-prevalence result",
+      "cross-tissue multi-label sharing: credible but below both frozen promotion gates and worse mean Brier",
+      "substrate engagement/context: current direct model failed F1 and recall; no sufficiently strong independent state measurement",
+      "RBP, bulk chromatin, foundation-model and generic capacity additions: failed controls or promotion gates"
+    ],
+    "retained": [
+      "pair-first expanded high/low supervision: replicated with positive clustered intervals in all five endpoints",
+      "whole-duplex compact graph representation: authoritative intrinsic backbone",
+      "explicit focal-node representation: replicated complementary ranking signal",
+      "target/helix-partner-aligned local representation: replicated gain and decisive shifted-window control",
+      "representation-level nonlinear interactions plus global auxiliary supervision: direct end-to-end test of whether the ensemble's complementary views can be internalized"
+    ]
+  },
+  "staged_decision_rule": {
+    "controls_if_primary_advances": [
+      "identical architecture with auxiliary_global_loss_weight=0",
+      "identical architecture with the focal node replaced by the first-node anchor",
+      "identical architecture with the local window shifted 96 nt from the target"
+    ],
+    "final_promotion": "The unified family may replace the frozen ensemble only on development evidence: it must show reproducible incremental value over that ensemble, not merely over AdarEdit or one component. Prefer a paired pair-bootstrap lower bound above zero for F1 with nonnegative AUROC/AUPRC, or lower bounds above zero for both AUROC and AUPRC with nonnegative F1, acceptable calibration, and a favorable false-positive/true-positive tradeoff. Replication in Liver is required after Muscle discovery. One global family must then be confirmed across all five endpoints before final freezing.",
+    "primary_screen": "Complete five-fold pair-disjoint Muscle OOF for the preregistered primary candidate and compare on exactly the frozen ensemble rows and folds.",
+    "repair_rule": "If the primary candidate fails only through optimization/calibration conflict while retaining complementary ranking, the sole prespecified repair is the no-auxiliary variant. If the primary and repair both fail to add credible value over the ensemble, terminate unified architecture development without architecture search.",
+    "test_rule": "No canonical-test access, final manifest, or authorization until this development campaign and the final ensemble-versus-unified decision are frozen."
+  }
+}

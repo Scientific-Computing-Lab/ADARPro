@@ -1,0 +1,84 @@
+{
+  "archive_bytes": 836278121,
+  "archive_md5": "e88fb57483ba9a3d81b842cc5aa140fb",
+  "archive_sha256": "dc182e51d7b3ffe046ec7de56ab7e98a9ec0bd2f789d8e6bd61168b3718c355d",
+  "genes": [
+    "ILF3",
+    "XRCC6",
+    "TROVE2",
+    "DROSHA",
+    "MATR3",
+    "HNRNPC",
+    "HNRNPM",
+    "RBFOX2",
+    "TIA1",
+    "IGF2BP1"
+  ],
+  "models": {
+    "DROSHA": {
+      "bytes": 11006728,
+      "path": "data/external/rbpnet/models/DROSHA_HepG2.model.h5",
+      "sha256": "ccf2646b879940370d13be404f8848a8ecbfb8415400e7f87b8020619dde221f"
+    },
+    "HNRNPC": {
+      "bytes": 11006728,
+      "path": "data/external/rbpnet/models/HNRNPC_HepG2.model.h5",
+      "sha256": "201a0eb2e4a731db43dbf751c66e1e6fa367715df7eebb02a60c323018ab6e99"
+    },
+    "HNRNPM": {
+      "bytes": 11006728,
+      "path": "data/external/rbpnet/models/HNRNPM_HepG2.model.h5",
+      "sha256": "99c77c0042dd6474bb0fc4f32dfa533bb7aa3c6e25c7d69d56c4cb28d542642f"
+    },
+    "IGF2BP1": {
+      "bytes": 11006832,
+      "path": "data/external/rbpnet/models/IGF2BP1_HepG2.model.h5",
+      "sha256": "90c4a4a757632f14b645c0e9821a97925e042a8fb6b62883486665f2f046bc90"
+    },
+    "ILF3": {
+      "bytes": 11006504,
+      "path": "data/external/rbpnet/models/ILF3_HepG2.model.h5",
+      "sha256": "fd27d97717da84f3466467974131d93f9de7865d862ed49cf1a3c6b64157ded2"
+    },
+    "MATR3": {
+      "bytes": 11006616,
+      "path": "data/external/rbpnet/models/MATR3_HepG2.model.h5",
+      "sha256": "263c07bcbfdd6814021197cfdac2bd8c52eea3efa6f36a4f9bc3ff8f9935c9b2"
+    },
+    "RBFOX2": {
+      "bytes": 11006728,
+      "path": "data/external/rbpnet/models/RBFOX2_HepG2.model.h5",
+      "sha256": "9e95542cff087a31e325e574017a28815a6d6912f4d7484e4329f63a6274232d"
+    },
+    "TIA1": {
+      "bytes": 11006504,
+      "path": "data/external/rbpnet/models/TIA1_HepG2.model.h5",
+      "sha256": "e2dfe6f42ee3966a26da4e16059e9194677768381a3e6594eaf5c78d13d78f8b"
+    },
+    "TROVE2": {
+      "bytes": 11006728,
+      "path": "data/external/rbpnet/models/TROVE2_HepG2.model.h5",
+      "sha256": "6b367634945e5068672bd145c6526bdcd48e012a6c3b7672a03c46a57fb7373e"
+    },
+    "XRCC6": {
+      "bytes": 11006616,
+      "path": "data/external/rbpnet/models/XRCC6_HepG2.model.h5",
+      "sha256": "b7d5d55b00ffeaf34e1659122a9990b248ceff19f26cf2c5d5814fa8129e71bd"
+    }
+  },
+  "output_semantics": "RBPNet predicts the relative distribution of CLIP signal along each input sequence; values are not calibrated binding probabilities",
+  "pair_count": 705,
+  "retrieved_utc": "2026-08-21T19:07:57.039248+00:00",
+  "scope": "development train+valid pairs only; no outcomes used",
+  "site_count": 46133,
+  "site_feature_rows": 461330,
+  "source": "https://zenodo.org/records/10185223",
+  "windows_nt_prespecified": [
+    5,
+    10,
+    25,
+    50,
+    100
+  ],
+  "zenodo_doi": "10.5281/zenodo.10185223"
+}

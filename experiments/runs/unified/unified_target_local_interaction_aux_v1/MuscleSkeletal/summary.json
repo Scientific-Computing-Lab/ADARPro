@@ -1,0 +1,27 @@
+{
+  "architecture": "unified_target_local_interaction_aux_v1",
+  "auxiliary_global_loss_weight": 0.25,
+  "candidate_metrics": {
+    "auprc": 0.8922304094647906,
+    "auroc": 0.9071530478978004,
+    "balanced_accuracy": 0.8298542211542157,
+    "f1": 0.8317355371900826,
+    "fn": 418,
+    "fp": 600,
+    "mcc": 0.6602690929941071,
+    "n": 5967,
+    "precision": 0.8074454428754814,
+    "recall": 0.8575323790047716,
+    "specificity": 0.8021760633036598,
+    "tn": 2433,
+    "tp": 2516
+  },
+  "canonical_rows": 5967,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "pairs": 585,
+  "raw_training_pool_rows": 72692,
+  "scope": "canonical train+valid outer-fold evaluation; raw development observations used only in non-held-out folds",
+  "trainable_parameters": 65698
+}

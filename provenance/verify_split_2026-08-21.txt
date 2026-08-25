@@ -1,0 +1,13 @@
+[1] substrate disjointness      : 884 substrates, 0 in more than one split
+[2] cross-tissue site overlap   : worst A(train|valid)->B(test) cell = 0 (over 25 ordered tissue pairs)
+[3] split proportions           : train=566 (64.0%, target 64%)  valid=139 (15.7%, target 16%)  test=179 (20.2%, target 20%)
+[4] substrate inventory         : 884 unique (expected 884), 0 with length mismatch
+[5] positive rate per split     : (balancing is dataset-level, so these vary)
+      Artery           train 49.3%  valid 48.9%  test 53.6%
+      Brain            train 49.2%  valid 50.1%  test 53.0%
+      Liver            train 49.0%  valid 45.6%  test 56.5%
+      MuscleSkeletal   train 48.2%  valid 52.8%  test 53.7%
+      Combined         train 49.6%  valid 49.4%  test 52.2%
+      range across all splits: 45.6%--56.5% positive
+
+ALL CHECKS PASSED - the shipped split is substrate-disjoint, has zero cross-tissue site overlap, and is partitioned 64:16:20.

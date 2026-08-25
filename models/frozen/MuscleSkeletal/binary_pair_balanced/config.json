@@ -1,0 +1,12 @@
+{
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "mode": "binary_pair_balanced",
+  "per_epoch_samples": 4679,
+  "sampler": "equal high/low; uniform pair then uniform site within pair",
+  "seed": 42,
+  "selection_split": "published validation canonical rows",
+  "training_split": "published train pairs; expanded raw high/low sites"
+}

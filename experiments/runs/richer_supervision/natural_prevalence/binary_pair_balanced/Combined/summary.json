@@ -1,0 +1,39 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.7684996550709657,
+    "auroc": 0.9357963923090384,
+    "balanced_accuracy": 0.8622589149272035,
+    "f1": 0.6532917936252525,
+    "fn": 1059,
+    "fp": 9068,
+    "mcc": 0.594881719290204,
+    "n": 62247,
+    "precision": 0.5127089042936214,
+    "recall": 0.9000943396226415,
+    "specificity": 0.8244234902317656,
+    "tn": 42579,
+    "tp": 9541
+  },
+  "canonical_test_access": false,
+  "context": "Combined",
+  "development_reference_metrics": {
+    "auprc": 0.7255216517425557,
+    "auroc": 0.9212142324290694,
+    "balanced_accuracy": 0.8482260188997077,
+    "f1": 0.6326999797146527,
+    "fn": 1243,
+    "fp": 9621,
+    "mcc": 0.568660478008316,
+    "n": 62247,
+    "precision": 0.4930445779323427,
+    "recall": 0.8827358490566037,
+    "specificity": 0.8137161887428118,
+    "tn": 42026,
+    "tp": 9357
+  },
+  "mode": "binary_pair_balanced",
+  "pairs": 705,
+  "prevalence": 0.1702893312127492,
+  "rows": 62247,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

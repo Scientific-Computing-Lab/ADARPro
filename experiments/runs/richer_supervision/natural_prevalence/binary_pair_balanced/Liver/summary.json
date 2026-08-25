@@ -1,0 +1,39 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.7127790386752622,
+    "auroc": 0.9093774279446256,
+    "balanced_accuracy": 0.8339868091398907,
+    "f1": 0.6418237615081105,
+    "fn": 911,
+    "fp": 6442,
+    "mcc": 0.559868050651226,
+    "n": 38096,
+    "precision": 0.5056024558710668,
+    "recall": 0.8785171356180824,
+    "specificity": 0.7894564826616989,
+    "tn": 24155,
+    "tp": 6588
+  },
+  "canonical_test_access": false,
+  "context": "Liver",
+  "development_reference_metrics": {
+    "auprc": 0.6732458598206512,
+    "auroc": 0.8915465901930261,
+    "balanced_accuracy": 0.8202661685087116,
+    "f1": 0.624563784412563,
+    "fn": 1056,
+    "fp": 6690,
+    "mcc": 0.5358605671107471,
+    "n": 38096,
+    "precision": 0.4905962080255844,
+    "recall": 0.8591812241632217,
+    "specificity": 0.7813511128542014,
+    "tn": 23907,
+    "tp": 6443
+  },
+  "mode": "binary_pair_balanced",
+  "pairs": 515,
+  "prevalence": 0.19684481310373791,
+  "rows": 38096,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

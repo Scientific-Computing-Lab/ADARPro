@@ -1,0 +1,24 @@
+{
+  "bootstrap_replicates": 2000,
+  "canonical_test_access": false,
+  "comparison": "joint pair-balanced minus independent pair-balanced",
+  "contexts": [
+    "Artery",
+    "Brain",
+    "Liver",
+    "MuscleSkeletal"
+  ],
+  "global_pairs": 659,
+  "macro_differences": {
+    "auprc": 0.011616027885889668,
+    "auroc": 0.008742440927830497,
+    "balanced_accuracy": 0.009355181147627678,
+    "brier": 0.004295950458535341,
+    "f1": 0.007511050622116211,
+    "mcc": 0.017530136251017403,
+    "precision": 0.014966804909909981,
+    "recall": -0.0015199666723102467,
+    "specificity": 0.020230328967565492
+  },
+  "scope": "four individual tissues; canonical train+valid grouped OOF only"
+}

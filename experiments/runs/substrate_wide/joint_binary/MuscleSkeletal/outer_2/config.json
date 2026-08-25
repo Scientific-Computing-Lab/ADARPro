@@ -1,0 +1,21 @@
+{
+  "canonical_test_access": false,
+  "class_weights": {
+    "binary_positive": 1.0323679727427597,
+    "engagement_positive": 0.3686274509803922,
+    "ordinal": [
+      0.6562156081199646,
+      1193.0,
+      0.6774559617042542
+    ]
+  },
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "graph_batch_size": 24,
+  "inner_fold": 3,
+  "mode": "joint_binary",
+  "outer_fold": 2,
+  "outer_pairs": 119,
+  "selection_pairs": 117,
+  "training_pairs": 349
+}

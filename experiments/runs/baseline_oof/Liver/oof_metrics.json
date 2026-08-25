@@ -1,0 +1,19 @@
+{
+  "auprc": 0.8737257890108748,
+  "auroc": 0.8908594554180258,
+  "balanced_accuracy": 0.8189788767507744,
+  "context": "Liver",
+  "f1": 0.8200330915107548,
+  "fn": 1056,
+  "fp": 1772,
+  "mcc": 0.6387386433266011,
+  "n": 15509,
+  "oof_predictions_sha256": "1c0bf3e577e3f30535f4236dd2d1c684be303c640fdba71d171f19a9078109fa",
+  "precision": 0.7842970176506391,
+  "recall": 0.8591812241632217,
+  "site_master_sha256": "8f1f93191debe16a97b42b62e5293ffd545477c16d06d7e4e93fd0c94a1676c0",
+  "specificity": 0.7787765293383271,
+  "tn": 6238,
+  "tp": 6443,
+  "unique_pairs": 508
+}

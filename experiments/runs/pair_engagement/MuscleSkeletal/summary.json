@@ -1,0 +1,17 @@
+{
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "edited_fraction_quantiles": {
+    "0.0": 0.0,
+    "0.25": 0.0,
+    "0.5": 0.03076923076923077,
+    "0.75": 0.08888888888888889,
+    "1.0": 0.6666666666666666
+  },
+  "feature_counts": {
+    "full": 62,
+    "intrinsic": 16
+  },
+  "pairs": 585,
+  "scope": "development pairs only; outer pair folds"
+}

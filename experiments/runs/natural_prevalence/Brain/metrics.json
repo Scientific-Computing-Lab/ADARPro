@@ -1,0 +1,20 @@
+{
+  "auprc": 0.7565866112670574,
+  "auroc": 0.9179316331211491,
+  "balanced_accuracy": 0.8444332768771382,
+  "canonical_test_access": false,
+  "context": "Brain",
+  "f1": 0.6913184451163977,
+  "fn": 1308,
+  "fp": 7165,
+  "mcc": 0.6034872486447472,
+  "n": 48511,
+  "pairs": 613,
+  "positive_prevalence": 0.22254746346189525,
+  "precision": 0.5697471926980123,
+  "recall": 0.8788440163023342,
+  "scope": "natural-prevalence train+valid pairs, grouped OOF",
+  "specificity": 0.8100225374519422,
+  "tn": 30550,
+  "tp": 9488
+}

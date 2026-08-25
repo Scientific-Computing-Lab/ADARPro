@@ -1,0 +1,20 @@
+{
+  "auprc": 0.7255216517425557,
+  "auroc": 0.9212142324290694,
+  "balanced_accuracy": 0.8482260188997077,
+  "canonical_test_access": false,
+  "context": "Combined",
+  "f1": 0.6326999797146527,
+  "fn": 1243,
+  "fp": 9621,
+  "mcc": 0.568660478008316,
+  "n": 62247,
+  "pairs": 705,
+  "positive_prevalence": 0.1702893312127492,
+  "precision": 0.4930445779323427,
+  "recall": 0.8827358490566037,
+  "scope": "natural-prevalence train+valid pairs, grouped OOF",
+  "specificity": 0.8137161887428118,
+  "tn": 42026,
+  "tp": 9357
+}

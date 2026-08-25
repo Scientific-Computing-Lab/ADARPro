@@ -1,0 +1,13 @@
+{
+  "conclusion": "positive peaks are interpretable, but experimental peak absence in inverted Alu is not a reliable negative binding measurement",
+  "eclip_pipeline_mapping": "ENCODE eCLIP SOP v2.2 first maps/removes reads against human RepBase, then uses STAR genome mapping with --outFilterMultimapNmax 1",
+  "genes": 14,
+  "genes_with_any_duplex_peak": 7,
+  "genes_with_any_focal_overlap": 7,
+  "ilf3_duplex_sites": 1979,
+  "ilf3_focal_overlap_sites": 211,
+  "scope": "outcome-blind development feature coverage audit",
+  "tracks": 25,
+  "tracks_with_no_duplex_peak": 14,
+  "umap100_focal_fully_unique_fraction": 0.9612641709838944
+}

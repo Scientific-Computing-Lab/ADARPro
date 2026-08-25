@@ -1,0 +1,12 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "aligned_local",
+    "shifted_local",
+    "pair_balanced"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "Muscle canonical development OOF; target-aligned versus 96-nt-shifted local CNN"
+}

@@ -1,0 +1,41 @@
+{
+  "canonical_test_access": false,
+  "checkpoint_sha256": {
+    "local": "db07e78afbb37a28e9508cc8c203e38c17683b1ad7fffaae4bf149e9f6cc51ef",
+    "pair": "2bf371dbd3dc369f885ee3e1bb8a424876001f2ebc746359651f1d653d779408"
+  },
+  "checkpoints": {
+    "local": "models/frozen/MuscleSkeletal/binary_pair_balanced_local/best.pth",
+    "pair": "models/frozen/MuscleSkeletal/binary_pair_balanced/best.pth"
+  },
+  "components": {
+    "local": "binary_pair_balanced_local",
+    "pair": "binary_pair_balanced"
+  },
+  "context": "MuscleSkeletal",
+  "ensemble": "fixed equal-logit average",
+  "scope": "published validation only; canonical test remains sealed",
+  "selection_f1": 0.8693181818181818,
+  "threshold": 0.225,
+  "validation_metrics": {
+    "auprc": 0.93399578198799,
+    "auroc": 0.9311701818885448,
+    "balanced_accuracy": 0.8546052631578948,
+    "f1": 0.8693181818181818,
+    "fn": 68,
+    "fp": 116,
+    "mcc": 0.7142030750344498,
+    "n": 1288,
+    "precision": 0.8406593406593407,
+    "recall": 0.9,
+    "specificity": 0.8092105263157895,
+    "tn": 492,
+    "tp": 612
+  },
+  "validation_pairs": 120,
+  "validation_rows": 1288,
+  "weights": [
+    0.5,
+    0.5
+  ]
+}

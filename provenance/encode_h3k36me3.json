@@ -1,0 +1,334 @@
+{
+  "excluded_experiments": [
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR000CEO",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR037HCS",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR295ZLV",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR510CGB",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR569DBO",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR656AMS",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR670YXP",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    },
+    {
+      "biosample": "liver",
+      "context": "Liver",
+      "experiment": "ENCSR932BNP",
+      "reason": "no preferred-default GRCh38 replicated/pseudoreplicated peak file"
+    }
+  ],
+  "genome_build": "GRCh38",
+  "retrieved_utc": "2026-08-21T20:58:05.224647+00:00",
+  "selection_rule": "released exact-biosample Histone ChIP-seq experiment; preferred-default GRCh38 pseudoreplicated/replicated peaks; prefer released analysis then newest file; legacy archived-analysis status retained explicitly when no released-analysis output exists",
+  "source": "https://www.encodeproject.org",
+  "target": "H3K36me3",
+  "tracks": [
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.5.1",
+          "status": "released",
+          "title": "ENCODE4 v1.5.1 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "tibial artery",
+      "biosample_summary": "Homo sapiens tibial artery tissue female adult (53 years)",
+      "context": "Artery",
+      "date_created": "2020-10-28T22:08:44.602057+00:00",
+      "experiment": "ENCSR127ZSP",
+      "file": "ENCFF701TPQ",
+      "file_size": 2156623,
+      "href": "/files/ENCFF701TPQ/@@download/ENCFF701TPQ.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF701TPQ.bed.gz",
+      "md5sum": "c4f16a1f66892ba54c8296de5efd27f8",
+      "observed_md5": "c4f16a1f66892ba54c8296de5efd27f8",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.5.1",
+          "status": "released",
+          "title": "ENCODE4 v1.5.1 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "tibial artery",
+      "biosample_summary": "Homo sapiens tibial artery tissue female adult (51 years)",
+      "context": "Artery",
+      "date_created": "2020-09-23T19:20:52.116352+00:00",
+      "experiment": "ENCSR360UUM",
+      "file": "ENCFF976LEF",
+      "file_size": 2172063,
+      "href": "/files/ENCFF976LEF/@@download/ENCFF976LEF.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF976LEF.bed.gz",
+      "md5sum": "7fba001bac807c445b8deffb3634328b",
+      "observed_md5": "7fba001bac807c445b8deffb3634328b",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.5.1",
+          "status": "released",
+          "title": "ENCODE4 v1.5.1 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "tibial artery",
+      "biosample_summary": "Homo sapiens tibial artery tissue male adult (37 years)",
+      "context": "Artery",
+      "date_created": "2020-09-22T06:05:05.842769+00:00",
+      "experiment": "ENCSR626BAM",
+      "file": "ENCFF644RCQ",
+      "file_size": 98343,
+      "href": "/files/ENCFF644RCQ/@@download/ENCFF644RCQ.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF644RCQ.bed.gz",
+      "md5sum": "6b476edba70d181f7a55e6316f59d34e",
+      "observed_md5": "6b476edba70d181f7a55e6316f59d34e",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.5.1",
+          "status": "released",
+          "title": "ENCODE4 v1.5.1 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "tibial artery",
+      "biosample_summary": "Homo sapiens tibial artery tissue male adult (54 years)",
+      "context": "Artery",
+      "date_created": "2020-09-23T07:02:49.600566+00:00",
+      "experiment": "ENCSR753HPM",
+      "file": "ENCFF337QHB",
+      "file_size": 1775647,
+      "href": "/files/ENCFF337QHB/@@download/ENCFF337QHB.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF337QHB.bed.gz",
+      "md5sum": "51b97ae0377e0bd1ec5a1bd927d58ebb",
+      "observed_md5": "51b97ae0377e0bd1ec5a1bd927d58ebb",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "liver",
+      "biosample_summary": "Homo sapiens liver tissue female adult (25 years)",
+      "context": "Liver",
+      "date_created": "2021-01-30T04:11:49.771008+00:00",
+      "experiment": "ENCSR213DKS",
+      "file": "ENCFF220MSF",
+      "file_size": 2527087,
+      "href": "/files/ENCFF220MSF/@@download/ENCFF220MSF.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF220MSF.bed.gz",
+      "md5sum": "2234b395d0961ffa59f7964ff80c8371",
+      "observed_md5": "2234b395d0961ffa59f7964ff80c8371",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "liver",
+      "biosample_summary": "Homo sapiens liver tissue male adult (31 years)",
+      "context": "Liver",
+      "date_created": "2021-01-30T00:48:48.777827+00:00",
+      "experiment": "ENCSR460RHN",
+      "file": "ENCFF342YOA",
+      "file_size": 2445146,
+      "href": "/files/ENCFF342YOA/@@download/ENCFF342YOA.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF342YOA.bed.gz",
+      "md5sum": "ed7322df307d347a31fe5511c580daf5",
+      "observed_md5": "ed7322df307d347a31fe5511c580daf5",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "liver",
+      "biosample_summary": "Homo sapiens liver tissue male adult (78 years)",
+      "context": "Liver",
+      "date_created": "2021-01-29T23:36:52.311243+00:00",
+      "experiment": "ENCSR585KLQ",
+      "file": "ENCFF050ODT",
+      "file_size": 2018225,
+      "href": "/files/ENCFF050ODT/@@download/ENCFF050ODT.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF050ODT.bed.gz",
+      "md5sum": "b0821f4fa82bc4eceb16c0362bca825e",
+      "observed_md5": "b0821f4fa82bc4eceb16c0362bca825e",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.6.1",
+          "status": "released",
+          "title": "ENCODE4 v1.6.1 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "liver",
+      "biosample_summary": "Homo sapiens with nonobstructive coronary artery disease; liver tissue male adult (32 years)",
+      "context": "Liver",
+      "date_created": "2020-11-11T23:44:47.569586+00:00",
+      "experiment": "ENCSR892MHG",
+      "file": "ENCFF666OGH",
+      "file_size": 1269300,
+      "href": "/files/ENCFF666OGH/@@download/ENCFF666OGH.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF666OGH.bed.gz",
+      "md5sum": "cd247cc970253ca971fb1da28fe76528",
+      "observed_md5": "cd247cc970253ca971fb1da28fe76528",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "skeletal muscle tissue",
+      "biosample_summary": "Homo sapiens skeletal muscle tissue tissue",
+      "context": "MuscleSkeletal",
+      "date_created": "2021-01-29T22:36:42.315253+00:00",
+      "experiment": "ENCSR836GCA",
+      "file": "ENCFF240YBY",
+      "file_size": 3130943,
+      "href": "/files/ENCFF240YBY/@@download/ENCFF240YBY.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF240YBY.bed.gz",
+      "md5sum": "574d9de6dd2926f6b71370ada680114e",
+      "observed_md5": "574d9de6dd2926f6b71370ada680114e",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "skeletal muscle tissue",
+      "biosample_summary": "Homo sapiens skeletal muscle tissue tissue male adult (54 years)",
+      "context": "MuscleSkeletal",
+      "date_created": "2021-01-29T22:21:45.913177+00:00",
+      "experiment": "ENCSR925WMT",
+      "file": "ENCFF803GJT",
+      "file_size": 2137545,
+      "href": "/files/ENCFF803GJT/@@download/ENCFF803GJT.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF803GJT.bed.gz",
+      "md5sum": "cbec7a3d163444d1bb5e4dc6ac3c112a",
+      "observed_md5": "cbec7a3d163444d1bb5e4dc6ac3c112a",
+      "output_type": "pseudoreplicated peaks"
+    },
+    {
+      "analysis": [
+        {
+          "pipeline_version": "1.7.0",
+          "status": "released",
+          "title": "ENCODE4 v1.7.0 GRCh38"
+        }
+      ],
+      "assembly": "GRCh38",
+      "biological_replicates": [
+        1
+      ],
+      "biosample": "skeletal muscle tissue",
+      "biosample_summary": "Homo sapiens skeletal muscle tissue tissue female adult (72 years)",
+      "context": "MuscleSkeletal",
+      "date_created": "2021-01-29T22:20:21.790459+00:00",
+      "experiment": "ENCSR930OZC",
+      "file": "ENCFF402HJO",
+      "file_size": 2193985,
+      "href": "/files/ENCFF402HJO/@@download/ENCFF402HJO.bed.gz",
+      "local_path": "data/external/chromatin/h3k36me3/ENCFF402HJO.bed.gz",
+      "md5sum": "54be5b393607630d4c7cedc6d4ea5281",
+      "observed_md5": "54be5b393607630d4c7cedc6d4ea5281",
+      "output_type": "pseudoreplicated peaks"
+    }
+  ]
+}

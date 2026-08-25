@@ -1,0 +1,18 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "context": "Liver",
+  "feature_sets": {
+    "baseline_logit": 0,
+    "baseline_plus_h3k36me3_multiscale": 18,
+    "baseline_plus_h3k36me3_multiscale_occupancy": 6,
+    "baseline_plus_h3k36me3_pair": 6,
+    "baseline_plus_h3k36me3_site": 6,
+    "baseline_plus_shift1mb_control": 18
+  },
+  "matched_random_dimension": 18,
+  "pairs": 508,
+  "rows": 15509,
+  "scope": "canonical train+valid grouped OOF predictions only",
+  "selection": "nested pair folds; C and threshold selected on inner fold"
+}

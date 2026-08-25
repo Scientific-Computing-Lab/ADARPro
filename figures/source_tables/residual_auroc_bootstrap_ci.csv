@@ -1,0 +1,10 @@
+model,metric,lower,median,upper,context
+baseline_logit,auroc,0.0,0.0,0.0,MuscleSkeletal
+baseline_plus_binding_expression,auroc,-0.0471018323228102,-0.0339984151897235,-0.0212995423660434,MuscleSkeletal
+baseline_plus_biological_suppressors,auroc,-0.0074202559073685,-0.0025694383446698,0.0025713984511075,MuscleSkeletal
+baseline_plus_broad_rbp,auroc,-0.0477226627009717,-0.0330669708938219,-0.0209420954979944,MuscleSkeletal
+baseline_plus_eclip,auroc,-0.022264729427061,-0.0102555979744411,-0.0016622456556253,MuscleSkeletal
+baseline_plus_matched_random,auroc,-0.0330499047293288,-0.0277121942508324,-0.0224988591092477,MuscleSkeletal
+baseline_plus_predicted_binding,auroc,-0.0171394778249961,-0.0091836731887012,-0.0005530966517196,MuscleSkeletal
+baseline_plus_prismnet,auroc,-0.0304136065042192,-0.0200393370644538,-0.0114721902386231,MuscleSkeletal
+baseline_plus_shifted_eclip_control,auroc,-0.0021960784656055,-0.0012272977716999,-0.0002256633388845,MuscleSkeletal

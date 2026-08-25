@@ -1,0 +1,11 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "pair_balanced",
+    "focal"
+  ],
+  "canonical_test_access": false,
+  "pairs": 508,
+  "rows": 15509,
+  "scope": "Liver canonical development OOF; independent focal-pooling replication"
+}

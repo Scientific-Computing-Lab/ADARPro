@@ -1,0 +1,62 @@
+{
+  "authoritative_baseline": "Published/supplied-checkpoint AdarEdit canonical-test benchmark at upstream 5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5",
+  "canonical_test_rule": "No candidate access until one complete five-context pipeline is frozen; then one evaluation under the published split and threshold protocol",
+  "created_utc": "2026-08-22T18:08:23Z",
+  "development_selection_completed_utc": "2026-08-24T04:12:57Z",
+  "development_selection_result": {
+    "selected_family": "pair_balanced_plus_target_local_equal_logit",
+    "selected_components": {
+      "pair": "binary_pair_balanced",
+      "local": "binary_pair_balanced_local"
+    },
+    "selected_weights": [0.5, 0.5],
+    "final_fitting_protocol": "Separate per-context components trained on expanded high/low observations from published train pairs; epoch and threshold selected on published validation; 1000 epochs; seed 42",
+    "target_local_ladder": "passed all prespecified Muscle, shifted-control, Liver and natural-prevalence conditions",
+    "shared_model": "not advanced: macro F1 +0.0075 and macro AUROC +0.0087 versus independent pair-balanced models, both below the frozen +0.01 gates",
+    "canonical_test_access": false
+  },
+  "development_reference_role": "Grouped pair-disjoint OOF is used only for same-fold incremental model selection; its absolute score does not replace the published benchmark",
+  "fixed_candidate_ladder": [
+    {
+      "candidate": "pair_balanced_plus_target_local_equal_logit",
+      "conditions": [
+        "Completed five-fold Muscle target-local minus pair-balanced median F1 is at least +0.01 and AUROC/AUPRC lower 95% pair-bootstrap bounds exceed zero",
+        "Target-aligned local encoding beats the identical CNN centered 96 nt away on ranking, with no material F1 loss",
+        "Liver target-local shows concordant incremental ranking and no material F1 loss",
+        "The fixed 50:50 pair-plus-local ensemble improves ranking beyond both components and does not reduce natural-prevalence F1"
+      ],
+      "priority": 1
+    },
+    {
+      "candidate": "pair_balanced_plus_focal_equal_logit",
+      "conditions": [
+        "Used only if the target-local ladder fails",
+        "The fixed Muscle result remains positive",
+        "Liver replication shows positive ranking and no material F1 loss",
+        "No ensemble-weight search"
+      ],
+      "priority": 2
+    },
+    {
+      "candidate": "pair_balanced_expanded_supervision",
+      "conditions": [
+        "Fallback if neither prespecified architecture add-on replicates",
+        "Already requires the completed positive Muscle and Liver development results"
+      ],
+      "priority": 3
+    }
+  ],
+  "shared_model_rule": {
+    "advance": "The four-tissue masked multi-label model must improve macro F1 by at least 0.01 over independently trained pair-balanced expanded models, with no tissue losing more than 0.01 F1; alternatively it may advance on at least +0.01 macro AUROC with nonnegative macro F1 and no material tissue-specific collapse",
+    "benchmark_comparator": "The published no-Combined joint AdarEdit checkpoint remains an additional final comparator",
+    "combined_handling": "Combined is never a tissue head and is trained separately with the selected per-context architecture",
+    "selection_scope": "Development OOF only"
+  },
+  "selection_principles": [
+    "Use one globally selected model family rather than choosing a different architecture from each tissue's OOF noise",
+    "Require pair-clustered uncertainty and fold-direction checks",
+    "Use fixed equal-logit weights only; no weight search",
+    "Natural-prevalence results are a secondary robustness criterion",
+    "Do not arithmetically project development deltas onto published test metrics"
+  ]
+}

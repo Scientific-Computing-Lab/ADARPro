@@ -1,0 +1,13 @@
+{
+  "candidate": "expanded_plus_combined_engagement",
+  "canonical_test_access": false,
+  "pairs": 585,
+  "references": [
+    "expanded_reference",
+    "expanded_recalibrated",
+    "expanded_plus_graph_engagement",
+    "expanded_plus_shuffled_engagement"
+  ],
+  "rows": 5967,
+  "scope": "completed grouped-OOF hierarchical-gate control contrasts"
+}

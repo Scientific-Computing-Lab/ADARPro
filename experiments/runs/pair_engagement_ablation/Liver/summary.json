@@ -1,0 +1,13 @@
+{
+  "canonical_test_access": false,
+  "context": "Liver",
+  "feature_sets": {
+    "adenosine_count_only": 1,
+    "combined_16": 16,
+    "genomic_geometry": 9,
+    "graph_intrinsic": 7
+  },
+  "pairs": 508,
+  "reference": "graph_intrinsic",
+  "scope": "development pairs only; nested outer-pair ablation"
+}

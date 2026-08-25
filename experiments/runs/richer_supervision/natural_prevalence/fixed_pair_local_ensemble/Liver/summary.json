@@ -1,0 +1,43 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.7687078342184939,
+    "auroc": 0.9289820834931907,
+    "balanced_accuracy": 0.8535407884760162,
+    "f1": 0.6684109196820852,
+    "fn": 729,
+    "fp": 5988,
+    "mcc": 0.5957076222626071,
+    "n": 38096,
+    "precision": 0.5306474369023357,
+    "recall": 0.9027870382717695,
+    "specificity": 0.8042945386802628,
+    "tn": 24609,
+    "tp": 6770
+  },
+  "canonical_test_access": false,
+  "components": [
+    "pair",
+    "local"
+  ],
+  "context": "Liver",
+  "development_reference_metrics": {
+    "auprc": 0.6732458598206512,
+    "auroc": 0.8915465901930261,
+    "balanced_accuracy": 0.8202661685087116,
+    "f1": 0.624563784412563,
+    "fn": 1056,
+    "fp": 6690,
+    "mcc": 0.5358605671107471,
+    "n": 38096,
+    "precision": 0.4905962080255844,
+    "recall": 0.8591812241632217,
+    "specificity": 0.7813511128542014,
+    "tn": 23907,
+    "tp": 6443
+  },
+  "ensemble": "fixed equal-logit average of 2 components; canonical inner-fold thresholds",
+  "pairs": 515,
+  "prevalence": 0.19684481310373791,
+  "rows": 38096,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

@@ -1,0 +1,12 @@
+{
+  "bootstrap_replicates": 2000,
+  "canonical_test_access": false,
+  "completed_folds": [
+    0,
+    1
+  ],
+  "pairs": 233,
+  "rows": 2387,
+  "scope": "completed development outer folds only",
+  "stop_reason": "Two completed outer folds failed to show a credible improvement over pair-balanced expanded supervision; do not spend three more folds without a positive direction."
+}

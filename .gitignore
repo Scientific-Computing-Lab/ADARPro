@@ -1,0 +1,52 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local environments, build products, and caches.
+environment/conda/
+environment/tools/
+.venv/
+venv/
+build/
+dist/
+src/*.egg-info/
+cache/
+
+# External resources are fetched from the recorded sources and checksums.
+data/external/**
+!data/external/README.md
+provenance/local_external_paths.json
+
+# Raw GTEx tables are distributed separately; keep only their instructions.
+data/raw/editing_levels/*
+!data/raw/editing_levels/README.md
+
+# Large derived matrices are reconstructed from the recorded inputs.
+data/derived/features/predicted_rbp_context_long.parquet
+data/derived/features/predicted_rbp_context_wide.parquet
+data/derived/features/residual_model_matrix.parquet
+data/derived/rbp/rbpnet/rbpnet_site_features.parquet
+
+# Training checkpoints from exploratory folds are reproducible but not release
+# artifacts. Final frozen checkpoints under models/frozen/ are versioned.
+experiments/runs/**/*.pth
+experiments/smoke/
+
+# LaTeX build products; final submission PDFs are added explicitly.
+paper/build/
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.run.xml
+paper/*.synctex.gz
+paper/*.toc

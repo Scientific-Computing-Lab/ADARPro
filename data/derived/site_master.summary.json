@@ -1,0 +1,32 @@
+{
+  "alu_bed_sha256": "e58935a092e8c84af0132566f038f7c4c354baed9b581e5fe8052d684101b2c3",
+  "contexts": {
+    "Artery": 19170,
+    "Brain": 19391,
+    "Combined": 19098,
+    "Liver": 15509,
+    "MuscleSkeletal": 5967
+  },
+  "genome_build": "GRCh38",
+  "mapped_pairs": 705,
+  "mapped_rows": 79135,
+  "mapped_sites": 46133,
+  "pair_local_to_site_id_one_to_one": true,
+  "pair_mapping_sha256": "494ad478e2a58602269eb9b1613fe49fb80f782f1f74350d31351f45da973c36",
+  "raw_coordinate_transform_matches": 79135,
+  "raw_table_sha256": {
+    "Artery": "cc376b859e9ae19e119142cedf39361c3393a9b04fd8d89ce4dea7e10dbcef4a",
+    "Brain": "8f9ca06e73b8fefb2dd3c251ff071e6230df0ddddc010eb4b984fb78c6f2ed10",
+    "Combined": "4b922b325e20895fe935d6affe3bfc7259e215b9f7d2753dc6803ca5785578b3",
+    "Liver": "e89d3c784088dd47e972c0128730effecf8259688fef7ef624f6bc452119c65d",
+    "MuscleSkeletal": "c645830981b31b6e3b6621b1482e216341c75dfbca602732e01c44b9728bea18"
+  },
+  "reference_fasta_sha256": "e49b92b3e4f321bf254c042f25b726d9931c4d74c7523e8b6bb530e63b0cfd4b",
+  "reference_focal_adenosines_validated": 46133,
+  "scope": "canonical train+valid only; held-out test excluded",
+  "site_master_sha256": "6339f6c76f11c0cef1e75b11eece452785f931f690fce0048f5eae3b2327f37d",
+  "source_splits": {
+    "train": 63388,
+    "valid": 15747
+  }
+}

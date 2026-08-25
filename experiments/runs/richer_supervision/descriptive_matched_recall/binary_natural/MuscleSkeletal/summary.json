@@ -1,0 +1,39 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.8519807877925926,
+    "auroc": 0.8658978682796442,
+    "balanced_accuracy": 0.7774991453925024,
+    "f1": 0.7873086734693877,
+    "fn": 465,
+    "fp": 869,
+    "mcc": 0.5588811299092016,
+    "n": 5967,
+    "precision": 0.7396644697423607,
+    "recall": 0.8415132924335378,
+    "specificity": 0.7134849983514672,
+    "tn": 2164,
+    "tp": 2469
+  },
+  "candidate_threshold": 0.4325701594352722,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "development_reference_metrics": {
+    "auprc": 0.8255536650764205,
+    "auroc": 0.8455705148389304,
+    "balanced_accuracy": 0.7654648559101418,
+    "f1": 0.7782505910165485,
+    "fn": 465,
+    "fp": 942,
+    "mcc": 0.5363916460948537,
+    "n": 5967,
+    "precision": 0.723834652594547,
+    "recall": 0.8415132924335378,
+    "specificity": 0.6894164193867458,
+    "tn": 2091,
+    "tp": 2469
+  },
+  "false_positives_avoided": 73,
+  "interpretation": "candidate threshold uses evaluated OOF labels and is not a deployable or model-selection threshold",
+  "mode": "binary_natural",
+  "scope": "descriptive pooled grouped-OOF operating-curve comparison"
+}

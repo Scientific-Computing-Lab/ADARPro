@@ -1,0 +1,40 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.8519807877925926,
+    "auroc": 0.8658978682796442,
+    "balanced_accuracy": 0.7870308002564834,
+    "f1": 0.7924466872863422,
+    "fn": 500,
+    "fp": 775,
+    "mcc": 0.5756291358706268,
+    "n": 5967,
+    "precision": 0.7584917419756934,
+    "recall": 0.8295841854124063,
+    "specificity": 0.7444774151005605,
+    "tn": 2258,
+    "tp": 2434
+  },
+  "canonical_rows": 5967,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "development_reference_metrics": {
+    "auprc": 0.8255536650764205,
+    "auroc": 0.8455705148389304,
+    "balanced_accuracy": 0.7654648559101418,
+    "f1": 0.7782505910165485,
+    "fn": 465,
+    "fp": 942,
+    "mcc": 0.5363916460948537,
+    "n": 5967,
+    "precision": 0.723834652594547,
+    "recall": 0.8415132924335378,
+    "specificity": 0.6894164193867458,
+    "tn": 2091,
+    "tp": 2469
+  },
+  "epochs": 1000,
+  "mode": "binary_natural",
+  "pairs": 585,
+  "raw_training_pool_rows": 72692,
+  "scope": "canonical train+valid outer-fold evaluation; raw development observations used only in non-held-out folds"
+}

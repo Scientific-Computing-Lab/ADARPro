@@ -1,0 +1,10 @@
+{
+  "canonical_test_access": false,
+  "development_pairs": 705,
+  "join": "development pair bed_row to context-fold idx, coordinate-validated",
+  "mapped_pairs": 674,
+  "rows": 79135,
+  "source": "analyses/substrate_stability/raw_data/context_folding_results.csv",
+  "source_scope": "outcome-independent ViennaRNA folding with native pair gap and +/-200 nt flanks",
+  "source_sha256": "ff94153d4e82ff04ac90ca5cba80c2e409354cdcc2332453f4261788bd91f089"
+}

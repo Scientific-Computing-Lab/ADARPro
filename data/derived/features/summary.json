@@ -1,0 +1,25 @@
+{
+  "combined_expression": "not applicable; values remain missing",
+  "example_count": 79135,
+  "genes_with_eclip": [
+    "ADAR",
+    "DROSHA",
+    "FXR1",
+    "HNRNPC",
+    "HNRNPM",
+    "IGF2BP1",
+    "ILF3",
+    "MATR3",
+    "PUS1",
+    "RBFOX2",
+    "SLBP",
+    "TIA1",
+    "TROVE2",
+    "XRCC6"
+  ],
+  "interaction_definition": "prespecified binding summaries multiplied by log1p GTEx v8 TPM",
+  "panel_gene_count": 19,
+  "scope": "development train+valid only",
+  "site_count": 46133,
+  "wide_feature_count": 1083
+}

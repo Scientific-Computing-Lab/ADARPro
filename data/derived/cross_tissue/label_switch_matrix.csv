@@ -1,0 +1,13 @@
+edited_tissue,nonedited_tissue,shared_sites,strict_switch_sites
+Artery,Brain,66866,33
+Artery,Liver,53931,157
+Artery,MuscleSkeletal,69482,840
+Brain,Artery,66866,3
+Brain,Liver,51142,60
+Brain,MuscleSkeletal,65550,415
+Liver,Artery,53931,0
+Liver,Brain,51142,11
+Liver,MuscleSkeletal,53201,190
+MuscleSkeletal,Artery,69482,0
+MuscleSkeletal,Brain,65550,1
+MuscleSkeletal,Liver,53201,0

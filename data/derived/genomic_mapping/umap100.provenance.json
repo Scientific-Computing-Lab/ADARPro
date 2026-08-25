@@ -1,0 +1,13 @@
+{
+  "citation": "Karimzadeh et al., Bioinformatics 2018, doi:10.1093/bioinformatics/bty149",
+  "fully_unique_focal_fraction": 0.9612641709838944,
+  "genome_build": "GRCh38/hg38",
+  "interpretation_limit": "Umap measures genomic k-mer uniqueness; it does not undo the ENCODE eCLIP pipeline's prior removal of reads mapping to RepBase.",
+  "kmer_length": 100,
+  "retrieved_utc": "2026-08-21T18:50:44.143989+00:00",
+  "scope": "development train+valid only",
+  "site_count": 46133,
+  "source_bytes": 864604710,
+  "source_sha256": "93876c70032d4d59ef2e90778a039622e3e1e4744c2b9e9735c7c1bbe08f0b53",
+  "source_url": "https://hgdownload.soe.ucsc.edu/gbdb/hg38/hoffmanMappability/k100.Umap.MultiTrackMappability.bw"
+}

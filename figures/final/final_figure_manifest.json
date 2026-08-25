@@ -1,0 +1,21 @@
+{
+  "candidate": "adarpro_pair_local_equal_logit_ensemble",
+  "canonical_test_access": true,
+  "figures": [
+    "final_calibration.png",
+    "final_fp_rescue_tp_damage.png",
+    "final_metric_improvement.png",
+    "final_pr_curves.png",
+    "final_roc_curves.png"
+  ],
+  "input_hashes": {
+    "metrics": "ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e",
+    "predictions_Artery": "0016bf3612d76f3104f51a90b2f9428f5fbc366967277ddae93b55f533afb6a2",
+    "predictions_Brain": "ce2a503bf5d020e9ed9f55623c835d77ad0cb405f6ad58da97f46e413456f026",
+    "predictions_Combined": "87e02a3dc9e3ff42fec975959e206851e62a000259536c047fae09e7579b6160",
+    "predictions_Liver": "dbde2d24d4f62cbaa1ebf71660313c48adaf9e8a075e9735a65cb1895778e2c1",
+    "predictions_MuscleSkeletal": "3a270210913bf84b564fac2c1cfccdbfe9449ec0031366079fe8ef4c277c033f",
+    "summary": "5532ae651c9523f8aa481cba1beb9dbbfdc2a8ac06683d8db5e26ed963729248"
+  },
+  "scope": "descriptive figures after single consumed canonical-test evaluation"
+}

@@ -1,0 +1,55 @@
+{
+  "generated_figures": [
+    "continuous_tissue_ablation.png",
+    "cross_tissue_switch_matrix.png",
+    "eclip_duplex_coverage.png",
+    "pair_engagement_prediction.png",
+    "residual_model_ablation.png",
+    "richer_supervision_frontier.png",
+    "target_local_frontier.png"
+  ],
+  "input_tables": {
+    "continuous_ablation": [
+      "experiments/runs/continuous_tissue_differences/pair_bootstrap_ci.csv"
+    ],
+    "eclip_coverage": [
+      "results/adarpro/rbp_feature_audit/eclip_gene_coverage.csv"
+    ],
+    "pair_engagement": [
+      "experiments/runs/pair_engagement/Artery/oof_pair_predictions.parquet",
+      "experiments/runs/pair_engagement/Brain/oof_pair_predictions.parquet",
+      "experiments/runs/pair_engagement/Liver/oof_pair_predictions.parquet",
+      "experiments/runs/pair_engagement/MuscleSkeletal/oof_pair_predictions.parquet"
+    ],
+    "residual_ablation": [
+      "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv"
+    ],
+    "richer_supervision": [
+      "experiments/runs/richer_supervision/pair_balance_comparison/metrics.csv",
+      "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
+    ],
+    "switch_matrix": [
+      "experiments/runs/cross_tissue_switch/switch_comparisons.parquet"
+    ],
+    "target_local_frontier": [
+      "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/metrics.csv",
+      "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv",
+      "experiments/runs/richer_supervision/natural_prevalence/pair_local_comparison/MuscleSkeletal/metrics.csv",
+      "experiments/runs/richer_supervision/natural_prevalence/pair_local_comparison/MuscleSkeletal/pair_bootstrap_ci.csv"
+    ]
+  },
+  "source_tables": [
+    "continuous_ablation_rmse_bootstrap_ci.csv",
+    "cross_tissue_switch_matrix.csv",
+    "eclip_gene_coverage.csv",
+    "pair_engagement_bootstrap_ci.csv",
+    "pair_engagement_oof_predictions.csv",
+    "residual_auroc_bootstrap_ci.csv",
+    "richer_supervision_metrics.csv",
+    "richer_supervision_pair_bootstrap_ci.csv",
+    "target_local_canonical_metrics.csv",
+    "target_local_canonical_pair_bootstrap_ci.csv",
+    "target_local_natural_metrics.csv",
+    "target_local_natural_pair_bootstrap_ci.csv"
+  ]
+}

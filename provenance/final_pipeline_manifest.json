@@ -1,0 +1,281 @@
+{
+  "benchmark": "published AdarEdit human binary task; immutable global pair split; published per-context test protocol",
+  "candidate_name": "adarpro_pair_local_equal_logit_ensemble",
+  "candidate_specification": {
+    "components": {
+      "local": "binary_pair_balanced_local",
+      "pair": "binary_pair_balanced"
+    },
+    "family": "pair_balanced_plus_target_local_equal_logit",
+    "fusion": "equal-weight logit average",
+    "weights": [
+      0.5,
+      0.5
+    ]
+  },
+  "code_revision": "0f50fac33bec8bad325e6745d83ceaacebe42fc1",
+  "contexts": {
+    "Artery": {
+      "components": [
+        {
+          "checkpoint": "models/frozen/Artery/binary_pair_balanced_local/best.pth",
+          "mode": "binary_pair_balanced_local",
+          "name": "local",
+          "sha256": "d2c1e3e7dee97457e9b98d2d74851583a41cb7eedd5b009ad28e269abc6483bd"
+        },
+        {
+          "checkpoint": "models/frozen/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "pair",
+          "sha256": "305815bb8ff24d62776b057475824ea546a66369739ccc22c0e3183a7aaa580a"
+        }
+      ],
+      "threshold": 0.475,
+      "validation_summary": "models/frozen_ensemble/Artery/summary.json",
+      "validation_summary_sha256": "75a01d479df6b59a882d687b486896f228e05b7556410ed478e5c46de37b82b1",
+      "weights": [
+        0.5,
+        0.5
+      ]
+    },
+    "Brain": {
+      "components": [
+        {
+          "checkpoint": "models/frozen/Brain/binary_pair_balanced_local/best.pth",
+          "mode": "binary_pair_balanced_local",
+          "name": "local",
+          "sha256": "648f3067c8be16305a86c7f625b48b40cba1e824955b5616468f25af043218ff"
+        },
+        {
+          "checkpoint": "models/frozen/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "pair",
+          "sha256": "5d231fec17fec0354055762c0d1ec0cab87c5048a9b5e7ff17c36724bcc9d16e"
+        }
+      ],
+      "threshold": 0.42500000000000004,
+      "validation_summary": "models/frozen_ensemble/Brain/summary.json",
+      "validation_summary_sha256": "dc6d7c31ad52f7ff65eb431a9c1b4de0db51c33fd39e994e2ee3ecb2a19b2b79",
+      "weights": [
+        0.5,
+        0.5
+      ]
+    },
+    "Combined": {
+      "components": [
+        {
+          "checkpoint": "models/frozen/Combined/binary_pair_balanced_local/best.pth",
+          "mode": "binary_pair_balanced_local",
+          "name": "local",
+          "sha256": "4db7a54dcf407d9d5f6be9a3fa85bac264debad8326f9c538250f81aa66fc983"
+        },
+        {
+          "checkpoint": "models/frozen/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "pair",
+          "sha256": "f4d8111412355b5104dc64c59c8eeca82568be37f1cc5a2caf7ca8aa88f937a2"
+        }
+      ],
+      "threshold": 0.35,
+      "validation_summary": "models/frozen_ensemble/Combined/summary.json",
+      "validation_summary_sha256": "d9d9ade689ab63a167b75b647427a4b7e5e811ba1bb4060896728598247e6f28",
+      "weights": [
+        0.5,
+        0.5
+      ]
+    },
+    "Liver": {
+      "components": [
+        {
+          "checkpoint": "models/frozen/Liver/binary_pair_balanced_local/best.pth",
+          "mode": "binary_pair_balanced_local",
+          "name": "local",
+          "sha256": "a7cb94ec4b961acc0723ed8e3149e2cbefd84ca61272d3897a788918a527d539"
+        },
+        {
+          "checkpoint": "models/frozen/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "pair",
+          "sha256": "7811557849061106231dc9a4e45d8a4b54468730e32cc1f44ef7905bc596b192"
+        }
+      ],
+      "threshold": 0.55,
+      "validation_summary": "models/frozen_ensemble/Liver/summary.json",
+      "validation_summary_sha256": "64e97fd1f429fcc2f5159f48d2dce9c9ea579c0033984e2a241fcd24192a8763",
+      "weights": [
+        0.5,
+        0.5
+      ]
+    },
+    "MuscleSkeletal": {
+      "components": [
+        {
+          "checkpoint": "models/frozen/MuscleSkeletal/binary_pair_balanced_local/best.pth",
+          "mode": "binary_pair_balanced_local",
+          "name": "local",
+          "sha256": "db07e78afbb37a28e9508cc8c203e38c17683b1ad7fffaae4bf149e9f6cc51ef"
+        },
+        {
+          "checkpoint": "models/frozen/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "pair",
+          "sha256": "2bf371dbd3dc369f885ee3e1bb8a424876001f2ebc746359651f1d653d779408"
+        }
+      ],
+      "threshold": 0.225,
+      "validation_summary": "models/frozen_ensemble/MuscleSkeletal/summary.json",
+      "validation_summary_sha256": "73cebab7cbdcb5285f57ab05d2135c991f4bae56b6410289d1c185e6adbb545d",
+      "weights": [
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "created_utc": "2026-08-25T04:27:35.366208+00:00",
+  "development_protocol": {
+    "canonical_test_access_during_selection": false,
+    "checkpoint_selection": "maximum validation F1 over 1000 epochs",
+    "development_folds": "five global pair-disjoint folds",
+    "grouping_unit": "pair_id",
+    "random_seed": 42,
+    "selection_split": "published validation canonical rows",
+    "threshold_selection": "published validation only",
+    "training_split": "published train pairs; expanded raw high/low sites"
+  },
+  "frozen_inputs": {
+    "baseline_adapter": {
+      "bytes": 19591,
+      "path": "src/adarpro/models/baseline_oof.py",
+      "sha256": "81e0199065dbe6e84b4c4096b9469678f6dc151d430baca0103a2a722d86869e"
+    },
+    "conda_packages": {
+      "bytes": 135278,
+      "path": "provenance/conda_packages_2026-08-21.json",
+      "sha256": "a3beb173bd3de4b83cf638deb7f0a317ef70636d4edad328cab36dbc449e5335"
+    },
+    "ensemble_implementation": {
+      "bytes": 7682,
+      "path": "src/adarpro/models/final_ensemble.py",
+      "sha256": "6d8af04e0f4f87d14fb8ca5a6745041ae53e5a693deecbd6be17d31e57e95552"
+    },
+    "ensemble_math": {
+      "bytes": 13487,
+      "path": "src/adarpro/models/fixed_checkpoint_ensemble.py",
+      "sha256": "b0d6f512ed93b58bb752299c8754ad2953da3b379cd8a8cd097cd9dd09496ddf"
+    },
+    "environment_resolution": {
+      "bytes": 1268,
+      "path": "provenance/environment_resolution.md",
+      "sha256": "b630dc1bb63e54cdbd708b9ae2073c295459373f0c34db09c3b3a3db866dec2c"
+    },
+    "environment_yml": {
+      "bytes": 599,
+      "path": "environment.yml",
+      "sha256": "104fbc0cf23eda4c5ad341139119acd18451059c8f180e69bac706d839b99119"
+    },
+    "expanded_development_sites": {
+      "bytes": 10091284,
+      "path": "data/derived/cross_tissue/development_raw_combined_sites.parquet",
+      "sha256": "965b3542f9f77c251521e0de714a56e62049a94f06aa5a6ebd7216c344798741"
+    },
+    "final_training_implementation": {
+      "bytes": 13612,
+      "path": "src/adarpro/models/final_training.py",
+      "sha256": "e69c2bf2d04db97ac9cffe5177470df4a7f9e79152bc6077566d55dc7dcbdc1b"
+    },
+    "global_pair_split": {
+      "bytes": 13859,
+      "path": "data_construction/split/global_pair_split.json",
+      "sha256": "2884808c05f2026938f19a54e3745f8334d178d8697f7fa84a91c804f19109e4"
+    },
+    "locked_evaluation_implementation": {
+      "bytes": 21850,
+      "path": "src/adarpro/evaluation/final_locked.py",
+      "sha256": "95be80042acb0431dc550e3537c057c6a9f0c96ba99f4ae5a1996ade76f0c696"
+    },
+    "metric_implementation": {
+      "bytes": 21461,
+      "path": "src/adarpro/models/residual.py",
+      "sha256": "48b16b54468bf361a46f162170f6820f9d48f657e4d050ba31df4d679e4604bc"
+    },
+    "model_implementation": {
+      "bytes": 41256,
+      "path": "src/adarpro/models/multitask_oof.py",
+      "sha256": "bc926817209169999b8a217b8831350359f3db4c28c2b60eb809562d01dbc897"
+    },
+    "model_selection_policy": {
+      "bytes": 3764,
+      "path": "provenance/model_selection_policy.json",
+      "sha256": "adc5216ade76e3e28f7848d05666866900f66cc56b4985b7740850fd8a4e7a79"
+    },
+    "pip_freeze": {
+      "bytes": 2203,
+      "path": "provenance/pip_freeze_2026-08-21.txt",
+      "sha256": "4dec6ea29fef3c47dbc23eb528cdc969fcd72940af782ae5292e1f6f3979c079"
+    },
+    "published_baseline_checkpoint_Artery": {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Artery/best.pth",
+      "sha256": "e06f0a07f1749e3fba4ace5287a7d6e33a688ef7bff09a40f55040fa8e6987a0"
+    },
+    "published_baseline_checkpoint_Brain": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Brain/best.pth",
+      "sha256": "0fadd0dc07c9b88c1e7696610cdd448e63af43a5e63386b44399139e7f08a1b2"
+    },
+    "published_baseline_checkpoint_Combined": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Combined/best.pth",
+      "sha256": "aa6202b80f21d003413bb9fbfa94c09fea56fc319a0a5de8b564803e229f02cf"
+    },
+    "published_baseline_checkpoint_Liver": {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Liver/best.pth",
+      "sha256": "1c1c1f3773ed50162fbd7fbfc45219408febd72bfecc92992af247683d396729"
+    },
+    "published_baseline_checkpoint_MuscleSkeletal": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_MuscleSkeletal/best.pth",
+      "sha256": "aad0112a331cfea6965e28332d4569e25decdd281f16f959c2ac59d3c7cac0b5"
+    },
+    "published_baseline_metrics": {
+      "bytes": 3982,
+      "path": "results/adarpro/baseline_reproduction.csv",
+      "sha256": "e68e8002ce7a9a01f515008374e9e8bd7e2b16b473d649776829c6392a7c12d0"
+    },
+    "quarantine_implementation": {
+      "bytes": 9609,
+      "path": "src/adarpro/quarantine.py",
+      "sha256": "fad62c32da391f9eca9adb0f44d1ab93bd70e5a10bdb54c755d3e513976ea56d"
+    },
+    "site_master": {
+      "bytes": 10315338,
+      "path": "data/derived/site_master.parquet",
+      "sha256": "b90d788d7241b20c894639ef464b2cdbaaed21a701780db681ad04313e7c4c3d"
+    },
+    "unified_development_decision": {
+      "bytes": 3783,
+      "path": "provenance/unified_development_decision.json",
+      "sha256": "9384f5baf5052655475527db5bc21a86cf94caf8c615fe46ffa9f30c78ea91e3"
+    },
+    "unified_model_selection_policy": {
+      "bytes": 4929,
+      "path": "provenance/unified_model_selection_policy.json",
+      "sha256": "af9c3973256609a45013a1e6b0486d5708840c7e5357bd0e41a39ffbc8cd4b1e"
+    },
+    "upstream_baseline_model": {
+      "bytes": 5561,
+      "path": "code/gnnadar_verb_compact.py",
+      "sha256": "aac8cebddd69729e79c14b85081066d2e926f318090fa0839251aa4fdd7c30ff"
+    },
+    "upstream_provenance": {
+      "bytes": 9169,
+      "path": "provenance/upstream.json",
+      "sha256": "e34301fc9bc130a51232c0a629db83e2c80b77e1f3e2834d34db4abee94a921b"
+    }
+  },
+  "schema_version": 1,
+  "selection_policy": "provenance/model_selection_policy.json",
+  "selection_policy_sha256": "adc5216ade76e3e28f7848d05666866900f66cc56b4985b7740850fd8a4e7a79",
+  "upstream_revision": "5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5"
+}

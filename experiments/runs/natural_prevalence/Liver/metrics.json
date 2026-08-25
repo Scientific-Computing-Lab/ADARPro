@@ -1,0 +1,20 @@
+{
+  "auprc": 0.6732458598206512,
+  "auroc": 0.8915465901930261,
+  "balanced_accuracy": 0.8202661685087116,
+  "canonical_test_access": false,
+  "context": "Liver",
+  "f1": 0.624563784412563,
+  "fn": 1056,
+  "fp": 6690,
+  "mcc": 0.5358605671107471,
+  "n": 38096,
+  "pairs": 515,
+  "positive_prevalence": 0.19684481310373791,
+  "precision": 0.4905962080255844,
+  "recall": 0.8591812241632217,
+  "scope": "natural-prevalence train+valid pairs, grouped OOF",
+  "specificity": 0.7813511128542014,
+  "tn": 23907,
+  "tp": 6443
+}

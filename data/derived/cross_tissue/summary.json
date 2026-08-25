@@ -1,0 +1,24 @@
+{
+  "artifacts": {
+    "continuous_pairwise_differences.csv": "d55bf7711463fe81733e5d177cda7215c9185e140a2ae912e1646db3823e87e0",
+    "development_raw_combined_sites.parquet": "965b3542f9f77c251521e0de714a56e62049a94f06aa5a6ebd7216c344798741",
+    "development_raw_individual_tissue_sites.parquet": "4a6894bdfa3f9190fdf22224b18ff1365f28e95fa3d06e95f8e9c1a2632260dc",
+    "label_switch_matrix.csv": "6388a1543f51198dd7fa54735818ad2d0b6df888f1c313ef8a0de314a28df9a0",
+    "matched_sites.parquet": "de884eb9dee2f566d084f14bde583bbb08e242923f47a2e5d36907caa517d01f"
+  },
+  "categories": {
+    "edited_in_all_observed": 3115,
+    "intermediate_involved": 37990,
+    "nonedited_in_all_observed": 32432,
+    "strict_edited_nonedited_switch": 1221
+  },
+  "combined_excluded": true,
+  "combined_natural_prevalence_rows": 62247,
+  "intermediate_rows": 85760,
+  "natural_prevalence_binary_rows": 189809,
+  "raw_site_tissue_rows": 275569,
+  "scope": "raw sites on the 705 development pairs only; canonical held-out pairs excluded",
+  "sites_observed_in_at_least_two_tissues": 74758,
+  "strict_switch_sites": 1221,
+  "unique_sites": 83185
+}

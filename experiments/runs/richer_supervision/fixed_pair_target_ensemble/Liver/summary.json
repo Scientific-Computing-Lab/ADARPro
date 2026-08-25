@@ -1,0 +1,42 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.9119925945441572,
+    "auroc": 0.9228312588994386,
+    "balanced_accuracy": 0.8487153343292214,
+    "f1": 0.8490493811407426,
+    "fn": 845,
+    "fp": 1521,
+    "mcc": 0.6980791107097731,
+    "n": 15509,
+    "precision": 0.8139449541284404,
+    "recall": 0.887318309107881,
+    "specificity": 0.8101123595505618,
+    "tn": 6489,
+    "tp": 6654
+  },
+  "canonical_test_access": false,
+  "components": {
+    "focal": "binary_pair_balanced_target_pool",
+    "pair": "binary_pair_balanced"
+  },
+  "context": "Liver",
+  "development_reference_metrics": {
+    "auprc": 0.8737257890108748,
+    "auroc": 0.8908594554180258,
+    "balanced_accuracy": 0.8189788767507744,
+    "f1": 0.8200330915107548,
+    "fn": 1056,
+    "fp": 1772,
+    "mcc": 0.6387386433266011,
+    "n": 15509,
+    "precision": 0.7842970176506391,
+    "recall": 0.8591812241632217,
+    "specificity": 0.7787765293383271,
+    "tn": 6238,
+    "tp": 6443
+  },
+  "ensemble": "fixed equal-logit average of 2 components",
+  "pairs": 508,
+  "rows": 15509,
+  "scope": "canonical train+valid grouped OOF only"
+}

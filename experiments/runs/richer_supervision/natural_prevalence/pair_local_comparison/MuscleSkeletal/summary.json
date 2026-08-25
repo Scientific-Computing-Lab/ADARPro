@@ -1,0 +1,12 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "pair_balanced",
+    "local",
+    "pair_local_ensemble"
+  ],
+  "canonical_test_access": false,
+  "pairs": 597,
+  "rows": 54289,
+  "scope": "Muscle all development high/low sites at natural prevalence; held-out global pair folds"
+}

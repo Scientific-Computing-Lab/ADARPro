@@ -1,0 +1,10 @@
+{
+  "description": "ENCODE eCLIP-seq Processing Pipeline SOP v2.2",
+  "document_uuid": "739ca190-8d43-4a68-90ce-1a0ddfffc6fd",
+  "encode_md5": "b1b9c0ea8e0fb14dffa3ca357f4149ee",
+  "local_path": "provenance/eCLIP_analysisSOP_v2.2.pdf",
+  "retrieval_date": "2026-08-21",
+  "sha256": "8b22e7b868b4040a5475042357ff207f3c17a4de6726cd18490e9d6affd20319",
+  "source_url": "https://www.encodeproject.org/documents/739ca190-8d43-4a68-90ce-1a0ddfffc6fd/@@download/attachment/eCLIP_analysisSOP_v2.2.pdf",
+  "version_date": "2020-04-09"
+}

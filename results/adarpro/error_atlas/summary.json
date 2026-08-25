@@ -1,0 +1,11 @@
+{
+  "canonical_test_access": false,
+  "contexts": [
+    "MuscleSkeletal"
+  ],
+  "false_positives": 942,
+  "high_confidence_false_positives_probability_ge_0.8": 411,
+  "pairs": 585,
+  "scope": "available train+valid grouped-OOF predictions only",
+  "sites": 5967
+}

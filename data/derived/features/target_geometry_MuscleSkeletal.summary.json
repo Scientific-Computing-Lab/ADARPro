@@ -1,0 +1,14 @@
+{
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "feature_count": 52,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "target-centered development sequence/structure only",
+  "windows": [
+    5,
+    10,
+    20,
+    32
+  ]
+}

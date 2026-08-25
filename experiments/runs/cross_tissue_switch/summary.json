@@ -1,0 +1,23 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "models": [
+    "adar_expression",
+    "binding_without_expression",
+    "expression_only",
+    "tissue_id",
+    "tissue_plus_all_interactions",
+    "tissue_plus_eclip_interaction",
+    "tissue_plus_matched_random",
+    "tissue_plus_negative_control_interactions",
+    "tissue_plus_permuted_rbp_identity",
+    "tissue_plus_prismnet_interaction",
+    "tissue_plus_rbpnet_interaction",
+    "tissue_plus_shuffled_expression",
+    "tissue_plus_suppressor_interactions"
+  ],
+  "pairs": 289,
+  "scope": "strict development-pair cross-tissue switches; Combined excluded",
+  "sites": 1059,
+  "tissue_comparisons": 1524
+}

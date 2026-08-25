@@ -1,0 +1,10 @@
+resource,mark,biosample,experiments_found,genome_build,evidence_role,decision,caveat
+ENCODE,H3K36me3,liver,12,GRCh38,tissue-matched_candidate,advance_to_file_audit,"Multiple donors/experiments require outcome-independent replicate aggregation"
+ENCODE,H3K36me3,skeletal_muscle_tissue,3,GRCh38,tissue-matched_candidate,advance_to_file_audit,"Bulk tissue track may mix cell types"
+ENCODE,H3K36me3,tibial_artery,4,GRCh38,tissue-matched_candidate,advance_to_file_audit,"Bulk tissue track may mix vascular cell types"
+ENCODE,H3K36me3,cerebellum,0,GRCh38,tissue-matched_candidate,coverage_gap,"No released exact-cerebellum experiment in API query on 2026-08-21"
+ENCODE,H2AFZ,myotube,1,GRCh38,cell-context_proxy,audit_only,"Histone variant target is H2AFZ/H2A.Z; myotube is not bulk Muscle Skeletal"
+ENCODE,H2AFZ,skeletal_muscle_myoblast,1,GRCh38,cell-context_proxy,audit_only,"Developmental cell model rather than adult tissue"
+ENCODE,H2AFZ,HepG2,1,GRCh38,cell_line_proxy,audit_only,"No liver tissue H2AFZ track; not interchangeable with tissue state"
+ENCODE,H2AFZ,astrocyte,1,GRCh38,cell_type_proxy,audit_only,"Not cerebellum and not a complete brain context"
+ENCODE,H2AFZ,endothelial_cell_of_umbilical_vein,1,GRCh38,cell_type_proxy,audit_only,"Not tibial artery"

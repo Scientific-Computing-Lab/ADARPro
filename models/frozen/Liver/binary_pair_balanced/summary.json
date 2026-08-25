@@ -1,0 +1,29 @@
+{
+  "best_epoch": 974,
+  "canonical_test_access": false,
+  "checkpoint": "models/frozen/Liver/binary_pair_balanced/best.pth",
+  "checkpoint_sha256": "7811557849061106231dc9a4e45d8a4b54468730e32cc1f44ef7905bc596b192",
+  "context": "Liver",
+  "mode": "binary_pair_balanced",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.675,
+  "train_pairs": 410,
+  "train_raw_rows": 30445,
+  "validation_metrics": {
+    "auprc": 0.913471255873328,
+    "auroc": 0.9284230407708709,
+    "balanced_accuracy": 0.8591426283888284,
+    "f1": 0.8472871002515271,
+    "fn": 199,
+    "fp": 226,
+    "mcc": 0.7172571564200443,
+    "n": 3024,
+    "precision": 0.8391459074733096,
+    "recall": 0.8555878084179971,
+    "specificity": 0.8626974483596598,
+    "tn": 1420,
+    "tp": 1179
+  },
+  "validation_pairs": 102,
+  "validation_rows": 3024
+}

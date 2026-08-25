@@ -1,0 +1,9 @@
+model,metric,lower,median,upper,label
+tissue_pair_plus_negative_controls,rmse,-0.0124582494625723,0.0001590560084592,0.0135377521790486,Negative-control RBPs
+tissue_pair_plus_eclip,rmse,-0.005985900620491,0.0035610330515831,0.0185679790178181,eCLIP × expression
+tissue_pair_plus_matched_random,rmse,0.0018059704137597,0.0038609315227207,0.0057720179956185,Matched random
+tissue_pair_plus_prismnet,rmse,-0.009368949813095,0.0084466802628853,0.0274939208020999,PrismNet × expression
+tissue_pair_plus_suppressors,rmse,0.0077355468732432,0.0130719518586621,0.0192932453508651,Prior suppressors
+tissue_pair_plus_rbpnet,rmse,0.0007193947095529,0.0140869086094328,0.0294910846821466,RBPNet × expression
+tissue_pair_plus_all_rbp,rmse,0.0041579411081399,0.0290506058478001,0.0558775061534417,All RBP context
+binding_without_expression,rmse,-0.0133226796131431,0.0303711516720408,0.073869494170385,Binding without expression

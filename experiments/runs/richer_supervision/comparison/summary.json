@@ -1,0 +1,11 @@
+{
+  "bootstrap_replicates": 1000,
+  "candidates": [
+    "expanded_high_low",
+    "simultaneous_multitask"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF comparison only"
+}

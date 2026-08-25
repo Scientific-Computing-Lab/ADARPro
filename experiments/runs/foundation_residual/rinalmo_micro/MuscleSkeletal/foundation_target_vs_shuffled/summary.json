@@ -1,0 +1,9 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidate": "foundation_target",
+  "canonical_test_access": false,
+  "pairs": 585,
+  "reference": "foundation_shuffled_control",
+  "rows": 5967,
+  "scope": "paired comparison of aligned grouped-OOF development predictions"
+}

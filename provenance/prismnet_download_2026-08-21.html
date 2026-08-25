@@ -1,0 +1,448 @@
+
+<!--<!DOCTYPE html>-->
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+    <title>PrismNet web server</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/bootstrap.min.css">
+    <!-- Our Custom CSS -->
+
+    <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/styles.css">
+    
+
+    <!-- Font Awesome JS -->
+
+    <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/fontawesome.css">
+
+    <!-- No need -->
+
+    <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/jquery.mCustomScrollbar.min.css">
+    <!-- <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/bootstrap.bundle.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/introjs.css"> -->
+
+    <style>
+        * { font-family: Roboto; }
+        .text-monospace * { font-family:RobotoMono; }
+
+        /* @font-face {
+          font-family: Kalam;
+          src: url(/static/fonts/Kalam-Bold.ttf);
+          font-weight: bold;
+        }
+        @font-face {
+          font-family: Kalam;
+          src: url(/static/fonts/Kalam-Regular.ttf);
+          font-weight: normal;
+        }
+        @font-face {
+          font-family: Kalam;
+          src: url(/static/fonts/Kalam-Light.ttf);
+          font-weight: 100;
+        }   */
+          @font-face {
+          font-family: Kalam;
+          src: url(https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/fonts/Kalam-Bold.ttf);
+          font-weight: bold;
+        }
+        @font-face {
+          font-family: Kalam;
+          src: url(https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/fonts/Kalam-Regular.ttf);
+          font-weight: normal;
+        }
+        @font-face {
+          font-family: Kalam;
+          src: url(https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/fonts/Kalam-Light.ttf);
+          font-weight: 100;
+        }
+
+    </style>
+
+    
+<title>Download</title>
+<!-- <link rel="stylesheet" href="/static/css/easyui.css"> -->
+<!-- <script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.easyui.min.js"></script> -->
+
+<title>Download</title>
+
+<!-- <link href="/static/tabulator/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="/static/tabulator/dist/js/tabulator.min.js"></script> -->
+
+<meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RISE:  RNA Interactome from Sequencing Experiments, transcriptome-wide sequencing-based experiments like PARIS, SPLASH, LIGRseq, and MARIO, and targeted studies like RIAseq, RAP-RNA, and CLASH">
+    <meta name="author" content="zhanglab.net">
+    <meta name="keyword" content="RISE, RNA Interactome, PARIS, SPLASH, LIGRseq, MARIO, RIAseq, RAP-RNA, CLASH">
+    <link rel="shortcut icon" href="img/favicon.png"> -->
+
+    <!-- Bootstrap CSS -->
+     <!-- <link href="/static/css/bootstrap-3.3.7.min.css" rel="stylesheet"> -->
+     <!--bootstrap theme -->
+    <!-- <link href="/static/css/bootstrap-theme.css" rel="stylesheet"> -->
+    <!--external css-->
+    <!-- font icon -->
+    <!-- <link href="/static/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" /> -->
+
+    <!-- Custom styles -->
+
+    <!-- <link href="static/css/style.css" rel="stylesheet" />
+    <link href="static/css/style-responsive.css" rel="stylesheet" /> -->
+
+    <!-- <link rel="stylesheet" href="/static/css/download.css"> -->
+    <link rel="stylesheet" href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/css/download.css">
+
+
+
+
+
+</head>
+
+<body>
+
+    <!-- 错误提示器 -->
+    <div style="position: fixed; top: 25px; right: 25px; z-index: -1;">
+      <!-- Then put toasts within -->
+      <div class="toast" role="alert" aria-live="polite" aria-atomic="true" data-delay="10000" style="width: 500px;" id="alerter">
+        <div class="toast-header">
+            <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#f44336"></rect></svg>
+            <strong class="mr-auto" style="color:#f44336">Error</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            This is the error message! Please reload!
+        </div>
+      </div>
+    </div>
+
+
+    <!---->
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            
+            <div class="sidebar-header clearfix">
+                <p style="margin-top:14%;"></p>
+                <!-- <a data-toggle="tooltip" data-placement="bottom" title="Predict RNA secondary structure." sidebar-tooltip="tooltip"> -->
+                    <h3 style="letter-spacing: 0px;">
+                        <!--<i class="fas fa-home"></i>-->
+                        <a href="/home/"><img src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/img/logo-white.svg" alt="Logo" width="100%" /></a>
+                    </h3>
+                <!-- </a> -->
+                <p style="margin-top:12%;"></p>
+            </div>
+            <ul class="list-unstyled"> 
+                <li id="help_sb">
+                    <a href="/home/">&nbsp;<i class="fas fa-home"></i>&nbsp;&nbsp;&nbsp;Home</a>
+                </li>
+                <li id="predict_sb">
+                    <a href="/predict/">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;Predict</a>
+                </li>
+                <!-- <li id="predict_sb1" data-toggle="tooltip" data-placement="top" title="Search RNA icshape" sidebar-tooltip="tooltip">
+                    <a href="/predstr_struct/">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;Structure</a>
+                </li> -->
+                <!-- <li id="result_sb" data-toggle="tooltip" data-placement="top" title="Result download" sidebar-tooltip="tooltip">
+                    <a href="/results/">&nbsp;<i class="fas fa-download"></i>&nbsp;&nbsp;&nbsp;Results</a>
+                </li> -->
+                
+                <li id="download_sb">
+                    <a href="/download/">&nbsp;<i class="fas fa-download"></i>&nbsp;&nbsp;&nbsp;Download</a>
+                </li>
+                <li id="upload_sb">
+                    <a href="/upload/">&nbsp;<i class="fas fa-cloud-upload-alt"></i>&nbsp;&nbsp;&nbsp;Model Training</a>
+                </li>
+                <li id="method_sb">
+                    <a href="/help/">&nbsp;<i class="fas fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Help</a>
+                </li>
+                <li id="contact_sb">
+                    <a href="/contact/">&nbsp;<i class="fas fa-phone"></i>&nbsp;&nbsp;&nbsp;Contact</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">    
+                <!-- Menu -->
+                <div class="container-fluid" id="content_button">
+                    <button type="button" id="sidebarCollapse_cont" class="btn btn-toggle siderbarButtons">
+                        <i class="fas fa-align-left"></i>
+                        <!-- <span style="font-size:1.4em;"></span> -->
+                    </button>
+                
+                <span style="font-size:1.4em;margin: auto;color:rgb(0, 0, 0)">&nbsp;PrismNet: predicting protein RNA interaction using in vivo RNA structural information</span>
+                <div style="float:right;"><i style="cursor:pointer;" class="far fa-heart" onclick="support()" id="icon_love"></i>&nbsp;&nbsp;<span id="dianzan">&nbsp;&nbsp;</span></div>
+                </div>
+
+            </nav>
+            
+<!--<div class="customizer d-none d-xl-block">-->
+    <!--<a class="customizer-toggle bg-info text-light" href="javascript:void(0);" title="Document">-->
+        <!--<i class="fas fa-book-reader"></i>-->
+    <!--</a>-->
+    <!--<div class="customizer-content p-2" style="overflow-y:scroll;">-->
+        <!--<h3 class="text-uppercase mb-0 mt-2 text-info">Help</h3>-->
+        <!--<hr>-->
+        <!--<h5 class="text-info">How to convert bigWig (.bw) files to bedGraph files</h5>-->
+        <!--<p>-->
+            <!--Download <code>bigWigToBedGraph</code> tool from <a href="http://hgdownload.soe.ucsc.edu/admin/exe/" target="_blank" class="text-info">UCSC tools page</a>. Type <code>bigWigToBedGraph in.bigWig out.bedGraph</code> to convert the bigWig binary to bedGraph plain text.-->
+        <!--</p>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+            
+<ul class="ul1">
+<!-- <div style="margin-left:2%;margin-right:10%;margin-top:6%;"> -->
+<p class="p3" style="line-height:130%;">The download data includes the whole transcriptome-wide RNA structural information in different species and cell lines, the pre-calculated RBP binding sites of all 168 RBPs in whole transcriptome in K562 cells and HepG2 cells by PrismNet models with sequence information or integrated sequence and structural information in the matched cells and the experimental binding sites from eCLIP. Also, we provide a link to visualized the structure and RBP binding sites.</p>
+<p class="p4"><br></p>
+<h2 style="line-height:130%;font: 20.0px Times New Roman; color: #1c8197"><b>RNA structural information</b></h2>
+<p></p>
+<p class="p3" style="line-height:130%;">The details of each column: transcript ID, transcript length, RPKM (or *), SHAPE score of each nucleotide (0-1, and NULL)</p>
+
+<section id="container" class="wrapper" style="margin-top:10px;line-height:130%;margin-left: 2%;margin-right: 10%;">
+<section class="panel">
+<div class="panel-body col-sm-12">
+      <li ><span class="s3">Human (hg38)</span></li>
+      <p></p>
+        <div class="table-responsive">
+          <table class="table table-hover" style="color: #1c8197;">
+                       <tbody>
+                          <tr>
+                             <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/HEK293_smartSHAPE.out">HEK293 (662M)</a></td>
+                             <td class="danger" ><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/HEK293T_smartSHAPE.out">HEK293T (580M)</a></td>
+                             <td class="warning"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/K562_smartSHAPE.out">K562 (570M)</a></td>
+                          </tr>
+                          <tr>
+                            <td class="success"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/HepG2_smartSHAPE.out">HepG2 (506M)</a></td>
+                            <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/HeLa_smartSHAPE.out">Hela (557M)</a></td>
+                            <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/H9_smartSHAPE.out">H9 (634M)</a></td>
+
+                             <!-- <td class="danger"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/Huh7_smartSHAPE.out">Huh7 (550M)</a></td>
+                             <td class="warning"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/Huh7.5.1_smartSHAPE.out">Hhu7.5.1 (474M)</a></td>
+                             <td class="success"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/A549_smartSHAPE.out">A549 (420M)</a></td>
+                             <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/Caco2_smartSHAPE.out">Caco2 (306M)</a></td> -->
+                          </tr>
+                          <!-- <tr>
+                              <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/CEM_smartSHAPE.out">CCRF-CEM (196M)</a></td>
+
+                              <td class="danger" ><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/U87_smartSHAPE.out">U87 (292M)</a></td>
+                             <td class="warning"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/SHSY5Y_smartSHAPE.out">SHSY5Y (175M)</a></td>
+                             <td class="success"><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/Ramos_smartSHAPE.out">Ramos (61.2M)</a></td>
+                             <td></td>
+                          </tr> -->
+                       </tbody>
+                    </table>
+        </div>
+      <li><span class="s3">Mouse (mm10)</span></li>
+      <p></p>
+        <div class="table-responsive">
+              <table class="table table-hover" style="color: #1c8197;">
+                           <tbody>
+                              <tr>
+                                 <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/mES_smartSHAPE.out">mESc (312M)</a></td>
+                              </tr>
+                           </tbody>
+                        </table>
+            </div>
+      <!-- <li style="margin-left: 2px;"><span class="s3"><a href="#heading5"> Yeast (version R64-1-1)</a></span></li>
+        <div class="table-responsive">
+                      <table class="table table-hover" style="color: #1c8197;">
+                                   <tbody>
+                                      <tr>
+                                         <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/correlation_shape_rpkm/yeast_smartSHAPE.out">BY4741 (45.5M)</a></td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                    </div> -->
+</div>
+</section >
+</section>
+
+<h2 style="line-height:130%; font: 20.0px Times New Roman; color: #1c8197"><b>Pre-calculated RBP binding sites</b></h2>
+<p></p>
+<p class="p3" style="line-height:130%;">The details of each column: chromosome, start sites, stop sites, protein name, binding probability (affinity strength for eCLIP data), strand.</p>
+<p></p>
+<section id="container1" class="wrapper" style="margin-top:10px;margin-left: 2%;margin-right: 10%;">
+<section class="panel">
+  <div class="table-responsive">
+  <table class="table table-hover" style="color: #1c8197;">
+               <tbody>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/download/PrismNet_Predictions_OnlySeq.zip">RBP binding sites by PrismNet (only sequence) (214M)</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/download/PrismNet_predictions_K562.zip">RBP binding sites in K562 by PrismNet (sequence & structure) (34.9M)</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/download/PrismNet_predictions_HepG2.zip">RBP binding sites in HepG2 by PrismNet (sequence & structure) (20.0M)</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/download/eCLIP_Peaks_K562_HepG2_K562.zip">RBP binding sites in K562 from eCLIP (42.3M)</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/download/eCLIP_Peaks_K562_HepG2_HepG2.zip">RBP binding sites in HepG2 from eCLIP (43.2M)</a></td>
+                  </tr>
+               </tbody>
+            </table>
+</div>
+</section >
+</section>
+
+<h2 style="line-height:130%; font: 20.0px Times New Roman; color: #1c8197"><b><a href="https://irnacosi.org/2021/01/04/rna-society-2021-rbp-footprint-challenge/">RBP Footprint Challenge @ RNA Society 2021 Meeting</a></b></h2>
+<p></p>
+<p class="p3" style="line-height:130%;">We predicted RBP binding sites depending on RNA structural information but excluding the sequence information (we called PrismNet-structure). Here is the trained model and predicted binding sites of SND1 protein which is a canonical double-stranded RNA binding protein.</p>
+<p></p>
+<section id="container1" class="wrapper" style="margin-top:10px;margin-left: 2%;margin-right: 10%;">
+<section class="panel">
+  <div class="table-responsive">
+  <table class="table table-hover" style="color: #1c8197;">
+               <tbody>
+                  <tr>
+                      <td><a href="https://github.com/kuixu/PrismNet">PrismNet-structure model</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/data/SND1_PrismNet_str_best.pth">Pre-trained PrismNet-structure model of SND1</a></td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/data/SND1_K562_results.xlsx">Predicted binding sites of SND1 in K562 cells</a></td>
+                  </tr>
+               </tbody>
+            </table>
+</div>
+</section >
+</section>
+
+<h2 style="line-height:130%;font: 20.0px Times New Roman; color: #1c8197"><b>Visualize RNA structure and RBP binding sites</b></h2>
+<p></p>
+<p class="p3" style="line-height:130%;">You can visualize the RNA structure and RBP binding sites in the following websites:</p>
+<p class="p3"><span class="s3" style="color: #1c8197;"><a href="http://prismnet.zhanglab.net/ ">http://prismnet.zhanglab.net/</a></span></p>
+<!-- </div> -->
+</ul>
+<!--</div>-->
+
+
+   <!--container section start -->
+
+    <!-- javascripts -->
+    <!-- <script src="/static/js/jquery.js"></script> -->
+    <!-- bootstrap -->
+    <!-- <script src="/static/js/bootstrap.min.js"></script> -->
+
+    <script>
+      $('#download_sb').addClass('active');
+    </script>
+
+            <!-- <footer style="position:fixed;bottom:5%;width:100%;right:1%;"> -->
+                <footer style="margin-top:5%;">    
+                <div class="text-center">
+                <div class="credits">
+                      <a href="http://zhanglab.net/" style="color: #1c8197;">Copyright © 2023, ZhangLab</a> 
+                </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- jQuery Custom Scroller CDN -->
+    <!-- <script>
+        dianzan = document.getElementById('dianzan');
+        // num = dianzan.innerHTML
+        num = dianzan_f('0','read')
+        if (num!='false'){
+        dianzan.innerHTML = num
+        }
+        else{
+            dianzan.innerHTML = '26' 
+        }
+        function support() {
+            love_class = document.getElementById('icon_love').className
+            if (love_class == "far fa-heart") {
+                dianzan = document.getElementById('dianzan');
+                num = dianzan.innerHTML
+                num = dianzan_f(num,'add')
+                dianzan.innerHTML = num
+                document.getElementById('icon_love').className = "fas fa-heart";
+                document.getElementById('icon_love').style.color = "red";
+            }
+            else {
+                dianzan = document.getElementById('dianzan');
+                num = dianzan.innerHTML
+                num = dianzan_f(num,'reduce')
+                dianzan.innerHTML = num
+                document.getElementById('icon_love').className = "far fa-heart";
+                document.getElementById('icon_love').style.color = "black";
+            }
+
+        }
+        function dianzan_f(num, status){
+            var url = "/api/dianzan/?num="+num+"&status="+status;
+            var gene_range = false;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    if(data['error_code']=='0')
+                        gene_range = data['num'];
+                }
+            };
+            xhttp.open("GET", url, false);
+            xhttp.send();
+            return gene_range;
+        }
+    </script>
+    <script>
+        if(!!document.documentMode){
+            window.alert("Warning: Detect you are using IE explorer, please don't use it, we recommend you to use Chrome or Firefox");
+        }
+    </script> -->
+    <!-- <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/base.js"></script> -->
+    <script src="/static/js/base.js"></script>
+
+    <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/intro.js"></script> -->
+    <!-- <script src="https://zhanglabnet.oss-cn-beijing.aliyuncs.com/prismnet/webserver/static/js/loudlinks.min.js"></script> -->
+    
+
+    <script>
+
+        // $('.customizer-toggle').on('click',function(){
+        //     $('.customizer').toggleClass('open');
+        // });
+        // $('.customizer-close').on('click',function(){
+        //     $('.customizer').removeClass('open');
+        // });
+        
+        // $('[sidebar-tooltip="tooltip"]').tooltip();
+
+        // $(document).ready(function () {
+        //     $("#sidebar").mCustomScrollbar({
+        //         theme: "minimal"
+        //     });
+
+      
+        //     $('.siderbarButtons').on('click', function () {
+        //         $('#sidebar, #content').toggleClass('active');
+        //         $('.collapse.in').toggleClass('in');
+        //         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        //     });
+
+        // });
+
+    </script>
+</body>
+
+</html>

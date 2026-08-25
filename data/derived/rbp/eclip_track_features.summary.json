@@ -1,0 +1,35 @@
+{
+  "cell_lines": [
+    "HepG2",
+    "K562"
+  ],
+  "feature_rows": 1153325,
+  "genes": [
+    "ADAR",
+    "DROSHA",
+    "FXR1",
+    "HNRNPC",
+    "HNRNPM",
+    "IGF2BP1",
+    "ILF3",
+    "MATR3",
+    "PUS1",
+    "RBFOX2",
+    "SLBP",
+    "TIA1",
+    "TROVE2",
+    "XRCC6"
+  ],
+  "negative_control_genomic_shift_nt": 1000000,
+  "repeat_mapping_caveat": "A negative peak call is uncertain because standard eCLIP peak tracks can under-represent multi-mapping inverted-Alu reads.",
+  "scope": "development train+valid only",
+  "site_count": 46133,
+  "track_count": 25,
+  "windows_nt_prespecified": [
+    5,
+    10,
+    25,
+    50,
+    100
+  ]
+}

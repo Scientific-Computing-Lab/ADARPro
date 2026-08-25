@@ -1,0 +1,13 @@
+{
+  "batch_size": 256,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "epochs": 1000,
+  "inner_fold": 0,
+  "loss": "binary BCE + 0.5 ordinal CE + 0.5 continuous Huber(delta=0.1)",
+  "mode": "multitask",
+  "outer_fold": 4,
+  "per_epoch_samples": 3581,
+  "sampler": "equal ordinal states; stochastic raw-site sample with canonical-training-row-sized update budget",
+  "selection": "canonical inner-fold binary F1 and threshold"
+}

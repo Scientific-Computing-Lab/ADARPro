@@ -1,0 +1,19 @@
+{
+  "auprc": 0.8957716096072386,
+  "auroc": 0.9080762333937955,
+  "balanced_accuracy": 0.832500364732243,
+  "context": "Artery",
+  "f1": 0.838767663654067,
+  "fn": 1031,
+  "fp": 2198,
+  "mcc": 0.6686511062694818,
+  "n": 19170,
+  "oof_predictions_sha256": "90ec73957ec1eb10d1dab0656ffb02fbf1df4e3cb777ac452423d06ab7991f23",
+  "precision": 0.792582806454657,
+  "recall": 0.8906680805938494,
+  "site_master_sha256": "ac2ad1c5ae8101d835350b47a829eef5d2bb8e1696f93aed013148218f2aa3c1",
+  "specificity": 0.7743326488706366,
+  "tn": 7542,
+  "tp": 8399,
+  "unique_pairs": 607
+}

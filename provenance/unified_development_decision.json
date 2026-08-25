@@ -1,0 +1,79 @@
+{
+  "canonical_test_access": false,
+  "comparison": {
+    "bootstrap_replicates": 2000,
+    "candidate": "unified_target_local_interaction_aux_v1",
+    "candidate_metrics": {
+      "auprc": 0.8922304094647906,
+      "auroc": 0.9071530478978004,
+      "balanced_accuracy": 0.8298542211542157,
+      "brier": 0.13717965308270585,
+      "f1": 0.8317355371900826,
+      "mcc": 0.6602690929941071,
+      "precision": 0.8074454428754814,
+      "recall": 0.8575323790047716,
+      "specificity": 0.8021760633036598
+    },
+    "candidate_minus_frozen_ensemble_pair_bootstrap_95_ci": {
+      "auprc": [-0.020191, -0.011787, -0.004298],
+      "auroc": [-0.012921, -0.007234, -0.001482],
+      "brier": [0.013461, 0.020531, 0.027627],
+      "f1": [-0.012548, -0.002991, 0.006558],
+      "precision": [-0.030021, -0.019919, -0.009943],
+      "recall": [0.002054, 0.015236, 0.029058],
+      "specificity": [-0.039617, -0.027713, -0.016046]
+    },
+    "frozen_ensemble_metrics": {
+      "auprc": 0.9040059716800565,
+      "auroc": 0.9141776293536381,
+      "balanced_accuracy": 0.8360331850665178,
+      "brier": 0.11683286249691661,
+      "f1": 0.8346563080560716,
+      "mcc": 0.6719743264212827,
+      "precision": 0.8272514228322732,
+      "recall": 0.8421949556918882,
+      "specificity": 0.8298714144411474
+    },
+    "scope": "Muscle Skeletal canonical train+validation five-fold grouped OOF",
+    "seed": 20260821
+  },
+  "decision": {
+    "controls_triggered": false,
+    "final_development_winner": "pair_balanced_plus_target_local_equal_logit",
+    "liver_replication_triggered": false,
+    "natural_prevalence_triggered": false,
+    "primary_advanced": false,
+    "reason": "Unified-minus-ensemble AUROC and AUPRC were negative in all five folds and their pair-bootstrap intervals excluded zero in the adverse direction; F1 did not improve and Brier score worsened. The preregistered no-auxiliary repair required retained complementary ranking, so that repair condition was not met.",
+    "repair_triggered": false,
+    "unified_family_selected": false
+  },
+  "frozen_ensemble_integrity": {
+    "modified": false,
+    "oof_predictions_sha256": "85fbc8826efdce06cd061f87f482409ad597f015aca0be769b775bc0ebeeb8f7",
+    "selection_policy": "provenance/model_selection_policy.json",
+    "weights": [0.5, 0.5]
+  },
+  "primary_run": {
+    "architecture": "unified_target_local_interaction_aux_v1",
+    "best_checkpoint_sha256_by_outer_fold": {
+      "0": "545d192340d0ed1eaaf844d134baf2e4a8090bd8848e47d805cbf70cc8ceb93d",
+      "1": "d9df548c4c7f392a33fedf4a0fad070d0fdb2787029a0876204067c3f4093f09",
+      "2": "5e3f3691bc16e489e76a9af36f9f76c72da86089782274f1cae974747f397a2d",
+      "3": "e8c2774394b282f24e886872a0d9a02ad970bdd33a9de85c570c6c977a76491f",
+      "4": "6925fd0e3548141766313e9a34db5d85a427daa1693a8b3b1b6817b09968fd74"
+    },
+    "best_epoch_by_outer_fold": {"0": 35, "1": 66, "2": 51, "3": 50, "4": 72},
+    "oof_predictions_sha256": "c9c26b751a878bba49b3be534ad5cffa0830a55369eebd2e9b7a5ec945f3d78f",
+    "parameters": 65698,
+    "threshold_by_outer_fold": {"0": 0.375, "1": 0.225, "2": 0.175, "3": 0.125, "4": 0.1}
+  },
+  "recorded_utc": "2026-08-25T04:19:35Z",
+  "result_artifacts": {
+    "comparison_metrics": "experiments/runs/unified/comparison_primary/MuscleSkeletal/metrics.csv",
+    "comparison_metrics_sha256": "1bef9d8994caabb707123b4e417eaeceb128b399d4e01bbe61c45888961d7a40",
+    "pair_bootstrap_ci": "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv",
+    "pair_bootstrap_ci_sha256": "712ad5903bde8e7bfc047ad4838b4089ca307c58a7daf591928ff07440929fa1"
+  },
+  "selection_policy": "provenance/unified_model_selection_policy.json",
+  "selection_policy_sha256": "af9c3973256609a45013a1e6b0486d5708840c7e5357bd0e41a39ffbc8cd4b1e"
+}

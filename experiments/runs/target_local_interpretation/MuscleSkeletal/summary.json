@@ -1,0 +1,61 @@
+{
+  "candidates": [
+    "local",
+    "ensemble"
+  ],
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF descriptive interpretation",
+  "transitions": [
+    {
+      "candidate": "local",
+      "fn_recovered": 168,
+      "fp_rescue_rate": 0.4018324607329843,
+      "fp_rescued": 307,
+      "new_fp": 221,
+      "reference": "pair",
+      "reference_fp": 764,
+      "reference_tp": 2574,
+      "tp_damage_rate": 0.06216006216006216,
+      "tp_damaged": 160
+    },
+    {
+      "candidate": "ensemble",
+      "fn_recovered": 69,
+      "fp_rescue_rate": 0.39528795811518325,
+      "fp_rescued": 302,
+      "new_fp": 54,
+      "reference": "pair",
+      "reference_fp": 764,
+      "reference_tp": 2574,
+      "tp_damage_rate": 0.06682206682206682,
+      "tp_damaged": 172
+    },
+    {
+      "candidate": "local",
+      "fn_recovered": 274,
+      "fp_rescue_rate": 0.5084925690021231,
+      "fp_rescued": 479,
+      "new_fp": 215,
+      "reference": "development_reference",
+      "reference_fp": 942,
+      "reference_tp": 2469,
+      "tp_damage_rate": 0.06520858647225597,
+      "tp_damaged": 161
+    },
+    {
+      "candidate": "ensemble",
+      "fn_recovered": 208,
+      "fp_rescue_rate": 0.5743099787685775,
+      "fp_rescued": 541,
+      "new_fp": 115,
+      "reference": "development_reference",
+      "reference_fp": 942,
+      "reference_tp": 2469,
+      "tp_damage_rate": 0.08343458890238963,
+      "tp_damaged": 206
+    }
+  ]
+}

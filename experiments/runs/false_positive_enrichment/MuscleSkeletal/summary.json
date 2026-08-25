@@ -1,0 +1,29 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "exposures": {
+    "ILF3_eclip_duplex": "rbp__ILF3__eclip_duplex_peak_any",
+    "ILF3_eclip_near25": "rbp__ILF3__eclip_focal_near_w25_any",
+    "ILF3_prismnet_duplex": "prism__ILF3__prismnet_duplex_max_score",
+    "ILF3_prismnet_local": "prism__ILF3__prismnet_focal_max_score_w25",
+    "ILF3_prismnet_local_x_expression": "prism__ILF3__prismnet_focal_max_score_w25_x_log1p_tpm",
+    "ILF3_rbpnet_duplex": "pred__ILF3__target_duplex_max",
+    "ILF3_rbpnet_local": "pred__ILF3__target_focal_mean_w25"
+  },
+  "false_positive_pairs": 422,
+  "false_positives": 942,
+  "matching": {
+    "baseline_logit_weight": 2.0,
+    "exact": "context",
+    "nearest_neighbor_with_replacement": [
+      "baseline_oof_logit",
+      "focal_is_paired",
+      "local_gc_21",
+      "local_gc_51",
+      "pair_span_log1p",
+      "sequence_length_log1p"
+    ]
+  },
+  "scope": "development train+valid grouped-OOF predictions only"
+}

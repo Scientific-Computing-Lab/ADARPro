@@ -1,0 +1,11 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "focal",
+    "pair"
+  ],
+  "canonical_test_access": false,
+  "pairs": 597,
+  "rows": 54289,
+  "scope": "canonical train+valid grouped OOF comparison only"
+}

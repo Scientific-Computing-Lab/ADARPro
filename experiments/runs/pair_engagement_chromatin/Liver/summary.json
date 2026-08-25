@@ -1,0 +1,13 @@
+{
+  "canonical_test_access": false,
+  "context": "Liver",
+  "feature_sets": {
+    "h3k36me3_pair_only": 6,
+    "intrinsic_geometry": 16,
+    "intrinsic_geometry_plus_h3k36me3": 22,
+    "intrinsic_geometry_plus_shift1mb": 22
+  },
+  "pairs": 508,
+  "reference": "intrinsic_geometry",
+  "scope": "development pairs only; exact-tissue H3K36me3 engagement test"
+}

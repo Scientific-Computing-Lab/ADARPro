@@ -1,0 +1,39 @@
+{
+  "candidate_metrics": {
+    "auprc": 0.8111199198845306,
+    "auroc": 0.9204920155903114,
+    "balanced_accuracy": 0.8436532823501666,
+    "f1": 0.7336017342830597,
+    "fn": 1514,
+    "fp": 7088,
+    "mcc": 0.6287098260792229,
+    "n": 48913,
+    "precision": 0.6256074371434608,
+    "recall": 0.8866596795927534,
+    "specificity": 0.8006468851075798,
+    "tn": 28467,
+    "tp": 11844
+  },
+  "canonical_test_access": false,
+  "context": "Artery",
+  "development_reference_metrics": {
+    "auprc": 0.7809409846298477,
+    "auroc": 0.9070174003153931,
+    "balanced_accuracy": 0.8305168166356731,
+    "f1": 0.7124808690694115,
+    "fn": 1487,
+    "fp": 8094,
+    "mcc": 0.5992398390294476,
+    "n": 48913,
+    "precision": 0.5945905334335087,
+    "recall": 0.888680940260518,
+    "specificity": 0.7723526930108283,
+    "tn": 27461,
+    "tp": 11871
+  },
+  "mode": "binary_pair_balanced",
+  "pairs": 609,
+  "prevalence": 0.2730971316418948,
+  "rows": 48913,
+  "scope": "all development high/low sites at natural prevalence; held-out global pair folds"
+}

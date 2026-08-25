@@ -1,0 +1,19 @@
+{
+  "auprc": 0.9011999368063366,
+  "auroc": 0.9165681932551049,
+  "balanced_accuracy": 0.8430775622785944,
+  "context": "Brain",
+  "f1": 0.8466294676519379,
+  "fn": 1161,
+  "fp": 1890,
+  "mcc": 0.6874948418175323,
+  "n": 19391,
+  "oof_predictions_sha256": "62c91c7b138d27ecbe09e69ece7ad26b4735e972f9b41e54ce94cbd9a0a925bc",
+  "precision": 0.8167006109979633,
+  "recall": 0.8788353162179086,
+  "site_master_sha256": "57cdfea64e9c0945d1f58949f46ee3dc65416ebf6d9ff376fc96d223eb7947ff",
+  "specificity": 0.8073198083392803,
+  "tn": 7919,
+  "tp": 8421,
+  "unique_pairs": 612
+}

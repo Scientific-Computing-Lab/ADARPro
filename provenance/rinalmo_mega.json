@@ -1,0 +1,30 @@
+{
+  "checkpoint": {
+    "bytes": 592365188,
+    "license": "CC-BY-4.0",
+    "md5": "e223a881f0f048ddc0e7d2b867170626",
+    "name": "rinalmo_mega_pretrained.pt",
+    "path": "data/external/rinalmo/rinalmo_mega_pretrained.pt",
+    "sha256": "8e6d5799055dc96a556ac5dc4fbf882b677c86ccfeb072d42578d655890000b0",
+    "source_url": "https://zenodo.org/api/records/15043668/files/rinalmo_mega_pretrained.pt/content",
+    "zenodo_record": 15043668
+  },
+  "code": {
+    "commit": "2c2c5c14a5ae609d8c560a5d9ca32e51e0288955",
+    "compatibility_patch": {
+      "description": "Removed the obsolete FlashAttention pos_idx_in_fp32 argument and accepted the fifth unpad_input return value; no learned parameters or checkpoint tensors changed.",
+      "patched_attention_py_sha256": "30ca9cd48d661e6af35f3fb77ceedcf95da1d48512bcb29c0c05ef634695ba28"
+    },
+    "license": "Apache-2.0",
+    "path": "environment/tools/RiNALMo",
+    "repository": "https://github.com/lbcb-sci/RiNALMo.git"
+  },
+  "environment": {
+    "einops": "0.8.2",
+    "flash_attn": "2.8.3+cu12torch2.7cxx11abiTRUE",
+    "gdown": "6.1.0",
+    "ml_collections": "1.1.0",
+    "torch": "2.7.0+cu126"
+  },
+  "retrieved_utc": "2026-08-22T14:50:21Z"
+}

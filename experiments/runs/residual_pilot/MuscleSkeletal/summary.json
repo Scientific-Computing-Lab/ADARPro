@@ -1,0 +1,26 @@
+{
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "models": [
+    "baseline_logit",
+    "baseline_plus_all_predicted_binding",
+    "baseline_plus_binding_expression",
+    "baseline_plus_biological_suppressors",
+    "baseline_plus_broad_rbp",
+    "baseline_plus_eclip",
+    "baseline_plus_expression",
+    "baseline_plus_mappability",
+    "baseline_plus_matched_random",
+    "baseline_plus_negative_control_rbps",
+    "baseline_plus_predicted_binding",
+    "baseline_plus_prismnet",
+    "baseline_plus_shifted_eclip_control",
+    "baseline_plus_tissue_id",
+    "predicted_binding_without_baseline"
+  ],
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "development train+valid only",
+  "selection": "nested pair folds; C and threshold selected on inner fold"
+}

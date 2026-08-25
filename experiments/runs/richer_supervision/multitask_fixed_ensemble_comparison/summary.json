@@ -1,0 +1,13 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "pair",
+    "multitask",
+    "pair_multitask_ensemble",
+    "pair_target_ensemble"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF only; prespecified fixed multitask stacking audit"
+}
