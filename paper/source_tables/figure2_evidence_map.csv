@@ -1,19 +1,19 @@
-scale,hypothesis,status,interpretation
-Substrate-aware learning,Pair-first expanded supervision,selected,Corrects label use and pair weighting
-Target selectivity,Aligned target + helix-partner view,selected,Survives shifted-window control
-Integration,Fixed whole-duplex + local-augmented logits,selected,Complementary same-fold predictions
-Substrate propensity,Pair geometry / editing burden,"supported, not yet actionable",Editing burden is learnable; latent state unresolved
-Supervision,Continuous + ordinal auxiliary labels,limited,Ranking benefit; no useful F1 gain
-Target selectivity,Focal node / contact geometry,limited,Points toward aligned local view
-Cross-tissue,Shared four-tissue training,limited,Transfer below promotion criterion
-Substrate propensity,Hierarchical engagement gate,limited,Small ranking gain; unstable classification
-Biological context,Bulk H3K36me3 overlap,limited,Context-specific AUPRC only
-Biological context,RBP binding × bulk expression,not supported,No reproducible residual gain
-Biological context,Transcript / repeat annotation panel,not supported,No robust site-level increment
-Representation,Frozen RNA-language embeddings,not supported,No consistent incremental utility
-Representation,Substrate-wide all-A decoder,not supported,Stopped at prespecified futility gate
-Capacity,Larger / deeper graph networks,not supported,Capacity alone did not generalize
-Integration,Unified end-to-end architecture,not supported,Inferior to frozen ensemble
-Cellular state,Matched donor/cell multimodality,deferred,Required measurements unavailable
-RNA state,Matched in vivo structure / isoforms,deferred,Required measurements unavailable
-Capacity,Graph Transformer / GATv2 expansion,not pursued,Superseded by controlled lower-capacity evidence
+group,scale,hypothesis,status,interpretation
+Learning & supervision,Substrate-aware learning,Pair-first expanded supervision,selected,More labels; correct pair weight
+Learning & supervision,Supervision,Continuous + ordinal auxiliary labels,limited,Small ranking gain
+Learning & supervision,Cross-tissue,Shared four-tissue training,limited,Transfer below preset criteria
+Target representation,Target selectivity,Aligned target + helix-partner view,selected,Passes shifted-window control
+Target representation,Target selectivity,Focal node / contact geometry,limited,Localizes target effect
+Target representation,Representation,Frozen RNA-language embeddings,not supported,F1-only; no ranking gain
+Target representation,Representation,Substrate-wide all-A decoder,not supported,Stopped for futility
+Target representation,Capacity,Larger / deeper graph networks,not supported,No consistent benefit
+Target representation,Capacity,Graph Transformer / GATv2 expansion,not pursued,Simpler validated model sufficient
+Substrate & cellular context,Substrate propensity,Pair geometry / editing burden,"supported, not yet actionable",Substrate propensity detectable
+Substrate & cellular context,Substrate propensity,Hierarchical engagement gate,limited,Ranking gain; unstable F1
+Substrate & cellular context,Biological context,Bulk H3K36me3 overlap,limited,Liver AUPRC only
+Substrate & cellular context,Biological context,RBP binding × bulk expression,not supported,No residual gain
+Substrate & cellular context,Biological context,Transcript / repeat annotation panel,not supported,No site-level gain
+Substrate & cellular context,Cellular state,Matched donor/cell multimodality,deferred,Matched data unavailable
+Substrate & cellular context,RNA state,Matched in vivo structure / isoforms,deferred,Matched data unavailable
+Integration,Integration,Fixed whole-duplex + local-augmented logits,selected,Complementary predictions
+Integration,Integration,Unified end-to-end architecture,not supported,Below frozen ensemble

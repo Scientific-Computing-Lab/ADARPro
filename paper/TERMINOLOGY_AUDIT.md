@@ -7,6 +7,7 @@ The paper and SI use the following terms consistently.
 | Concept | Preferred term | Boundary enforced in the manuscript |
 |---|---|---|
 | Biological RNA object | substrate or duplex | `pair` is reserved for the benchmark/genomic grouping when the statistical unit matters. |
+| Intrinsic RNA property | intrinsic substrate suitability or intrinsic editability | `Intrinsic competence` is avoided in prose because it can sound like a directly measured phenotype. |
 | Cluster identifier | Alu pair / pair ID | Confidence intervals resample pair IDs and retain every site from a sampled pair. |
 | Development estimator | pair-disjoint development OOF | It is an internal same-fold attribution and selection instrument, not a replacement for published AdarEdit performance. |
 | Final evaluation | single-use canonical held-out evaluation | The canonical partition was accessed once after the final manifest was frozen. |
@@ -22,6 +23,7 @@ The paper and SI use the following terms consistently.
 | Pooled endpoint | Combined | Combined is one reported benchmark endpoint, not a fifth biological tissue. |
 | Pair-level observation | substrate-level editing burden or propensity | Geometry and pair models provide indirect evidence consistent with realization/engagement; neither molecular state was directly measured. |
 | Cellular RNA conformation | in vivo RNA structure/conformation | The phrase is not hyphenated in paper prose. |
+| Status criterion | predeclared selection criterion or prespecified stopping criterion | `Promotion criterion` is retained only in historical provenance, not paper prose. |
 
 Machine-readable context names, historical experiment IDs, and authoritative
 artifact paths are intentionally unchanged because altering them would break

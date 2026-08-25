@@ -193,7 +193,7 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "Small ranking/calibration gain; negligible F1 and adverse natural-prevalence integration.",
+        "Ranking/calibration gain; negligible F1; adverse natural-prevalence integration.",
         multitask,
     )
 
@@ -207,7 +207,7 @@ def evidence_map() -> None:
         effect("auroc", select(focal, "auroc", candidate="focal", reference="pair")),
         effect("f1", select(focal, "f1", candidate="focal", reference="pair")),
         "Limited",
-        "Localized ranking information; insufficient standalone F1.",
+        "Ranking gain; standalone F1 interval crosses 0.",
         focal,
     )
     geometry = (
@@ -225,7 +225,7 @@ def evidence_map() -> None:
             "f1", select(geometry, "f1", model="baseline_plus_multiscale_structure")
         ),
         "Limited",
-        "Ranking and calibration localized the missing target information.",
+        "Ranking and calibration gains localize the target effect.",
         geometry,
     )
     local = "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -244,7 +244,7 @@ def evidence_map() -> None:
             select(local, "f1", candidate="aligned_local", reference="pair_balanced"),
         ),
         "Selected",
-        "Graph-plus-local fusion adds target-centered information.",
+        "Target-aligned fusion improves all three metrics.",
         local,
     )
     add(
@@ -262,7 +262,7 @@ def evidence_map() -> None:
             select(local, "f1", candidate="shifted_local", reference="pair_balanced"),
         ),
         "Not supported",
-        "Matched capacity without target alignment collapses performance.",
+        "Matched capacity without target alignment is strongly adverse.",
         local,
     )
     ensemble = "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -291,7 +291,7 @@ def evidence_map() -> None:
             ),
         ),
         "Selected",
-        "Independently optimized whole-duplex and local-augmented predictors are complementary; replicated in liver.",
+        "Complementary predictions; replicated in liver.",
         ensemble,
     )
 
@@ -305,7 +305,7 @@ def evidence_map() -> None:
         rf"$\Delta R^2$ {min_effect:+.2f} to {max_effect:+.2f} points (4 tissues)",
         "All four pair-clustered 95% intervals exclude 0",
         "Supported, not yet actionable",
-        "Pair-level burden is learnable and consistent with variation in realization/engagement.",
+        "Burden is predictable; consistent with variation in realization/engagement.",
         "paper/source_tables/figure2_pair_engagement.csv",
     )
     gate = "experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -318,7 +318,7 @@ def evidence_map() -> None:
         ),
         effect("f1", select(gate, "f1", model="expanded_plus_combined_engagement")),
         "Limited",
-        "Small ranking gain; F1 interval crosses 0 and Brier worsens.",
+        "AUPRC gain; F1 interval crosses 0; Brier worsens.",
         gate,
     )
     shared = (
@@ -331,7 +331,7 @@ def evidence_map() -> None:
         effect("auroc", select(shared, "auroc", context="macro")),
         effect("f1", select(shared, "f1", context="macro")),
         "Limited",
-        "Transfer improves ranking but misses promotion criteria and worsens mean Brier.",
+        "Positive transfer below preset criteria; mean Brier worsens.",
         shared,
     )
 
@@ -353,7 +353,7 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "AUPRC-only effect; no stable AUROC, F1, or pair-level gain.",
+        "Liver AUPRC only; no stable AUROC, F1, or pair-level gain.",
         chromatin,
     )
     rbp = "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -366,7 +366,7 @@ def evidence_map() -> None:
         ),
         effect("f1", select(rbp, "f1", model="baseline_plus_biological_suppressors")),
         "Not supported",
-        "No reproducible residual gain; broader predicted panels were adverse.",
+        "No residual gain; broader predicted panels were adverse.",
         rbp,
     )
     genomic = (
@@ -385,7 +385,7 @@ def evidence_map() -> None:
             select(genomic, "f1", model="baseline_plus_architecture_and_intrinsic"),
         ),
         "Not supported",
-        "Broad site-level annotations do not improve the graph representation.",
+        "No improvement beyond the graph representation.",
         genomic,
     )
     rinalmo = "experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -412,7 +412,7 @@ def evidence_map() -> None:
             ),
         ),
         "Not supported",
-        "Metric-specific F1 change without ranking gain; larger frozen model confirmed no promotion.",
+        "F1-only threshold effect; no AUROC/AUPRC gain; failed the preset rule.",
         rinalmo,
     )
     all_a = "experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -428,7 +428,7 @@ def evidence_map() -> None:
             "f1", select(all_a, "f1", candidate="control", reference="pair_balanced")
         ),
         "Not supported",
-        "Stopped at the prespecified two-fold futility criterion.",
+        "Prespecified two-fold futility criterion met.",
         all_a,
     )
     unified = "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -445,7 +445,7 @@ def evidence_map() -> None:
             select(unified, "f1", candidate="unified", reference="frozen_ensemble"),
         ),
         "Not supported",
-        "Ranking and calibration were worse; preregistered later stages remained closed.",
+        "AUROC, AUPRC, and calibration were worse.",
         unified,
     )
     add(
@@ -455,7 +455,7 @@ def evidence_map() -> None:
         "No common OOF effect estimate",
         "Not uniformly better across endpoints",
         "Not supported",
-        "Generic capacity did not provide a consistent advantage.",
+        "No consistent advantage from generic capacity.",
         "results/adaredit_baseline_metrics.csv",
     )
 
@@ -472,11 +472,11 @@ def evidence_map() -> None:
         "table_s2_evidence_map.tex",
         r"""\begin{landscape}
 \begingroup
-\scriptsize
+\fontsize{7.0}{7.8}\selectfont
 \setlength{\tabcolsep}{1.8pt}
-\renewcommand{\arraystretch}{1.08}
-\begin{longtable}{p{0.10\linewidth}p{0.15\linewidth}p{0.16\linewidth}p{0.14\linewidth}p{0.14\linewidth}p{0.11\linewidth}p{0.16\linewidth}}
-\caption{Development evidence synthesis. Every quantitative row states its own comparator; heterogeneous effects are not rankable across rows. Values are percentage-point medians with 95\% pair-clustered bootstrap intervals unless noted. ``Not supported'' refers only to the tested measurement and formulation.}\label{tab:evidencemap}\\
+\renewcommand{\arraystretch}{1.10}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
+\caption{Development evidence synthesis. Every quantitative row states its own comparator; effects are not rankable across rows because the estimands differ. Values are percentage-point medians with 95\% pair-clustered bootstrap intervals unless noted. ``Not supported'' refers only to the tested measurement and formulation.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
@@ -762,7 +762,7 @@ Metric & Unified $-$ ensemble, points [95\% CI] \\
 def experiment_taxonomy() -> None:
     df = pd.read_csv(ROOT / "experiments/performance_frontier_opportunities.csv")
     status_names = {
-        "terminate_sitewise_broad_panel_advance_geometry_as_engagement": "Broad panel terminated; geometry retained mechanistically",
+        "terminate_sitewise_broad_panel_advance_geometry_as_engagement": "Broad panel terminated; geometry retained for pair-level analysis",
         "validated_across_all_five_endpoints_selected_component": "Selected component",
         "terminated_from_primary_retain_secondary_ranking_result": "Limited ranking signal; not selected",
         "terminated_from_primary_secondary_shared_signal": "Limited shared signal; not selected",
@@ -827,8 +827,8 @@ def experiment_taxonomy() -> None:
         "table_s10_experiment_taxonomy.tex",
         r"""\begingroup
 \setlength{\tabcolsep}{4.5pt}
-\begin{longtable}{p{0.15\textwidth}p{0.34\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
-\caption{Complete paper-facing hypothesis taxonomy and final campaign disposition. Historical priorities, data sources, leakage risks, promotion criteria, prespecified stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
+\caption{Hypotheses examined and their final scientific disposition. Historical priorities, data sources, leakage risks, selection rules, stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
 \toprule
 Axis & Hypothesis & Evidence status & Final disposition \\
 \midrule

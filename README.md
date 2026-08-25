@@ -8,7 +8,7 @@ hypotheses under pair-disjoint development evaluation. The study retains both
 successful and negative experiments.
 
 The evidence supports a hierarchical picture. Whole-duplex sequence and
-structure encode intrinsic competence. Genomic geometry and pair-level models
+structure encode intrinsic substrate suitability. Genomic geometry and pair-level models
 identify reproducible variation in substrate editing burden, consistent with a
 realization or engagement dimension, although current bulk context proxies do
 not resolve the underlying cellular state well enough to improve the leading
@@ -45,7 +45,7 @@ positives, respectively, with positive clustered intervals throughout.
 
 These held-out results are the authoritative performance claim. The lower
 absolute grouped out-of-fold scores in development are an internal research
-instrument used to measure incremental signal under identical folds; they do
+instrument used to compare candidates under identical folds; they do
 not replace or redefine the published benchmark.
 
 ## What the campaign established

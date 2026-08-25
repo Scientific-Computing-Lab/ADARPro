@@ -1,5 +1,8 @@
 # Final manuscript audit
 
+> Historical pre-editorial audit. The submission-ready record superseding this
+> snapshot is `FINAL_EDITORIAL_AUDIT.md`.
+
 Audit date: 2026-08-25 UTC
 
 ## Publication identity

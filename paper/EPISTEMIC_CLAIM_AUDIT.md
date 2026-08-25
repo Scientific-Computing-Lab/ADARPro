@@ -38,3 +38,21 @@ interpretations, and future hypotheses. Quantitative provenance is recorded in
   unavailable.
 - **Not pursued / superseded:** a branch was closed after stronger,
   lower-complexity evidence changed its value; this is not a negative result.
+
+## Evidence-status decision audit
+
+The paper-facing status assignments were checked against the original decision
+records rather than reassigned from the final narrative.
+
+| Branch | Paper status | Historical basis |
+|---|---|---|
+| Pair geometry and editing burden | Supported, not yet actionable | Pair-level effects replicated across four tissues, but site-level gates did not improve F1 reliably and worsened calibration. |
+| Continuous/ordinal supervision | Limited | AUROC and Brier improved modestly; F1 was negligible and natural-prevalence integration was adverse. |
+| Focal-node retention | Limited | AUROC/AUPRC improved beyond width controls; standalone F1 interval crossed zero. |
+| Cross-tissue sharing | Limited | Ranking and F1 effects were positive but below both predeclared selection thresholds; mean Brier worsened. |
+| Hierarchical engagement gate | Limited | AUPRC improved, but F1 crossed zero and Brier worsened; direct fusion stopped under the recorded rule. |
+| Bulk H3K36me3 | Limited | Liver AUPRC was positive, but AUROC/F1 and pair-level effects were not stable across contexts. |
+| Frozen RiNALMo | Not supported in the tested formulation | The fixed 150M confirmation reproduced a small F1-only threshold effect but no AUROC/AUPRC gain and failed the predeclared requirement to beat matched random features on both ranking and F1. |
+| Substrate-wide all-A decoder | Not supported in the tested formulation | AUROC, AUPRC, and F1 were adverse in both completed folds, meeting the prespecified futility criterion. |
+| Larger/deeper graph capacity | Not supported in the tested formulation | Supplied Bio-aware checkpoints were not uniformly better than the compact model; generic capacity was not advanced. |
+| Unified end-to-end architecture | Not supported in the tested formulation | The preregistered model was worse in AUROC/AUPRC and Brier than the immutable ensemble, so later stages remained closed. |

@@ -263,7 +263,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.text(
         0.50,
         0.635,
-        "Realized substrate (latent cellular state)",
+        "Substrate available to editing",
         ha="center",
         va="center",
         fontsize=8.5,
@@ -311,7 +311,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.text(
         0.25,
         0.735,
-        "whole-duplex graph:\nsubstantial information",
+        "well captured by the\nwhole-duplex graph",
         ha="center",
         va="center",
         fontsize=6.6,
@@ -338,7 +338,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.text(
         0.80,
         0.425,
-        "aligned local view:\nrobust increment",
+        "target alignment\nimproves prediction",
         ha="center",
         va="center",
         fontsize=6.3,
@@ -357,7 +357,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.set_ylim(0, 1)
 
     panel_label(ax_b, "B")
-    ax_b.set_title("Systematic hypothesis map", loc="left", fontweight="bold")
+    ax_b.set_title("Questions tested", loc="left", fontweight="bold")
     categories = [
         (
             "Biological context",
@@ -393,7 +393,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_b.set_ylim(0, 1)
 
     panel_label(ax_c, "C")
-    ax_c.set_title("Leakage-safe evidence funnel", loc="left", fontweight="bold")
+    ax_c.set_title("Leakage-safe evaluation", loc="left", fontweight="bold")
     split_counts = benchmark_split_table(source).set_index("split")["pair_count"]
     split = {
         "Train": (int(split_counts["Train"]), COLORS["blue"]),
@@ -481,116 +481,135 @@ def figure1(output: Path, source: Path) -> None:
 def evidence_table() -> pd.DataFrame:
     rows = [
         (
+            "Learning & supervision",
             "Substrate-aware learning",
             "Pair-first expanded supervision",
             "selected",
-            "Corrects label use and pair weighting",
+            "More labels; correct pair weight",
         ),
         (
-            "Target selectivity",
-            "Aligned target + helix-partner view",
-            "selected",
-            "Survives shifted-window control",
-        ),
-        (
-            "Integration",
-            "Fixed whole-duplex + local-augmented logits",
-            "selected",
-            "Complementary same-fold predictions",
-        ),
-        (
-            "Substrate propensity",
-            "Pair geometry / editing burden",
-            "supported, not yet actionable",
-            "Editing burden is learnable; latent state unresolved",
-        ),
-        (
+            "Learning & supervision",
             "Supervision",
             "Continuous + ordinal auxiliary labels",
             "limited",
-            "Ranking benefit; no useful F1 gain",
+            "Small ranking gain",
         ),
         (
-            "Target selectivity",
-            "Focal node / contact geometry",
-            "limited",
-            "Points toward aligned local view",
-        ),
-        (
+            "Learning & supervision",
             "Cross-tissue",
             "Shared four-tissue training",
             "limited",
-            "Transfer below promotion criterion",
+            "Transfer below preset criteria",
         ),
         (
-            "Substrate propensity",
-            "Hierarchical engagement gate",
+            "Target representation",
+            "Target selectivity",
+            "Aligned target + helix-partner view",
+            "selected",
+            "Passes shifted-window control",
+        ),
+        (
+            "Target representation",
+            "Target selectivity",
+            "Focal node / contact geometry",
             "limited",
-            "Small ranking gain; unstable classification",
+            "Localizes target effect",
         ),
         (
-            "Biological context",
-            "Bulk H3K36me3 overlap",
-            "limited",
-            "Context-specific AUPRC only",
-        ),
-        (
-            "Biological context",
-            "RBP binding × bulk expression",
-            "not supported",
-            "No reproducible residual gain",
-        ),
-        (
-            "Biological context",
-            "Transcript / repeat annotation panel",
-            "not supported",
-            "No robust site-level increment",
-        ),
-        (
+            "Target representation",
             "Representation",
             "Frozen RNA-language embeddings",
             "not supported",
-            "No consistent incremental utility",
+            "F1-only; no ranking gain",
         ),
         (
+            "Target representation",
             "Representation",
             "Substrate-wide all-A decoder",
             "not supported",
-            "Stopped at prespecified futility gate",
+            "Stopped for futility",
         ),
         (
+            "Target representation",
             "Capacity",
             "Larger / deeper graph networks",
             "not supported",
-            "Capacity alone did not generalize",
+            "No consistent benefit",
         ),
         (
-            "Integration",
-            "Unified end-to-end architecture",
-            "not supported",
-            "Inferior to frozen ensemble",
-        ),
-        (
-            "Cellular state",
-            "Matched donor/cell multimodality",
-            "deferred",
-            "Required measurements unavailable",
-        ),
-        (
-            "RNA state",
-            "Matched in vivo structure / isoforms",
-            "deferred",
-            "Required measurements unavailable",
-        ),
-        (
+            "Target representation",
             "Capacity",
             "Graph Transformer / GATv2 expansion",
             "not pursued",
-            "Superseded by controlled lower-capacity evidence",
+            "Simpler validated model sufficient",
+        ),
+        (
+            "Substrate & cellular context",
+            "Substrate propensity",
+            "Pair geometry / editing burden",
+            "supported, not yet actionable",
+            "Substrate propensity detectable",
+        ),
+        (
+            "Substrate & cellular context",
+            "Substrate propensity",
+            "Hierarchical engagement gate",
+            "limited",
+            "Ranking gain; unstable F1",
+        ),
+        (
+            "Substrate & cellular context",
+            "Biological context",
+            "Bulk H3K36me3 overlap",
+            "limited",
+            "Liver AUPRC only",
+        ),
+        (
+            "Substrate & cellular context",
+            "Biological context",
+            "RBP binding × bulk expression",
+            "not supported",
+            "No residual gain",
+        ),
+        (
+            "Substrate & cellular context",
+            "Biological context",
+            "Transcript / repeat annotation panel",
+            "not supported",
+            "No site-level gain",
+        ),
+        (
+            "Substrate & cellular context",
+            "Cellular state",
+            "Matched donor/cell multimodality",
+            "deferred",
+            "Matched data unavailable",
+        ),
+        (
+            "Substrate & cellular context",
+            "RNA state",
+            "Matched in vivo structure / isoforms",
+            "deferred",
+            "Matched data unavailable",
+        ),
+        (
+            "Integration",
+            "Integration",
+            "Fixed whole-duplex + local-augmented logits",
+            "selected",
+            "Complementary predictions",
+        ),
+        (
+            "Integration",
+            "Integration",
+            "Unified end-to-end architecture",
+            "not supported",
+            "Below frozen ensemble",
         ),
     ]
     return pd.DataFrame(
-        rows, columns=["scale", "hypothesis", "status", "interpretation"]
+        rows,
+        columns=["group", "scale", "hypothesis", "status", "interpretation"],
     )
 
 
@@ -693,63 +712,75 @@ def figure2(output: Path, source: Path) -> None:
     panel_label(ax_a, "A")
     ax_a.set_axis_off()
     ax_a.set_title(
-        "Evidence map: what the benchmark can and cannot currently resolve",
+        "What adds to the sequence–structure graph?",
         loc="left",
         fontweight="bold",
     )
-    headers = [
-        "Scale",
-        "Tested formulation",
-        "Status",
-        "Interpretation",
-    ]
-    xpos = [0.01, 0.23, 0.61, 0.735]
+    headers = ["Tested formulation", "Evidence", "Main finding"]
+    xpos = [0.025, 0.565, 0.735]
     for index, (x, header) in enumerate(zip(xpos, headers)):
         ax_a.text(
             x,
             0.94,
             header,
-            fontsize=7.1,
+            fontsize=7.3,
             fontweight="bold",
             color=COLORS["navy"],
             va="bottom",
-            ha="center" if index == 2 else "left",
+            ha="left",
         )
-    row_height = 0.048
-    for index, row in frame.iterrows():
-        y = 0.91 - index * row_height
-        if index % 2 == 0:
-            ax_a.add_patch(
-                plt.Rectangle((0, y - 0.034), 1, row_height, color="#F6F8F9", lw=0)
-            )
-        ax_a.text(xpos[0], y, row["scale"], fontsize=6.3, va="center")
-        ax_a.text(xpos[1], y, row["hypothesis"], fontsize=6.3, va="center")
-        ax_a.scatter(
-            [0.59],
-            [y],
-            s=27,
-            marker=status_markers[row["status"]],
-            color=status_colors[row["status"]],
-            zorder=3,
-        )
-        display_status = (
-            "Supported*"
-            if row["status"] == "supported, not yet actionable"
-            else row["status"].capitalize()
+    y = 0.895
+    row_number = 0
+    for group, group_rows in frame.groupby("group", sort=False):
+        ax_a.add_patch(
+            plt.Rectangle((0, y - 0.012), 1, 0.030, color=COLORS["pale_blue"], lw=0)
         )
         ax_a.text(
-            xpos[2],
-            y,
-            display_status,
-            fontsize=5.7,
+            0.012,
+            y + 0.002,
+            group.upper(),
+            fontsize=6.2,
+            fontweight="bold",
+            color=COLORS["navy"],
             va="center",
-            color=status_colors[row["status"]],
         )
-        ax_a.text(xpos[3], y, row["interpretation"], fontsize=6.15, va="center")
+        y -= 0.036
+        for _, row in group_rows.iterrows():
+            if row_number % 2 == 0:
+                ax_a.add_patch(
+                    plt.Rectangle((0, y - 0.016), 1, 0.033, color="#F7F8F9", lw=0)
+                )
+            ax_a.text(xpos[0], y, row["hypothesis"], fontsize=6.45, va="center")
+            ax_a.scatter(
+                [0.545],
+                [y],
+                s=27,
+                marker=status_markers[row["status"]],
+                color=status_colors[row["status"]],
+                zorder=3,
+            )
+            display_status = (
+                "Supported*"
+                if row["status"] == "supported, not yet actionable"
+                else row["status"].capitalize()
+            )
+            ax_a.text(
+                xpos[1],
+                y,
+                display_status,
+                fontsize=5.8,
+                va="center",
+                color=status_colors[row["status"]],
+            )
+            ax_a.text(
+                xpos[2], y, row["interpretation"], fontsize=6.15, va="center"
+            )
+            y -= 0.0365
+            row_number += 1
     ax_a.text(
         0.99,
-        0.035,
-        "Status reflects prespecified same-fold comparisons.",
+        0.030,
+        "See Table S2 for comparators, effect sizes, and intervals.",
         ha="right",
         va="bottom",
         fontsize=5.9,
@@ -757,8 +788,8 @@ def figure2(output: Path, source: Path) -> None:
     )
     ax_a.text(
         0.99,
-        0.010,
-        "*Reproducible observation not yet actionable for site prediction; deferred hypotheses were not tested.",
+        0.006,
+        "*Reproducible observation not yet useful for site prediction; deferred hypotheses were not tested.",
         ha="right",
         va="bottom",
         fontsize=5.6,
