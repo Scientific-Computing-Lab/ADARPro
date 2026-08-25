@@ -11,7 +11,7 @@ Audit date: 2026-08-25 UTC
 - **Supporting Information:** `paper/supplementary.tex` and
   `paper/supplementary.pdf` (11 pages)
 - **Numerical source of truth:** `paper/numerical_claim_ledger.csv` (441 claims)
-- **Publication-content commit:** `CONTENT_COMMIT_PENDING`
+- **Publication-content commit:** `5f0b68b6b60a4bbed2c0eb6047017d344137bb27`
 
 The publication-content commit is recorded rather than the audit commit because
 a commit cannot contain its own identifier. The repository HEAD accompanying
@@ -165,8 +165,11 @@ Bibliographic capitalization preserves RNA, ADAR, Alu, and model names.
 - Static and live Crossref reference audit: passed for 35 records and 30 cited
   keys.
 - PDF structural checks: passed for the main manuscript and SI.
-- Release-manifest verification and clean-clone reproduction: pending the final
-  content commit recorded above.
+- Release manifest: 1,821 curated files verified.
+- Fresh-clone reproduction: passed at publication-content commit
+  `5f0b68b6b60a4bbed2c0eb6047017d344137bb27`. The remote clone installed through
+  the declared project extras, passed `make verify` and `make paper-check`,
+  regenerated the 7-page manuscript and 11-page SI, and remained clean.
 
 The PNAS class emits its known `LastPage` duplicate-label and output-routine box
 warnings. No manuscript-body overflow, unresolved citation, or unresolved
