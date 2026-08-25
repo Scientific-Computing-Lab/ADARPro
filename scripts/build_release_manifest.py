@@ -7,7 +7,6 @@ import argparse
 import hashlib
 from pathlib import Path
 
-
 EXCLUDED_PARTS = {".git", "__pycache__", ".pytest_cache", ".ruff_cache", "build"}
 
 

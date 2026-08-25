@@ -10,7 +10,6 @@ import os
 from collections import Counter
 from pathlib import Path
 
-
 ROOT_FILES = {
     ".gitattributes",
     ".gitignore",
