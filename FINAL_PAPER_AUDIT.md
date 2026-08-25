@@ -9,6 +9,7 @@ Audit date: 2026-08-25 UTC
 - **Main manuscript:** `paper/main.tex` and `paper/main.pdf` (7 pages)
 - **Supporting Information:** `paper/supplementary.tex` and `paper/supplementary.pdf` (10 pages)
 - **Publication-content commit audited:** `12e01b24150944dffd9f07feac5e36ecad84d264`
+- **Release commit verified from a fresh clone:** `64b0affff2fcd6459a95d2e9104744077acae8db`
 
 The publication-content commit is recorded rather than the audit commit because
 a commit cannot contain its own SHA. The repository HEAD accompanying this
@@ -102,6 +103,13 @@ keywords.
 - paper artifact and claim-traceability checks: passed;
 - online bibliography audit: passed;
 - visual inspection of all 17 compiled pages: passed.
+
+The pushed release commit was cloned to
+`/tmp/adarpro-final-clone.2oIHTb/ADARPro`, installed through the declared
+project extras, and subjected to `make verify` and `make paper-check`. The
+clone reproduced 1,817 manifest entries, 128 evaluation rows, 10 figures, 10
+SI tables, 375 numerical claims/macros, and the 7- and 10-page PDFs, and its
+working tree remained clean after regeneration.
 
 The PNAS class emits its known `LastPage` duplicate-label and output-routine
 box warnings; no body-text overflow, undefined citation, or undefined

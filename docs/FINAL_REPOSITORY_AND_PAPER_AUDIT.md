@@ -51,7 +51,9 @@ regenerate the paper are retained.
 ## Quality-control status
 
 The publication-content commit
-`12e01b24150944dffd9f07feac5e36ecad84d264` passed local verification:
+`12e01b24150944dffd9f07feac5e36ecad84d264` passed local verification. The
+pushed release commit `64b0affff2fcd6459a95d2e9104744077acae8db` then passed
+the same checks from a fresh clone:
 
 - 884 substrates and zero within-split/cross-tissue leakage;
 - 120 Python tests and a clean Ruff check;
@@ -64,10 +66,11 @@ The publication-content commit
 - static and live Crossref audit of all DOI records;
 - visual inspection of every main and SI page.
 
-The final release manifest and a fresh-clone verification are recorded by the
-subsequent audit-only commit. A Git commit cannot embed its own identifier, so
-the exact final repository HEAD is reported in the release handoff as well as
-by Git history. No force push is used.
+The clean clone at `/tmp/adarpro-final-clone.2oIHTb/ADARPro` installed through
+the declared project extras, regenerated every paper artifact byte for byte,
+and remained clean. A Git commit cannot embed its own identifier, so the final
+audit-only repository HEAD is reported in the release handoff as well as by
+Git history. No force push was used.
 
 ## Remaining submission placeholders
 
