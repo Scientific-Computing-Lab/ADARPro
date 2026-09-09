@@ -18,6 +18,14 @@
       "sha256": "131427c22ee44270152128ef9bdc34062353038085b2bbbc3805cbc8108e8d5e"
     },
     {
+      "family": "cell_context_rna",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/cell_context_rna_candidate_01.png",
+      "asset": "paper/figure_assets/selected/cell_context_rna.png",
+      "rationale": "Clearest single-contour RNA transcript, local fold-back cue, and cell-state context without a DNA-like ladder or genomic imagery.",
+      "sha256": "f30e0cd12d48e7e8b785966715c0569151806ff9f3f593013f44fbcf40787698"
+    },
+    {
       "family": "human_contexts",
       "selected_candidate": 1,
       "source": "paper/figure_assets/candidates/human_contexts_candidate_01.png",

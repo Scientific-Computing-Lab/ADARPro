@@ -61,6 +61,25 @@ FAMILIES = {
         "single RNA duplex embedded among transcript and chromatin context, with "
         "subtle spatial gradients that suggest cell state without quantitative encoding.",
     ],
+    "cell_context_rna": [
+        "A compact cutaway mammalian cell centered on cellular context for RNA editing. "
+        "Inside the cell, show one continuous orange single-stranded RNA squiggle with a "
+        "small local U-shaped fold-back region indicated by only three short dotted pairing "
+        "bridges and one amber target dot. Add two restrained generic RNA-binding protein "
+        "shapes nearby. Do not draw a twisted helix, ladder, DNA, chromosomes, chromatin, "
+        "nucleotides as colored bars, or transcription machinery.",
+        "A polished cell-state vignette for A-to-I RNA editing: a translucent mammalian "
+        "cell containing one clearly single-contour RNA transcript, locally folded into an "
+        "asymmetric hairpin with a bulge and three subtle dashed pairing marks. Sparse "
+        "generic protein shapes surround but do not cover the transcript. The RNA must look "
+        "like a flexible strand, never a double helix or regular ladder. No DNA, chromosome, "
+        "chromatin, replication, or transcription-fork imagery.",
+        "A restrained scientific cellular-context icon with a simple cell boundary, soft "
+        "cytoplasmic and nuclear regions, generic regulator particles, and a single orange "
+        "RNA strand crossing the scene. Give the strand one short imperfect fold-back loop "
+        "with a small bulge and a highlighted target dot, but no visible ladder or helix. "
+        "Absolutely no DNA, chromosomes, chromatin threads, genomic symbols, or base bars.",
+    ],
     "human_contexts": [
         "A coordinated set of four small scientific tissue glyphs arranged in one row: "
         "arterial vessel cross-section, human brain silhouette, liver lobe, and skeletal "
@@ -105,6 +124,13 @@ SELECTIONS = {
     "cell_context": {
         "candidate": 2,
         "rationale": "Cleanest nuclear context with the least extraneous anatomy.",
+    },
+    "cell_context_rna": {
+        "candidate": 1,
+        "rationale": (
+            "Clearest single-contour RNA transcript, local fold-back cue, and cell-state "
+            "context without a DNA-like ladder or genomic imagery."
+        ),
     },
     "human_contexts": {
         "candidate": 1,
@@ -236,15 +262,23 @@ def main() -> None:
     )
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--families",
+        nargs="+",
+        choices=sorted(FAMILIES),
+        help="Generate only the named asset families and preserve other manifest records.",
+    )
     args = parser.parse_args()
     api_key = os.environ.get("AZURE_OPENAI_API_KEY")
     if not api_key:
         raise SystemExit("AZURE_OPENAI_API_KEY is required")
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
+    selected_families = set(args.families or FAMILIES)
     tasks = [
         (family, index, prompt)
         for family, prompts in FAMILIES.items()
+        if family in selected_families
         for index, prompt in enumerate(prompts, start=1)
     ]
     records: list[dict[str, object]] = []
@@ -268,6 +302,14 @@ def main() -> None:
             records.append(record)
             print(f"{record['status']}: {family} candidate {index}", flush=True)
 
+    manifest_path = args.output_dir.parent / "generation_manifest.json"
+    if args.families and manifest_path.exists():
+        previous = json.loads(manifest_path.read_text(encoding="utf-8"))
+        records.extend(
+            record
+            for record in previous.get("assets", [])
+            if record.get("family") not in selected_families
+        )
     records.sort(key=lambda item: (str(item["family"]), int(item["candidate"])))
     manifest = {
         "purpose": (
@@ -276,7 +318,6 @@ def main() -> None:
         ),
         "assets": records,
     }
-    manifest_path = args.output_dir.parent / "generation_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {manifest_path}")
     curate_assets(args.output_dir)

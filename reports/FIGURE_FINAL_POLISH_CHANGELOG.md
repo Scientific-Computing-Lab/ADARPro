@@ -1,73 +1,79 @@
-# Main-figure final-polish audit
+# Main-figure semantic and optical audit
 
-This pass inspected the current SVG/PDF/PNG outputs at native size and at 75% and
-50% raster reductions. Edits were limited to composition, typography, annotation,
-and caption clarity. Quantitative values, ordering, intervals, and retained results
-were not changed.
+This pass used the current SVG/PDF/PNG outputs, not memory or prior mockups. Each
+main figure was inspected at native resolution, at 25% reduction, and in its final
+placement in the compiled PNAS manuscript. Changes were restricted to figure
+semantics, geometry, optical alignment, asset curation, and two caption sentences.
+No quantitative values or scientific results changed.
 
 ## Figure 1 — information map and evaluation design
 
-- Replaced the cartoon-like target-selectivity inset with a crisp vector duplex
-  window that distinguishes the focal adenosine, helix partner, and aligned span.
-- Separated the three convergence-arrow landing points so every arrowhead remains
-  visible and each evidence-layer annotation has unambiguous ownership.
-- Regularized the top-block alignment and tightened the focal-window label/bracket
-  spacing.
-- Integrated the split strip and numbered evaluation sequence with directional
-  connectors from development and test partitions.
-- Shortened the caption while retaining the pair-burden and pooled-Combined caveats.
+- Added the missing green Validation-to-LOCK mapping and made all three partition
+  arrows geometrically parallel, equally weighted, and visibly terminated.
+- Removed the vertical connector between questions 1–4 so orthogonal questions no
+  longer imply a pipeline.
+- Balanced the three evidence-to-observation arrows and replaced the heavy dark
+  button-like endpoint with a flatter scientific convergence band.
+- Made target selectivity self-decoding with a focal-A mark, predicted partner,
+  highlighted aligned window, and explicit bracket.
+- Rejected a generated cell asset that retained a DNA-like ladder. Three stricter
+  GPT Image 1.5 candidates were generated and inspected; the selected asset shows
+  one continuous RNA transcript with a local fold-back cue and no DNA, chromosome,
+  chromatin, or regular helix imagery.
 
 ## Figure 2 — predictive scope and transfer
 
-- Removed the stray vertical training-context label and replaced it with a compact
-  row/column subtitle owned by the heatmap.
-- Moved the panel-A key into unused space and reduced jitter while strengthening
-  point edges and mean bars in panel C.
-- Increased heatmap value contrast, strengthened matched-context outlines, and
-  retained the human/nonhuman block divider.
-- Individually cropped and scaled the three lineage assets to eliminate a stray
-  fragment and harmonize their visual weight with the human endpoint icons.
-- Tightened the header strip and panel spacing so the left plots and heatmap read as
-  one composition.
+- Enforced one endpoint order throughout: Artery, Brain, Liver, Skeletal muscle,
+  Combined, then Octopus, Ptychodera, and Strongylocentrotus.
+- Added separators after the tissue block and the pooled human endpoint; preserved
+  the stronger human/nonhuman matrix boundary.
+- Converted the top strip into a structural dataset key with aligned human and
+  nonhuman bands, a clearly pooled Combined symbol, and labeled lineage icons.
+- Fixed the heatmap annotations to read from the reordered matrix itself, then
+  recalculated annotation contrast from cell luminance and standardized diagonal
+  outlines and colorbar spacing.
+- Defined panel C's black horizontal marks as group means and made the amber points'
+  human–nonhuman meaning explicit.
 
 ## Figure 3 — evidence map
 
-- Narrowed the illustrative gutter and returned more width to the evidence table.
-- Replaced divider lines that crossed section headings with restrained header bands
-  and colored vertical rules.
-- Regularized row centering, marker size, status alignment, interpretation spacing,
-  and alternating-row backgrounds.
-- Increased the smallest table and footer text, including the Table S2 pointer, for
-  better reduced-scale legibility.
+- Removed the large decorative biological artwork and rebuilt the left column as a
+  four-level information hierarchy aligned directly to the table sections:
+  learning, target-local, substrate/context, and integration.
+- Used small vector glyphs with distinct informational roles and added clean
+  horizontal links from each hierarchy level to its evidence group.
+- Matched status symbols by optical rather than nominal size, regularized row
+  baselines and divider rules, and retained restrained row striping.
+- Moved the status-symbol qualification to the caption and left only a comfortably
+  readable Table S2 pointer inside the figure.
 
 ## Figure 4 — organizing principles and predictor integration
 
-- Replaced panel A's floating legend with direct endpoint labels.
-- Relocated the panel B and D keys to verified empty plot regions; panel D now uses
-  filled versus open markers for an immediate muscle/liver distinction.
-- Standardized category-label spacing and compacted the panel C key.
-- Redrew panel E around a visible split node and arrowheaded branches, aligned the
-  two representations as parallel views, clarified their separate logits, and made
-  the fixed 0.5:0.5 mean a true terminal operation.
-- Anchored the no-search/no-stacker statement in a dedicated footer band.
+- Rebuilt panel E on a common grid: pair-first input, one junction, two parallel
+  representation/computation/logit streams, and one fixed integration operation.
+- Colored the post-split branches by view (blue whole-duplex, purple target-aligned)
+  and pointed each arrow to a processing object rather than a heading.
+- Attached “all valid high/low sites” to the input, replaced decorative logit pills
+  with mathematical nodes, and replaced the oversized mean bubble with
+  \(z=0.5z_1+0.5z_2\).
+- Removed the heavy footer band and retained the frozen-integration constraints as a
+  clean rule annotation.
 
 ## Figure 5 — held-out evaluation and explanatory boundary
 
-- Compacted the panel A key and moved the panel B key away from the paired data.
-- Retained consistent point, interval, and bar language across panels A–D while
-  checking all labels and confidence intervals for clipping.
-- Rebuilt panel E as three aligned, full-width evidence tiers with matched color
-  rails, precise headings, and consistent text baselines.
-- Embedded the conceptual cellular-context asset across the tiers without allowing
-  it to encode or obscure quantitative information.
+- Rebuilt panel E as flat scientific bands with aligned text, color rails, and a
+  dedicated icon column.
+- Assigned a distinct, nonquantitative cue to each tier: duplex/substrate for
+  captured information, separated local windows for partially resolved information,
+  and the curated RNA-specific cell-state asset for missing matched-scale context.
+- Eliminated the prior illustration overlap across tiers, so no image now implies a
+  relationship to multiple evidence levels.
 
-## Verification criteria
+## Final checks
 
-- Native, 75%, and 50% renders inspected for all five main figures.
-- No residual clipped arrows, orphaned labels, legend/data collisions, or ambiguous
-  axis ownership found in the final inspection.
-- All quantitative panels remain generated from the existing source tables.
-- Conceptual raster assets remain label-free and subordinate to vector text,
-  connectors, legends, and quantitative marks.
-- Final manuscript and SI compilation, reference checks, and artifact checks are
-  required after the final render and before release.
+- Full deterministic figure render completed for all 11 main and SI figures.
+- Main manuscript and Supporting Information compiled successfully.
+- Reference, claim-traceability, source-hash, page-bound, and artifact checks passed.
+- Full-size, reduced-size, and compiled-page review found no clipped connector,
+  ambiguous arrow destination, floating legend, label collision, or DNA-like RNA
+  editing asset in the five main figures.

@@ -41,6 +41,45 @@
       "sha256": "0cd0f92774c0842c432d42d429cbeaecdc09e095668ce4bef1af24ab54f1aea7"
     },
     {
+      "family": "cell_context_rna",
+      "candidate": 1,
+      "path": "paper/figure_assets/candidates/cell_context_rna_candidate_01.png",
+      "prompt": "A compact cutaway mammalian cell centered on cellular context for RNA editing. Inside the cell, show one continuous orange single-stranded RNA squiggle with a small local U-shaped fold-back region indicated by only three short dotted pairing bridges and one amber target dot. Add two restrained generic RNA-binding protein shapes nearby. Do not draw a twisted helix, ladder, DNA, chromosomes, chromatin, nucleotides as colored bars, or transcription machinery. Isolated publication-quality scientific illustration asset on a native transparent background. Refined Nature/PNAS biology-figure aesthetic, precise scientific visual language, thin charcoal outlines, restrained navy teal amber coral palette, subtle dimensionality, no photorealism, no text, no letters, no numerals, no labels, no arrows, no border, no chart, no decorative background, no watermark, generous transparent margin.",
+      "prompt_sha256": "05c72896f61d4b5f4e260bd7d45f54ffce9b1de3ec701527288cafa7467cc788",
+      "model_deployment": "gpt-image-1.5",
+      "size": "1024x1024",
+      "quality": "high",
+      "background": "transparent",
+      "status": "existing",
+      "sha256": "28169f5b2adac5d4b03b3b9a2097997efae3470b13cbd245c9768becf285184d"
+    },
+    {
+      "family": "cell_context_rna",
+      "candidate": 2,
+      "path": "paper/figure_assets/candidates/cell_context_rna_candidate_02.png",
+      "prompt": "A polished cell-state vignette for A-to-I RNA editing: a translucent mammalian cell containing one clearly single-contour RNA transcript, locally folded into an asymmetric hairpin with a bulge and three subtle dashed pairing marks. Sparse generic protein shapes surround but do not cover the transcript. The RNA must look like a flexible strand, never a double helix or regular ladder. No DNA, chromosome, chromatin, replication, or transcription-fork imagery. Isolated publication-quality scientific illustration asset on a native transparent background. Refined Nature/PNAS biology-figure aesthetic, precise scientific visual language, thin charcoal outlines, restrained navy teal amber coral palette, subtle dimensionality, no photorealism, no text, no letters, no numerals, no labels, no arrows, no border, no chart, no decorative background, no watermark, generous transparent margin.",
+      "prompt_sha256": "029815dda206594948ad6ce58fd7f6f4ad876d3ffdcbfc13d476fc75a1617004",
+      "model_deployment": "gpt-image-1.5",
+      "size": "1024x1024",
+      "quality": "high",
+      "background": "transparent",
+      "status": "existing",
+      "sha256": "b162d63ad95ba0a81283ee7a135c0e00a39b03a113b76ad7421029adbd9a6c19"
+    },
+    {
+      "family": "cell_context_rna",
+      "candidate": 3,
+      "path": "paper/figure_assets/candidates/cell_context_rna_candidate_03.png",
+      "prompt": "A restrained scientific cellular-context icon with a simple cell boundary, soft cytoplasmic and nuclear regions, generic regulator particles, and a single orange RNA strand crossing the scene. Give the strand one short imperfect fold-back loop with a small bulge and a highlighted target dot, but no visible ladder or helix. Absolutely no DNA, chromosomes, chromatin threads, genomic symbols, or base bars. Isolated publication-quality scientific illustration asset on a native transparent background. Refined Nature/PNAS biology-figure aesthetic, precise scientific visual language, thin charcoal outlines, restrained navy teal amber coral palette, subtle dimensionality, no photorealism, no text, no letters, no numerals, no labels, no arrows, no border, no chart, no decorative background, no watermark, generous transparent margin.",
+      "prompt_sha256": "0539ab2a721cc07282ad5fd50d01adfb71a483cbe5fe76f4919d2b4c55817d89",
+      "model_deployment": "gpt-image-1.5",
+      "size": "1024x1024",
+      "quality": "high",
+      "background": "transparent",
+      "status": "existing",
+      "sha256": "5a243c11d873e0b38ee67efd340edec91daf9f8101d2de6dd4d4a079752fce52"
+    },
+    {
       "family": "human_contexts",
       "candidate": 1,
       "path": "paper/figure_assets/candidates/human_contexts_candidate_01.png",
