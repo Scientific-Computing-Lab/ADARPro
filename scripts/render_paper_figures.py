@@ -76,6 +76,7 @@ def add_asset(
     bounds: tuple[float, float, float, float],
     alpha: float = 1.0,
     zorder: int = 1,
+    crop: tuple[float, float, float, float] | None = None,
 ) -> plt.Axes:
     """Place a curated transparent illustration inside an otherwise vector panel."""
     path = ASSET_DIR / f"{name}.png"
@@ -83,8 +84,16 @@ def add_asset(
         raise FileNotFoundError(
             f"Missing curated figure asset {path}; run generate_figure_assets.py"
         )
+    image = mpimg.imread(path)
+    if crop is not None:
+        x0, y0, x1, y1 = crop
+        height, width = image.shape[:2]
+        image = image[
+            round(y0 * height) : round(y1 * height),
+            round(x0 * width) : round(x1 * width),
+        ]
     inset = axis.inset_axes(bounds, transform=axis.transAxes, zorder=zorder)
-    inset.imshow(mpimg.imread(path), interpolation="lanczos", alpha=alpha)
+    inset.imshow(image, interpolation="lanczos", alpha=alpha)
     inset.set_axis_off()
     return inset
 
@@ -263,7 +272,6 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.axvspan(0.337, 0.662, color="#F2F8F5", zorder=0)
     ax_a.axvspan(0.674, 1.00, color="#FBF6EA", zorder=0)
     add_asset(ax_a, "rna_duplex", (0.015, 0.29, 0.30, 0.48), zorder=2)
-    add_asset(ax_a, "rna_duplex", (0.365, 0.34, 0.25, 0.35), alpha=0.72, zorder=2)
     add_asset(ax_a, "cell_context", (0.70, 0.28, 0.27, 0.50), zorder=2)
 
     section_rule(
@@ -293,56 +301,78 @@ def figure1(output: Path, source: Path) -> None:
         COLORS["amber"],
         "transcript state · ADAR access · regulators",
     )
-    ax_a.add_patch(
-        Circle(
-            (0.493, 0.505),
-            0.052,
-            facecolor="white",
-            edgecolor=COLORS["green"],
-            lw=1.5,
-            zorder=4,
+    local_x = np.linspace(0.375, 0.625, 13)
+    local_top = 0.555 + 0.018 * np.sin(np.linspace(0, 2 * np.pi, len(local_x)))
+    local_bottom = 0.445 + 0.018 * np.sin(np.linspace(0, 2 * np.pi, len(local_x)))
+    ax_a.plot(local_x, local_top, color=COLORS["navy"], lw=1.4, zorder=3)
+    ax_a.plot(local_x, local_bottom, color=COLORS["navy"], lw=1.4, zorder=3)
+    focal_index = len(local_x) // 2
+    for index, (xpos, y_top, y_bottom) in enumerate(
+        zip(local_x, local_top, local_bottom)
+    ):
+        edge = COLORS["green"] if index == focal_index else COLORS["sky"]
+        top_fill = COLORS["amber"] if index == focal_index else "white"
+        bottom_fill = COLORS["teal"] if index == focal_index else "white"
+        ax_a.plot(
+            [xpos, xpos],
+            [y_bottom, y_top],
+            color="#9BAAB2",
+            lw=0.65,
+            zorder=2,
         )
-    )
+        ax_a.add_patch(
+            Circle(
+                (xpos, y_top),
+                0.0085 if index == focal_index else 0.006,
+                facecolor=top_fill,
+                edgecolor=edge,
+                lw=0.75,
+                zorder=4,
+            )
+        )
+        ax_a.add_patch(
+            Circle(
+                (xpos, y_bottom),
+                0.0085 if index == focal_index else 0.006,
+                facecolor=bottom_fill,
+                edgecolor=edge,
+                lw=0.75,
+                zorder=4,
+            )
+        )
+    focal_x = local_x[focal_index]
     ax_a.text(
-        0.480,
-        0.505,
+        focal_x,
+        local_top[focal_index] + 0.055,
         "A",
         ha="center",
         va="center",
-        fontsize=11,
-        fontweight="bold",
-        color=COLORS["blue"],
-        zorder=5,
-    )
-    ax_a.add_patch(
-        FancyArrowPatch(
-            (0.505, 0.505),
-            (0.535, 0.505),
-            arrowstyle="-|>",
-            mutation_scale=8,
-            lw=0.9,
-            color=COLORS["amber"],
-            zorder=5,
-        )
-    )
-    ax_a.text(
-        0.549,
-        0.505,
-        "I",
-        ha="center",
-        va="center",
-        fontsize=11,
+        fontsize=8.2,
         fontweight="bold",
         color=COLORS["amber"],
-        zorder=5,
+    )
+    ax_a.text(
+        focal_x,
+        local_bottom[focal_index] - 0.055,
+        "helix partner",
+        ha="center",
+        va="center",
+        fontsize=5.8,
+        color=COLORS["teal"],
+    )
+    ax_a.plot(
+        [local_x[3], local_x[3], local_x[-4], local_x[-4]],
+        [0.365, 0.352, 0.352, 0.365],
+        color=COLORS["green"],
+        lw=0.8,
     )
     ax_a.text(
         0.505,
-        0.285,
-        "which adenosine is edited?",
+        0.315,
+        "aligned focal window",
         ha="center",
         va="center",
-        fontsize=6.4,
+        fontsize=6.2,
         color=COLORS["gray"],
     )
     ax_a.text(
@@ -372,15 +402,15 @@ def figure1(output: Path, source: Path) -> None:
         color=COLORS["amber"],
         fontweight="bold",
     )
-    for xpos, color in [
-        (0.165, COLORS["blue"]),
-        (0.505, COLORS["green"]),
-        (0.835, COLORS["amber"]),
+    for xpos, endpoint, color in [
+        (0.165, 0.43, COLORS["blue"]),
+        (0.505, 0.50, COLORS["green"]),
+        (0.835, 0.57, COLORS["amber"]),
     ]:
         ax_a.add_patch(
             FancyArrowPatch(
                 (xpos, 0.205),
-                (0.5, 0.115),
+                (endpoint, 0.115),
                 arrowstyle="-|>",
                 connectionstyle="arc3,rad=0",
                 mutation_scale=8,
@@ -480,6 +510,16 @@ def figure1(output: Path, source: Path) -> None:
         "Test": (int(split_counts["Test"]), COLORS["red"]),
     }
     total = sum(value[0] for value in split.values())
+    ax_c.text(
+        0.02,
+        0.89,
+        "GLOBAL PAIR-LEVEL PARTITION",
+        ha="left",
+        va="bottom",
+        fontsize=6.2,
+        color=COLORS["navy"],
+        fontweight="bold",
+    )
     x = 0.02
     for label, (count, color) in split.items():
         width = 0.94 * count / total
@@ -501,11 +541,44 @@ def figure1(output: Path, source: Path) -> None:
         )
         x += width
     stages = [
-        (0.13, "1", "PAIR-DISJOINT\nDEVELOPMENT", "five folds", COLORS["blue"]),
-        (0.50, "2", "LOCK", "code · weights\nthresholds · hashes", COLORS["green"]),
-        (0.87, "3", "CANONICAL TEST", "single use\nno retuning", COLORS["red"]),
+        (0.24, "1", "PAIR-DISJOINT\nDEVELOPMENT", "five folds", COLORS["blue"]),
+        (0.55, "2", "LOCK", "code · weights\nthresholds · hashes", COLORS["green"]),
+        (0.86, "3", "CANONICAL TEST", "single use\nno retuning", COLORS["red"]),
     ]
-    ax_c.plot([0.13, 0.87], [0.42, 0.42], color="#CAD3D8", lw=1.6, zorder=0)
+    for start, end in [((0.29, 0.42), (0.49, 0.42)), ((0.60, 0.42), (0.80, 0.42))]:
+        ax_c.add_patch(
+            FancyArrowPatch(
+                start,
+                end,
+                arrowstyle="-|>",
+                mutation_scale=7,
+                color="#B8C4CA",
+                lw=1.15,
+                zorder=0,
+            )
+        )
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.40, 0.705),
+            (0.26, 0.49),
+            arrowstyle="-|>",
+            mutation_scale=6,
+            color=COLORS["blue"],
+            lw=0.7,
+            alpha=0.65,
+        )
+    )
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.90, 0.705),
+            (0.86, 0.49),
+            arrowstyle="-|>",
+            mutation_scale=6,
+            color=COLORS["red"],
+            lw=0.7,
+            alpha=0.65,
+        )
+    )
     for xpos, number, title, detail, color in stages:
         ax_c.add_patch(
             Circle(
@@ -621,11 +694,11 @@ def figure_scope(output: Path, source: Path) -> None:
     ax_b = figure.add_subplot(grid[:, 1])
     ax_c = figure.add_subplot(grid[1, 0])
 
-    context_key = figure.add_axes([0.105, 0.865, 0.84, 0.115])
+    context_key = figure.add_axes([0.105, 0.875, 0.84, 0.10])
     context_key.set_axis_off()
-    add_asset(context_key, "human_contexts", (0.00, 0.05, 0.43, 0.90), zorder=2)
+    add_asset(context_key, "human_contexts", (0.00, 0.07, 0.36, 0.86), zorder=2)
     context_key.text(
-        0.45,
+        0.38,
         0.64,
         "HUMAN ENDPOINTS",
         fontsize=6.8,
@@ -634,17 +707,37 @@ def figure_scope(output: Path, source: Path) -> None:
         va="center",
     )
     context_key.text(
-        0.45,
+        0.38,
         0.33,
         "four tissues + pooled Combined",
         fontsize=6.1,
         color=COLORS["gray"],
         va="center",
     )
-    context_key.plot([0.58, 0.58], [0.12, 0.88], color="#D4DCE0", lw=0.8)
-    add_asset(context_key, "marine_lineages", (0.60, -0.04, 0.23, 1.12), zorder=2)
+    context_key.plot([0.56, 0.56], [0.12, 0.88], color="#D4DCE0", lw=0.8)
+    add_asset(
+        context_key,
+        "marine_lineages",
+        (0.585, 0.13, 0.065, 0.76),
+        zorder=2,
+        crop=(0.00, 0.10, 0.385, 0.68),
+    )
+    add_asset(
+        context_key,
+        "marine_lineages",
+        (0.655, 0.04, 0.050, 0.88),
+        zorder=2,
+        crop=(0.39, 0.03, 0.61, 0.90),
+    )
+    add_asset(
+        context_key,
+        "marine_lineages",
+        (0.710, 0.13, 0.065, 0.76),
+        zorder=2,
+        crop=(0.63, 0.10, 1.00, 0.68),
+    )
     context_key.text(
-        0.84,
+        0.80,
         0.64,
         "NONHUMAN DATASETS",
         fontsize=6.8,
@@ -653,7 +746,7 @@ def figure_scope(output: Path, source: Path) -> None:
         va="center",
     )
     context_key.text(
-        0.84,
+        0.80,
         0.33,
         "three divergent lineages",
         fontsize=6.1,
@@ -693,7 +786,15 @@ def figure_scope(output: Path, source: Path) -> None:
     ax_a.set_title(
         "Substantial signal within each dataset", loc="left", fontweight="bold"
     )
-    ax_a.legend(frameon=False, ncol=2, loc="lower right", fontsize=6.5)
+    ax_a.legend(
+        frameon=False,
+        ncol=1,
+        loc="upper left",
+        bbox_to_anchor=(0.015, 0.985),
+        fontsize=6.3,
+        handletextpad=0.35,
+        labelspacing=0.35,
+    )
     clean_axis(ax_a)
 
     panel_label(ax_b, "B")
@@ -729,13 +830,26 @@ def figure_scope(output: Path, source: Path) -> None:
                 f"{value:.2f}",
                 ha="center",
                 va="center",
-                fontsize=5.4,
-                color="white" if value > 0.85 else COLORS["ink"],
+                fontsize=5.8,
+                color="white" if value >= 0.84 else COLORS["ink"],
             )
     ax_b.set_xlabel("Evaluation context")
-    ax_b.set_ylabel("Training context")
+    ax_b.set_ylabel("")
     ax_b.set_title(
-        "Transfer exposes lineage and context boundaries", loc="left", fontweight="bold"
+        "Transfer exposes lineage and context boundaries",
+        loc="left",
+        fontweight="bold",
+        pad=18,
+    )
+    ax_b.text(
+        0.0,
+        1.008,
+        "rows = training · columns = evaluation",
+        transform=ax_b.transAxes,
+        ha="left",
+        va="bottom",
+        fontsize=6.3,
+        color=COLORS["gray"],
     )
     colorbar = figure.colorbar(image_handle, ax=ax_b, fraction=0.04, pad=0.03)
     colorbar.set_label("AUROC", fontsize=7)
@@ -759,21 +873,22 @@ def figure_scope(output: Path, source: Path) -> None:
         values = transfer.loc[
             transfer.transfer_group == group, "baseline_auroc"
         ].to_numpy()
-        jitter = rng.uniform(-0.12, 0.12, size=len(values))
+        jitter = rng.uniform(-0.09, 0.09, size=len(values))
         ax_c.scatter(
             np.full(len(values), index) + jitter,
             values,
-            s=13,
+            s=15,
             color=COLORS["blue"] if index < 3 else COLORS["amber"],
-            alpha=0.65,
-            edgecolor="none",
+            alpha=0.72,
+            edgecolor="white",
+            linewidth=0.25,
             zorder=2,
         )
         ax_c.plot(
             [index - 0.20, index + 0.20],
             [np.mean(values), np.mean(values)],
             color=COLORS["ink"],
-            lw=1.5,
+            lw=1.7,
             zorder=3,
         )
     ax_c.set_xticks(np.arange(len(groups)), group_labels)
@@ -784,7 +899,7 @@ def figure_scope(output: Path, source: Path) -> None:
     )
     clean_axis(ax_c, "y")
 
-    figure.subplots_adjust(left=0.12, right=0.98, top=0.81, bottom=0.09)
+    figure.subplots_adjust(left=0.12, right=0.98, top=0.82, bottom=0.09)
     save(figure, output, "figure2_sequence_scope")
 
 
@@ -1026,11 +1141,11 @@ def figure2(output: Path, source: Path) -> None:
         loc="left",
         fontweight="bold",
     )
-    ax_a.axvspan(0.00, 0.17, color="#F3F7F8", zorder=0)
-    add_asset(ax_a, "latent_context", (0.005, 0.36, 0.155, 0.40), alpha=0.92, zorder=2)
-    add_asset(ax_a, "rna_duplex", (0.012, 0.075, 0.14, 0.18), alpha=0.92, zorder=2)
+    ax_a.axvspan(0.00, 0.145, color="#F3F7F8", zorder=0)
+    add_asset(ax_a, "latent_context", (0.008, 0.39, 0.128, 0.35), alpha=0.90, zorder=2)
+    add_asset(ax_a, "rna_duplex", (0.015, 0.085, 0.115, 0.16), alpha=0.90, zorder=2)
     ax_a.text(
-        0.083,
+        0.072,
         0.86,
         "INFORMATION\nLANDSCAPE",
         ha="center",
@@ -1040,16 +1155,16 @@ def figure2(output: Path, source: Path) -> None:
         color=COLORS["navy"],
     )
     ax_a.text(
-        0.083,
+        0.072,
         0.30,
         "measured context\n→ target evidence",
         ha="center",
         va="center",
-        fontsize=5.8,
+        fontsize=6.0,
         color=COLORS["gray"],
     )
     headers = ["Tested formulation", "Outcome", "Interpretation"]
-    xpos = [0.195, 0.635, 0.785]
+    xpos = [0.170, 0.625, 0.785]
     for index, (x, header) in enumerate(zip(xpos, headers)):
         ax_a.text(
             x,
@@ -1071,12 +1186,29 @@ def figure2(output: Path, source: Path) -> None:
     row_number = 0
     for group, group_rows in frame.groupby("group", sort=False):
         color = group_colors[group]
-        ax_a.plot([0.184, 0.985], [y + 0.015, y + 0.015], color=color, lw=1.35)
+        ax_a.add_patch(
+            plt.Rectangle(
+                (0.158, y - 0.014),
+                0.827,
+                0.029,
+                facecolor=color,
+                edgecolor="none",
+                alpha=0.065,
+                zorder=0,
+            )
+        )
+        ax_a.plot(
+            [0.158, 0.158],
+            [y - 0.014, y + 0.015],
+            color=color,
+            lw=2.0,
+            solid_capstyle="butt",
+        )
         ax_a.text(
-            0.195,
-            y + 0.002,
+            0.170,
+            y,
             group.upper(),
-            fontsize=6.2,
+            fontsize=6.25,
             fontweight="bold",
             color=color,
             va="center",
@@ -1086,16 +1218,26 @@ def figure2(output: Path, source: Path) -> None:
             if row_number % 2 == 0:
                 ax_a.add_patch(
                     plt.Rectangle(
-                        (0.184, y - 0.016), 0.801, 0.033, color="#F7F8F9", lw=0
+                        (0.158, y - 0.016), 0.827, 0.033, color="#F6F8F9", lw=0
                     )
                 )
-            ax_a.text(xpos[0], y, row["hypothesis"], fontsize=6.45, va="center")
+            ax_a.text(xpos[0], y, row["hypothesis"], fontsize=6.55, va="center")
+            marker_size = {
+                "selected": 29,
+                "supported, not yet actionable": 31,
+                "limited": 32,
+                "not supported": 35,
+                "deferred": 29,
+                "not pursued": 31,
+            }[row["status"]]
             ax_a.scatter(
-                [0.615],
+                [0.605],
                 [y],
-                s=27,
+                s=marker_size,
                 marker=status_markers[row["status"]],
                 color=status_colors[row["status"]],
+                edgecolor="white",
+                linewidth=0.25,
                 zorder=3,
             )
             display_status = (
@@ -1107,11 +1249,11 @@ def figure2(output: Path, source: Path) -> None:
                 xpos[1],
                 y,
                 display_status,
-                fontsize=5.8,
+                fontsize=6.0,
                 va="center",
                 color=status_colors[row["status"]],
             )
-            ax_a.text(xpos[2], y, row["interpretation"], fontsize=6.15, va="center")
+            ax_a.text(xpos[2], y, row["interpretation"], fontsize=6.25, va="center")
             y -= 0.0365
             row_number += 1
     ax_a.text(
@@ -1120,7 +1262,7 @@ def figure2(output: Path, source: Path) -> None:
         "See Table S2 for comparators, effect sizes, and intervals.",
         ha="right",
         va="bottom",
-        fontsize=5.7,
+        fontsize=6.0,
         color=COLORS["gray"],
     )
     ax_a.text(
@@ -1129,7 +1271,7 @@ def figure2(output: Path, source: Path) -> None:
         "*Reproducible observation not yet useful for site prediction; deferred hypotheses were not tested.",
         ha="right",
         va="bottom",
-        fontsize=5.4,
+        fontsize=5.75,
         color=COLORS["gray"],
     )
     ax_a.set_xlim(0, 1)
@@ -1247,9 +1389,10 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     axis.axhspan(0.55, 0.84, color=COLORS["pale_blue"], zorder=0)
     axis.axhspan(0.19, 0.49, color="#F3EFF8", zorder=0)
-    add_asset(axis, "rna_duplex", (0.015, 0.23, 0.20, 0.54), zorder=2)
+    axis.axhspan(0.015, 0.115, color="#F4F7F8", zorder=0)
+    add_asset(axis, "rna_duplex", (0.015, 0.27, 0.18, 0.46), zorder=2)
     axis.text(
-        0.115,
+        0.105,
         0.82,
         "PAIR-FIRST INPUT",
         ha="center",
@@ -1259,19 +1402,50 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         color=COLORS["green"],
     )
     axis.text(
-        0.115,
-        0.19,
+        0.105,
+        0.22,
         "all valid high/low sites",
         ha="center",
         va="center",
         fontsize=5.8,
         color=COLORS["gray"],
     )
-    axis.plot([0.225, 0.28], [0.51, 0.69], color=COLORS["green"], lw=1.0)
-    axis.plot([0.225, 0.28], [0.51, 0.34], color=COLORS["green"], lw=1.0)
+    axis.add_patch(
+        FancyArrowPatch(
+            (0.19, 0.515),
+            (0.235, 0.515),
+            arrowstyle="-|>",
+            mutation_scale=8,
+            color=COLORS["green"],
+            lw=1.15,
+            zorder=4,
+        )
+    )
+    axis.add_patch(
+        Circle(
+            (0.245, 0.515),
+            0.012,
+            facecolor=COLORS["green"],
+            edgecolor="white",
+            lw=0.7,
+            zorder=5,
+        )
+    )
+    for end in [(0.292, 0.69), (0.292, 0.34)]:
+        axis.add_patch(
+            FancyArrowPatch(
+                (0.255, 0.515),
+                end,
+                arrowstyle="-|>",
+                mutation_scale=8,
+                color=COLORS["green"],
+                lw=1.15,
+                zorder=4,
+            )
+        )
 
     axis.text(
-        0.30,
+        0.305,
         0.78,
         "WHOLE-DUPLEX VIEW",
         fontsize=6.6,
@@ -1280,7 +1454,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         va="center",
     )
     axis.text(
-        0.30,
+        0.305,
         0.61,
         "graph message passing  →  substrate logit",
         fontsize=6.5,
@@ -1309,7 +1483,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
 
     axis.text(
-        0.30,
+        0.305,
         0.43,
         "TARGET-ALIGNED VIEW",
         fontsize=6.6,
@@ -1318,7 +1492,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         va="center",
     )
     axis.text(
-        0.30,
+        0.305,
         0.26,
         "duplex graph + focal/partner window  →  local logit",
         fontsize=6.5,
@@ -1386,8 +1560,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     for start, end in [
         ((0.68, 0.69), (0.74, 0.69)),
         ((0.68, 0.34), (0.74, 0.34)),
-        ((0.80, 0.69), (0.87, 0.54)),
-        ((0.80, 0.34), (0.87, 0.49)),
+        ((0.80, 0.69), (0.845, 0.55)),
+        ((0.80, 0.34), (0.845, 0.48)),
     ]:
         axis.add_patch(
             FancyArrowPatch(
@@ -1401,8 +1575,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
     axis.add_patch(
         Circle(
-            (0.90, 0.515),
-            0.064,
+            (0.89, 0.515),
+            0.068,
             facecolor=COLORS["pale_amber"],
             edgecolor=COLORS["amber"],
             lw=1.2,
@@ -1410,7 +1584,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
     )
     axis.text(
-        0.90,
+        0.89,
         0.535,
         "MEAN",
         ha="center",
@@ -1420,7 +1594,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         color=COLORS["amber"],
     )
     axis.text(
-        0.90,
+        0.89,
         0.485,
         f"{weights[0]:.1f} : {weights[1]:.1f}",
         ha="center",
@@ -1430,10 +1604,10 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     axis.text(
         0.52,
-        0.065,
+        0.066,
         "independently trained views  ·  no weight search  ·  no stacker  ·  no post-test fitting",
         ha="center",
-        fontsize=6.7,
+        fontsize=6.5,
         fontweight="bold",
         color=COLORS["navy"],
     )
@@ -1533,7 +1707,17 @@ def figure3(output: Path, source: Path) -> None:
             color=metric_colors[metric],
             label=metric.upper(),
         )
+        ax_a.text(
+            2.10,
+            values.iloc[-1],
+            metric.upper(),
+            color=metric_colors[metric],
+            fontsize=6.3,
+            fontweight="bold",
+            va="center",
+        )
     ax_a.set_xticks(x, model_labels)
+    ax_a.set_xlim(-0.10, 2.48)
     ax_a.set_ylim(0.75, 0.905)
     ax_a.set_ylabel("Muscle development OOF")
     ax_a.set_title(
@@ -1541,7 +1725,6 @@ def figure3(output: Path, source: Path) -> None:
         loc="left",
         fontweight="bold",
     )
-    ax_a.legend(frameon=False, ncol=3, fontsize=6.2)
     ax_a.text(
         0.5,
         0.755,
@@ -1586,7 +1769,15 @@ def figure3(output: Path, source: Path) -> None:
     ax_b.invert_yaxis()
     ax_b.set_xlabel("Pair-first − internal reference (points)")
     ax_b.set_title("Pair-first gains replicate", loc="left", fontweight="bold")
-    ax_b.legend(frameon=False, ncol=3, loc="upper right")
+    ax_b.legend(
+        frameon=False,
+        ncol=3,
+        loc="upper right",
+        borderaxespad=0.4,
+        fontsize=6.2,
+        columnspacing=0.8,
+        handletextpad=0.3,
+    )
     clean_axis(ax_b)
 
     panel_label(ax_c, "C")
@@ -1618,7 +1809,7 @@ def figure3(output: Path, source: Path) -> None:
             zorder=2,
         )
     ax_c.set_xticks(x, representations.representation, rotation=0, ha="center")
-    ax_c.tick_params(axis="x", labelsize=6.2)
+    ax_c.tick_params(axis="x", labelsize=6.4, pad=3)
     ax_c.set_ylim(0.64, 0.94)
     ax_c.set_ylabel("Development OOF performance")
     ax_c.set_title(
@@ -1627,7 +1818,14 @@ def figure3(output: Path, source: Path) -> None:
         fontweight="bold",
     )
     clean_axis(ax_c, "y")
-    ax_c.legend(frameon=False, ncol=3, loc="upper right")
+    ax_c.legend(
+        frameon=False,
+        ncol=3,
+        loc="upper left",
+        fontsize=6.1,
+        columnspacing=0.8,
+        handletextpad=0.3,
+    )
 
     panel_label(ax_d, "D")
     metrics = ["AUROC", "AUPRC", "F1"]
@@ -1651,7 +1849,9 @@ def figure3(output: Path, source: Path) -> None:
                 ms=4.4,
                 capsize=2,
                 color=colors[i],
-                alpha=1 if j == 0 else 0.55,
+                markerfacecolor=colors[i] if j == 0 else "white",
+                markeredgecolor=colors[i],
+                markeredgewidth=0.9,
             )
     ax_d.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_d.set_yticks(range(3), metrics)
@@ -1670,7 +1870,8 @@ def figure3(output: Path, source: Path) -> None:
                 [0],
                 marker="o",
                 color=COLORS["gray"],
-                lw=1.2,
+                markerfacecolor=COLORS["gray"],
+                lw=0,
                 label="Skeletal muscle",
             ),
             plt.Line2D(
@@ -1678,18 +1879,21 @@ def figure3(output: Path, source: Path) -> None:
                 [0],
                 marker="o",
                 color=COLORS["gray"],
-                lw=1.2,
-                alpha=0.45,
+                markerfacecolor="white",
+                markeredgecolor=COLORS["gray"],
+                lw=0,
                 label="Liver",
             ),
         ],
         frameon=False,
-        ncol=2,
+        ncol=1,
         fontsize=6.2,
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.25),
+        loc="upper right",
+        borderaxespad=0.35,
+        labelspacing=0.25,
+        handletextpad=0.25,
     )
-    ax_d.set_xlim(0, 3.8)
+    ax_d.set_xlim(0, 4.25)
     clean_axis(ax_d)
 
     panel_label(ax_e, "E")
@@ -1774,7 +1978,14 @@ def figure4(output: Path, source: Path) -> None:
         loc="left",
         fontweight="bold",
     )
-    ax_a.legend(frameon=False, ncol=3, loc="lower right")
+    ax_a.legend(
+        frameon=False,
+        ncol=3,
+        loc="lower right",
+        borderaxespad=0.35,
+        columnspacing=1.0,
+        handletextpad=0.35,
+    )
     clean_axis(ax_a)
 
     panel_label(ax_b, "B")
@@ -1804,7 +2015,15 @@ def figure4(output: Path, source: Path) -> None:
     ax_b.set_xlim(0.80, 0.905)
     ax_b.set_xlabel("F1")
     ax_b.set_title("Absolute held-out F1", loc="left", fontweight="bold")
-    ax_b.legend(frameon=False, ncol=2, fontsize=6.2)
+    ax_b.legend(
+        frameon=False,
+        ncol=2,
+        fontsize=6.2,
+        loc="upper left",
+        borderaxespad=0.35,
+        columnspacing=0.9,
+        handletextpad=0.3,
+    )
     clean_axis(ax_b)
 
     panel_label(ax_c, "C")
@@ -1864,63 +2083,77 @@ def figure4(output: Path, source: Path) -> None:
     ax_e.set_title("Present explanatory boundary", loc="left", fontweight="bold")
     boundary = [
         (
-            0.78,
+            0.70,
             "Captured",
-            "duplex suitability · target/partner context",
+            "duplex suitability\ntarget/partner context",
             COLORS["green"],
+            COLORS["pale_green"],
         ),
         (
-            0.51,
+            0.41,
             "Partially resolved",
-            "pair-level propensity · transferable tissue rules",
+            "pair-level propensity\ntransferable tissue rules",
             COLORS["amber"],
+            COLORS["pale_amber"],
         ),
         (
-            0.24,
+            0.12,
             "Missing at matched scale",
-            "cell/donor state · in vivo fold · regulator exposure",
+            "cell/donor state · in vivo fold\nregulator exposure",
             COLORS["purple"],
+            "#F1EDF7",
         ),
     ]
-    add_asset(ax_e, "latent_context", (0.62, 0.03, 0.35, 0.90), alpha=0.86, zorder=1)
-    for y0, title, detail, color in boundary:
-        ax_e.plot(
-            [0.03, 0.40],
-            [y0 + 0.07, y0 + 0.07],
-            color=color,
-            lw=2.2,
-            solid_capstyle="round",
-        )
-        ax_e.text(
-            0.03,
-            y0 + 0.03,
-            title.upper(),
-            ha="left",
-            va="top",
-            fontsize=6.5,
-            color=color,
-            fontweight="bold",
-        )
-        ax_e.text(
-            0.03,
-            y0 - 0.055,
-            detail.replace(" · ", " ·\n", 1),
-            ha="left",
-            va="top",
-            fontsize=5.7,
-            color=COLORS["ink"],
-            linespacing=1.25,
-        )
+    for y0, title, detail, color, fill in boundary:
         ax_e.add_patch(
-            FancyArrowPatch(
-                (0.40, y0 + 0.04),
-                (0.65, y0 + 0.04),
-                arrowstyle="-",
-                color=color,
-                lw=0.8,
-                alpha=0.75,
+            FancyBboxPatch(
+                (0.02, y0),
+                0.96,
+                0.235,
+                boxstyle="round,pad=0.006,rounding_size=0.018",
+                facecolor=fill,
+                edgecolor="#D9E1E5",
+                lw=0.55,
+                zorder=0,
             )
         )
+        ax_e.plot(
+            [0.035, 0.035],
+            [y0 + 0.025, y0 + 0.210],
+            color=color,
+            lw=3.0,
+            solid_capstyle="round",
+            zorder=2,
+        )
+        ax_e.text(
+            0.065,
+            y0 + 0.182,
+            title.upper(),
+            ha="left",
+            va="center",
+            fontsize=6.4,
+            color=color,
+            fontweight="bold",
+            zorder=3,
+        )
+        ax_e.text(
+            0.065,
+            y0 + 0.095,
+            detail,
+            ha="left",
+            va="center",
+            fontsize=5.9,
+            color=COLORS["ink"],
+            linespacing=1.18,
+            zorder=3,
+        )
+    add_asset(
+        ax_e,
+        "latent_context",
+        (0.68, 0.075, 0.29, 0.80),
+        alpha=0.80,
+        zorder=2,
+    )
     ax_e.set_xlim(0, 1)
     ax_e.set_ylim(0, 1)
     figure.subplots_adjust(left=0.12, right=0.99, top=0.97, bottom=0.07)
