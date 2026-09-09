@@ -2,29 +2,27 @@
 
 Selected title:
 
-> Systematic dissection of endogenous A-to-I RNA editing reveals substrate-
-> and target-level determinants of predictability
+> Mapping the measurable determinants and predictive limits of endogenous
+> A-to-I RNA editing
 
-This title most directly expresses the paper's scientific contribution: a
-controlled dissection of where measurable predictive information resides. It
-foregrounds the inferred hierarchy rather than the model name or benchmark
-gain and does not overstate predictive associations as causal determinants of
-editing itself.
+This title states the revised scientific thesis: the study maps both the
+information recoverable from current measurements and the boundary exposed by
+controlled failures and saturation. “Measurable” prevents predictive
+associations from being mistaken for a complete causal inventory. The model
+name is intentionally absent.
 
 Strong alternatives considered:
 
-1. **What determines the predictability of endogenous A-to-I RNA editing?**
-   Direct and memorable, but less informative about the answer.
-2. **Substrate-organized supervision and target-centered representation reveal
-   the information hierarchy of A-to-I RNA editing.** More specific, but too
-   method-forward for the broad biological framing.
-3. **Mapping the predictive information landscape of endogenous A-to-I RNA
-   editing.** Concise, but does not communicate the principal two-scale result.
-4. **A systematic test of biological context and RNA representation in A-to-I
-   editing prediction.** Accurate, but emphasizes process more than discovery.
-5. **Endogenous A-to-I RNA editing is predicted by complementary substrate- and
-   target-scale information.** States the positive result clearly, but gives
-   less visibility to the informative negative evidence.
+1. **Systematic dissection reveals the information hierarchy and predictive
+   limits of A-to-I RNA editing.** Strong but less explicit about measurement.
+2. **Substrate organization, target context, and the unexplained cellular layer
+   of A-to-I RNA editing.** Biologically concrete, but too long.
+3. **A predictive information map of endogenous A-to-I RNA editing.** Concise,
+   but “predictive” may sound model-centered.
+4. **What current measurements can—and cannot—explain about A-to-I RNA
+   editing.** Direct, but overly conversational for the present manuscript.
+5. **Multiscale determinants and the current prediction ceiling of endogenous
+   A-to-I RNA editing.** Clear, but “ceiling” could imply a universal limit.
 
-ADARPro is introduced in the abstract and Results rather than used as the
-title's intellectual center.
+ADARPro is introduced in the abstract and late Results as the validated
+deliverable that operationalizes the information map.

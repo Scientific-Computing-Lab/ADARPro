@@ -1,0 +1,65 @@
+train_context,eval_context,transfer_group,baseline_auroc,bioaware_auroc,source
+Artery,Artery,Matched context,0.923807731,0.918337933,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Brain,Across human endpoints,0.9284952398,0.9241561774,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Combined,Across human endpoints,0.9250572785,0.9164925654,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Liver,Across human endpoints,0.9131998987,0.9098497372,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,MuscleSkeletal,Across human endpoints,0.8992929293,0.9068914637,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Octopus,Across human/nonhuman,0.8382515043,0.8560671495,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Ptychodera,Across human/nonhuman,0.7871951816,0.7872697158,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Artery,Strongylocentrotus,Across human/nonhuman,0.7904719482,0.8112207143,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Artery,Across human endpoints,0.9266594753,0.9276470351,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Brain,Matched context,0.9301417981,0.927410787,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Combined,Across human endpoints,0.9311907575,0.9267153693,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Liver,Across human endpoints,0.9159606482,0.9122171909,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,MuscleSkeletal,Across human endpoints,0.9047197465,0.903567043,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Octopus,Across human/nonhuman,0.8098634563,0.815249899,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Ptychodera,Across human/nonhuman,0.8016465274,0.7806090721,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Brain,Strongylocentrotus,Across human/nonhuman,0.7595634353,0.784987499,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Artery,Across human endpoints,0.9183038732,0.8981108617,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Brain,Across human endpoints,0.9242565843,0.9066734323,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Combined,Matched context,0.9330997302,0.9030388731,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Liver,Across human endpoints,0.918818747,0.8935310941,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,MuscleSkeletal,Across human endpoints,0.9090314914,0.9017439097,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Octopus,Across human/nonhuman,0.8158606883,0.8027689593,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Ptychodera,Across human/nonhuman,0.8086534914,0.7020598532,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Combined,Strongylocentrotus,Across human/nonhuman,0.7670254115,0.7493758487,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Artery,Across human endpoints,0.9044675285,0.9018944793,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Brain,Across human endpoints,0.9070366494,0.9129663387,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Combined,Across human endpoints,0.9224388571,0.9165186531,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Liver,Matched context,0.9092206293,0.9100288409,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,MuscleSkeletal,Across human endpoints,0.8970766488,0.9083818578,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Octopus,Across human/nonhuman,0.758746143,0.7859557271,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Ptychodera,Across human/nonhuman,0.7432388481,0.7357221909,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Liver,Strongylocentrotus,Across human/nonhuman,0.6925493394,0.7546277005,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Artery,Across human endpoints,0.8712857278,0.8713056033,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Brain,Across human endpoints,0.8810964246,0.880981385,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Combined,Across human endpoints,0.8883197601,0.8854579104,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Liver,Across human endpoints,0.8822870178,0.870673983,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,MuscleSkeletal,Matched context,0.8687512379,0.8781976629,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Octopus,Across human/nonhuman,0.7860814779,0.7908973716,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Ptychodera,Across human/nonhuman,0.7339025033,0.7256450216,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+MuscleSkeletal,Strongylocentrotus,Across human/nonhuman,0.7299642932,0.737950736,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Artery,Across human/nonhuman,0.795035058,0.7951797904,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Brain,Across human/nonhuman,0.7927720094,0.8019675717,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Combined,Across human/nonhuman,0.7795450753,0.7946383937,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Liver,Across human/nonhuman,0.7855811562,0.7920404689,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,MuscleSkeletal,Across human/nonhuman,0.7307209348,0.7636621113,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Octopus,Matched context,0.8647310156,0.8715617953,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Ptychodera,Across nonhuman datasets,0.8366708075,0.7878230755,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Octopus,Strongylocentrotus,Across nonhuman datasets,0.7840777648,0.8087241089,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Artery,Across human/nonhuman,0.7337624813,0.7518317882,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Brain,Across human/nonhuman,0.7395104107,0.761016846,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Combined,Across human/nonhuman,0.7303638296,0.7701633443,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Liver,Across human/nonhuman,0.7328036777,0.7513007468,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,MuscleSkeletal,Across human/nonhuman,0.6747197465,0.7445405031,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Octopus,Across nonhuman datasets,0.8361776951,0.832645896,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Ptychodera,Matched context,0.8225228684,0.8097097685,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Ptychodera,Strongylocentrotus,Across nonhuman datasets,0.749516844,0.7586635797,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Artery,Across human/nonhuman,0.7564890536,0.7247685858,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Brain,Across human/nonhuman,0.7545151356,0.7208092087,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Combined,Across human/nonhuman,0.7406870032,0.7111795771,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Liver,Across human/nonhuman,0.7644469144,0.7242003183,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,MuscleSkeletal,Across human/nonhuman,0.6941562686,0.6554862349,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Octopus,Across nonhuman datasets,0.8525741534,0.8169744805,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Ptychodera,Across nonhuman datasets,0.8307321664,0.8259785432,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv
+Strongylocentrotus,Strongylocentrotus,Matched context,0.8601200526,0.7967565684,results/matrix_baseline_auroc.csv; results/matrix_bioaware_auroc.csv

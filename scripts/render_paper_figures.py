@@ -91,7 +91,7 @@ def save(figure: plt.Figure, output: Path, stem: str) -> None:
     output.mkdir(parents=True, exist_ok=True)
     for suffix in ("pdf", "svg", "png"):
         if suffix == "pdf":
-            fixed_time = dt.datetime(2026, 8, 25, tzinfo=dt.timezone.utc)
+            fixed_time = dt.datetime(2026, 9, 9, tzinfo=dt.timezone.utc)
             metadata: dict[str, object] = {
                 "Creator": "ADARPro figure pipeline",
                 "Producer": "Matplotlib",
@@ -99,7 +99,7 @@ def save(figure: plt.Figure, output: Path, stem: str) -> None:
                 "ModDate": fixed_time,
             }
         elif suffix == "svg":
-            metadata = {"Creator": "ADARPro figure pipeline", "Date": "2026-08-25"}
+            metadata = {"Creator": "ADARPro figure pipeline", "Date": "2026-09-09"}
         else:
             metadata = {"Software": "ADARPro figure pipeline"}
         figure.savefig(
@@ -476,6 +476,174 @@ def figure1(output: Path, source: Path) -> None:
         left=0.04, right=0.99, top=0.97, bottom=0.04, wspace=0.22, hspace=0.25
     )
     save(figure, output, "figure1_systematic_dissection")
+
+
+def scope_tables(source: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Recover retained within-context and transfer results for the scope map."""
+    within = pd.read_csv(ROOT / "results/table1_within_context.csv")
+    baseline = pd.read_csv(
+        ROOT / "results/matrix_baseline_auroc.csv", index_col=0
+    )
+    bioaware = pd.read_csv(
+        ROOT / "results/matrix_bioaware_auroc.csv", index_col=0
+    )
+    baseline.index.name = "train_context"
+    bioaware.index.name = "train_context"
+
+    human = set(CONTEXTS)
+    transfer_rows = []
+    for train_context in baseline.index:
+        for eval_context in baseline.columns:
+            if train_context == eval_context:
+                group = "Matched context"
+            elif train_context in human and eval_context in human:
+                group = "Across human endpoints"
+            elif train_context not in human and eval_context not in human:
+                group = "Across nonhuman datasets"
+            else:
+                group = "Across human/nonhuman"
+            transfer_rows.append(
+                {
+                    "train_context": train_context,
+                    "eval_context": eval_context,
+                    "transfer_group": group,
+                    "baseline_auroc": baseline.loc[train_context, eval_context],
+                    "bioaware_auroc": bioaware.loc[train_context, eval_context],
+                    "source": "results/matrix_baseline_auroc.csv; "
+                    "results/matrix_bioaware_auroc.csv",
+                }
+            )
+    transfer = pd.DataFrame(transfer_rows)
+    diagonal = within[within.train_context == within.eval_context].copy()
+    pivot = baseline.reset_index()
+    copy_source(diagonal, source, "figure2_within_context_metrics.csv")
+    copy_source(transfer, source, "figure2_transfer_groups.csv")
+    copy_source(pivot, source, "figure2_baseline_transfer_auroc.csv")
+    return diagonal, baseline, transfer
+
+
+def figure_scope(output: Path, source: Path) -> None:
+    """Show how much sequence--structure models capture and where they transfer."""
+    within, baseline, transfer = scope_tables(source)
+    contexts = list(baseline.index)
+    labels = [
+        "Artery",
+        "Brain",
+        "Combined",
+        "Liver",
+        "Skeletal muscle",
+        "Octopus",
+        "Ptychodera",
+        "Strongylocentrotus",
+    ]
+    human_n = len(CONTEXTS)
+    figure = plt.figure(figsize=(7.0, 6.0))
+    grid = figure.add_gridspec(
+        2, 2, width_ratios=[0.92, 1.25], height_ratios=[1.06, 0.94],
+        hspace=0.48, wspace=0.42
+    )
+    ax_a = figure.add_subplot(grid[0, 0])
+    ax_b = figure.add_subplot(grid[:, 1])
+    ax_c = figure.add_subplot(grid[1, 0])
+
+    panel_label(ax_a, "A")
+    baseline_within = (
+        within[within.variant == "baseline"].set_index("train_context").loc[contexts]
+    )
+    ypos = np.arange(len(contexts))
+    ax_a.scatter(
+        baseline_within.auroc,
+        ypos - 0.13,
+        color=COLORS["blue"],
+        s=23,
+        label="AUROC",
+        zorder=3,
+    )
+    ax_a.scatter(
+        baseline_within.f1,
+        ypos + 0.13,
+        color=COLORS["green"],
+        s=23,
+        marker="s",
+        label="F1",
+        zorder=3,
+    )
+    ax_a.axhline(human_n - 0.5, color=COLORS["gray"], lw=0.7, ls="--")
+    ax_a.set_yticks(ypos, labels)
+    ax_a.invert_yaxis()
+    ax_a.set_xlim(0.75, 0.95)
+    ax_a.set_xlabel("Within-context performance")
+    ax_a.set_title("Substantial signal within each dataset", loc="left", fontweight="bold")
+    ax_a.legend(frameon=False, ncol=2, loc="lower right", fontsize=6.5)
+    clean_axis(ax_a)
+
+    panel_label(ax_b, "B")
+    image_handle = ax_b.imshow(
+        baseline.loc[contexts, contexts].to_numpy(),
+        vmin=0.65,
+        vmax=0.94,
+        cmap="Blues",
+        aspect="auto",
+    )
+    ax_b.set_xticks(np.arange(len(contexts)), labels, rotation=47, ha="right")
+    ax_b.set_yticks(np.arange(len(contexts)), labels)
+    ax_b.axhline(human_n - 0.5, color="white", lw=1.2)
+    ax_b.axvline(human_n - 0.5, color="white", lw=1.2)
+    for row in range(len(contexts)):
+        for column in range(len(contexts)):
+            value = baseline.iloc[row, column]
+            ax_b.text(
+                column,
+                row,
+                f"{value:.2f}",
+                ha="center",
+                va="center",
+                fontsize=5.4,
+                color="white" if value > 0.85 else COLORS["ink"],
+            )
+    ax_b.set_xlabel("Evaluation context")
+    ax_b.set_ylabel("Training context")
+    ax_b.set_title("Transfer exposes lineage and context boundaries", loc="left", fontweight="bold")
+    colorbar = figure.colorbar(image_handle, ax=ax_b, fraction=0.04, pad=0.03)
+    colorbar.set_label("AUROC", fontsize=7)
+    colorbar.ax.tick_params(labelsize=6.5)
+
+    panel_label(ax_c, "C")
+    groups = [
+        "Matched context",
+        "Across human endpoints",
+        "Across nonhuman datasets",
+        "Across human/nonhuman",
+    ]
+    group_labels = ["Matched", "Human\ntransfer", "Nonhuman\ntransfer", "Cross-\nlineage"]
+    rng = np.random.default_rng(2701)
+    for index, group in enumerate(groups):
+        values = transfer.loc[transfer.transfer_group == group, "baseline_auroc"].to_numpy()
+        jitter = rng.uniform(-0.12, 0.12, size=len(values))
+        ax_c.scatter(
+            np.full(len(values), index) + jitter,
+            values,
+            s=13,
+            color=COLORS["blue"] if index < 3 else COLORS["amber"],
+            alpha=0.65,
+            edgecolor="none",
+            zorder=2,
+        )
+        ax_c.plot(
+            [index - 0.20, index + 0.20],
+            [np.mean(values), np.mean(values)],
+            color=COLORS["ink"],
+            lw=1.5,
+            zorder=3,
+        )
+    ax_c.set_xticks(np.arange(len(groups)), group_labels)
+    ax_c.set_ylim(0.65, 0.95)
+    ax_c.set_ylabel("Transfer AUROC")
+    ax_c.set_title("Generalization is structured, not universal", loc="left", fontweight="bold")
+    clean_axis(ax_c, "y")
+
+    figure.subplots_adjust(left=0.12, right=0.98, top=0.96, bottom=0.10)
+    save(figure, output, "figure2_sequence_scope")
 
 
 def evidence_table() -> pd.DataFrame:
@@ -1276,7 +1444,7 @@ def final_tables(
 
 
 def figure4(output: Path, source: Path) -> None:
-    metrics, confidence, transitions, matched = final_tables(source)
+    metrics, confidence, transitions, _matched = final_tables(source)
     figure = plt.figure(figsize=(7.0, 7.0))
     grid = figure.add_gridspec(
         3, 2, height_ratios=[1.12, 0.82, 0.88], hspace=0.52, wspace=0.42
@@ -1408,27 +1576,45 @@ def figure4(output: Path, source: Path) -> None:
     ax_d.set_xlim(0, 56)
 
     panel_label(ax_e, "E")
-    matched = matched.set_index("context").loc[CONTEXTS]
-    avoided = -matched["median"]
-    ax_e.errorbar(
-        avoided,
-        y,
-        xerr=np.vstack([avoided + matched["upper"], -matched["lower"] - avoided]),
-        fmt="o",
-        ms=4.5,
-        capsize=2,
-        color=COLORS["blue"],
-    )
-    ax_e.axvline(0, color=COLORS["ink"], lw=0.7)
-    ax_e.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
-    ax_e.invert_yaxis()
-    ax_e.set_xlabel("False positives avoided at matched recall")
-    ax_e.set_title(
-        "Post-test descriptive matched-recall analysis",
-        loc="left",
-        fontweight="bold",
-    )
-    clean_axis(ax_e)
+    ax_e.set_axis_off()
+    ax_e.set_title("Present explanatory boundary", loc="left", fontweight="bold")
+    boundary = [
+        (
+            0.70,
+            "Captured",
+            "duplex suitability · target/partner context\nsubstrate dependence",
+            COLORS["pale_green"],
+            COLORS["green"],
+        ),
+        (
+            0.39,
+            "Partially resolved",
+            "pair-level propensity · transferable tissue rules",
+            COLORS["pale_amber"],
+            COLORS["amber"],
+        ),
+        (
+            0.08,
+            "Missing at matched scale",
+            "cell/donor state · in vivo conformation\nregulator exposure",
+            "#F1ECF7",
+            COLORS["purple"],
+        ),
+    ]
+    for y0, title, detail, fill, edge in boundary:
+        rounded_box(
+            ax_e,
+            (0.04, y0),
+            0.92,
+            0.22,
+            f"{title}\n{detail}",
+            fill,
+            edge,
+            5.5,
+            "bold",
+        )
+    ax_e.set_xlim(0, 1)
+    ax_e.set_ylim(0, 1)
     figure.subplots_adjust(left=0.12, right=0.99, top=0.97, bottom=0.07)
     save(figure, output, "figure4_locked_validation")
 
@@ -1771,6 +1957,7 @@ def main() -> None:
     source = args.source if args.source.is_absolute() else ROOT / args.source
     configure()
     figure1(output, source)
+    figure_scope(output, source)
     figure2(output, source)
     figure3(output, source)
     figure4(output, source)

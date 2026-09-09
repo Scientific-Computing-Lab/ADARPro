@@ -16,6 +16,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.9"]
 tables = ["pyarrow>=17"]
+paper = ["matplotlib>=3.9", "pyarrow>=17"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

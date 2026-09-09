@@ -11,7 +11,7 @@
 \@ifundefined{PNAS@linecount}{\newcount\PNAS@linecount\PNAS@linecount\@ne}{}
 \makeatother
 
-\title{Supporting Information for: Machine-learning dissection of endogenous A-to-I RNA editing reveals substrate- and target-level determinants of predictability}
+\title{Supporting Information for: Mapping the measurable determinants and predictive limits of endogenous A-to-I RNA editing}
 \author{Author list pending}
 \correspondingauthor{Corresponding author and e-mail pending author confirmation.}
 
@@ -20,7 +20,7 @@
 \maketitle
 \SItext
 
-This appendix documents the complete ADARPro study, including branches that were limited, stopped, deferred, or superseded. Four evaluation regimes remain distinct throughout: \emph{development OOF} denotes pair-disjoint cross-fitted comparisons used for discovery and selection; \emph{selection diagnostic} denotes published-validation quantities used for checkpoints or thresholds; \emph{canonical held-out} denotes the single evaluation after the final manifest was frozen; and \emph{secondary} denotes robustness or descriptive analyses that do not define the benchmark claim. Evidence status is reported separately. \emph{Selected} denotes a controlled contribution retained in ADARPro; \emph{supported, not yet actionable} denotes a reproducible observation that did not improve the leading site predictor; \emph{limited} denotes a small, metric-specific, or context-specific effect; and \emph{not supported} refers only to the tested representation at the available resolution. Deferred hypotheses lacked benchmark-compatible measurements. Superseded branches were not interpreted as negative evidence.
+This appendix documents the complete evidence audit used to map the measurable determinants and present predictive limits of endogenous A-to-I editing, including branches that were limited, stopped, deferred, or superseded. Four evaluation regimes remain distinct throughout: \emph{development OOF} denotes pair-disjoint cross-fitted comparisons used for discovery and selection; \emph{selection diagnostic} denotes published-validation quantities used for checkpoints or thresholds; \emph{canonical held-out} denotes the single evaluation after the final manifest was frozen; and \emph{secondary} denotes robustness or descriptive analyses that do not define the benchmark claim. Evidence status is reported separately. \emph{Selected} denotes a controlled contribution retained in the final predictor; \emph{supported, not yet actionable} denotes a reproducible observation that did not improve the leading site predictor; \emph{limited} denotes a small, metric-specific, or context-specific effect; and \emph{not supported} refers only to the tested representation at the available resolution. Deferred hypotheses lacked benchmark-compatible measurements. Superseded branches were not interpreted as negative evidence.
 
 \section*{A. Benchmark reproduction and leakage control}
 
@@ -51,11 +51,19 @@ We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, M
 
 \input{generated/table_s1_locked_metrics.tex}
 
-\section*{B. Complete hypothesis map}
+\section*{B. Baseline scope and transfer boundaries}
+
+Retained benchmark-characterization runs place the subsequent residual tests in context. The compact sequence--structure graph was evaluated within five human endpoints---four individual tissues and pooled Combined---and three nonhuman datasets. Within-context AUROC ranged from 0.869 to 0.933 for the human endpoints and from 0.823 to 0.865 for the nonhuman datasets. These values demonstrate substantial predictive information in sequence and predicted structure, but they are descriptive across datasets with different lineages, substrate classes, and data-generation procedures.
+
+The full eight-by-eight transfer matrices train in one context and evaluate in every other context. AUROC is emphasized because it is not tied to transfer of a training-context decision threshold. Transfer among human endpoints was generally strong. Transfer among the three nonhuman datasets was more variable, and transfer between human and nonhuman settings was lower and asymmetric. The matrices therefore support a shared but non-universal sequence--structure grammar; they do not identify whether lineage, substrate class, assay, label distribution, or cellular state causes the transfer loss. Exact values and their source paths are retained in \path{results/matrix_baseline_auroc.csv} and the other metric-specific matrices.
+
+The accompanying within-context table compares the compact baseline with a bio-aware variant. Added hand-engineered information did not improve every dataset or metric, and in some settings reduced performance. Because these runs do not share the newer OOF attribution protocol, they are used only to characterize scope and motivate the controlled campaign, not to select the final predictor. This nonmonotonic result is nevertheless an important boundary: a larger supplied feature set need not contain more usable information at the resolution of the benchmark.
+
+\section*{C. Complete hypothesis map}
 
 Hypotheses were prioritized by mechanistic rationale, novelty relative to AdarEdit, data compatibility, leakage risk, effective sample size, and expected value. A direction advanced only after comparison with its same-fold reference and controls. Table~\ref{tab:evidencemap} gives the quantitative synthesis; every row states its own comparator because the estimands cannot be ranked on one common scale. The machine-readable record retains historical priorities, sources, selection and stopping criteria, and final decisions. Table~\ref{tab:taxonomy} summarizes the scientific disposition of every branch.
 
-\section*{C. Biological-context tests}
+\section*{D. Biological-context tests}
 
 \subsection*{RBP occupancy, binding potential, and abundance}
 
@@ -67,7 +75,7 @@ Label-switching sites hold sequence and predicted structure constant across indi
 
 \subsection*{Transcript, repeat, and chromatin annotations}
 
-Reconstructed pair intervals supplied arm separation and length, orientation, repeat subfamily and divergence, Alu-neighborhood composition, transcript overlap, and exon/intron annotations. Fold-isolated residual models combined standardized features with the baseline logit. The broad site-level panel did not generalize beyond the structure graph. Section D examines geometry at the pair level.
+Reconstructed pair intervals supplied arm separation and length, orientation, repeat subfamily and divergence, Alu-neighborhood composition, transcript overlap, and exon/intron annotations. Fold-isolated residual models combined standardized features with the baseline logit. The broad site-level panel did not generalize beyond the structure graph. Section E examines geometry at the pair level.
 
 Exact-tissue compatible H3K36me3 tracks were summarized at the target, local windows, arms, and entire pair. A chromosome-shifted overlap acted as a spatial control. H3K36me3 produced a weak liver AUPRC effect but no stable AUROC, F1, or pair-level improvement (Fig.~\ref{fig:s2}). H2A.Z was not promoted to a benchmark experiment because no adequately matched and powered tissue resource was available. The weak bulk H3K36me3 effect shifts the relevant question toward quantitative, sample-matched assays of cotranscriptional state \cite{Cai2026,ENCODE2020}.
 
@@ -78,7 +86,7 @@ Exact-tissue compatible H3K36me3 tracks were summarized at the target, local win
 \label{fig:s2}
 \end{figure}
 
-\section*{D. Substrate-level editing burden and realization propensity}
+\section*{E. Substrate-level editing burden and realization propensity}
 
 Pair-level analyses used one row per development substrate. Outcomes were edited-site fraction, mean EditingIndex, and whether a pair contained any high-editing site. Predictors ranged from adenosine count and graph-derived sequence/structure summaries to genomic geometry and the combined 16-feature low-capacity model. All fitting remained inside pair folds.
 
@@ -90,7 +98,7 @@ Site-level translation was weaker. Multiplying or gating site probabilities with
 
 \input{generated/table_s3_substrate_realization.tex}
 
-\section*{E. Richer supervision and the statistical unit}
+\section*{F. Richer supervision and the statistical unit}
 
 The expanded training pool contains all eligible high- and low-editing observations in each training pair. The expanded row-wise formulation draws uniformly from those rows. The pair-first formulation draws a pair uniformly, a class with probability 0.5, and then an eligible site of that class; if the pair lacks that class, its available class is used. The canonical-row epoch budget was held fixed, preventing extra optimizer steps from explaining the difference.
 
@@ -101,7 +109,7 @@ The binary/ordinal/continuous model shared an encoder across canonical classific
 \input{generated/table_s4_supervision_decomposition.tex}
 \input{generated/table_s5_pair_balance.tex}
 
-\section*{F. Focal and target-local representation}
+\section*{G. Focal and target-local representation}
 
 Three stages tested whether whole-duplex mean pooling loses site identity. First, fold-isolated target-contact geometry added AUROC and AUPRC but little F1, localizing a ranking effect near the target. Second, a focal-node graph model preserved the final target embedding alongside the global mean. It improved ranking relative to the pair model and an otherwise matched duplicate-global control, although its standalone F1 interval was insufficient for selection. Third, the selected local-augmented graph model aligned a \LocalWindowWidth{}-position representation of the focal adenosine and its dot-bracket helix partner. Two dilated convolutional layers encoded nucleotide, pairing, validity, target/helix-partner indicators, and relative position; the result was fused with the whole-duplex graph embedding before classification.
 
@@ -109,17 +117,17 @@ The local-augmented graph model exceeded the whole-duplex-only predictor in musc
 
 \input{generated/table_s6_target_controls.tex}
 
-\section*{G. Cross-tissue sharing}
+\section*{H. Cross-tissue sharing}
 
 A four-output masked model shared a graph encoder across individual tissues while omitting unobserved labels from the loss. Relative to independently trained pair-first models, it yielded limited positive transfer, concentrated in the data-limited skeletal-muscle endpoint. Mean AUROC/AUPRC/F1 changes across the four individual tissue endpoints were \SharedMacroDeltaAUROCMedian{}/\SharedMacroDeltaAUPRCMedian{}/\SharedMacroDeltaFOneMedian{}, but the predeclared AUROC and F1 selection criteria were not both met and mean Brier increased by \SharedMacroDeltaBrierMedian{}. Transferable intrinsic rules therefore exist, but their effect was smaller and less calibrated than the improvements from supervision and target alignment. Combined was excluded from this biological multitissue formulation.
 
-\section*{H. Foundation-model and substrate-wide experiments}
+\section*{I. Foundation-model and substrate-wide experiments}
 
 Frozen RiNALMo representations were evaluated at the target and substrate scales, including a larger frozen variant \cite{Penic2025}. Residual models and neural fusion used fold-fitted normalization and matched-dimensional controls. The 150M target view reproduced a small F1-only threshold effect, but neither variant improved AUROC/AUPRC or met the predeclared requirement to beat matched random features on both ranking and F1. The more specific next question is whether task-specific pretraining on inverted-Alu substrates would help. A corpus audit found \PretrainingCandidatePairs{} benchmark-excluded opposite-orientation Alu pairs in GENCODE transcript spans, but transcript connectivity, foldability, and sequence-redundancy filters were insufficiently resolved for a leakage-safe test, so that direction remains deferred.
 
 The substrate-wide decoder encoded a pair once and classified all candidate adenosines jointly. It was evaluated against a pair-first model on identical rows with a prespecified two-fold futility criterion. The decoder lost \AllADeltaAUROCMedian{} AUROC and \AllADeltaFOneMedian{} F1, with wholly adverse intervals, and training stopped. A relative within-pair rank feature helped a weaker original encoder but neither beat pair-first training nor its shuffled-rank control. Multiple sites provide useful supervision; the tested all-A decoder did not exploit it better than pair-first stochastic learning.
 
-\section*{I. Natural-prevalence robustness}
+\section*{J. Natural-prevalence robustness}
 
 The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. In both muscle and liver, the fixed ensemble improved ranking, AUPRC, F1, and false-positive count over its pair-first whole-duplex-only component (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support practical false-positive reduction but do not replace the canonical task.
 
@@ -132,7 +140,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 
 \input{generated/table_s7_natural_prevalence.tex}
 
-\section*{J. Preregistered unified end-to-end experiment}
+\section*{K. Preregistered unified end-to-end experiment}
 
 After the prediction-level ensemble was frozen but before test access, a separate protocol specified one connected model. A shared three-layer graph attention encoder produced whole-duplex and focal-node states; the aligned local CNN supplied the third view. The three projected representations and their pairwise elementwise interactions entered a 64-unit fusion layer, while a training-only substrate head carried fixed loss weight \UnifiedAuxWeight{}. The connected model had \UnifiedParameters{} trainable parameters versus \EnsembleParameters{} parameters across the two independent ensemble components. Training used pair-first class balance, \UnifiedEpochs{} epochs, Adam at learning rate $10^{-3}$ and weight decay $10^{-4}$, batch size \UnifiedBatchSize{}, and seed \UnifiedBaseSeed{}. The comparator prediction hash and staged decision rules were preregistered.
 
@@ -147,7 +155,7 @@ The unified model's AUROC and AUPRC were below the frozen ensemble in every oute
 
 \input{generated/table_s8_unified.tex}
 
-\section*{K. Final training and one-use canonical evaluation}
+\section*{L. Final training and one-use canonical evaluation}
 
 For each endpoint, a pair-first whole-duplex-only graph model and an independently trained pair-first graph model augmented with the aligned target/helix-partner convolution were fitted on the published training pairs. Published validation data selected checkpoints and one ensemble threshold per endpoint. Ten checkpoints, histories, configurations, selected epochs, thresholds, inputs, code revision, and weights were written to \texttt{provenance/final\_pipeline\_manifest.json}, which retains the exact manifest SHA-256 and bound code revision. The authorization was consumed at 2026-08-25 04:28:30 UTC and records one evaluation. No subsequent model decision used test outcomes.
 
@@ -168,13 +176,13 @@ ADARPro improved ROC and precision--recall curves in every endpoint (Fig.~\ref{f
 
 \input{generated/table_s9_false_positives.tex}
 
-\section*{L. Complete campaign taxonomy and provenance}
+\section*{M. Complete campaign taxonomy and provenance}
 
 Table~\ref{tab:taxonomy} records every research direction and its final scientific disposition, including branches deferred for unavailable measurements and those not pursued after stronger lower-complexity evidence emerged. The immutable registry at \path{experiments/experiments.csv} contains one row per run with code revision, input hashes, fold definition, seed, features, hyperparameters, artifact path, serialized metrics, and test-access status. Exact OOF predictions, fold-level tables, controls, ablations, and bootstrap results remain under \path{experiments/runs/}; reports 00--20 preserve chronological interpretation and stopping decisions. A machine-generated numerical claim ledger maps paper quantities to authoritative artifacts and selectors.
 
 \input{generated/table_s10_experiment_taxonomy.tex}
 
-\section*{M. Interpretation and decisive future measurements}
+\section*{N. Interpretation and decisive future measurements}
 
 The results distinguish three biological levels and one learning principle. Whole-duplex sequence and structure encode intrinsic substrate suitability. Pair geometry and editing burden reveal a reproducible substrate-level propensity consistent with variation in realization or engagement; the underlying cellular state remains unresolved by current bulk features. Target/helix-partner alignment recovers local selectivity. Pair-first sampling respects dependence among observations from one duplex. The selected predictor combines a whole-duplex-only graph model with an independently trained graph-plus-local model and does not claim to measure the cellular environment directly.
 
