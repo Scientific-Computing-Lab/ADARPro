@@ -49,12 +49,13 @@ def verify_pnas_fields() -> None:
         raise AssertionError("significance statement must contain 50--120 words")
     if not keywords or not 3 <= len(keywords.group(1).split(r"$|$")) <= 5:
         raise AssertionError("manuscript must contain 3--5 keywords")
-    if "not a replacement for published AdarEdit performance" not in main:
+    regime_markers = (
+        "pair-disjoint out-of-fold comparisons",
+        "canonical test was evaluated once",
+    )
+    if not all(marker in main for marker in regime_markers):
         raise AssertionError("development/canonical regime distinction is absent")
-    if (
-        "A single authorization then exposed the canonical test for one evaluation"
-        not in main
-    ):
+    if "Test authorization was consumed once" not in main:
         raise AssertionError("single-use canonical-test statement is absent")
 
 

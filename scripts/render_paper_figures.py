@@ -1813,7 +1813,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_c.set_ylim(0.64, 0.94)
     ax_c.set_ylabel("Development OOF performance")
     ax_c.set_title(
-        "Target alignment resolves selectivity",
+        "Target alignment recovers local selectivity",
         loc="left",
         fontweight="bold",
     )

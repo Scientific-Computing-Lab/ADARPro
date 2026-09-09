@@ -4187,7 +4187,7 @@ L 226.807511 354.580374
     </g>
    </g>
    <g id="text_50">
-    <!-- Target alignment resolves selectivity -->
+    <!-- Target alignment recovers local selectivity -->
     <g transform="translate(45.936544 219.049298) scale(0.092 -0.092)">
      <defs>
       <path id="LiberationSans-Bold-37" d="M 2416 3691 
@@ -4300,24 +4300,30 @@ z
      <use xlink:href="#LiberationSans-Bold-3" transform="translate(798.1875 0)"/>
      <use xlink:href="#LiberationSans-Bold-55" transform="translate(825.96875 0)"/>
      <use xlink:href="#LiberationSans-Bold-48" transform="translate(864.890625 0)"/>
-     <use xlink:href="#LiberationSans-Bold-56" transform="translate(920.5 0)"/>
+     <use xlink:href="#LiberationSans-Bold-46" transform="translate(920.5 0)"/>
      <use xlink:href="#LiberationSans-Bold-52" transform="translate(976.109375 0)"/>
-     <use xlink:href="#LiberationSans-Bold-4f" transform="translate(1037.1875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-59" transform="translate(1064.96875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1120.578125 0)"/>
-     <use xlink:href="#LiberationSans-Bold-56" transform="translate(1176.1875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-3" transform="translate(1231.796875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-56" transform="translate(1259.578125 0)"/>
-     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1315.1875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-4f" transform="translate(1370.796875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1398.578125 0)"/>
-     <use xlink:href="#LiberationSans-Bold-46" transform="translate(1454.1875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-57" transform="translate(1509.796875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-4c" transform="translate(1543.09375 0)"/>
-     <use xlink:href="#LiberationSans-Bold-59" transform="translate(1570.875 0)"/>
-     <use xlink:href="#LiberationSans-Bold-4c" transform="translate(1626.484375 0)"/>
-     <use xlink:href="#LiberationSans-Bold-57" transform="translate(1654.265625 0)"/>
-     <use xlink:href="#LiberationSans-Bold-5c" transform="translate(1687.5625 0)"/>
+     <use xlink:href="#LiberationSans-Bold-59" transform="translate(1037.1875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1092.796875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-55" transform="translate(1148.40625 0)"/>
+     <use xlink:href="#LiberationSans-Bold-56" transform="translate(1187.328125 0)"/>
+     <use xlink:href="#LiberationSans-Bold-3" transform="translate(1242.9375 0)"/>
+     <use xlink:href="#LiberationSans-Bold-4f" transform="translate(1270.71875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-52" transform="translate(1298.5 0)"/>
+     <use xlink:href="#LiberationSans-Bold-46" transform="translate(1359.578125 0)"/>
+     <use xlink:href="#LiberationSans-Bold-44" transform="translate(1415.1875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-4f" transform="translate(1470.796875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-3" transform="translate(1498.578125 0)"/>
+     <use xlink:href="#LiberationSans-Bold-56" transform="translate(1526.359375 0)"/>
+     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1581.96875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-4f" transform="translate(1637.578125 0)"/>
+     <use xlink:href="#LiberationSans-Bold-48" transform="translate(1665.359375 0)"/>
+     <use xlink:href="#LiberationSans-Bold-46" transform="translate(1720.96875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-57" transform="translate(1776.578125 0)"/>
+     <use xlink:href="#LiberationSans-Bold-4c" transform="translate(1809.875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-59" transform="translate(1837.65625 0)"/>
+     <use xlink:href="#LiberationSans-Bold-4c" transform="translate(1893.265625 0)"/>
+     <use xlink:href="#LiberationSans-Bold-57" transform="translate(1921.046875 0)"/>
+     <use xlink:href="#LiberationSans-Bold-5c" transform="translate(1954.34375 0)"/>
     </g>
    </g>
    <g id="legend_2">

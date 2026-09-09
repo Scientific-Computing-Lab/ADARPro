@@ -2,14 +2,14 @@
 
 Selected title:
 
-> Mapping the measurable determinants and predictive limits of endogenous
-> A-to-I RNA editing
+> Multiscale information and predictive limits of endogenous A-to-I RNA
+> editing
 
 This title states the revised scientific thesis: the study maps both the
 information recoverable from current measurements and the boundary exposed by
-controlled failures and saturation. “Measurable” prevents predictive
-associations from being mistaken for a complete causal inventory. The model
-name is intentionally absent.
+controlled failures and saturation. “Information” is deliberately more precise
+than “determinants” because the experiments establish predictive contribution,
+not a complete causal inventory. The model name is intentionally absent.
 
 Strong alternatives considered:
 
@@ -21,7 +21,10 @@ Strong alternatives considered:
    but “predictive” may sound model-centered.
 4. **What current measurements can—and cannot—explain about A-to-I RNA
    editing.** Direct, but overly conversational for the present manuscript.
-5. **Multiscale determinants and the current prediction ceiling of endogenous
+5. **Mapping the measurable determinants and predictive limits of endogenous
+   A-to-I RNA editing.** Precise, but longer and more likely to imply a complete
+   determinant inventory.
+6. **Multiscale determinants and the current prediction ceiling of endogenous
    A-to-I RNA editing.** Clear, but “ceiling” could imply a universal limit.
 
 ADARPro is introduced in the abstract and late Results as the validated

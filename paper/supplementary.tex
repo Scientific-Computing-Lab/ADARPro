@@ -11,7 +11,7 @@
 \@ifundefined{PNAS@linecount}{\newcount\PNAS@linecount\PNAS@linecount\@ne}{}
 \makeatother
 
-\title{Supporting Information for: Mapping the measurable determinants and predictive limits of endogenous A-to-I RNA editing}
+\title{Supporting Information for: Multiscale information and predictive limits of endogenous A-to-I RNA editing}
 \author{Author list pending}
 \correspondingauthor{Corresponding author and e-mail pending author confirmation.}
 
@@ -40,7 +40,7 @@ Canonical test paths and SHA-256 values were registered before development. The 
 
 The grouped OOF reference is an internal research instrument, not a revision of the published benchmark. Each outer model sees fewer pairs than a final fit and therefore has lower absolute performance. OOF comparisons estimate incremental value because candidate and reference share folds, training scope, and evaluation logic. The supplied-checkpoint canonical comparison answers the final benchmark question (Fig.~\ref{fig:s1}). Development differences are never added arithmetically to published test scores.
 
-We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, Matthews correlation coefficient, and Brier score. Unless specified otherwise, thresholds maximized F1 on fold-internal validation data. Pair-clustered confidence intervals use \NBootstrapReplicates{} bootstrap replicates sampling pair IDs with replacement and retaining every site from a sampled pair. Effect size and clustered uncertainty, rather than site-wise $P$ values, determine interpretation.
+We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, Matthews correlation coefficient, and Brier score. Unless specified otherwise, thresholds maximized F1 on fold-internal validation data. Pair-clustered confidence intervals use \NBootstrapReplicates{} bootstrap replicates sampling pair IDs with replacement and retaining every site from a sampled pair. Development intervals quantify paired effect uncertainty; they were not multiplicity-adjusted or treated as standalone confirmatory tests. Recorded decision criteria, matched controls, cross-context replication where specified, and the frozen held-out evaluation determined the strength of each claim.
 
 \begin{figure}[H]
 \centering
@@ -92,7 +92,7 @@ Pair-level analyses used one row per development substrate. Outcomes were edited
 
 Inter-arm gap correlated negatively with edited-site fraction in every individual tissue. Geometry plus graph summaries improved $R^2$ over graph summaries alone in all four tissues, with positive pair-clustered intervals (Table~\ref{tab:substraterealization}). The combined model also classified whether a pair contained any high-editing site above chance. These observations establish reproducible substrate-level variation in editing burden. They are consistent with a realization or engagement dimension, but neither molecular process was measured directly.
 
-Site-level translation was weaker. Multiplying or gating site probabilities with cross-fitted burden estimates increased AUPRC modestly but did not yield a stable F1 gain and worsened Brier score. A neural auxiliary engagement objective decreased the principal classification metric and met its prespecified stopping criterion. Static pair attributes can therefore describe realization propensity without recovering the time-, isoform-, transcript-, or cell-specific state required to alter the strongest site predictions.
+Site-level translation was weaker. Multiplying or gating site probabilities with cross-fitted burden estimates increased AUPRC modestly but did not yield a stable F1 gain and worsened Brier score. A neural auxiliary engagement objective decreased the principal classification metric and met its prespecified stopping criterion. Static pair attributes can therefore describe editing-burden propensity without recovering the time-, isoform-, transcript-, or cell-specific state required to alter the strongest site predictions.
 
 \input{generated/table_s2_evidence_map.tex}
 
@@ -113,7 +113,7 @@ The binary/ordinal/continuous model shared an encoder across canonical classific
 
 Three stages tested whether whole-duplex mean pooling loses site identity. First, fold-isolated target-contact geometry added AUROC and AUPRC but little F1, localizing a ranking effect near the target. Second, a focal-node graph model preserved the final target embedding alongside the global mean. It improved ranking relative to the pair model and an otherwise matched duplicate-global control, although its standalone F1 interval was insufficient for selection. Third, the selected local-augmented graph model aligned a \LocalWindowWidth{}-position representation of the focal adenosine and its dot-bracket helix partner. Two dilated convolutional layers encoded nucleotide, pairing, validity, target/helix-partner indicators, and relative position; the result was fused with the whole-duplex graph embedding before classification.
 
-The local-augmented graph model exceeded the whole-duplex-only predictor in muscle and replicated in liver. Its matched-capacity control moved the same local window \LocalControlShift{} nt away while retaining the graph, dimensions, and optimization. The shifted model collapsed across AUROC, AUPRC, and F1 (Table~\ref{tab:targetcontrols}), demonstrating that target alignment rather than generic convolutional capacity carries the improvement. Natural-prevalence results preserved the advantage (Fig.~\ref{fig:s3}).
+The local-augmented graph model exceeded the whole-duplex-only predictor in muscle and replicated in liver. Its matched-capacity control moved the same local window \LocalControlShift{} nt away while retaining the graph, dimensions, and optimization. The shifted model collapsed across AUROC, AUPRC, and F1 (Table~\ref{tab:targetcontrols}), showing that the predictive gain depends on target alignment rather than generic convolutional capacity. Natural-prevalence results preserved the advantage (Fig.~\ref{fig:s3}).
 
 \input{generated/table_s6_target_controls.tex}
 
