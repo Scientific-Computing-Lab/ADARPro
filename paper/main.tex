@@ -56,7 +56,7 @@ The comparison logic followed the proposed information hierarchy (Fig.~\ref{fig:
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/figure1_systematic_dissection.pdf}
-\caption{\textbf{An information hierarchy and leakage-safe strategy for mapping endogenous editing.} (A) Intrinsic duplex properties and cell/transcript state jointly govern whether an inverted-Alu substrate is available; target/helix-partner context then contributes to selection of a particular adenosine. Pair-level burden is an indirect readout of substrate propensity, not a direct measurement of molecular engagement. (B) Controlled comparisons interrogated biological context, supervision, representation, transfer, and integration. (C) Complete pairs were partitioned globally. Development used pair-disjoint folds; the final specification was frozen before one canonical held-out evaluation. Combined is pooled and received no tissue-specific state vector.}
+\caption{\textbf{An information hierarchy and leakage-safe strategy for mapping endogenous editing.} (A) Intrinsic duplex properties, target/helix-partner context, and cellular realization jointly delimit observed editing. Pair-level burden is an indirect readout of substrate propensity, not a direct measurement of molecular engagement. The biological illustrations are schematic and encode no quantitative observation. (B) Controlled comparisons interrogated biological context, supervision, representation, and generalization. (C) Complete pairs were partitioned globally. Development used pair-disjoint folds; the final specification was frozen before one canonical held-out evaluation. Combined is pooled and received no tissue-specific state vector.}
 \label{fig:overview}
 \end{figure*}
 
@@ -71,7 +71,7 @@ These comparisons establish a strong starting point without equating discriminat
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/figure2_sequence_scope.pdf}
-\caption{\textbf{Sequence--structure information is substantial but not universal.} (A) Within-context AUROC and F1 for the retained compact sequence--structure baseline across five human endpoints and three nonhuman datasets. Combined is a pooled human endpoint. (B) AUROC when each training context is evaluated in every context; white lines separate human and nonhuman blocks. (C) Individual transfer values grouped by relation between training and evaluation contexts; horizontal bars are group means. These characterization runs establish predictive scope and transfer boundaries; they are not causal estimates or a meta-analysis across independent cohorts.}
+\caption{\textbf{Sequence--structure information is substantial but not universal.} The tissue and lineage illustrations identify dataset classes and encode no measured values. (A) Within-context AUROC and F1 for the retained compact sequence--structure baseline across five human endpoints and three nonhuman datasets. Combined is a pooled human endpoint. (B) AUROC when each training context is evaluated in every context; white lines separate human and nonhuman blocks, and outlined diagonal cells mark matched-context evaluations. (C) Individual transfer values grouped by relation between training and evaluation contexts; horizontal bars are group means. These characterization runs establish predictive scope and transfer boundaries; they are not causal estimates or a meta-analysis across independent cohorts.}
 \label{fig:scope}
 \end{figure*}
 
@@ -90,7 +90,7 @@ The substrate also carries biological variation in editing burden. Genomic separ
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure2_evidence_map.pdf}
-\caption{\textbf{A substrate-level signal remains unresolved by current context measurements.} (A) Tested information sources grouped by scale and outcome; SI Appendix, Table S2 gives each comparator, effect size, and interval. ``Not supported'' applies only to the tested formulation, deferred measurements were unavailable, and superseded branches were not interpreted as negative. (B) Mean edited-site fraction across octiles of inter-arm gap in four tissues; $\rho$ is calculated over individual development pairs. (C) Increment in pair-level $R^2$ from adding genomic geometry to graph summaries. Bars are 95\% pair-clustered bootstrap intervals; labels give absolute $R^2$ for the combined model.}
+\caption{\textbf{A substrate-level signal remains unresolved by current context measurements.} (A) Tested information sources grouped by scale and outcome; SI Appendix, Table S2 gives each comparator, effect size, and interval. The left vignette denotes information scale and contains no result. ``Not supported'' applies only to the tested formulation, deferred measurements were unavailable, and superseded branches were not interpreted as negative. (B) Mean edited-site fraction across octiles of inter-arm gap in four tissues; $\rho$ is calculated over individual development pairs. (C) Increment in pair-level $R^2$ from adding genomic geometry to graph summaries. Bars are 95\% pair-clustered bootstrap intervals; labels give absolute $R^2$ for the combined model.}
 \label{fig:evidence}
 \end{figure*}
 
@@ -119,7 +119,7 @@ The final predictive specification consequently used two independently trained p
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/figure3_organizing_principles.pdf}
-\caption{\textbf{Substrate-aware learning and target alignment recover complementary information.} (A) Same-fold ablations separate recovery of additional valid high/low labels from pair-first weighting. (B) Pair-first expanded supervision improves the internal reference across all five endpoints; points and bars are pair-clustered medians and 95\% intervals. (C) Whole-duplex pooling, focal-state retention, and aligned-local fusion form an evidence ladder; an otherwise identical local model shifted by \LocalControlShift{} nt fails. (D) A fixed equal-logit ensemble improves its whole-duplex-only component in muscle and liver. (E) The operational predictor combines independently trained whole-duplex-only and graph-plus-local models without a searched weight, stacker, or post-test parameter. All panels show development evidence.}
+\caption{\textbf{Substrate-aware learning and target alignment recover complementary information.} (A) Same-fold ablations separate recovery of additional valid high/low labels from pair-first weighting. (B) Pair-first expanded supervision improves the internal reference across all five endpoints; points and bars are pair-clustered medians and 95\% intervals. (C) Whole-duplex pooling, focal-state retention, and aligned-local fusion form an evidence ladder; an otherwise identical local model shifted by \LocalControlShift{} nt fails. (D) A fixed equal-logit ensemble improves its whole-duplex-only component in muscle and liver. (E) The operational predictor combines independently trained whole-duplex-only and graph-plus-local models without a searched weight, stacker, or post-test parameter; the RNA illustration is schematic and all architecture marks are vector-rendered. All panels show development evidence.}
 \label{fig:principles}
 \end{figure*}
 
@@ -142,7 +142,7 @@ The gains were not purchased by indiscriminate suppression of positive calls. At
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{figures/figure4_locked_validation.pdf}
-\caption{\textbf{Frozen validation confirms the map and locates the present boundary.} (A) ADARPro minus reproduced supplied-checkpoint AdarEdit for AUROC, AUPRC, and F1; bars are 95\% pair-clustered bootstrap intervals. (B) Absolute F1. (C) Reduction in Brier score, a calibration-sensitive error measure. (D) Baseline false positives corrected and baseline true positives damaged at frozen validation-selected thresholds. (E) Synthesis of information captured, partially resolved, and missing at a matched biological scale. Combined is pooled. Quantitative panels were generated after the final manifest was frozen and the one-use authorization was consumed.}
+\caption{\textbf{Frozen validation confirms the map and locates the present boundary.} (A) ADARPro minus reproduced supplied-checkpoint AdarEdit for AUROC, AUPRC, and F1; bars are 95\% pair-clustered bootstrap intervals. (B) Absolute F1. (C) Reduction in Brier score, a calibration-sensitive error measure. (D) Baseline false positives corrected and baseline true positives damaged at frozen validation-selected thresholds. (E) Synthesis of information captured, partially resolved, and missing at a matched biological scale; the vignette is conceptual and contains no measurement. Combined is pooled. Quantitative panels were generated after the final manifest was frozen and the one-use authorization was consumed.}
 \label{fig:locked}
 \end{figure*}
 
@@ -172,11 +172,12 @@ The first component retained the compact AdarEdit graph attention encoder and tr
 
 \subsection*{Statistics and final evaluation}
 Metrics were AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, MCC, and Brier score. Thresholds maximized validation F1 within each frozen training run. Uncertainty used a pair-clustered bootstrap with \NBootstrapReplicates{} replicates that resampled Alu pairs and retained all their sites. For the post-test descriptive matched-recall analysis, the candidate threshold was selected on final predictions solely to equal supplied-checkpoint baseline recall; uncertainty again resampled pairs. Before final evaluation, code, inputs, weights, epochs, thresholds, and checkpoint SHA-256 values were frozen. Test authorization was consumed once, and no post-test model selection or tuning occurred. Natural-prevalence results use all eligible high/low observations from development pairs under unchanged pair assignments and are secondary to the canonical balanced task.
+
 }
 
 \showmatmethods{}
 
-\dataavail{Code, experiment configurations, registries, source tables, figure scripts, retained derived artifacts, frozen checkpoints, and provenance are available at \url{https://github.com/Scientific-Computing-Lab/ADARPro}. Third-party downloads and deterministic matrices omitted from GitHub are listed with source URLs, roles, checksums, and regeneration instructions in the data manifest. The AdarEdit benchmark is available from \url{https://github.com/Scientific-Computing-Lab/AdarEdit}. No new human participants were recruited and no new primary sequencing data were generated.}
+\dataavail{Code, experiment configurations, registries, source tables, figure scripts, retained derived artifacts, frozen checkpoints, and provenance are available at \url{https://github.com/Scientific-Computing-Lab/ADARPro}. Third-party downloads and deterministic matrices omitted from GitHub are listed with source URLs, roles, checksums, and regeneration instructions in the data manifest. GPT Image 1.5 generated only label-free, nonquantitative figure components; prompts, candidate selection, and hashes are disclosed in the repository. The AdarEdit benchmark is available from \url{https://github.com/Scientific-Computing-Lab/AdarEdit}. No new human participants were recruited and no new primary sequencing data were generated.}
 
 \acknow{Acknowledgments and funding information pending author confirmation.}
 \showacknow{}

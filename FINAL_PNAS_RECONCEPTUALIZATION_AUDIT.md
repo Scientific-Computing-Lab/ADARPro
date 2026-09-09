@@ -62,6 +62,19 @@ contextual measurement gap. Figure 4 shows that substrate-aware learning and
 target alignment recover orthogonal information. Figure 5 validates those
 principles and ends with captured, partially resolved, and missing information.
 
+### Do the figures meet a publication-level biological visual standard?
+
+Yes after a second redesign pass. Recent PNAS and Nature Communications RNA,
+genome-mapping, and systems-atlas figures were inspected at full-panel scale,
+and six biology-oriented PaperBanana references guided hierarchy and density.
+Each main figure now combines information-bearing vector plots with a curated
+biological orientation layer. Fifteen GPT Image 1.5 candidates were generated
+across five nonquantitative asset families; clipped, overly decorative, or
+scientifically ambiguous candidates were rejected. The five retained assets
+are embedded beneath editable labels, arrows, legends, and quantitative marks.
+The final 9-page PDF was rasterized and inspected page by page at 110 dpi and
+the individual figures were inspected at their native 450-dpi PNG size.
+
 ## Claim and evidence audit
 
 - No new biological measurement, experiment, simulation, or quantitative result
@@ -77,6 +90,11 @@ principles and ends with captured, partially resolved, and missing information.
 - The 24-row claim traceability register remains intact; its baseline row now
   points to the retained scope and transfer matrices used in Figure 2.
 - Figure source tables and hashes are regenerated automatically.
+- Generated illustration prompts, candidate hashes, selection rationales, and
+  retained-asset hashes are versioned; the final figure-source manifest also
+  hashes every selected asset.
+- Generated components encode no quantities, experimental observations, or
+  claimed molecular structures; figure captions disclose their schematic role.
 - The Abstract contains 207 words; the Significance Statement contains 90
   words; both meet current template checks.
 - Main and SI PDFs compile with resolved manuscript references; automated PDF

@@ -37,6 +37,13 @@ main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
 - `reference_audit.csv` records DOI-level bibliographic verification.
 - `scripts/render_paper_figures.py` and `scripts/render_paper_tables.py`
   regenerate the publication outputs.
+- `figure_assets/` contains the GPT Image 1.5 candidate/selection manifests
+  and the curated transparent, nonquantitative illustration components.
+- `scripts/generate_figure_assets.py` regenerates three candidates in each
+  illustration family when `AZURE_OPENAI_API_KEY` is available; the quantitative
+  figure build itself does not require API access.
+- `../reports/FIGURE_REDESIGN_WORKFLOW.md` documents the PNAS/Nature visual
+  benchmark, PaperBanana workflow, curation criteria, and nonfabrication rules.
 
 The manuscript deliberately separates pair-disjoint development OOF evidence
 from the authoritative, one-use canonical held-out comparison. Development

@@ -1,0 +1,45 @@
+{
+  "review_standard": "PNAS/Nature-style legibility, biological restraint, clean alpha boundary, and utility beneath vector annotation",
+  "selections": [
+    {
+      "family": "rna_duplex",
+      "selected_candidate": 3,
+      "source": "paper/figure_assets/candidates/rna_duplex_candidate_03.png",
+      "asset": "paper/figure_assets/selected/rna_duplex.png",
+      "rationale": "Most legible horizontal duplex and focal site after reduction.",
+      "sha256": "9597ed9a96d97ac5dd0ba0348f3293457ff022e72cfeb19e431ecb471b44c5fc"
+    },
+    {
+      "family": "cell_context",
+      "selected_candidate": 2,
+      "source": "paper/figure_assets/candidates/cell_context_candidate_02.png",
+      "asset": "paper/figure_assets/selected/cell_context.png",
+      "rationale": "Cleanest nuclear context with the least extraneous anatomy.",
+      "sha256": "131427c22ee44270152128ef9bdc34062353038085b2bbbc3805cbc8108e8d5e"
+    },
+    {
+      "family": "human_contexts",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/human_contexts_candidate_01.png",
+      "asset": "paper/figure_assets/selected/human_contexts.png",
+      "rationale": "Most coherent and recognizable four-tissue atlas strip.",
+      "sha256": "ee18d4fbfc780974c7cbd5610f397a40d8d562067fb07bc53abb2f51136dad2b"
+    },
+    {
+      "family": "marine_lineages",
+      "selected_candidate": 3,
+      "source": "paper/figure_assets/candidates/marine_lineages_candidate_03.png",
+      "asset": "paper/figure_assets/selected/marine_lineages.png",
+      "rationale": "All three organisms are complete and anatomically distinguishable.",
+      "sha256": "9db5d56345fc9569b6bd629db9d9b6480f7d3e7b935af739b5c5284954a97354"
+    },
+    {
+      "family": "latent_context",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/latent_context_candidate_01.png",
+      "asset": "paper/figure_assets/selected/latent_context.png",
+      "rationale": "Layering conveys unavailable context without quantitative symbolism.",
+      "sha256": "5d42ca085259118dea2a1ea720061de050cb7ce05235369fa9e6bb24fe45e98b"
+    }
+  ]
+}

@@ -222,19 +222,24 @@ image will encode data or molecular structure.
 
 | Figure | Scientific question and panels | Production mode |
 |---|---|---|
-| Figure 1, “An information hierarchy for endogenous editing” | A, duplex suitability → substrate realization → target selection → observed editing; B, candidate information at each scale and the unmeasured state; C, pair-disjoint discovery/freeze/one-use validation; D, visual legend for selected, limited, unsupported, and untested evidence | Vector schematic, programmatic; no image-model content |
-| Figure 2, “Sequence–structure information is substantial but not universal” | A, triplet baseline versus graph; B, within-context human and three-species AUROC; C, cross-context/cross-lineage transfer matrix; D, low- versus high-stability performance; optional coding-target scope inset only if legible | Quantitative vector plots from legacy retained outputs; no generated art |
-| Figure 3, “A substrate-level signal remains unresolved by current context measurements” | A, inter-arm gap versus edited fraction; B, incremental pair-burden R-squared; C, tested bulk RBP/chromatin/transcript features with controls; D, conceptual boundary between measurable stable propensity and missing matched cellular state | Quantitative panels plus vector schematic |
-| Figure 4, “Substrate-aware learning and target alignment recover orthogonal information” | A, label-expansion/pair-weighting decomposition; B, pair-first replication; C, focal-to-aligned representation ladder and shifted control; D, ensemble complementarity; E, compact enabling architecture | Quantitative panels plus vector architecture |
-| Figure 5, “Frozen validation and the present explanatory boundary” | A, held-out metric deltas; B, absolute F1; C, Brier reduction; D, error transitions; E, final captured-versus-missing information map, with matched-recall analysis moved to SI or clearly marked descriptive | Quantitative vector plots plus vector synthesis |
+| Figure 1, “An information hierarchy for endogenous editing” | A, duplex suitability, target selectivity, and cellular realization converging on observed editing; B, controlled scientific questions; C, pair-disjoint discovery/freeze/one-use validation | Vector hierarchy and annotations composed with curated GPT Image 1.5 RNA-duplex and nuclear-context sub-assets |
+| Figure 2, “Sequence–structure information is substantial but not universal” | A, within-context human and three-species performance; B, cross-context/cross-lineage transfer matrix; C, transfer groups | Quantitative vector plots with curated human-tissue and marine-lineage context strips; illustrations encode identity only, never values |
+| Figure 3, “A substrate-level signal remains unresolved by current context measurements” | A, complete evidence map; B, inter-arm gap versus edited fraction; C, incremental pair-burden R-squared | Quantitative vector map and plots with a curated latent-context vignette to mark information scale |
+| Figure 4, “Substrate-aware learning and target alignment recover orthogonal information” | A, label-expansion/pair-weighting decomposition; B, pair-first replication; C, focal-to-aligned representation ladder and shifted control; D, ensemble complementarity; E, compact enabling architecture | Quantitative vector panels and architecture composed around a curated RNA-duplex sub-asset; all model flows and labels remain vector |
+| Figure 5, “Frozen validation and the present explanatory boundary” | A, held-out metric deltas; B, absolute F1; C, Brier reduction; D, error transitions; E, final captured-versus-missing information map | Quantitative vector plots plus vector synthesis composed with a curated latent-context sub-asset; matched-recall analysis remains in SI |
 | SI figures | Label continuum; RNAAtlas concordance; SNP audit; species negative sensitivity; coding-target scope; attention and mutagenesis; bulk-feature controls; natural prevalence; unified-model negative; ROC/PR and calibration | Existing quantitative assets reindexed and captioned by scientific question |
 
-PaperBanana was evaluated for conceptual-figure assistance. The installed skill
-wrapper is incomplete at its documented path and the available full checkout
-has no configured supported provider credentials. Because the biological
-hierarchy is simple and exact, Figure 1 will be constructed directly as vector
-graphics rather than by an uncontrolled raster generator. The provided Azure
-image endpoint will not be used for quantitative or molecular content.
+The PaperBanana reference corpus and Retriever--Planner--Stylist--Critic logic
+are used to select visual precedents, plan panel hierarchy, and conduct the
+final critique. Its installed provider wrapper does not accept the supplied
+Azure deployment directly, so GPT Image 1.5 is called through that deployment
+for isolated transparent sub-assets. Three candidates are generated for each
+of five visual families, reviewed for biological restraint and reduction-size
+legibility, and only selected assets enter the programmatic Matplotlib
+composition. Quantitative marks, text, arrows, legends, and panel structure
+remain vector and trace to retained source tables. Prompts, candidate hashes,
+selection decisions, and output hashes are retained under
+`paper/figure_assets/`.
 
 ## 8. Claim-editing register
 
