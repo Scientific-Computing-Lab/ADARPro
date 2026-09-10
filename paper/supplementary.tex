@@ -34,6 +34,33 @@ The upstream AdarEdit reproducibility release was preserved at the immutable rev
 
 Each example contains both Alu arms in transcript orientation, a focal adenosine, predicted dot-bracket structure, and EditingIndex-derived label. EditingIndex $\geq\PositiveThresholdPct{}\%$ defines edited sites, EditingIndex $<\NegativeThresholdPct{}\%$ defines nonedited sites, and the canonical binary task excludes the intermediate interval. Nodes encode nucleotide and structure-derived features; edges represent backbone and predicted base-pair relations. The original construction used ViennaRNA for secondary structure \cite{Lorenz2011}.
 
+\subsection*{Reading the outcomes and metrics}
+
+Three quantities must be distinguished: the observed editing percentage at a site, the fraction of eligible sites in a duplex labeled edited, and a model's probability that a site belongs to the high-editing class. The classifier probability is not an estimate of that site's EditingIndex. In pair-level burden analyses, the denominator contains all eligible high/low sites before class downsampling; intermediate sites are excluded from that fraction but included in the separate mean-EditingIndex outcome.
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.15}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.19\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.15\linewidth}@{}}
+\toprule
+Quantity & Meaning in this study & Interpretation \\
+\midrule
+EditingIndex & Reported tissue-level editing percentage at one genomic site. & Observed outcome \\
+Edited-site fraction & High-editing sites divided by eligible high/low sites within one Alu pair. & Pair-level burden \\
+Predicted probability & Probability assigned to the high-editing class under the task's label definition. & Model output \\
+AUROC & Ranking of edited above nonedited sites, with half credit for tied scores. & Higher is better \\
+AUPRC & Average precision: precision summarized as edited sites are recovered down the ranked list; sensitive to class prevalence. & Higher is better \\
+F1 & Harmonic mean of precision and recall after applying a classification threshold. Precision concerns false positives; recall concerns missed positives. & Higher is better \\
+Brier score & Mean squared difference between predicted class probability and the binary label. It reflects discrimination and calibration jointly. & Lower is better \\
+Log loss & Probability error that penalizes confident wrong predictions especially strongly. & Lower is better \\
+Pair-level $R^2$ & Prediction of variation in edited-site fraction across pairs relative to a constant-mean prediction. It is distinct from site-ranking AUROC. & Higher is better \\
+Spearman $\rho$ & Rank association, for example between genomic gap and burden or between observed pair means in two tissues. & Association, not causality \\
+\bottomrule
+\end{tabularx}
+\endgroup
+
+An absolute score difference of 0.01 is one percentage point; these are not relative percentage changes. Each contrast names its reference, and the references differ with the question. The supplied-checkpoint baseline, development refits, expanded row-wise model, and pair-first model are not interchangeable. A positive interval favors the candidate for ranking or F1, whereas a positive candidate-minus-reference Brier or log-loss difference is adverse. A Brier \emph{reduction}, as plotted in main Fig.~6, reverses that sign.
+
 \subsection*{Coordinates and authoritative observations}
 
 Genomic coordinates were reconstructed with the original strand-aware transformation from local model positions to \textit{hg38}/GRCh38. Pair intervals came from \texttt{Pair\_Alu\_withStrand.bed}; raw tissue tables supplied focal positions and EditingIndex. Both \texttt{site\_id = chromosome:position:strand} and \texttt{(pair\_id, local\_position)} were retained. Quality control required an adenosine in transcript orientation, deterministic row mapping, correct strand, and stable identity across tissues. The resulting \texttt{site\_master.parquet} records labels, continuous editing values, sequence, structure, coordinates, folds, OOF predictions, and provenance.
@@ -108,11 +135,11 @@ Native-gap/flank-aware RNAfold ensemble summaries were also screened against the
 
 \section*{E. Substrate-level editing burden and propensity}
 
-Pair-level analyses used one row per development substrate. Outcomes were edited-site fraction, mean EditingIndex, and whether a pair contained any high-editing site. Predictors ranged from adenosine count and graph-derived sequence/structure summaries to genomic geometry and the combined 16-feature low-capacity model. All fitting remained inside pair folds.
+Pair-level analyses used one row per development substrate. Outcomes were the high-editing fraction among eligible high/low sites, mean EditingIndex across all available sites including intermediates, and whether a pair contained any high-editing site. Predictors ranged from adenosine count and graph-derived sequence/structure summaries to genomic geometry and the combined 16-feature low-capacity model. All fitting remained inside pair folds.
 
 Inter-arm gap correlated negatively with edited-site fraction in every individual tissue. Geometry plus graph summaries improved $R^2$ over graph summaries alone in all four tissues, with positive pair-clustered intervals (Table~\ref{tab:substraterealization}). The combined model also classified whether a pair contained any high-editing site above chance. These observations establish reproducible substrate-level variation in editing burden. They are consistent with a realization or engagement dimension, but neither molecular process was measured directly.
 
-Site-level translation was weaker. The outer-isolated burden gate modestly improved AUPRC over expanded row-wise training, but its F1 interval included zero and Brier score worsened. A separate neural auxiliary burden objective was compared with the stronger pair-first model and met its stopping criterion. Thus the tested integrations did not yield a stable site-level correction. Neither identifies the biological source of residual error.
+Site-level translation was weaker. The outer-isolated burden gate adjusted a site predictor using the predicted burden of its pair. It added \EngagementGateDeltaAUPRCMedian{} AUPRC and \EngagementGateDeltaFOneMedian{} F1 over expanded row-wise training, but the F1 interval included zero and Brier score increased by \EngagementGateDeltaBrierMedian{}. A separate neural model trained jointly on site labels and pair burden was compared with the stronger pair-first model and failed its prespecified criterion. Section F defines these sampling references. Thus the tested integrations did not yield a stable site-level correction. Neither identifies the biological source of residual error.
 
 \input{generated/table_s2_evidence_map.tex}
 
@@ -131,7 +158,7 @@ The binary/ordinal/continuous model shared an encoder across canonical classific
 
 \section*{G. Focal and target-local representation}
 
-Three stages tested whether whole-duplex mean pooling loses site identity. First, an exploratory pooled-score target-contact screen added AUROC and AUPRC but little F1, localizing a ranking effect near the target (section A). Second, a fold-isolated focal-node graph model preserved the final target embedding alongside the global mean. It improved ranking relative to the pair model and an otherwise matched duplicate-global control, although its standalone F1 interval was insufficient for selection. Third, the selected local-augmented graph model aligned a \LocalWindowWidth{}-position representation of the focal adenosine and its dot-bracket helix partner. Two dilated convolutional layers encoded nucleotide, pairing, validity, target/helix-partner indicators, and relative position; the result was fused with the whole-duplex graph embedding before classification.
+Three stages tested whether whole-duplex mean pooling loses site identity. First, an exploratory pooled-score target-contact screen added AUROC and AUPRC but little F1, localizing a ranking effect near the target (section A). Second, a fold-isolated focal-node graph model preserved the final target embedding alongside the global mean. It improved ranking relative to the pair model and an otherwise matched duplicate-global control, although its standalone F1 interval was insufficient for selection. Third, the selected local-augmented graph model used two \LocalWindowWidth{}-position lanes, centered on the focal adenosine and its dot-bracket-predicted partner. The partner lane traverses sequence in the opposite direction. Each lane encodes nucleotide identity (A, G, C, T/U, or unknown/unavailable) and binary pairing state, giving 12 input channels. An unpaired target has an unavailable partner lane. Window indexing defines target and partner alignment; there are no separate signed-position or focal-indicator channels in this local input. Two convolutional layers, the second dilated, produce a central state and a max-pooled window state, which are concatenated with the whole-duplex graph embedding before classification.
 
 The local-augmented graph model exceeded the whole-duplex-only predictor in muscle and replicated in liver. Its matched-capacity control moved the same local window \LocalControlShift{} nt away while retaining the graph, dimensions, and optimization. The shifted model collapsed across AUROC, AUPRC, and F1 (Table~\ref{tab:targetcontrols}), showing that the predictive gain depends on correct target centering rather than generic convolutional capacity. Because the full paired window was shifted, this control does not isolate the helix partner from the broader target-centered neighborhood. Natural-prevalence results preserved the advantage (Fig.~\ref{fig:s3}).
 
@@ -139,7 +166,7 @@ The local-augmented graph model exceeded the whole-duplex-only predictor in musc
 
 \section*{H. Cross-tissue sharing}
 
-A four-output masked model shared a graph encoder across individual tissues while omitting unobserved labels from the loss. Relative to independently trained pair-first models, it yielded limited positive transfer, concentrated in the data-limited skeletal-muscle endpoint. Mean AUROC/AUPRC/F1 changes across the four individual tissue endpoints were \SharedMacroDeltaAUROCMedian{}/\SharedMacroDeltaAUPRCMedian{}/\SharedMacroDeltaFOneMedian{}, but the predeclared AUROC and F1 selection criteria were not both met and mean Brier increased by \SharedMacroDeltaBrierMedian{}. Transferable intrinsic rules therefore exist, but their effect was smaller and less calibrated than the improvements from supervision and target alignment. Combined was excluded from this biological multitissue formulation.
+A four-output masked model shared a graph encoder across individual tissues while omitting unobserved labels from the loss. Relative to independently trained pair-first models, it yielded limited positive transfer, concentrated in the data-limited skeletal-muscle endpoint. Mean AUROC/AUPRC/F1 changes across the four individual tissue endpoints were \SharedMacroDeltaAUROCMedian{}/\SharedMacroDeltaAUPRCMedian{}/\SharedMacroDeltaFOneMedian{}, but the predeclared AUROC and F1 selection criteria were not both met and mean Brier increased by \SharedMacroDeltaBrierMedian{}. Sharing therefore supplied some predictive signal, but its gains were smaller than those from supervision and target alignment and came with worse probability error. Combined was excluded from this biological multitissue formulation.
 
 \section*{I. Foundation-model and substrate-wide experiments}
 
@@ -149,7 +176,7 @@ The substrate-wide decoder encoded a pair once and classified all candidate aden
 
 \section*{J. Natural-prevalence robustness}
 
-The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. In both muscle and liver, the fixed ensemble improved ranking, AUPRC, F1, and false-positive count over its pair-first whole-duplex-only component (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support practical false-positive reduction but do not replace the canonical task.
+The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. Here ``natural prevalence'' means the undownsampled high/low pool, not population-wide prevalence across all RNA sites or intermediate editing levels. In both muscle and liver, the fixed ensemble improved ranking, AUPRC, F1, and false-positive count over its pair-first whole-duplex-only component (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support false-positive reduction in this secondary pool but do not replace the canonical task.
 
 \begin{figure}[H]
 \centering
@@ -164,7 +191,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 
 After the prediction-level ensemble was frozen but before test access, a separate protocol specified one connected model. A shared three-layer graph attention encoder produced whole-duplex and focal-node states; the aligned local CNN supplied the third view. The three projected representations and their pairwise elementwise interactions entered a 64-unit fusion layer, while a training-only substrate head carried fixed loss weight \UnifiedAuxWeight{}. The connected model had \UnifiedParameters{} trainable parameters versus \EnsembleParameters{} parameters across the two independent ensemble components. Training used pair-first class balance, \UnifiedEpochs{} epochs, Adam at learning rate $10^{-3}$ and weight decay $10^{-4}$, batch size \UnifiedBatchSize{}, and seed \UnifiedBaseSeed{}. The comparator prediction hash and staged decision rules were preregistered.
 
-The unified model's AUROC and AUPRC were below the frozen ensemble in every outer fold (Fig.~\ref{fig:s4}; Table~\ref{tab:unified}). Aggregate F1 was similar, but ranking intervals were entirely adverse and calibration was substantially worse. The conditional no-auxiliary repair, liver replication, and all-context stages were therefore not opened. This preserves the decision rule and establishes that, in this comparison, independently trained representations were more reliably combined at prediction level than through the tested joint optimization. The experiment does not identify why optimization differed.
+The unified model's AUROC and AUPRC were below the frozen ensemble in every outer fold (Fig.~\ref{fig:s4}; Table~\ref{tab:unified}). Aggregate F1 was similar, but ranking intervals were entirely adverse and Brier probability error was substantially worse. The conditional no-auxiliary repair, liver replication, and all-context stages were therefore not opened. This preserves the decision rule and establishes that, in this comparison, independently trained representations were more reliably combined at prediction level than through the tested joint optimization. The experiment does not identify why optimization differed.
 
 \begin{figure}[H]
 \centering

@@ -16,9 +16,9 @@ Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior &
 \endhead
 Supervision & Additional valid high/low labels & Original internal reference; same folds & $\Delta$AUROC +2.04 [+1.06, +3.00] & $\Delta$F1 +1.42 [+0.21, +2.57] & Selected & Additional valid labels contribute independently. \\
 Statistical unit & Pair-first weighting & Expanded row-wise sampling; identical labels & $\Delta$AUROC +2.27 [+1.25, +3.36] & $\Delta$F1 +2.85 [+1.68, +4.01] & Selected & Correcting substrate weight adds a second gain. \\
-Supervision & Continuous + ordinal auxiliary labels & Pair-first binary model & $\Delta$AUROC +0.81 [+0.10, +1.51] & $\Delta$F1 +0.08 [-0.71, +0.86] & Limited & Ranking/calibration gain; negligible F1; adverse natural-prevalence integration. \\
+Supervision & Continuous + ordinal auxiliary labels & Pair-first binary model & $\Delta$AUROC +0.81 [+0.10, +1.51] & $\Delta$F1 +0.08 [-0.71, +0.86] & Limited & Ranking/Brier gain; negligible F1; adverse natural-prevalence integration. \\
 Representation & Explicit focal-node retention & Pair-first whole-duplex pooling & $\Delta$AUROC +1.26 [+0.52, +2.03] & $\Delta$F1 +0.43 [-0.59, +1.45] & Limited & Ranking gain; standalone F1 interval crosses 0. \\
-Representation & Target/contact geometry & Pooled-score reference (exploratory) & $\Delta$AUROC +1.05 [+0.46, +1.61] & $\Delta$F1 +0.19 [-0.66, +1.09] & Limited & Ranking and calibration gains localize the target effect. \\
+Representation & Target/contact geometry & Pooled-score reference (exploratory) & $\Delta$AUROC +1.05 [+0.46, +1.61] & $\Delta$F1 +0.19 [-0.66, +1.09] & Limited & Ranking and Brier gains localize the target effect. \\
 Representation & Aligned target/helix-partner representation & Pair-first whole-duplex-only predictor & $\Delta$AUROC +1.61 [+0.80, +2.38] & $\Delta$F1 +1.31 [+0.27, +2.30] & Selected & Target-aligned fusion improves all three metrics. \\
 Capacity control & 96-nt shifted local window & Pair-first whole-duplex-only predictor & $\Delta$AUROC -17.65 [-19.69, -15.70] & $\Delta$F1 -11.80 [-13.37, -10.36] & Not supported & Matched capacity without target alignment is strongly adverse. \\
 Integration & Fixed equal-logit integration & Whole-duplex-only predictor; muscle & $\Delta$AUROC +2.56 [+2.07, +3.05] & $\Delta$F1 +1.39 [+0.45, +2.34] & Selected & Complementary predictions; replicated in liver. \\
@@ -30,7 +30,7 @@ Biological context & RBP binding × bulk abundance & Pooled-score reference (exp
 Biological context & Transcript/repeat annotation panel & Pooled-score reference (exploratory) & $\Delta$AUROC -0.41 [-1.69, +0.90] & $\Delta$F1 -0.90 [-2.31, +0.38] & Not supported & No improvement beyond the graph representation. \\
 Representation & Frozen RiNALMo target embedding & Recalibrated cross-fitted baseline & $\Delta$AUROC -0.05 [-0.51, +0.39] & $\Delta$F1 +0.70 [+0.06, +1.34] & Not supported & F1-only threshold effect; no AUROC/AUPRC gain; failed the preset rule. \\
 Representation & Substrate-wide all-A decoder & Pair-first predictor on identical rows & $\Delta$AUROC -6.64 [-9.25, -4.38] & $\Delta$F1 -5.99 [-8.78, -3.65] & Not supported & Prespecified two-fold futility criterion met. \\
-Integration & Unified end-to-end architecture & Immutable fixed ensemble & $\Delta$AUROC -0.72 [-1.29, -0.15] & $\Delta$F1 -0.30 [-1.25, +0.66] & Not supported & AUROC, AUPRC, and calibration were worse. \\
+Integration & Unified end-to-end architecture & Immutable fixed ensemble & $\Delta$AUROC -0.72 [-1.29, -0.15] & $\Delta$F1 -0.30 [-1.25, +0.66] & Not supported & AUROC, AUPRC, and Brier probability error were worse. \\
 Descriptive comparison & Supplied Bio-aware variant & Supplied Bio-aware vs compact checkpoints & No common OOF effect estimate & Not uniformly better across endpoints & Mixed; descriptive & Features and architecture change together; capacity is not isolated. \\
 \bottomrule
 \end{longtable}

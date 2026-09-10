@@ -193,7 +193,7 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "Ranking/calibration gain; negligible F1; adverse natural-prevalence integration.",
+        "Ranking/Brier gain; negligible F1; adverse natural-prevalence integration.",
         multitask,
     )
 
@@ -225,7 +225,7 @@ def evidence_map() -> None:
             "f1", select(geometry, "f1", model="baseline_plus_multiscale_structure")
         ),
         "Limited",
-        "Ranking and calibration gains localize the target effect.",
+        "Ranking and Brier gains localize the target effect.",
         geometry,
     )
     local = "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -445,7 +445,7 @@ def evidence_map() -> None:
             select(unified, "f1", candidate="unified", reference="frozen_ensemble"),
         ),
         "Not supported",
-        "AUROC, AUPRC, and calibration were worse.",
+        "AUROC, AUPRC, and Brier probability error were worse.",
         unified,
     )
     add(

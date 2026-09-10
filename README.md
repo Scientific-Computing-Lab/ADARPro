@@ -100,6 +100,10 @@ see [archive provenance](paper/figure_assets/README.md).
 The [licensed-illustration revision](reports/30_licensed_illustration_revision.md)
 records source selection, figure changes, and verification.
 These PDFs are revised author-review drafts, not certified submission-ready files.
+The [sequential reader-comprehension walkthrough](reports/32_reader_comprehension_walkthrough.md)
+records where an adjacent-field reader could lose the argument, the resulting
+revisions, and the second-pass checks. It is an editorial simulation, not a
+human-participant comprehension study.
 
 ```bash
 make paper-check
@@ -119,7 +123,7 @@ traceability.
 | `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
-| `reports/` | Campaign/editorial reports 00–30 and final synthesis |
+| `reports/` | Campaign/editorial reports 00–32 and final synthesis |
 | `provenance/` | Input hashes, freeze manifests, audit chain, inventory, and exclusions |
 | `paper/` | PNAS manuscript, SI, verified bibliography, and paper source tables |
 | `docs/` | Campaign, data, reproducibility, and upstream documentation |
