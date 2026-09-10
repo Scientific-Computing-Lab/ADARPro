@@ -49,12 +49,20 @@ def verify_pnas_fields() -> None:
         raise AssertionError("significance statement must contain 50--120 words")
     if not keywords or not 3 <= len(keywords.group(1).split(r"$|$")) <= 5:
         raise AssertionError("manuscript must contain 3--5 keywords")
-    regime_markers = (
-        "pair-disjoint out-of-fold",
-        "frozen before the canonical held-out evaluation",
-        "component attribution comes from adaptively selected",
+    regime_concepts = (
+        ("pair-disjoint out-of-fold", "pair-disjoint oof"),
+        (
+            "frozen before the canonical held-out evaluation",
+            "frozen before canonical held-out evaluation",
+            "frozen specification was evaluated on the canonical test",
+        ),
+        (
+            "component attribution comes from adaptively selected",
+            "development evidence therefore attributes branch-level effects",
+        ),
     )
-    if not all(marker in main.lower() for marker in regime_markers):
+    manuscript = main.lower()
+    if not all(any(marker in manuscript for marker in group) for group in regime_concepts):
         raise AssertionError("development/canonical regime distinction is absent")
 
 

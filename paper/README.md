@@ -45,6 +45,12 @@ main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
 - `../reports/FIGURE_REDESIGN_WORKFLOW.md` documents the PNAS/Nature visual
   benchmark, PaperBanana workflow, curation criteria, and nonfabrication rules.
 
+PNAS currently prohibits AI tools for creating manuscript images or graphics
+unless the software is itself the subject of the paper. The affected SVG
+sub-assets and required replacements are listed in
+`../reports/28_pre_submission_revision.md`; disclosure alone is not sufficient
+for submission under the current policy.
+
 The manuscript deliberately separates pair-disjoint development OOF evidence
 from the frozen canonical held-out comparison. Development
 deltas are never added to published test metrics.
