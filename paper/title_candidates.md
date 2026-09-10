@@ -27,5 +27,5 @@ Strong alternatives considered:
 6. **Multiscale determinants and the current prediction ceiling of endogenous
    A-to-I RNA editing.** Clear, but “ceiling” could imply a universal limit.
 
-ADARPro is introduced in the abstract and late Results as the validated
-deliverable that operationalizes the information map.
+The computational deliverable is described neutrally as the selected two-view
+predictor so that the information map, rather than a model brand, remains central.

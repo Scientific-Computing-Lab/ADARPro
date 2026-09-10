@@ -27,6 +27,10 @@ MODEL_MACRO = {
     "published_baseline_reproduced": "AdarEdit",
     "adarpro_pair_local_equal_logit_ensemble": "ADARPro",
 }
+MODEL_DISPLAY = {
+    "published_baseline_reproduced": "AdarEdit",
+    "adarpro_pair_local_equal_logit_ensemble": "selected predictor",
+}
 METRIC_MACRO = {
     "auroc": "AUROC",
     "auprc": "AUPRC",
@@ -447,7 +451,7 @@ def add_locked_claims() -> None:
             display = f"{value:.4f}"
             add(
                 f"locked_{context}_{model}_{metric}",
-                f"Canonical {context} {MODEL_MACRO[model]} {metric.upper()}",
+                f"Canonical {context} {MODEL_DISPLAY[model]} {metric.upper()}",
                 value,
                 display,
                 "metric",
@@ -467,7 +471,7 @@ def add_locked_claims() -> None:
             value = float(delta.loc[context])
             add(
                 f"locked_delta_{context}_{metric}",
-                f"Canonical {context} ADARPro minus AdarEdit {metric.upper()}",
+                f"Canonical {context} selected predictor minus AdarEdit {metric.upper()}",
                 value,
                 f"{value:.4f}",
                 "metric difference",
@@ -481,7 +485,7 @@ def add_locked_claims() -> None:
         macro = float(delta.mean())
         add(
             f"locked_macro_delta_{metric}",
-            f"Macro canonical ADARPro minus AdarEdit {metric.upper()}",
+            f"Macro canonical selected predictor minus AdarEdit {metric.upper()}",
             macro,
             f"{macro:.4f}",
             "metric difference",

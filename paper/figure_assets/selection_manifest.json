@@ -80,6 +80,54 @@
       "asset": "paper/figure_assets/selected/matched_cell_state.png",
       "rationale": "RNA remains visually dominant within a restrained cell/nuclear context and no DNA helix, chromosome, or quantitative encoding is present.",
       "sha256": "df2bc484500b4db7015652fb553a77ae0c919b13b4c7fe6b99a6e5536c60e4e0"
+    },
+    {
+      "family": "pooled_human_context",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/pooled_human_context_candidate_01.png",
+      "asset": "paper/figure_assets/selected/pooled_human_context.png",
+      "rationale": "The artery, brain, liver, and muscle cues remain equally weighted and recognizable within one pooled endpoint without a mathematical badge.",
+      "sha256": "a00e90627f9a0e959e40204c376de350e9cdc1efb3905c8ddf3044c5d105a44b"
+    },
+    {
+      "family": "whole_duplex_graph_view",
+      "selected_candidate": 4,
+      "source": "paper/figure_assets/candidates/whole_duplex_graph_view_candidate_04.png",
+      "asset": "paper/figure_assets/selected/whole_duplex_graph_view.png",
+      "rationale": "The integrated nucleotide nodes and backbone/pairing edges follow one irregular planar RNA fold without canonical DNA-helix imagery.",
+      "sha256": "fff58f8d13951b9660e5554d4762deb05cc96147427b588f8053aa9201c8f384"
+    },
+    {
+      "family": "pair_weighting_editorial",
+      "selected_candidate": 6,
+      "source": "paper/figure_assets/candidates/pair_weighting_editorial_candidate_06.png",
+      "asset": "paper/figure_assets/selected/pair_weighting_editorial.png",
+      "rationale": "Two distinct imperfect RNA substrates carry different site densities at matched visual weight, directly supporting the pair-first concept.",
+      "sha256": "a4e22204eb234e6ceee0123c0954e1031b1cbcf26e07220132ddd313bb530f21"
+    },
+    {
+      "family": "target_local_editorial",
+      "selected_candidate": 4,
+      "source": "paper/figure_assets/candidates/target_local_editorial_candidate_04.png",
+      "asset": "paper/figure_assets/selected/target_local_editorial.png",
+      "rationale": "The nearly planar local stem makes the central amber target and teal partner immediately legible while flanking context recedes cleanly.",
+      "sha256": "21181516c2911dc265258366459b620f856a0edefa16a15e63784b574332e144"
+    },
+    {
+      "family": "substrate_context_editorial",
+      "selected_candidate": 6,
+      "source": "paper/figure_assets/candidates/substrate_context_editorial_candidate_06.png",
+      "asset": "paper/figure_assets/selected/substrate_context_editorial.png",
+      "rationale": "A dominant continuous RNA contour and imperfect fold sit against a restrained cellular field without DNA, chromatin, or causal iconography.",
+      "sha256": "9e29fdf2a5285586dc2581f9bb29c78ae4995501b5970eb34f79ec31b1a4e810"
+    },
+    {
+      "family": "complementary_views_editorial",
+      "selected_candidate": 4,
+      "source": "paper/figure_assets/candidates/complementary_views_editorial_candidate_04.png",
+      "asset": "paper/figure_assets/selected/complementary_views_editorial.png",
+      "rationale": "The full folded substrate and isolated target-pair detail remain visually distinct and coordinated without an imposed processing arrow.",
+      "sha256": "9cf6816d399d3d1bcd096619578153f5fe2533d8fb3bb59e258ca0fb00c454e0"
     }
   ]
 }

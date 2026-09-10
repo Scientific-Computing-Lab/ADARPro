@@ -7464,14 +7464,14 @@ z
   </g>
   <g id="legend_1">
    <g id="line2d_86">
-    <path d="M 192.919563 222.116766 
-L 200.119563 222.116766 
-L 207.319563 222.116766 
+    <path d="M 179.509563 222.116766 
+L 186.709563 222.116766 
+L 193.909563 222.116766 
 " style="fill: none; stroke-dasharray: 5.55,2.4; stroke-dashoffset: 0; stroke: #68737d; stroke-width: 1.5"/>
    </g>
    <g id="text_55">
     <!-- AdarEdit -->
-    <g transform="translate(213.079563 224.636766) scale(0.072 -0.072)">
+    <g transform="translate(199.669563 224.636766) scale(0.072 -0.072)">
      <defs>
       <path id="LiberationSans-24" d="M 3647 0 
 L 3144 1288 
@@ -7592,50 +7592,143 @@ z
     </g>
    </g>
    <g id="line2d_87">
-    <path d="M 255.093813 222.116766 
-L 262.293813 222.116766 
-L 269.493812 222.116766 
+    <path d="M 241.683813 222.116766 
+L 248.883813 222.116766 
+L 256.083813 222.116766 
 " style="fill: none; stroke: #2a9d67; stroke-width: 1.5; stroke-linecap: square"/>
    </g>
    <g id="text_56">
-    <!-- ADARPro -->
-    <g transform="translate(275.253813 224.636766) scale(0.072 -0.072)">
+    <!-- Selected predictor -->
+    <g transform="translate(261.843813 224.636766) scale(0.072 -0.072)">
      <defs>
-      <path id="LiberationSans-27" d="M 4316 2247 
-Q 4316 1697 4150 1276 
-Q 3984 856 3696 573 
-Q 3409 291 3017 145 
-Q 2625 0 2172 0 
-L 525 0 
-L 525 4403 
-L 1981 4403 
-Q 2491 4403 2920 4276 
-Q 3350 4150 3659 3886 
-Q 3969 3622 4142 3215 
-Q 4316 2809 4316 2247 
+      <path id="LiberationSans-36" d="M 3975 1216 
+Q 3975 938 3867 703 
+Q 3759 469 3534 298 
+Q 3309 128 2967 32 
+Q 2625 -63 2156 -63 
+Q 1334 -63 875 225 
+Q 416 513 291 1056 
+L 869 1172 
+Q 913 1000 1003 859 
+Q 1094 719 1248 617 
+Q 1403 516 1631 459 
+Q 1859 403 2178 403 
+Q 2444 403 2666 448 
+Q 2888 494 3047 587 
+Q 3206 681 3295 829 
+Q 3384 978 3384 1184 
+Q 3384 1400 3286 1534 
+Q 3188 1669 3009 1756 
+Q 2831 1844 2584 1903 
+Q 2338 1963 2038 2031 
+Q 1853 2072 1667 2120 
+Q 1481 2169 1311 2236 
+Q 1141 2303 991 2393 
+Q 841 2484 731 2611 
+Q 622 2738 559 2905 
+Q 497 3072 497 3291 
+Q 497 3603 623 3826 
+Q 750 4050 975 4194 
+Q 1200 4338 1506 4403 
+Q 1813 4469 2169 4469 
+Q 2578 4469 2868 4405 
+Q 3159 4341 3359 4212 
+Q 3559 4084 3679 3895 
+Q 3800 3706 3872 3456 
+L 3284 3353 
+Q 3241 3513 3158 3638 
+Q 3075 3763 2940 3847 
+Q 2806 3931 2614 3975 
+Q 2422 4019 2163 4019 
+Q 1856 4019 1648 3964 
+Q 1441 3909 1314 3815 
+Q 1188 3722 1133 3595 
+Q 1078 3469 1078 3322 
+Q 1078 3125 1176 2998 
+Q 1275 2872 1444 2787 
+Q 1613 2703 1834 2647 
+Q 2056 2591 2306 2534 
+Q 2509 2488 2711 2439 
+Q 2913 2391 3097 2323 
+Q 3281 2256 3442 2165 
+Q 3603 2075 3722 1944 
+Q 3841 1813 3908 1634 
+Q 3975 1456 3975 1216 
 z
-M 3716 2247 
-Q 3716 2694 3587 3011 
-Q 3459 3328 3228 3531 
-Q 2997 3734 2675 3829 
-Q 2353 3925 1969 3925 
-L 1122 3925 
-L 1122 478 
-L 2103 478 
-Q 2450 478 2745 590 
-Q 3041 703 3256 925 
-Q 3472 1147 3594 1478 
-Q 3716 1809 3716 2247 
+" transform="scale(0.015625)"/>
+      <path id="LiberationSans-3" transform="scale(0.015625)"/>
+      <path id="LiberationSans-53" d="M 3291 1706 
+Q 3291 1322 3228 997 
+Q 3166 672 3020 437 
+Q 2875 203 2636 70 
+Q 2397 -63 2047 -63 
+Q 1684 -63 1412 75 
+Q 1141 213 997 525 
+L 981 525 
+Q 984 519 986 469 
+Q 988 419 989 344 
+Q 991 269 992 176 
+Q 994 84 994 -6 
+L 994 -1328 
+L 431 -1328 
+L 431 2691 
+Q 431 2813 429 2925 
+Q 428 3038 425 3130 
+Q 422 3222 419 3287 
+Q 416 3353 413 3381 
+L 956 3381 
+Q 959 3372 964 3315 
+Q 969 3259 973 3179 
+Q 978 3100 983 3009 
+Q 988 2919 988 2838 
+L 1000 2838 
+Q 1078 3000 1178 3114 
+Q 1278 3228 1406 3301 
+Q 1534 3375 1692 3408 
+Q 1850 3441 2047 3441 
+Q 2397 3441 2636 3316 
+Q 2875 3191 3020 2964 
+Q 3166 2738 3228 2417 
+Q 3291 2097 3291 1706 
+z
+M 2700 1694 
+Q 2700 2006 2662 2250 
+Q 2625 2494 2533 2662 
+Q 2441 2831 2287 2918 
+Q 2134 3006 1903 3006 
+Q 1716 3006 1550 2953 
+Q 1384 2900 1261 2750 
+Q 1138 2600 1066 2336 
+Q 994 2072 994 1650 
+Q 994 1291 1053 1042 
+Q 1113 794 1227 641 
+Q 1341 488 1509 420 
+Q 1678 353 1897 353 
+Q 2131 353 2286 443 
+Q 2441 534 2533 706 
+Q 2625 878 2662 1126 
+Q 2700 1375 2700 1694 
 z
 " transform="scale(0.015625)"/>
      </defs>
-     <use xlink:href="#LiberationSans-24"/>
-     <use xlink:href="#LiberationSans-27" transform="translate(66.703125 0)"/>
-     <use xlink:href="#LiberationSans-24" transform="translate(138.921875 0)"/>
-     <use xlink:href="#LiberationSans-35" transform="translate(205.625 0)"/>
-     <use xlink:href="#LiberationSans-33" transform="translate(277.84375 0)"/>
-     <use xlink:href="#LiberationSans-55" transform="translate(344.546875 0)"/>
-     <use xlink:href="#LiberationSans-52" transform="translate(377.84375 0)"/>
+     <use xlink:href="#LiberationSans-36"/>
+     <use xlink:href="#LiberationSans-48" transform="translate(66.703125 0)"/>
+     <use xlink:href="#LiberationSans-4f" transform="translate(122.3125 0)"/>
+     <use xlink:href="#LiberationSans-48" transform="translate(144.53125 0)"/>
+     <use xlink:href="#LiberationSans-46" transform="translate(200.140625 0)"/>
+     <use xlink:href="#LiberationSans-57" transform="translate(250.140625 0)"/>
+     <use xlink:href="#LiberationSans-48" transform="translate(277.921875 0)"/>
+     <use xlink:href="#LiberationSans-47" transform="translate(333.53125 0)"/>
+     <use xlink:href="#LiberationSans-3" transform="translate(389.140625 0)"/>
+     <use xlink:href="#LiberationSans-53" transform="translate(416.921875 0)"/>
+     <use xlink:href="#LiberationSans-55" transform="translate(472.53125 0)"/>
+     <use xlink:href="#LiberationSans-48" transform="translate(505.828125 0)"/>
+     <use xlink:href="#LiberationSans-47" transform="translate(561.4375 0)"/>
+     <use xlink:href="#LiberationSans-4c" transform="translate(617.046875 0)"/>
+     <use xlink:href="#LiberationSans-46" transform="translate(639.265625 0)"/>
+     <use xlink:href="#LiberationSans-57" transform="translate(689.265625 0)"/>
+     <use xlink:href="#LiberationSans-52" transform="translate(717.046875 0)"/>
+     <use xlink:href="#LiberationSans-55" transform="translate(772.65625 0)"/>
     </g>
    </g>
   </g>

@@ -59,7 +59,7 @@ The full eight-by-eight transfer matrices train in one context and evaluate in e
 
 The accompanying within-context table compares the compact baseline with a bio-aware variant. Added hand-engineered information did not improve every dataset or metric, and in some settings reduced performance. Because these runs do not share the newer OOF attribution protocol, they are used only to characterize scope and motivate the controlled campaign, not to select the final predictor. This nonmonotonic result is nevertheless an important boundary: a larger supplied feature set need not contain more usable information at the resolution of the benchmark.
 
-The upstream study also reported strong GTEx--RNAAtlas concordance for shared editing measurements, supporting label reproducibility across cohorts and processing pipelines \cite{Rosenwasser2026AdarEdit}. ADARPro was not evaluated on RNAAtlas; this observation therefore does not test predictor transportability to an independently generated human cohort.
+The upstream study also reported strong GTEx--RNAAtlas concordance for shared editing measurements, supporting label reproducibility across cohorts and processing pipelines \cite{Rosenwasser2026AdarEdit}. The selected predictor was not evaluated on RNAAtlas; this observation therefore does not test transportability to an independently generated human cohort.
 
 \section*{C. Complete hypothesis map}
 
@@ -161,18 +161,18 @@ The unified model's AUROC and AUPRC were below the frozen ensemble in every oute
 
 For each endpoint, a pair-first whole-duplex-only graph model and an independently trained pair-first graph model augmented with the aligned target/helix-partner convolution were fitted on the published training pairs. Published validation data selected checkpoints and one ensemble threshold per endpoint. Ten checkpoints, histories, configurations, selected epochs, thresholds, inputs, code revision, and weights were written to \texttt{provenance/final\_pipeline\_manifest.json}, which retains the exact manifest SHA-256 and bound code revision. The canonical test was evaluated once after this freeze, and no subsequent model decision used test outcomes.
 
-ADARPro improved ROC and precision--recall curves in every endpoint (Fig.~\ref{fig:s5}); exact performance is in Table~\ref{tab:lockedmetrics}. At frozen thresholds, false-positive rescue exceeded true-positive damage. Matched-recall counts are point estimates obtained by descriptive rethresholding on final predictions; the bootstrap distribution quantifies their pair-clustered uncertainty (Table~\ref{tab:falsepositives}). Reliability curves and lower Brier scores show that ranking gains did not sacrifice calibration (Fig.~\ref{fig:s6}).
+The selected predictor improved ROC and precision--recall curves in every endpoint (Fig.~\ref{fig:s5}); exact performance is in Table~\ref{tab:lockedmetrics}. At frozen thresholds, false-positive rescue exceeded true-positive damage. Matched-recall counts are point estimates obtained by descriptive rethresholding on final predictions; the bootstrap distribution quantifies their pair-clustered uncertainty (Table~\ref{tab:falsepositives}). Reliability curves and lower Brier scores show that ranking gains did not sacrifice calibration (Fig.~\ref{fig:s6}).
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/figureS5_locked_curves.pdf}
-\caption{\textbf{Canonical held-out ROC and precision--recall curves.} ADARPro and supplied-checkpoint AdarEdit are shown for four individual tissue endpoints and Combined.}
+\caption{\textbf{Canonical held-out ROC and precision--recall curves.} The selected predictor and supplied-checkpoint AdarEdit are shown for four individual tissue endpoints and Combined.}
 \label{fig:s5}
 \end{figure}
 
 \begin{center}
 \includegraphics[width=\textwidth]{figures/figureS6_locked_calibration.pdf}
-\captionof{figure}{\textbf{Canonical held-out calibration.} Reliability curves for ADARPro and supplied-checkpoint AdarEdit. Brier score is lower for ADARPro in every endpoint.}
+\captionof{figure}{\textbf{Canonical held-out calibration.} Reliability curves for the selected predictor and supplied-checkpoint AdarEdit. Brier score is lower for the selected predictor in every endpoint.}
 \label{fig:s6}
 \end{center}
 

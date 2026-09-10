@@ -14,7 +14,7 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch
+from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIR = ROOT / "paper/figure_assets/selected"
@@ -77,6 +77,7 @@ def add_asset(
     alpha: float = 1.0,
     zorder: int = 1,
     crop: tuple[float, float, float, float] | None = None,
+    trim: bool = False,
 ) -> plt.Axes:
     """Place a curated transparent illustration inside an otherwise vector panel."""
     path = ASSET_DIR / f"{name}.png"
@@ -92,6 +93,16 @@ def add_asset(
             round(y0 * height) : round(y1 * height),
             round(x0 * width) : round(x1 * width),
         ]
+    if trim and image.ndim == 3 and image.shape[2] == 4:
+        mask = image[:, :, 3] > 0.035
+        if np.any(mask):
+            y_index, x_index = np.where(mask)
+            pad = max(4, round(0.025 * max(image.shape[:2])))
+            y0 = max(0, int(y_index.min()) - pad)
+            y1 = min(image.shape[0], int(y_index.max()) + pad + 1)
+            x0 = max(0, int(x_index.min()) - pad)
+            x1 = min(image.shape[1], int(x_index.max()) + pad + 1)
+            image = image[y0:y1, x0:x1]
     inset = axis.inset_axes(bounds, transform=axis.transAxes, zorder=zorder)
     inset.imshow(image, interpolation="lanczos", alpha=alpha)
     inset.set_axis_off()
@@ -599,94 +610,140 @@ def figure1(output: Path, source: Path) -> None:
         color=COLORS["navy"],
         fontweight="bold",
     )
-    x = 0.02
-    split_centers: dict[str, float] = {}
-    for label, (count, color) in split.items():
-        width = 0.94 * count / total
-        split_centers[label] = x + width / 2
-        ax_c.add_patch(
-            plt.Rectangle(
-                (x, 0.72), width, 0.12, facecolor=color, edgecolor="white", lw=0.8
-            )
+    # One pair-level allocation fans into three visually parallel evidence lanes.
+    add_asset(
+        ax_c,
+        "rna_substrate_editorial",
+        (0.018, 0.49, 0.205, 0.29),
+        alpha=0.98,
+        zorder=2,
+        trim=True,
+    )
+    ax_c.text(
+        0.120,
+        0.455,
+        f"{total} complete pairs",
+        ha="center",
+        va="center",
+        fontsize=6.15,
+        fontweight="bold",
+        color=COLORS["navy"],
+    )
+    ax_c.text(
+        0.120,
+        0.395,
+        "one pair → one partition",
+        ha="center",
+        va="center",
+        fontsize=5.55,
+        color=COLORS["gray"],
+    )
+    junction = (0.270, 0.615)
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.215, 0.615),
+            junction,
+            arrowstyle="-|>",
+            mutation_scale=7.2,
+            color=COLORS["navy"],
+            lw=0.95,
+            zorder=4,
         )
-        ax_c.text(
-            x + width / 2,
-            0.78,
-            f"{label}\n{count}",
-            ha="center",
-            va="center",
-            color="white",
-            fontsize=5.45 if label == "Validation" else 5.8,
-            fontweight="bold",
+    )
+    ax_c.add_patch(
+        Circle(
+            junction,
+            0.009,
+            facecolor=COLORS["navy"],
+            edgecolor="white",
+            lw=0.55,
+            zorder=5,
         )
-        x += width
+    )
     stages = [
         (
-            0.205,
-            "1  DEVELOP",
-            "pair-disjoint OOF\nfive folds",
+            "Train",
+            0.765,
+            "DEVELOP",
+            "pair-disjoint OOF · five folds",
             COLORS["blue"],
-            COLORS["pale_blue"],
         ),
         (
-            0.545,
-            "2  FREEZE",
-            "code · weights\nthresholds · hashes",
+            "Validation",
+            0.535,
+            "LOCK",
+            "freeze code · weights · thresholds · hashes",
             COLORS["green"],
-            COLORS["pale_green"],
         ),
         (
-            0.855,
-            "3  EVALUATE",
-            "canonical test\nno retuning",
+            "Test",
+            0.305,
+            "EVALUATE",
+            "canonical evaluation · no retuning",
             COLORS["red"],
-            COLORS["pale_red"],
         ),
     ]
-    card_widths = [0.255, 0.235, 0.225]
-    for index, ((xpos, title, detail, color, _fill), card_width) in enumerate(
-        zip(stages, card_widths)
-    ):
-        left = xpos - card_width / 2
-        ax_c.plot(
-            [left, left + card_width],
-            [0.490, 0.490],
-            color=color,
-            lw=1.5,
-            solid_capstyle="butt",
-            zorder=3,
-        )
+    for label, lane_y, stage, detail, color in stages:
+        count = split[label][0]
         ax_c.add_patch(
             FancyArrowPatch(
-                (split_centers[["Train", "Validation", "Test"][index]], 0.705),
-                (xpos, 0.510),
+                junction,
+                (0.335, lane_y),
                 arrowstyle="-|>",
-                mutation_scale=7.0,
+                mutation_scale=7.4,
                 color=color,
-                lw=0.9,
-                alpha=0.88,
+                lw=1.0,
+                connectionstyle="arc3,rad=0",
                 zorder=4,
             )
         )
+        ax_c.plot(
+            [0.340, 0.965],
+            [lane_y, lane_y],
+            color=color,
+            lw=1.55,
+            alpha=0.95,
+            solid_capstyle="round",
+            zorder=3,
+        )
+        ax_c.add_patch(
+            Circle(
+                (0.350, lane_y),
+                0.009,
+                facecolor="white",
+                edgecolor=color,
+                lw=1.0,
+                zorder=5,
+            )
+        )
         ax_c.text(
-            xpos,
-            0.425,
-            title,
-            ha="center",
+            0.375,
+            lane_y + 0.055,
+            f"{label.upper()}  ·  {count}",
+            ha="left",
             va="center",
-            fontsize=6.05,
+            fontsize=5.95,
             color=color,
             fontweight="bold",
         )
         ax_c.text(
-            xpos,
-            0.300,
+            0.375,
+            lane_y - 0.055,
             detail,
-            ha="center",
+            ha="left",
             va="center",
-            fontsize=5.55,
+            fontsize=5.45,
             color=COLORS["ink"],
-            linespacing=1.18,
+        )
+        ax_c.text(
+            0.965,
+            lane_y + 0.055,
+            stage,
+            ha="right",
+            va="center",
+            fontsize=5.75,
+            color=color,
+            fontweight="bold",
         )
     ax_c.set_xlim(0, 1)
     ax_c.set_ylim(0, 1)
@@ -802,24 +859,13 @@ def figure_scope(output: Path, source: Path) -> None:
             fontsize=5.25,
             color=COLORS["ink"],
         )
-    context_key.scatter(
-        [0.505],
-        [0.535],
-        s=210,
-        facecolor="white",
-        edgecolor=COLORS["blue"],
-        linewidth=0.9,
+    add_asset(
+        context_key,
+        "pooled_human_context",
+        (0.452, 0.290, 0.106, 0.49),
+        alpha=0.98,
         zorder=2,
-    )
-    context_key.text(
-        0.505,
-        0.535,
-        r"$\Sigma$",
-        ha="center",
-        va="center",
-        fontsize=7.0,
-        color=COLORS["blue"],
-        fontweight="bold",
+        trim=True,
     )
     context_key.text(
         0.505,
@@ -1441,125 +1487,26 @@ def figure2(output: Path, source: Path) -> None:
             solid_capstyle="butt",
             zorder=2,
         )
-        if group == "Learning & supervision":
-            # Equal pair weighting: substrates with unequal row counts contribute once.
-            for line_y, count in [
-                (center_y + 0.025, 4),
-                (center_y - 0.018, 7),
-            ]:
-                sites = np.linspace(0.036, 0.086, count)
-                ax_a.plot(
-                    [sites[0], sites[-1]],
-                    [line_y, line_y],
-                    color=COLORS["navy"],
-                    lw=0.65,
-                    zorder=2,
-                )
-                ax_a.scatter(
-                    sites,
-                    np.full_like(sites, line_y),
-                    s=7.5,
-                    facecolor="white",
-                    edgecolor=color,
-                    linewidth=0.55,
-                    zorder=3,
-                )
-                ax_a.add_patch(
-                    FancyArrowPatch(
-                        (0.090, line_y),
-                        (0.116, center_y + 0.003),
-                        arrowstyle="-|>",
-                        mutation_scale=5.5,
-                        color=color,
-                        lw=0.65,
-                    )
-                )
-            ax_a.add_patch(
-                Circle(
-                    (0.119, center_y + 0.003),
-                    0.008,
-                    facecolor=color,
-                    edgecolor="white",
-                    lw=0.4,
-                    zorder=4,
-                )
-            )
-        elif group == "Target representation":
-            add_asset(
-                ax_a,
-                "target_pair_context",
-                (0.022, center_y - 0.070, 0.102, 0.135),
-                alpha=0.98,
-                zorder=2,
-            )
-            ax_a.plot(
-                [0.060, 0.060, 0.091, 0.091],
-                [center_y - 0.040, center_y - 0.050, center_y - 0.050, center_y - 0.040],
-                color=color,
-                lw=0.65,
-                zorder=4,
-            )
-        elif group == "Substrate & cellular context":
-            add_asset(
-                ax_a,
-                "substrate_organization",
-                (0.018, center_y - 0.010, 0.110, 0.105),
-                alpha=0.98,
-                zorder=2,
-            )
-            add_asset(
-                ax_a,
-                "matched_cell_state",
-                (0.043, center_y - 0.105, 0.060, 0.080),
-                alpha=0.90,
-                zorder=2,
-            )
-            ax_a.plot(
-                [0.070, 0.070],
-                [center_y - 0.025, center_y - 0.010],
-                color=color,
-                lw=0.65,
-                alpha=0.75,
-                zorder=3,
-            )
-        else:
-            integration_y = center_y + 0.018
-            for start_y, branch_color in [
-                (integration_y + 0.020, COLORS["blue"]),
-                (integration_y - 0.020, COLORS["purple"]),
-            ]:
-                ax_a.add_patch(
-                    FancyArrowPatch(
-                        (0.032, start_y),
-                        (0.086, integration_y),
-                        arrowstyle="-|>",
-                        mutation_scale=5.5,
-                        color=branch_color,
-                        lw=0.75,
-                    )
-                )
-            ax_a.add_patch(
-                plt.Rectangle(
-                    (0.087, integration_y - 0.014),
-                    0.034,
-                    0.028,
-                    facecolor="white",
-                    edgecolor=color,
-                    lw=0.75,
-                    zorder=3,
-                )
-            )
-            ax_a.text(
-                0.104,
-                integration_y,
-                "½Σ",
-                ha="center",
-                va="center",
-                fontsize=4.7,
-                fontweight="bold",
-                color=color,
-                zorder=4,
-            )
+        level_assets = {
+            "Learning & supervision": "pair_weighting_editorial",
+            "Target representation": "target_local_editorial",
+            "Substrate & cellular context": "substrate_context_editorial",
+            "Integration": "complementary_views_editorial",
+        }
+        asset_height = {
+            "Learning & supervision": 0.090,
+            "Target representation": 0.105,
+            "Substrate & cellular context": 0.130,
+            "Integration": 0.080,
+        }[group]
+        add_asset(
+            ax_a,
+            level_assets[group],
+            (0.016, center_y - asset_height / 2 + 0.016, 0.115, asset_height),
+            alpha=0.98,
+            zorder=2,
+            trim=True,
+        )
         label_y = lower_y + (0.008 if group == "Integration" else 0.014)
         ax_a.text(
             0.072,
@@ -1694,37 +1641,9 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         loc="left",
         fontweight="bold",
     )
-    axis.add_patch(
-        plt.Rectangle(
-            (0.015, 0.205),
-            0.190,
-            0.640,
-            facecolor=COLORS["pale_green"],
-            edgecolor="#CFDCD5",
-            lw=0.55,
-            zorder=0,
-        )
-    )
-    axis.add_patch(
-        plt.Rectangle(
-            (0.285, 0.555),
-            0.695,
-            0.290,
-            facecolor=COLORS["pale_blue"],
-            edgecolor="none",
-            zorder=0,
-        )
-    )
-    axis.add_patch(
-        plt.Rectangle(
-            (0.285, 0.205),
-            0.695,
-            0.290,
-            facecolor="#F3EFF8",
-            edgecolor="none",
-            zorder=0,
-        )
-    )
+    axis.axvspan(0.015, 0.205, ymin=0.205, ymax=0.845, color="#F1F7F3", zorder=0)
+    axis.axvspan(0.255, 0.985, ymin=0.555, ymax=0.845, color="#F2F7FA", zorder=0)
+    axis.axvspan(0.255, 0.985, ymin=0.205, ymax=0.495, color="#F6F3FA", zorder=0)
     axis.text(
         0.110,
         0.805,
@@ -1738,13 +1657,13 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     add_asset(
         axis,
         "rna_substrate_editorial",
-        (0.032, 0.455, 0.155, 0.245),
+        (0.028, 0.435, 0.164, 0.250),
         alpha=0.98,
         zorder=2,
     )
     axis.text(
         0.110,
-        0.335,
+        0.350,
         "all valid high/low sites",
         ha="center",
         va="center",
@@ -1753,8 +1672,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     axis.add_patch(
         FancyArrowPatch(
-            (0.192, 0.525),
-            (0.234, 0.525),
+            (0.192, 0.535),
+            (0.232, 0.535),
             arrowstyle="-|>",
             mutation_scale=8.0,
             color=COLORS["green"],
@@ -1764,8 +1683,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     axis.add_patch(
         Circle(
-            (0.247, 0.525),
-            0.010,
+            (0.232, 0.535),
+            0.009,
             facecolor=COLORS["green"],
             edgecolor="white",
             lw=0.7,
@@ -1773,12 +1692,12 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
     )
     for end, color in [
-        ((0.315, 0.690), COLORS["blue"]),
-        ((0.315, 0.345), COLORS["purple"]),
+        ((0.277, 0.690), COLORS["blue"]),
+        ((0.277, 0.345), COLORS["purple"]),
     ]:
         axis.add_patch(
             FancyArrowPatch(
-                (0.257, 0.525),
+                (0.232, 0.535),
                 end,
                 arrowstyle="-|>",
                 mutation_scale=8.0,
@@ -1789,10 +1708,10 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
 
     for xpos, label in [
-        (0.385, "REPRESENTATION"),
-        (0.565, "COMPUTATION"),
-        (0.720, "LOGIT"),
-        (0.890, "FIXED COMBINATION"),
+        (0.365, "REPRESENTATION"),
+        (0.575, "ENCODER"),
+        (0.710, "SCORE"),
+        (0.885, "FIXED COMBINATION"),
     ]:
         axis.text(
             xpos,
@@ -1805,7 +1724,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
             color=COLORS["gray"],
         )
     axis.text(
-        0.305,
+        0.270,
         0.800,
         "WHOLE-DUPLEX VIEW",
         fontsize=6.6,
@@ -1813,45 +1732,17 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         color=COLORS["blue"],
         va="center",
     )
-    graph_nodes = [
-        (0.330, 0.690),
-        (0.365, 0.745),
-        (0.400, 0.690),
-        (0.365, 0.635),
-        (0.435, 0.740),
-        (0.435, 0.640),
-    ]
-    for start, end in [
-        (0, 1),
-        (0, 3),
-        (1, 2),
-        (1, 4),
-        (2, 3),
-        (2, 4),
-        (2, 5),
-        (3, 5),
-    ]:
-        axis.plot(
-            [graph_nodes[start][0], graph_nodes[end][0]],
-            [graph_nodes[start][1], graph_nodes[end][1]],
-            color=COLORS["sky"],
-            lw=0.8,
-            zorder=2,
-        )
-    for xpos, ypos in graph_nodes:
-        axis.add_patch(
-            Circle(
-                (xpos, ypos),
-                0.010,
-                facecolor="white",
-                edgecolor=COLORS["blue"],
-                lw=1.0,
-                zorder=3,
-            )
-        )
+    add_asset(
+        axis,
+        "whole_duplex_graph_view",
+        (0.275, 0.600, 0.190, 0.180),
+        alpha=0.98,
+        zorder=2,
+        trim=True,
+    )
 
     axis.text(
-        0.305,
+        0.270,
         0.455,
         "TARGET-ALIGNED VIEW",
         fontsize=6.6,
@@ -1861,113 +1752,193 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     )
     add_asset(
         axis,
-        "target_pair_context",
-        (0.310, 0.270, 0.145, 0.145),
+        "target_local_editorial",
+        (0.275, 0.255, 0.190, 0.180),
         alpha=0.98,
         zorder=2,
+        trim=True,
     )
 
-    for y0, color, label in [
-        (0.69, COLORS["blue"], "graph encoder"),
-        (0.34, COLORS["purple"], "graph + local encoder"),
-    ]:
-        axis.add_patch(
-            plt.Rectangle(
-                (0.500, y0 - 0.052),
-                0.135,
-                0.104,
-                facecolor="white",
-                edgecolor=color,
-                lw=0.8,
-                zorder=2,
-            )
+    def draw_encoder(y0: float, color: str, label: str) -> None:
+        x0, x1, half_height, bevel = 0.500, 0.640, 0.060, 0.012
+        module = Polygon(
+            [
+                (x0 + bevel, y0 - half_height),
+                (x1 - bevel, y0 - half_height),
+                (x1, y0),
+                (x1 - bevel, y0 + half_height),
+                (x0 + bevel, y0 + half_height),
+                (x0, y0),
+            ],
+            closed=True,
+            facecolor="white",
+            edgecolor=color,
+            lw=0.9,
+            zorder=3,
         )
+        axis.add_patch(module)
+        for xpos, alpha in [(0.516, 0.35), (0.527, 0.55), (0.538, 0.78)]:
+            axis.plot(
+                [xpos, xpos],
+                [y0 - 0.034, y0 + 0.034],
+                color=color,
+                lw=1.25,
+                alpha=alpha,
+                solid_capstyle="round",
+                zorder=4,
+            )
         axis.text(
-            0.5675,
+            0.586,
             y0,
             label,
             ha="center",
             va="center",
-            fontsize=5.9,
+            fontsize=5.25,
             color=COLORS["ink"],
-            zorder=3,
+            fontweight="bold",
+            linespacing=1.05,
+            zorder=4,
         )
+
+    for y0, color, label in [
+        (0.690, COLORS["blue"], "STRUCTURE GRAPH\nENCODER"),
+        (0.345, COLORS["purple"], "GRAPH + LOCAL\nENCODER"),
+    ]:
+        draw_encoder(y0, color, label)
         axis.add_patch(
             FancyArrowPatch(
-                (0.455, y0),
+                (0.458, y0),
                 (0.496, y0),
                 arrowstyle="-|>",
                 mutation_scale=7.5,
                 color=color,
-                lw=0.9,
+                lw=0.95,
+                zorder=4,
             )
         )
         axis.add_patch(
             FancyArrowPatch(
-                (0.639, y0),
-                (0.685, y0),
+                (0.642, y0),
+                (0.676, y0),
                 arrowstyle="-|>",
                 mutation_scale=7.5,
                 color=color,
-                lw=0.9,
+                lw=0.95,
+                zorder=4,
             )
         )
 
-    for y0, color, label in [
-        (0.69, COLORS["blue"], "$z_1$"),
-        (0.34, COLORS["purple"], "$z_2$"),
-    ]:
-        axis.plot(
-            [0.697, 0.735],
-            [y0, y0],
-            color=color,
-            lw=1.35,
-            solid_capstyle="round",
-            zorder=3,
+    logit_centers = [
+        (0.705, 0.690, COLORS["blue"], "$z_1$"),
+        (0.705, 0.345, COLORS["purple"], "$z_2$"),
+    ]
+    for xpos, ypos, color, label in logit_centers:
+        node = Polygon(
+            [
+                (xpos - 0.027, ypos),
+                (xpos - 0.014, ypos + 0.039),
+                (xpos + 0.014, ypos + 0.039),
+                (xpos + 0.027, ypos),
+                (xpos + 0.014, ypos - 0.039),
+                (xpos - 0.014, ypos - 0.039),
+            ],
+            closed=True,
+            facecolor="white",
+            edgecolor=color,
+            lw=1.0,
+            zorder=4,
         )
+        axis.add_patch(node)
         axis.text(
-            0.716,
-            y0 + 0.037,
+            xpos,
+            ypos,
             label,
-            color=color,
-            fontsize=6.5,
-            fontweight="bold",
             ha="center",
             va="center",
+            fontsize=6.5,
+            fontweight="bold",
+            color=color,
+            zorder=5,
         )
-    for start, end, color in [
-        ((0.738, 0.69), (0.825, 0.560), COLORS["blue"]),
-        ((0.738, 0.34), (0.825, 0.490), COLORS["purple"]),
+
+    fusion_center = (0.875, 0.525)
+    for start, end, color, weight_y in [
+        ((0.734, 0.690), (0.842, 0.552), COLORS["blue"], 0.650),
+        ((0.734, 0.345), (0.842, 0.498), COLORS["purple"], 0.402),
     ]:
         axis.add_patch(
             FancyArrowPatch(
                 start,
                 end,
                 arrowstyle="-|>",
-                mutation_scale=8.0,
+                mutation_scale=7.8,
                 color=color,
-                lw=0.9,
+                lw=1.0,
+                zorder=4,
             )
         )
+        axis.text(
+            0.785,
+            weight_y,
+            r"$\times\,0.5$",
+            ha="center",
+            va="center",
+            fontsize=5.7,
+            color=color,
+            fontweight="bold",
+        )
+    fusion = Polygon(
+        [
+            (fusion_center[0], fusion_center[1] + 0.054),
+            (fusion_center[0] + 0.038, fusion_center[1]),
+            (fusion_center[0], fusion_center[1] - 0.054),
+            (fusion_center[0] - 0.038, fusion_center[1]),
+        ],
+        closed=True,
+        facecolor=COLORS["pale_amber"],
+        edgecolor=COLORS["amber"],
+        lw=1.0,
+        zorder=5,
+    )
+    axis.add_patch(fusion)
+    axis.text(
+        *fusion_center,
+        r"$\Sigma$",
+        ha="center",
+        va="center",
+        fontsize=8.4,
+        fontweight="bold",
+        color=COLORS["ink"],
+        zorder=6,
+    )
     axis.add_patch(
-        plt.Rectangle(
-            (0.825, 0.450),
-            0.155,
-            0.150,
-            facecolor="white",
-            edgecolor=COLORS["amber"],
+        FancyArrowPatch(
+            (0.914, 0.525),
+            (0.962, 0.525),
+            arrowstyle="-|>",
+            mutation_scale=7.8,
+            color=COLORS["navy"],
             lw=1.0,
-            zorder=2,
+            zorder=4,
         )
     )
     axis.text(
-        0.9025,
+        0.973,
         0.525,
-        rf"$z = {weights[0]:.1f}z_1 + {weights[1]:.1f}z_2$",
-        ha="center",
+        "$z$",
+        ha="left",
         va="center",
         fontsize=6.8,
         fontweight="bold",
+        color=COLORS["navy"],
+    )
+    axis.text(
+        0.875,
+        0.395,
+        rf"$z={weights[0]:.1f}z_1+{weights[1]:.1f}z_2$",
+        ha="center",
+        va="center",
+        fontsize=6.2,
         color=COLORS["ink"],
     )
     axis.plot([0.015, 0.980], [0.135, 0.135], color="#D3DCE0", lw=0.65)
@@ -2042,9 +2013,9 @@ def figure3(output: Path, source: Path) -> None:
         "figure3_model_specification.csv",
     )
 
-    figure = plt.figure(figsize=(7.0, 7.6))
+    figure = plt.figure(figsize=(7.0, 7.9))
     grid = figure.add_gridspec(
-        3, 2, height_ratios=[1.0, 1.0, 0.72], hspace=0.62, wspace=0.48
+        3, 2, height_ratios=[1.0, 1.0, 0.86], hspace=0.60, wspace=0.48
     )
     ax_a = figure.add_subplot(grid[0, 0])
     ax_b = figure.add_subplot(grid[0, 1])
@@ -2341,7 +2312,9 @@ def figure4(output: Path, source: Path) -> None:
     ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
     ax_a.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_a.invert_yaxis()
-    ax_a.set_xlabel("ADARPro − published AdarEdit (points; 95% pair-clustered CI)")
+    ax_a.set_xlabel(
+        "Selected predictor − AdarEdit (points; 95% pair-clustered CI)"
+    )
     ax_a.set_title(
         "Frozen canonical held-out evaluation",
         loc="left",
@@ -2378,7 +2351,14 @@ def figure4(output: Path, source: Path) -> None:
             zorder=1,
         )
     ax_b.scatter(base.f1, y, color=COLORS["gray"], s=24, label="AdarEdit", zorder=2)
-    ax_b.scatter(cand.f1, y, color=COLORS["green"], s=24, label="ADARPro", zorder=3)
+    ax_b.scatter(
+        cand.f1,
+        y,
+        color=COLORS["green"],
+        s=24,
+        label="Selected predictor",
+        zorder=3,
+    )
     ax_b.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_b.invert_yaxis()
     ax_b.set_xlim(0.80, 0.905)
@@ -2817,7 +2797,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
             plt.Line2D([0], [0], color=COLORS["gray"], linestyle="--"),
             plt.Line2D([0], [0], color=COLORS["green"]),
         ],
-        ["AdarEdit", "ADARPro"],
+        ["AdarEdit", "Selected predictor"],
         frameon=False,
         ncol=2,
         loc="lower center",
@@ -2867,10 +2847,12 @@ def supplementary_figures(output: Path, source: Path) -> None:
 
     # S7: tissue-dependent site changes over stable substrate rankings.
     variation_path = (
-        ROOT / "experiments/runs/post_analysis/tissue_variation/per_site_variation.parquet"
+        ROOT
+        / "experiments/runs/post_analysis/tissue_variation/per_site_variation.parquet"
     )
     switch_path = (
-        ROOT / "experiments/runs/post_analysis/tissue_variation/strict_switch_matrix.csv"
+        ROOT
+        / "experiments/runs/post_analysis/tissue_variation/strict_switch_matrix.csv"
     )
     stability_path = (
         ROOT
@@ -2965,7 +2947,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
                     )
                 )
                 continue
-            color = "white" if matrix[i, j] > 0.48 * np.nanmax(matrix) else COLORS["ink"]
+            color = (
+                "white" if matrix[i, j] > 0.48 * np.nanmax(matrix) else COLORS["ink"]
+            )
             ax_b.text(
                 j,
                 i,
@@ -2980,7 +2964,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
     ax_b.set_yticks(range(4), tissue_labels)
     ax_b.set_xlabel("Nonedited tissue (<1%)")
     ax_b.set_ylabel("Edited tissue (≥15%)")
-    ax_b.set_title("Strict state switches are asymmetric", loc="left", fontweight="bold")
+    ax_b.set_title(
+        "Strict state switches are asymmetric", loc="left", fontweight="bold"
+    )
     colorbar = figure.colorbar(image_plot, ax=ax_b, fraction=0.046, pad=0.04)
     colorbar.set_label("Switches per 10,000 shared sites", fontsize=6.8)
     colorbar.ax.tick_params(labelsize=6.4)
@@ -3016,7 +3002,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
                 & stability.metric.eq(metric)
             ]
             if len(row) != 1:
-                raise RuntimeError(f"missing pair-stability row: {first}, {second}, {metric}")
+                raise RuntimeError(
+                    f"missing pair-stability row: {first}, {second}, {metric}"
+                )
             ordered.append(row.iloc[0])
         values = pd.DataFrame(ordered)
         ax_c.errorbar(
@@ -3034,7 +3022,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
     ax_c.set_yticks(y, pair_labels)
     ax_c.set_xlim(0.5, 1.0)
     ax_c.axvline(0, color=COLORS["ink"], lw=0.6)
-    ax_c.set_xlabel("Spearman correlation across Alu pairs (95% pair-bootstrap interval)")
+    ax_c.set_xlabel(
+        "Spearman correlation across Alu pairs (95% pair-bootstrap interval)"
+    )
     ax_c.set_title(
         "Substrate rankings remain correlated across tissues on identical site sets",
         loc="left",
@@ -3076,7 +3066,13 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "target_local",
         "fixed_ensemble",
     ]
-    model_labels = ["Internal\nreference", "Pair-first", "Focal", "Target-\ncentered", "Fixed\nensemble"]
+    model_labels = [
+        "Internal\nreference",
+        "Pair-first",
+        "Focal",
+        "Target-\ncentered",
+        "Fixed\nensemble",
+    ]
     x = np.arange(len(models))
     for context, color, marker in [
         ("Liver", COLORS["teal"], "o"),
@@ -3119,7 +3115,8 @@ def supplementary_figures(output: Path, source: Path) -> None:
     for row in pair_size.itertuples(index=False):
         ax_b.text(
             row.raw_site_count_median,
-            row.pair_gain_vs_site_balanced + (0.006 if row.pair_gain_vs_site_balanced >= 0 else -0.009),
+            row.pair_gain_vs_site_balanced
+            + (0.006 if row.pair_gain_vs_site_balanced >= 0 else -0.009),
             f"Q{int(row.raw_site_count_quintile) + 1}",
             ha="center",
             va="center",
@@ -3128,7 +3125,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
         )
     ax_b.set_xlabel("Median eligible sites per pair")
     ax_b.set_ylabel("Log-loss gain from pair-first\n(>0 favors pair-first)")
-    ax_b.set_title("Pair-first learning redistributes gain", loc="left", fontweight="bold")
+    ax_b.set_title(
+        "Pair-first learning redistributes gain", loc="left", fontweight="bold"
+    )
     panel_label(ax_b, "B")
     clean_axis(ax_b, "both")
 
@@ -3183,7 +3182,9 @@ def supplementary_figures(output: Path, source: Path) -> None:
         fontweight="bold",
         y=0.995,
     )
-    figure.subplots_adjust(left=0.11, right=0.98, top=0.91, bottom=0.10, hspace=0.48, wspace=0.38)
+    figure.subplots_adjust(
+        left=0.11, right=0.98, top=0.91, bottom=0.10, hspace=0.48, wspace=0.38
+    )
     save(figure, output, "figureS8_post_analysis_diagnostics")
 
 

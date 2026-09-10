@@ -208,7 +208,151 @@ FAMILIES = {
         "A refined PNAS-style conceptual asset for transcript and cellular context at matched "
         "scale. Inside a simple mammalian cell silhouette, show one folded RNA substrate, a few "
         "translucent regulator forms, and two softly diverging transcript isoform paths. Keep "
-        "the scene sparse, biologically restrained, and unmistakably about RNA rather than DNA."
+        "the scene sparse, biologically restrained, and unmistakably about RNA rather than DNA.",
+    ],
+    "pooled_human_context": [
+        "A compact scientific emblem for a pooled human-tissue endpoint. Arrange four refined "
+        "miniature tissue cues—arterial vessel cross-section, brain, liver, and skeletal muscle—"
+        "as balanced quadrants within one restrained circular analytical field. Equal visual weight, "
+        "coherent silhouette, no fifth tissue, no mixing vessel, no mathematical symbol, and no text.",
+        "A polished genomics-figure asset representing aggregation across four human tissues: artery, "
+        "brain, liver, and skeletal muscle appear as four recognizable but subtle sectors of one unified "
+        "round mosaic. The composition communicates pooling without implying a biological mixture. No "
+        "arrows, sigma symbol, labels, numbers, test tube, or clinical iconography.",
+        "An elegant circular endpoint glyph composed of four equally weighted biomedical motifs: vessel "
+        "wall, cerebral cortex, liver lobe, and striated muscle. Integrate the motifs through a shared thin "
+        "boundary and restrained palette while keeping each recognizable. No text, equations, arrows, "
+        "sample container, pie-chart percentages, or decorative badge treatment.",
+    ],
+    "whole_duplex_graph_view": [
+        "A compact scientific representation of a whole RNA duplex as a sequence–structure graph. Show "
+        "one imperfect folded RNA substrate with fine backbone contours and base-pair contacts, overlaid "
+        "with a restrained translucent network of local adjacency and pairing connections. The RNA remains "
+        "primary; the graph overlay is subtle and analytical. No arrows, labels, boxes, DNA helix, or chart.",
+        "A high-end editorial insert showing the global computational view of an imperfect dsRNA substrate. "
+        "Render a continuous folded RNA contour with several paired contacts and a small bulge; integrate "
+        "delicate nodes at nucleotides and two classes of hairline connections along and across the stem. "
+        "Avoid a generic node cloud, DNA icon, architecture diagram, arrows, and text.",
+        "A refined molecular-computation vignette: a horizontal imperfect RNA duplex translated into a "
+        "structure-aware graph through small backbone nodes and elegant pairing arcs embedded directly in "
+        "the molecule. Use a compact low-profile silhouette and subtle depth. No disconnected network, "
+        "regular ladder, DNA twist, labels, equations, or pipeline arrows.",
+        "A horizontal analytical portrait of one continuous RNA strand folded back into two uneven, nearly "
+        "parallel arms. Join the arms with sparse dotted pairing contacts, include one bulge and one loop, "
+        "and place tiny graph nodes directly on the backbone with curved adjacency and cross-arm edges. The "
+        "shape must be an irregular planar RNA fold, never a spiral helix, DNA ladder, or detached node cloud.",
+        "A refined sequence-structure graph embedded in a folded RNA substrate: one charcoal-and-teal RNA "
+        "contour bends into a broad U and returns as an offset paired arm, with subtle nucleotide nodes, "
+        "backbone edges, and a few cross-strand pairing arcs. Low-profile horizontal silhouette, no twist, "
+        "no canonical helix, no colored base bars, no separate network, and no labels.",
+        "A PNAS-style computational-biology insert showing an imperfect RNA hairpin as an integrated graph. "
+        "Use two softly curved horizontal backbone tracks connected by delicate nonuniform pairing contacts; "
+        "embed small analytical nodes and hairline edges in the tracks. Include asymmetry and a small bulge. "
+        "Absolutely no corkscrew, DNA double helix, regular ladder, disconnected mesh, arrows, or text.",
+    ],
+    "pair_weighting_editorial": [
+        "A compact conceptual scientific asset for equal weighting of RNA substrates. Show two distinct "
+        "imperfect RNA duplexes side by side: one bears only a few small site marks and the other bears many, "
+        "yet each rests on an equal-size restrained contribution pedestal. Symmetric composition without a "
+        "literal balance scale. No arrows, labels, numbers, boxes, charts, or quantitative values.",
+        "A polished editorial comparison of two RNA duplex substrates with unequal densities of tiny target "
+        "marks but equal visual emphasis as independent units. Use matching circular support halos beneath "
+        "both substrates to communicate equal contribution. No balance-scale clipart, arrows, mathematical "
+        "symbols, text, or implied measured effect size.",
+        "A small publication-quality concept for pair-first learning: two separate folded RNA substrates, "
+        "one site-rich and one site-sparse, are presented as equally prominent biological units in a balanced "
+        "two-column composition. Fine scientific linework, no weighing scale, no arrows, labels, numerals, "
+        "data plot, or decorative background.",
+        "Two separate planar folded-RNA substrates in a balanced horizontal composition. Each is one continuous "
+        "strand folded into an irregular paired hairpin with sparse dotted contacts. The left substrate has three "
+        "small amber site dots and the right has many; place both over identical thin oval support shadows to "
+        "signal equal analytical weight. No helices, DNA ladders, pedestals, scales, arrows, text, or numbers.",
+        "A clean editorial concept of pair-first sampling: two unequal RNA hairpin substrates, one compact and "
+        "site-sparse and one longer and site-rich, occupy identical visual frames and have identical optical "
+        "weight. Render the RNA as irregular near-planar fold-back contours with a few pairing dashes. Avoid "
+        "DNA twists, laboratory stands, balance-scale metaphors, boxes, labels, and quantitative decoration.",
+        "A publication-quality paired-substrate vignette with two distinct imperfect dsRNA fold-backs side by "
+        "side, both drawn at equal prominence. Mark several candidate sites on each, with visibly different "
+        "site counts but no implied outcome. Use elegant asymmetric RNA contours and delicate pairing cues; no "
+        "canonical double helices, platforms, arrows, equations, labels, or charts.",
+    ],
+    "target_local_editorial": [
+        "A compact target-local RNA representation for a scientific figure. Show an imperfect RNA duplex "
+        "with one central amber adenosine paired to one teal partner; a refined translucent optical aperture "
+        "isolates a short local neighborhood while the flanking duplex softly recedes. No magnifying-glass "
+        "handle, arrows, brackets, labels, DNA helix, or toy-like geometric blocks.",
+        "A high-end molecular-biology vignette of target-centered local information: a short A-form RNA stem "
+        "with one amber focal nucleotide and its directly opposed teal partner, surrounded by a crisp local "
+        "window and softly attenuated flanks. Keep the window as subtle depth and light, not a drawn box. No "
+        "text, arrows, glow, DNA iconography, or detached tokens.",
+        "A refined close-focus scientific illustration of one paired site within an imperfect RNA stem. The "
+        "central amber and teal nucleotides are structurally connected and sharply resolved; nearby bases "
+        "remain visible, while the distant substrate fades gently. Horizontal composition, no lens icon, "
+        "labels, brackets, arrows, DNA twist, or decorative halo.",
+        "A precise horizontal local RNA fold shown nearly flat: two gently curved backbone tracks face one "
+        "another across six delicate pairing contacts. At the center, one amber nucleotide is directly opposite "
+        "one teal nucleotide; the two outermost contacts fade softly. Include one small bulge. No helix twist, "
+        "DNA ladder, circular lens, glow, geometric molecule tokens, arrows, or text.",
+        "A high-end editorial close-up of a target-centered RNA neighborhood. One continuous RNA contour folds "
+        "into a short asymmetric stem; an amber target on one arm faces a teal partner on the other, connected "
+        "by a subtle dotted pairing cue. Keep the immediate neighborhood crisp and the transcript tails faint. "
+        "No spiral helix, atom model, magnifying glass, border, labels, or callout symbols.",
+        "A compact planar dsRNA detail suitable for a journal architecture figure: two uneven antiparallel RNA "
+        "arms, five sparse pairing dashes, a central amber target aligned to a teal partner, and a single nearby "
+        "mismatch. Fine scientific linework with restrained depth. Never depict a corkscrew, DNA helix, regular "
+        "ladder, nucleobase chemistry diagram, lens, arrows, or text.",
+    ],
+    "substrate_context_editorial": [
+        "A compact multiscale biology asset linking RNA substrate organization to cellular context. Place one "
+        "imperfect folded RNA transcript sharply in the foreground, its long single-stranded path extending "
+        "toward a restrained translucent mammalian cell and nucleus behind it. Include sparse generic RNA-"
+        "binding regulator forms. No DNA, chromosome, chromatin fibers, arrows, labels, or causal mechanism.",
+        "A polished PNAS-style concept of substrate and context: one continuous transcript forms an imperfect "
+        "dsRNA stem, continues through a long loop, and sits within a softly indicated cell/nuclear environment "
+        "with a few generic regulator silhouettes. RNA must dominate. No DNA helix, organelle catalogue, "
+        "arrows, labels, or quantitative encoding.",
+        "A refined scientific vignette spanning transcript organization and cellular state. Show a paired RNA "
+        "substrate connected to a longer transcript contour, with a subtle cell boundary, nuclear field, and "
+        "two generic protein shapes behind it. Preserve spatial layering without implying causality. Exclude "
+        "DNA, chromosomes, text, arrows, charts, and decorative scenery.",
+        "A compact RNA-centered cellular-context asset: a soft partial mammalian cell and nucleus sit behind one "
+        "dominant orange transcript that forms a small irregular fold-back stem with dotted pairing contacts. "
+        "Add two restrained generic RNA-binding shapes and one faint alternative transcript path. The RNA must "
+        "be a flexible contour, not a helix. No DNA, chromosomes, chromatin, labels, arrows, or organelle collage.",
+        "A refined transcript-state vignette on transparency. Show one long single-stranded RNA path passing "
+        "through a subtle nuclear field, with an asymmetric local hairpin, a small bulge, two translucent isoform "
+        "branches, and sparse protein silhouettes. Keep the cell boundary secondary and the RNA unmistakable. "
+        "No regular double helix, genomic material, transcription machinery, arrows, symbols, or text.",
+        "A PNAS-style conceptual illustration of unresolved matched cellular context: a continuous RNA contour "
+        "with one imperfect paired fold occupies the foreground; behind it are a quiet cell/nuclear silhouette, "
+        "two alternative transcript routes, and softly varying generic regulators. Preserve biological restraint. "
+        "Exclude DNA-like twists, chromosomes, chromatin strands, labels, arrows, question marks, and scenery.",
+    ],
+    "complementary_views_editorial": [
+        "A compact scientific concept for complementary global and local views of the same RNA substrate. "
+        "Show one complete imperfect RNA duplex and, beside it, a refined close-up of its amber/teal target "
+        "pair, joined visually by shared color and a subtle overlapping analytical field. No arrows, labels, "
+        "equations, boxes, lens handle, or final prediction symbol.",
+        "A polished editorial asset showing two coordinated representations of one RNA: a full folded duplex "
+        "and a target-centered paired-site detail, balanced in parallel and unified by a restrained central "
+        "overlap. The two views must remain distinct but clearly related. No arrows, text, plus signs, network "
+        "pipeline, or quantitative marks.",
+        "A high-end molecular information-flow vignette with a whole RNA substrate on one side and an enlarged "
+        "local target/partner neighborhood on the other. Use matching backbone colors and a subtle shared "
+        "contour to communicate complementarity without a causal arrow. No labels, boxes, equations, DNA "
+        "helix, or decorative glow.",
+        "Two coordinated scientific views of one planar folded RNA substrate arranged side by side: a complete "
+        "irregular fold-back with sparse pairing contacts, and a close target-centered detail with an amber site "
+        "facing a teal partner. Use the same backbone palette and matching curvature so their relation is clear. "
+        "No twisted helices, DNA ladders, magnifying glass, arrows, plus sign, labels, boxes, or equations.",
+        "A refined paired visual for global and local RNA representations. On the left, show the entire low-profile "
+        "asymmetric RNA hairpin; on the right, show only its local paired neighborhood at larger scale, centered "
+        "on amber and teal nucleotides. Balance both views on one baseline with open space between. No DNA twist, "
+        "lens cone, pipeline connector, text, symbols, glow, or decorative background.",
+        "A publication-grade molecular information asset containing two separate but stylistically matched RNA "
+        "illustrations: one whole imperfect duplex and one cropped target/partner neighborhood. Render both as "
+        "gently curved near-planar RNA contours with delicate pairing cues. No spiral helices, DNA iconography, "
+        "magnifier, arrows, borders, equations, labels, or protein complexes.",
     ],
 }
 
@@ -266,6 +410,48 @@ SELECTIONS = {
         "rationale": (
             "RNA remains visually dominant within a restrained cell/nuclear context and no "
             "DNA helix, chromosome, or quantitative encoding is present."
+        ),
+    },
+    "pooled_human_context": {
+        "candidate": 1,
+        "rationale": (
+            "The artery, brain, liver, and muscle cues remain equally weighted and "
+            "recognizable within one pooled endpoint without a mathematical badge."
+        ),
+    },
+    "whole_duplex_graph_view": {
+        "candidate": 4,
+        "rationale": (
+            "The integrated nucleotide nodes and backbone/pairing edges follow one "
+            "irregular planar RNA fold without canonical DNA-helix imagery."
+        ),
+    },
+    "pair_weighting_editorial": {
+        "candidate": 6,
+        "rationale": (
+            "Two distinct imperfect RNA substrates carry different site densities at "
+            "matched visual weight, directly supporting the pair-first concept."
+        ),
+    },
+    "target_local_editorial": {
+        "candidate": 4,
+        "rationale": (
+            "The nearly planar local stem makes the central amber target and teal partner "
+            "immediately legible while flanking context recedes cleanly."
+        ),
+    },
+    "substrate_context_editorial": {
+        "candidate": 6,
+        "rationale": (
+            "A dominant continuous RNA contour and imperfect fold sit against a restrained "
+            "cellular field without DNA, chromatin, or causal iconography."
+        ),
+    },
+    "complementary_views_editorial": {
+        "candidate": 4,
+        "rationale": (
+            "The full folded substrate and isolated target-pair detail remain visually "
+            "distinct and coordinated without an imposed processing arrow."
         ),
     },
 }
@@ -343,7 +529,9 @@ def curate_assets(output_dir: Path) -> None:
             alpha = rgba.getchannel("A")
             bounds = alpha.getbbox()
             if bounds is None:
-                raise RuntimeError(f"Selected asset has an empty alpha channel: {source}")
+                raise RuntimeError(
+                    f"Selected asset has an empty alpha channel: {source}"
+                )
             rgba.crop(bounds).save(target)
         selections.append(
             {

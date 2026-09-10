@@ -35,7 +35,7 @@ def locked_metrics() -> None:
     df = pd.read_csv(SOURCE / "figure4_locked_metrics.csv")
     model_names = {
         "published_baseline_reproduced": "AdarEdit",
-        "adarpro_pair_local_equal_logit_ensemble": "ADARPro",
+        "adarpro_pair_local_equal_logit_ensemble": "Selected predictor",
     }
     lines = []
     for _, row in df.iterrows():
@@ -657,7 +657,7 @@ def false_positive_table() -> None:
         "table_s9_false_positives.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation-selected thresholds. The final column is a post-test descriptive analysis that rethresholds ADARPro to match published-baseline recall exactly.}\label{tab:falsepositives}
+\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation-selected thresholds. The final column is a post-test descriptive analysis that rethresholds the selected predictor to match published-baseline recall exactly.}\label{tab:falsepositives}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
