@@ -473,6 +473,74 @@ FAMILIES = {
         "fade toward the edges to emphasize local selection. The structure must remain biologically schematic and RNA-"
         "specific. No text, arrow, bracket, DNA helix, protein, or numerical mark.",
     ],
+    "benchmark_pair_unit_editorial": [
+        "A publication-grade horizontal illustration of one complete inverted-Alu RNA substrate as one analytical unit. "
+        "Show one continuous transcript folding back into an elongated, imperfect A-form RNA duplex with unequal arms, "
+        "small bulges, mismatches, and short single-stranded tails. Leave three visually clear nucleotide positions along "
+        "the upper paired arm where precise vector site markers can later be overlaid. Elegant low-profile composition, "
+        "biologically legible at journal-thumbnail size. No DNA double helix, chromosome, protein, text, labels, arrows, "
+        "numbers, brackets, chart marks, or background panel.",
+        "A refined molecular-biology plate of a complete inverted-repeat RNA pair. One flexible RNA contour bends into two "
+        "long antiparallel paired arms, with delicate base-pair contacts, one asymmetric internal loop, and several exposed "
+        "adenosine-sized positions. Keep the structure almost planar and horizontally elongated so colored vector markers "
+        "can be integrated afterward. No B-DNA twist, rigid ladder, enzyme, letters, arrows, labels, data, or scenery.",
+        "A high-end editorial cutaway of one endogenous inverted-Alu dsRNA substrate. Depict two transcript-derived arms as "
+        "a continuous RNA fold with fine ribose-phosphate rails, irregular paired contacts, two modest bulges, and open "
+        "single-stranded ends. The complete substrate should read immediately as one coherent unit, with three uncluttered "
+        "candidate-site locations distributed along the stem for later vector annotation. No DNA iconography, atom model, "
+        "protein, text, arrows, labels, charts, or decorative background.",
+        "A sophisticated PNAS-style RNA substrate vignette: a complete inverted-repeat transcript folds into a graceful, "
+        "imperfect A-form duplex, with subtle groove depth, sparse nucleotide detail, asymmetric mismatches, and three clean "
+        "site positions visible on one arm. Use restrained scientific linework and a broad horizontal silhouette that remains "
+        "clear after reduction. Avoid canonical DNA helices, colorful ladder bars, proteins, labels, arrows, numbers, boxes, "
+        "and ornamental effects.",
+        "A continuous pre-mRNA drawn as one fine charcoal-and-teal contour folds back horizontally to form a long imperfect "
+        "inverted-Alu duplex. Use delicate short pairing contacts rather than colored base blocks, preserve two asymmetric "
+        "bulges and loose transcript tails, and leave three open nucleotide positions for later vector site markers. Flat "
+        "editorial molecular illustration with restrained depth, no bead chain, no DNA twist, no ladder, no protein, no text, "
+        "no arrows, and no decorative scene.",
+        "A precise low-profile scientific illustration of one complete inverted-repeat RNA substrate, viewed almost flat. "
+        "Two unequal regions of the same thin transcript contour pair through sparse hydrogen-bond dashes, interrupted by a "
+        "mismatch and one small internal loop. The form should be elegant and clearly RNA, with no colored nucleotide beads or "
+        "rigid bars. Leave three clear positions along the paired region for vector overlays. No DNA helix, labels, arrows, "
+        "protein, chart, border, or background.",
+    ],
+    "development_fold_pool_editorial": [
+        "A compact editorial scientific asset representing a collection of independent RNA duplex substrates. Arrange five "
+        "small but refined imperfect folded-RNA silhouettes in a shallow horizontal constellation, each distinct in contour "
+        "but equal in visual weight, with ample transparent space between them for later vector fold labels. No containers, "
+        "boxes, arrows, numbers, text, DNA helices, charts, or implied performance values.",
+        "A polished miniature cohort of five independent inverted-repeat RNA substrates laid out from left to right. Each is "
+        "an elegant low-profile imperfect dsRNA fold with slightly different bulges and stem lengths; all use the same scale "
+        "and scientific illustration style. Keep generous gaps for vector annotations. No labels, numerals, arrows, panels, "
+        "data marks, proteins, or B-DNA imagery.",
+        "Five separate RNA-duplex units in one wide publication-quality asset, designed to sit beneath a vector brace that "
+        "defines pair-disjoint folds. Render each unit as a continuous transcript forming a small imperfect paired stem, not "
+        "as a generic icon. Equal prominence, restrained depth, clean transparent background. No text, boxes, arrows, charts, "
+        "DNA double helices, or decorative network motifs.",
+        "A wide editorial field containing exactly five small independent inverted-Alu RNA substrates. Each substrate is a "
+        "thin continuous transcript folded into a low horizontal imperfect duplex with sparse pairing dashes, a different "
+        "minor bulge, and soft single-stranded tails. Keep all five equal in size and separated by generous blank space. No "
+        "vertical hairpins, DNA helices, colored base ladders, boxes, numbers, labels, arrows, charts, or background decoration.",
+        "Exactly five refined planar folded-RNA substrates arranged in one horizontal row for a journal methods figure. Each "
+        "is an irregular, low-profile fold-back contour with two short paired arms and one tiny mismatch; vary the contours "
+        "subtly while preserving equal visual weight. Use fine charcoal, muted teal, and very sparse amber accents. No toy "
+        "icons, no U-shaped hairpins, no B-DNA twist, no rigid ladder, no text, numerals, arrows, containers, or chart marks.",
+    ],
+    "frozen_specification_editorial": [
+        "A compact publication-grade conceptual asset for a frozen computational specification. Show a precisely aligned "
+        "stack of thin analytical layers containing subtle RNA-graph, checkpoint, threshold, and hash-like visual motifs, "
+        "held inside a restrained faceted crystalline envelope. It must read as a sealed reproducible specification rather "
+        "than a padlock or software button. No text, letters, numbers, arrows, UI card, chart, DNA, or laboratory apparatus.",
+        "A refined editorial visualization of a computational model specification fixed before evaluation: several slim "
+        "coherent layers—RNA graph representation, parameter mesh, threshold trace, and provenance marks—registered into one "
+        "crisp immutable bundle with a subtle cool crystalline edge. Scientific and understated, not a lock icon. No text, "
+        "numerals, arrows, boxes, interface controls, data values, or biological mechanism.",
+        "A high-end scientific motif for a frozen analysis specification. Depict a small ordered bundle of translucent "
+        "technical sheets with consistent RNA-graph and model-state cues, enclosed by one precise cool-toned boundary that "
+        "signals fixation and provenance. Compact silhouette with open space for vector arrows. Avoid padlocks, snowflakes, "
+        "buttons, labels, text, equations, charts, DNA helices, or decorative geometry unrelated to analysis.",
+    ],
 }
 
 SELECTIONS = {
@@ -620,6 +688,27 @@ SELECTIONS = {
         "rationale": (
             "The central opposing nucleotides and surrounding asymmetric stem remain "
             "visible at small scale; alternatives lost the paired-neighborhood context."
+        ),
+    },
+    "benchmark_pair_unit_editorial": {
+        "candidate": 6,
+        "rationale": (
+            "The continuous, low-profile transcript contour reads as one complete RNA "
+            "substrate and leaves a clean paired region for controlled vector site markers."
+        ),
+    },
+    "development_fold_pool_editorial": {
+        "candidate": 4,
+        "rationale": (
+            "Five separate horizontal RNA substrates remain visually equal and compact "
+            "enough to identify the pair pool without turning the fold strip into clipart."
+        ),
+    },
+    "frozen_specification_editorial": {
+        "candidate": 2,
+        "rationale": (
+            "The layered analytical bundle conveys a fixed specification and provenance "
+            "without using a padlock, software control, or biological mechanism metaphor."
         ),
     },
 }

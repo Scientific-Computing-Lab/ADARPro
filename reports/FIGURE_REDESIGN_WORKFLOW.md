@@ -88,12 +88,24 @@ status, explanatory meaning, and all directional relationships are supplied by
 the vector compositor. This prevents generated styling from silently becoming
 a scientific claim.
 
+For the benchmark/evaluation overview, six complete-pair candidates, five
+development-pool candidates, and three frozen-specification candidates were
+generated. DNA-like duplexes, toy hairpins, padlocks, and badge-like treatments
+were rejected. The retained assets are a continuous low-profile inverted-Alu
+RNA contour, five equal horizontal substrate motifs, and a layered analytical
+bundle. Site states, fold identities, split counts, controls, uncertainty, and
+the one-time evaluation path are all added programmatically.
+
 ## Figure-specific composition
 
 - **Figure 1:** the curated duplex and nuclear-context assets anchor three
   information scales; vector rules, labels, and convergent arrows express the
   inferential hierarchy and the held-out evaluation timeline.
-- **Figure 2:** tissue and marine-lineage strips orient the scope of the
+- **Benchmark/evaluation overview:** the complete-pair asset carries vector
+  edited, nonedited, and intermediate markers; the five-substrate motif anchors
+  the pair-disjoint folds; the layered bundle marks the frozen specification.
+  All evaluation paths and evidence semantics remain vector controlled.
+- **Scope figure:** tissue and marine-lineage strips orient the scope of the
   within-context and transfer matrices. They encode dataset identity only.
 - **Figure 3:** a subdued latent-context vignette marks the transition from
   measured inputs to unresolved state beside the complete evidence map; the

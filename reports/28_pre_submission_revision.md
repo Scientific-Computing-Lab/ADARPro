@@ -38,6 +38,9 @@ policy-compliant artwork before PNAS submission:
 
 - LaTeX Figure 1, `figure0_search_space.svg`: `rna_substrate_editorial`,
   `search_context_scale`, and `target_local_editorial`.
+- LaTeX Figure 2, `figure1_systematic_dissection.svg`:
+  `benchmark_pair_unit_editorial`, `development_fold_pool_editorial`, and
+  `frozen_specification_editorial`.
 - LaTeX Figure 3, `figure2_sequence_scope.svg`: `human_contexts`,
   `pooled_human_context`, and `marine_lineages`.
 - LaTeX Figure 4, `figure2_evidence_map.svg`: `pair_weighting_editorial`,
@@ -49,11 +52,11 @@ policy-compliant artwork before PNAS submission:
 - LaTeX Figure 6, `figure4_locked_validation.svg`: `rna_substrate_editorial`,
   `substrate_organization`, and `matched_cell_state`.
 
-The revised LaTeX Figure 2, `figure1_systematic_dissection.svg`, is fully
-programmatic vector artwork and contains no generated sub-asset. The SI figures
-are quantitative, programmatically rendered graphics and do not use generated
-illustration assets. The complete generation prompts, candidate choices, and
-hashes remain in `paper/figure_assets/` and
+All generated components are traced into SVG paths before placement; labels,
+arrows, counts, thresholds, and evaluation logic remain programmatic vector
+artwork. The SI figures are quantitative, programmatically rendered graphics
+and do not use generated illustration assets. The complete generation prompts,
+candidate choices, and hashes remain in `paper/figure_assets/` and
 `paper/source_tables/figure_source_manifest.csv` for provenance.
 
 Before submission, replace the listed components and then remove or update the

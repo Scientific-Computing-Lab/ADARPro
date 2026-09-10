@@ -879,12 +879,12 @@ def figure_search_space(output: Path, source: Path) -> None:
 
 def figure1(output: Path, source: Path) -> None:
     """Render the benchmark unit and the two distinct evaluation regimes."""
-    figure = plt.figure(figsize=(7.15, 3.80))
+    figure = plt.figure(figsize=(7.15, 4.02))
     grid = figure.add_gridspec(
         1,
         3,
-        width_ratios=[0.96, 1.18, 1.03],
-        wspace=0.20,
+        width_ratios=[1.03, 1.30, 1.20],
+        wspace=0.17,
     )
     ax_a = figure.add_subplot(grid[0, 0])
     ax_b = figure.add_subplot(grid[0, 1])
@@ -896,423 +896,537 @@ def figure1(output: Path, source: Path) -> None:
 
     panel_label(ax_a, "A")
     ax_a.set_title(
-        "Observations are nested\nwithin RNA duplexes",
+        "Sites are nested within\ncomplete RNA substrates",
         loc="left",
         fontweight="bold",
     )
-    ax_a.axhspan(0.08, 0.91, color="#F5F8FA", zorder=0)
+    ax_a.plot([0.02, 0.98], [0.900, 0.900], color="#D7E0E4", lw=0.75)
+    ax_a.plot(
+        [0.02, 0.265],
+        [0.900, 0.900],
+        color=COLORS["blue"],
+        lw=2.4,
+        solid_capstyle="round",
+    )
     ax_a.text(
-        0.055,
+        0.02,
         0.855,
-        "ONE STATISTICAL UNIT",
+        "ONE COMPLETE PAIR",
         ha="left",
-        va="top",
-        fontsize=6.1,
+        va="center",
+        fontsize=6.15,
+        fontweight="bold",
+        color=COLORS["navy"],
+    )
+    ax_a.text(
+        0.98,
+        0.855,
+        "884 PAIRS",
+        ha="right",
+        va="center",
+        fontsize=6.15,
         fontweight="bold",
         color=COLORS["blue"],
     )
-    draw_rna_duplex(
-        ax_a,
-        0.065,
-        0.935,
-        0.710,
-        0.115,
-        COLORS["navy"],
-        target_color=COLORS["amber"],
-        partner_color=COLORS["teal"],
-        n_pairs=13,
-        linewidth=1.15,
+    ax_a.text(
+        0.02,
+        0.815,
+        "inverted-Alu RNA substrate",
+        ha="left",
+        va="center",
+        fontsize=5.7,
+        color=COLORS["gray"],
     )
+    add_asset(
+        ax_a,
+        "benchmark_pair_unit_editorial",
+        (0.035, 0.570, 0.930, 0.225),
+        zorder=1,
+        trim=True,
+    )
+    # Vector markers carry the categorical meaning; the generated duplex is
+    # deliberately label-free and nonquantitative.
+    embedded_sites = [
+        (0.315, 0.674, COLORS["green"], COLORS["green"]),
+        (0.585, 0.662, "white", COLORS["blue"]),
+        (0.785, 0.650, "white", COLORS["gray"]),
+    ]
+    for xpos, ypos, face, edge in embedded_sites:
+        ax_a.scatter([xpos], [ypos], s=62, facecolors="white", edgecolors="white", zorder=5)
+        ax_a.scatter(
+            [xpos],
+            [ypos],
+            s=40,
+            facecolors=face,
+            edgecolors=edge,
+            linewidths=1.0,
+            zorder=6,
+        )
+    ax_a.plot([0.075, 0.925], [0.555, 0.555], color="#8EA2AC", lw=0.75)
+    ax_a.plot([0.075, 0.075], [0.555, 0.572], color="#8EA2AC", lw=0.75)
+    ax_a.plot([0.925, 0.925], [0.555, 0.572], color="#8EA2AC", lw=0.75)
     ax_a.text(
         0.500,
-        0.595,
-        "complete inverted-Alu pair",
+        0.522,
+        "one partition and resampling unit",
         ha="center",
         va="center",
-        fontsize=6.0,
-        color=COLORS["navy"],
-        fontweight="bold",
+        fontsize=5.9,
+        color=COLORS["gray"],
     )
-    branch_y = 0.505
-    ax_a.plot([0.50, 0.50], [0.565, branch_y], color="#9AAAB2", lw=0.75)
-    ax_a.plot([0.20, 0.80], [branch_y, branch_y], color="#9AAAB2", lw=0.75)
-    site_classes = [
-        (0.20, COLORS["green"], "EDITED", r"$\geq 15\%$"),
-        (0.50, COLORS["blue"], "NON-\nEDITED", r"$<1\%$"),
-        (0.80, COLORS["gray"], "INTER-\nMEDIATE", "excluded"),
+    ax_a.text(
+        0.02,
+        0.455,
+        "SITE OBSERVATIONS WITHIN THE PAIR",
+        ha="left",
+        va="center",
+        fontsize=5.8,
+        fontweight="bold",
+        color=COLORS["navy"],
+    )
+    legend = [
+        (0.035, COLORS["green"], COLORS["green"], "EDITED", r"$\geq 15\%$"),
+        (0.350, "white", COLORS["blue"], "NONEDITED", r"$<1\%$"),
+        (0.695, "white", COLORS["gray"], "INTERMEDIATE", "excluded"),
     ]
-    for xpos, color, label, detail in site_classes:
-        ax_a.plot([xpos, xpos], [branch_y, 0.455], color="#9AAAB2", lw=0.75)
-        ax_a.add_patch(
-            Circle(
-                (xpos, 0.435),
-                0.017,
-                facecolor="white",
-                edgecolor=color,
-                lw=1.15,
-                zorder=3,
-            )
+    for xpos, face, edge, label, detail in legend:
+        ax_a.scatter(
+            [xpos],
+            [0.385],
+            s=34,
+            facecolors=face,
+            edgecolors=edge,
+            linewidths=1.0,
+            zorder=3,
         )
         ax_a.text(
-            xpos,
-            0.365,
+            xpos + 0.032,
+            0.396,
             label,
-            ha="center",
+            ha="left",
             va="center",
-            fontsize=6.0,
-            color=color,
+            fontsize=5.7,
             fontweight="bold",
-            linespacing=0.9,
+            color=edge,
         )
         ax_a.text(
-            xpos,
-            0.315,
+            xpos + 0.032,
+            0.365,
             detail,
-            ha="center",
+            ha="left",
             va="center",
-            fontsize=6.0,
+            fontsize=5.7,
             color=COLORS["gray"],
         )
-    ax_a.plot([0.055, 0.945], [0.245, 0.245], color="#CBD4D8", lw=0.75)
+    ax_a.plot([0.02, 0.98], [0.285, 0.285], color="#D7E0E4", lw=0.75)
+    ax_a.plot([0.50, 0.50], [0.105, 0.245], color="#D7E0E4", lw=0.75)
+    ax_a.text(0.04, 0.215, "4 TISSUES", fontsize=6.1, fontweight="bold", color=COLORS["ink"])
+    ax_a.text(0.04, 0.160, "individual endpoints", fontsize=5.8, color=COLORS["gray"])
+    ax_a.text(0.55, 0.215, "COMBINED", fontsize=6.1, fontweight="bold", color=COLORS["ink"])
+    ax_a.text(0.55, 0.160, "pooled endpoint", fontsize=5.8, color=COLORS["gray"])
     ax_a.text(
-        0.055,
-        0.190,
-        "884 COMPLETE PAIRS",
+        0.02,
+        0.075,
+        "Pair identity is preserved in every split and interval.",
         ha="left",
         va="center",
-        fontsize=6.1,
+        fontsize=5.75,
         color=COLORS["navy"],
         fontweight="bold",
-    )
-    ax_a.text(
-        0.055,
-        0.125,
-        "PAIR-GROUPED",
-        ha="left",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["gray"],
-    )
-    ax_a.text(
-        0.945,
-        0.190,
-        "4 TISSUES",
-        ha="right",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["ink"],
-        fontweight="bold",
-    )
-    ax_a.text(
-        0.945,
-        0.125,
-        "COMBINED = POOLED",
-        ha="right",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["gray"],
     )
 
     panel_label(ax_b, "B")
     ax_b.set_title(
-        "Discovery compares candidates\nout of fold", loc="left", fontweight="bold"
+        "Discovery asks whether a branch\nadds information out of fold",
+        loc="left",
+        fontweight="bold",
     )
     split_counts = benchmark_split_table(source).set_index("split")["pair_count"]
     development_pairs = int(split_counts["Train"] + split_counts["Validation"])
+    ax_b.plot([0.02, 0.98], [0.900, 0.900], color="#D7E0E4", lw=0.75)
+    ax_b.plot(
+        [0.02, 0.245],
+        [0.900, 0.900],
+        color=COLORS["teal"],
+        lw=2.4,
+        solid_capstyle="round",
+    )
     ax_b.text(
-        0.04,
+        0.02,
         0.855,
-        f"DEVELOPMENT POOL  ·  {development_pairs} PAIRS",
+        "DEVELOPMENT POOL",
         ha="left",
-        va="top",
-        fontsize=6.1,
-        color=COLORS["blue"],
+        va="center",
+        fontsize=6.15,
+        color=COLORS["navy"],
         fontweight="bold",
     )
-    fold_x = np.linspace(0.04, 0.96, 6)
-    fold_colors = [COLORS["blue"], COLORS["sky"], COLORS["teal"], COLORS["green"], COLORS["purple"]]
-    for index in range(5):
-        x0 = fold_x[index] + 0.006
-        width = fold_x[index + 1] - fold_x[index] - 0.012
-        ax_b.add_patch(
-            plt.Rectangle(
-                (x0, 0.705),
-                width,
-                0.082,
-                facecolor=fold_colors[index],
-                edgecolor="white",
-                lw=0.7,
-                alpha=0.92,
-            )
+    ax_b.text(
+        0.98,
+        0.855,
+        f"{development_pairs} PAIRS",
+        ha="right",
+        va="center",
+        fontsize=6.15,
+        color=COLORS["teal"],
+        fontweight="bold",
+    )
+    add_asset(
+        ax_b,
+        "development_fold_pool_editorial",
+        (0.025, 0.695, 0.950, 0.115),
+        zorder=1,
+        trim=True,
+    )
+    fold_centers = np.linspace(0.108, 0.892, 5)
+    fold_colors = [
+        COLORS["blue"],
+        COLORS["sky"],
+        COLORS["teal"],
+        COLORS["green"],
+        COLORS["purple"],
+    ]
+    fold_edges = np.linspace(0.025, 0.975, 6)
+    for index, (xpos, color) in enumerate(zip(fold_centers, fold_colors), start=1):
+        ax_b.plot(
+            [fold_edges[index - 1] + 0.008, fold_edges[index] - 0.008],
+            [0.682, 0.682],
+            color=color,
+            lw=2.0,
+            solid_capstyle="round",
         )
         ax_b.text(
-            x0 + width / 2,
-            0.746,
-            str(index + 1),
-            color="white",
+            xpos,
+            0.655,
+            f"FOLD {index}",
+            color=color,
             ha="center",
             va="center",
-            fontsize=6.1,
+            fontsize=5.55,
             fontweight="bold",
         )
     ax_b.text(
         0.50,
-        0.650,
-        "five pair-disjoint outer folds · each pair held out once",
+        0.610,
+        "pair-disjoint outer folds  ·  each pair held out once",
         ha="center",
         va="center",
-        fontsize=6.0,
+        fontsize=5.85,
         color=COLORS["gray"],
     )
     ax_b.add_patch(
         FancyArrowPatch(
-            (0.50, 0.620),
-            (0.50, 0.560),
+            (0.50, 0.582),
+            (0.50, 0.542),
             arrowstyle="-|>",
-            mutation_scale=7.5,
+            mutation_scale=7.0,
             color=COLORS["navy"],
-            lw=0.9,
+            lw=0.85,
         )
     )
+    ax_b.text(
+        0.315,
+        0.515,
+        "SAME HELD-OUT PAIRS",
+        ha="center",
+        va="center",
+        fontsize=5.8,
+        color=COLORS["navy"],
+        fontweight="bold",
+    )
     lane_data = [
-        (0.435, COLORS["blue"], "COMMON REFERENCE"),
-        (0.285, COLORS["green"], "CANDIDATE BRANCH"),
+        (0.445, COLORS["blue"], COLORS["pale_blue"], "COMMON REFERENCE"),
+        (0.335, COLORS["green"], COLORS["pale_green"], "CANDIDATE BRANCH"),
     ]
-    for ypos, color, label in lane_data:
-        ax_b.add_patch(
-            Circle((0.15, ypos), 0.023, facecolor="white", edgecolor=color, lw=1.2)
+    for ypos, color, pale, label in lane_data:
+        lane = Polygon(
+            [
+                (0.035, ypos - 0.038),
+                (0.570, ypos - 0.038),
+                (0.625, ypos),
+                (0.570, ypos + 0.038),
+                (0.035, ypos + 0.038),
+            ],
+            closed=True,
+            facecolor=pale,
+            edgecolor="none",
+            zorder=1,
         )
-        ax_b.plot([0.175, 0.69], [ypos, ypos], color=color, lw=1.25)
+        ax_b.add_patch(lane)
+        ax_b.plot([0.035, 0.570], [ypos - 0.038, ypos - 0.038], color=color, lw=1.0)
+        for offset in (0.455, 0.490, 0.525):
+            ax_b.scatter([offset], [ypos], s=9, facecolors=color, edgecolors="none", zorder=3)
+        ax_b.text(
+            0.060,
+            ypos,
+            label,
+            ha="left",
+            va="center",
+            fontsize=5.9,
+            color=color,
+            fontweight="bold",
+        )
         ax_b.add_patch(
             FancyArrowPatch(
-                (0.64, ypos),
-                (0.70, 0.360),
+                (0.620, ypos),
+                (0.715, 0.390),
+                connectionstyle=f"arc3,rad={-0.10 if ypos > 0.39 else 0.10}",
                 arrowstyle="-|>",
-                mutation_scale=7.0,
+                mutation_scale=6.8,
                 color=color,
                 lw=0.9,
             )
         )
-        ax_b.text(
-            0.205,
-            ypos + 0.045,
-            label,
-            ha="left",
-            va="center",
-            fontsize=6.0,
-            color=color,
-            fontweight="bold",
-        )
-    ax_b.add_patch(
-        Circle(
-            (0.735, 0.360),
-            0.050,
-            facecolor="white",
-            edgecolor=COLORS["navy"],
-            lw=1.15,
-            zorder=4,
-        )
-    )
     ax_b.text(
-        0.735,
-        0.360,
-        r"$\Delta$",
+        0.855,
+        0.515,
+        "PAIRED EFFECT",
         ha="center",
         va="center",
-        fontsize=8.2,
+        fontsize=5.9,
         color=COLORS["navy"],
         fontweight="bold",
+    )
+    ax_b.text(
+        0.855,
+        0.480,
+        "with uncertainty",
+        ha="center",
+        va="center",
+        fontsize=5.65,
+        color=COLORS["gray"],
+    )
+    ax_b.plot([0.770, 0.770], [0.322, 0.445], color="#AEBBC1", lw=0.75)
+    ax_b.plot([0.748, 0.928], [0.390, 0.390], color=COLORS["navy"], lw=1.15)
+    ax_b.plot([0.748, 0.748], [0.378, 0.402], color=COLORS["navy"], lw=0.9)
+    ax_b.plot([0.928, 0.928], [0.378, 0.402], color=COLORS["navy"], lw=0.9)
+    ax_b.scatter([0.875], [0.390], s=54, facecolors="white", edgecolors="white", zorder=4)
+    ax_b.scatter(
+        [0.875],
+        [0.390],
+        s=36,
+        facecolors=COLORS["amber"],
+        edgecolors=COLORS["navy"],
+        linewidths=0.8,
         zorder=5,
     )
-    ax_b.add_patch(
-        FancyArrowPatch(
-            (0.785, 0.360),
-            (0.945, 0.360),
-            arrowstyle="-|>",
-            mutation_scale=7.2,
-            color=COLORS["navy"],
-            lw=0.95,
-        )
-    )
+    ax_b.text(0.770, 0.300, "0", ha="center", va="center", fontsize=5.3, color=COLORS["gray"])
     ax_b.text(
-        0.86,
-        0.485,
-        "EFFECT +\nUNCERTAINTY",
+        0.855,
+        0.260,
+        "pair-clustered interval",
         ha="center",
         va="center",
-        fontsize=6.0,
+        fontsize=5.6,
+        color=COLORS["gray"],
+    )
+    ax_b.plot([0.02, 0.98], [0.205, 0.205], color="#D7E0E4", lw=0.75)
+    ax_b.text(
+        0.02,
+        0.153,
+        "MATCHED OR FALSIFICATION CONTROLS",
+        ha="left",
+        va="center",
+        fontsize=5.8,
         color=COLORS["navy"],
         fontweight="bold",
-        linespacing=1.0,
-    )
-    ax_b.plot([0.04, 0.96], [0.205, 0.205], color="#CBD4D8", lw=0.75)
-    ax_b.text(
-        0.04,
-        0.145,
-        "Matched or falsification controls where applicable",
-        ha="left",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["ink"],
     )
     ax_b.text(
-        0.04,
-        0.085,
-        "Pair-clustered intervals · adaptive development evidence",
+        0.02,
+        0.108,
+        "randomized · shifted · capacity-matched controls, where applicable",
         ha="left",
         va="center",
-        fontsize=6.0,
+        fontsize=5.35,
         color=COLORS["gray"],
+    )
+    ax_b.text(
+        0.02,
+        0.058,
+        "Adaptive discovery evidence  ·  canonical test inaccessible",
+        ha="left",
+        va="center",
+        fontsize=5.55,
+        color=COLORS["navy"],
+        fontweight="bold",
     )
 
     panel_label(ax_c, "C")
     ax_c.set_title(
-        "The test evaluates only\nthe frozen synthesis", loc="left", fontweight="bold"
+        "The frozen synthesis enters\nthe held-out test once",
+        loc="left",
+        fontweight="bold",
+    )
+    ax_c.plot([0.02, 0.98], [0.900, 0.900], color="#D7E0E4", lw=0.75)
+    ax_c.plot(
+        [0.02, 0.250],
+        [0.900, 0.900],
+        color=COLORS["red"],
+        lw=2.4,
+        solid_capstyle="round",
     )
     ax_c.text(
-        0.05,
+        0.02,
         0.855,
         "PUBLISHED SPLIT ROLES RESTORED",
         ha="left",
-        va="top",
-        fontsize=6.1,
+        va="center",
+        fontsize=6.15,
         color=COLORS["navy"],
         fontweight="bold",
     )
+    train_count = int(split_counts["Train"])
+    validation_count = int(split_counts["Validation"])
+    test_count = int(split_counts["Test"])
     final_lanes = [
-        (0.700, COLORS["blue"], "TRAIN · 566", "fit selected components"),
-        (0.535, COLORS["green"], "VALIDATION · 139", "select checkpoints + thresholds"),
+        (0.700, COLORS["blue"], f"TRAIN  ·  {train_count}", "fit selected components"),
+        (0.535, COLORS["green"], f"VALIDATION  ·  {validation_count}", "select checkpoints + thresholds"),
     ]
-    freeze_point = (0.650, 0.620)
     for lane_y, color, label, detail in final_lanes:
-        ax_c.plot([0.05, 0.54], [lane_y, lane_y], color=color, lw=1.35)
+        ax_c.plot([0.02, 0.365], [lane_y, lane_y], color=color, lw=1.25)
+        ax_c.scatter(
+            [0.02],
+            [lane_y],
+            s=24,
+            facecolors=color,
+            edgecolors="white",
+            linewidths=0.7,
+            zorder=3,
+        )
         ax_c.add_patch(
             FancyArrowPatch(
-                (0.54, lane_y),
-                freeze_point,
+                (0.365, lane_y),
+                (0.455, 0.625),
+                connectionstyle=f"arc3,rad={-0.08 if lane_y > 0.62 else 0.08}",
                 arrowstyle="-|>",
-                mutation_scale=7.2,
+                mutation_scale=6.8,
                 color=color,
-                lw=0.95,
+                lw=0.9,
             )
         )
         ax_c.text(
-            0.05,
-            lane_y + 0.045,
+            0.02,
+            lane_y + 0.042,
             label,
             ha="left",
             va="center",
-            fontsize=6.0,
+            fontsize=5.9,
             color=color,
             fontweight="bold",
         )
         ax_c.text(
-            0.05,
-            lane_y - 0.045,
+            0.02,
+            lane_y - 0.042,
             detail,
             ha="left",
             va="center",
-            fontsize=6.0,
+            fontsize=5.6,
             color=COLORS["gray"],
         )
-    ax_c.add_patch(
-        Circle(
-            freeze_point,
-            0.034,
-            facecolor="white",
-            edgecolor=COLORS["navy"],
-            lw=1.2,
-            zorder=5,
-        )
+    add_asset(
+        ax_c,
+        "frozen_specification_editorial",
+        (0.420, 0.500, 0.300, 0.285),
+        zorder=2,
+        trim=True,
     )
     ax_c.text(
-        freeze_point[0],
-        freeze_point[1],
-        "LOCK",
-        ha="center",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["navy"],
-        fontweight="bold",
-        zorder=6,
-    )
-    ax_c.text(
-        0.650,
-        0.760,
+        0.420,
+        0.790,
         "FROZEN SPECIFICATION",
-        ha="center",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["navy"],
-        fontweight="bold",
-    )
-    ax_c.text(
-        0.650,
-        0.455,
-        "code · weights · thresholds · hashes",
-        ha="center",
-        va="center",
-        fontsize=6.0,
-        color=COLORS["gray"],
-    )
-    evaluation = (0.790, 0.285)
-    ax_c.add_patch(
-        FancyArrowPatch(
-            (0.665, 0.585),
-            (evaluation[0], evaluation[1] + 0.045),
-            arrowstyle="-|>",
-            mutation_scale=7.4,
-            color=COLORS["navy"],
-            lw=1.0,
-        )
-    )
-    ax_c.plot([0.05, 0.705], [0.285, 0.285], color=COLORS["red"], lw=1.35)
-    ax_c.add_patch(
-        FancyArrowPatch(
-            (0.705, 0.285),
-            (evaluation[0] - 0.045, evaluation[1]),
-            arrowstyle="-|>",
-            mutation_scale=7.4,
-            color=COLORS["red"],
-            lw=1.0,
-        )
-    )
-    ax_c.text(
-        0.05,
-        0.340,
-        "TEST · 179",
         ha="left",
         va="center",
-        fontsize=6.0,
+        fontsize=5.9,
+        color=COLORS["navy"],
+        fontweight="bold",
+    )
+    ax_c.text(
+        0.570,
+        0.465,
+        "code · weights · checkpoints\nthresholds · hashes",
+        ha="center",
+        va="center",
+        fontsize=5.55,
+        color=COLORS["gray"],
+        linespacing=1.2,
+    )
+    ax_c.plot([0.735, 0.735], [0.390, 0.795], color="#AAB8BE", lw=0.85, ls=(0, (2, 2)))
+    ax_c.text(
+        0.765,
+        0.720,
+        "NO RETUNING",
+        ha="left",
+        va="center",
+        fontsize=5.45,
+        fontweight="bold",
+        color=COLORS["gray"],
+    )
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.700, 0.620),
+            (0.805, 0.445),
+            connectionstyle="arc3,rad=-0.08",
+            arrowstyle="-|>",
+            mutation_scale=7.0,
+            color=COLORS["navy"],
+            lw=0.95,
+        )
+    )
+    test_y = 0.300
+    ax_c.plot([0.02, 0.750], [test_y, test_y], color=COLORS["red"], lw=1.25)
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.750, test_y),
+            (0.805, 0.405),
+            connectionstyle="arc3,rad=-0.12",
+            arrowstyle="-|>",
+            mutation_scale=7.0,
+            color=COLORS["red"],
+            lw=0.95,
+        )
+    )
+    ax_c.text(
+        0.02,
+        0.350,
+        f"TEST  ·  {test_count}",
+        ha="left",
+        va="center",
+        fontsize=5.9,
         color=COLORS["red"],
         fontweight="bold",
     )
     ax_c.text(
-        0.05,
-        0.235,
+        0.02,
+        0.255,
         "unseen benchmark pairs",
         ha="left",
         va="center",
-        fontsize=6.0,
+        fontsize=5.65,
         color=COLORS["gray"],
     )
+    evaluation = (0.825, 0.420)
     ax_c.add_patch(
-        Circle(
-            evaluation,
-            0.047,
-            facecolor="#FAEEEE",
+        Polygon(
+            [
+                (evaluation[0], evaluation[1] + 0.052),
+                (evaluation[0] + 0.047, evaluation[1]),
+                (evaluation[0], evaluation[1] - 0.052),
+                (evaluation[0] - 0.047, evaluation[1]),
+            ],
+            closed=True,
+            facecolor="white",
             edgecolor=COLORS["red"],
-            lw=1.2,
+            lw=1.05,
             zorder=5,
         )
     )
     ax_c.text(
         evaluation[0],
         evaluation[1],
-        "TEST",
+        r"$1\times$",
         ha="center",
         va="center",
-        fontsize=6.0,
+        fontsize=6.5,
         color=COLORS["red"],
         fontweight="bold",
         zorder=6,
@@ -1322,33 +1436,53 @@ def figure1(output: Path, source: Path) -> None:
             (evaluation[0] + 0.048, evaluation[1]),
             (0.965, evaluation[1]),
             arrowstyle="-|>",
-            mutation_scale=7.2,
+            mutation_scale=7.0,
             color=COLORS["navy"],
             lw=0.95,
         )
     )
     ax_c.text(
-        0.965,
-        0.355,
+        0.900,
+        0.515,
         "FINAL\nMETRICS",
-        ha="right",
+        ha="left",
         va="center",
-        fontsize=6.0,
+        fontsize=5.8,
         color=COLORS["navy"],
         fontweight="bold",
         linespacing=1.0,
     )
-    ax_c.plot([0.05, 0.965], [0.145, 0.145], color="#CBD4D8", lw=0.75)
     ax_c.text(
-        0.05,
-        0.085,
-        "No retuning · confirms the final synthesis, not each branch",
+        0.900,
+        0.355,
+        "AUROC · AUPRC\nF1 · Brier",
         ha="left",
         va="center",
-        fontsize=6.0,
-        color=COLORS["ink"],
+        fontsize=5.45,
+        color=COLORS["gray"],
+        linespacing=1.15,
     )
-    figure.subplots_adjust(left=0.058, right=0.992, top=0.91, bottom=0.075)
+    ax_c.plot([0.02, 0.98], [0.190, 0.190], color="#D7E0E4", lw=0.75)
+    ax_c.text(
+        0.02,
+        0.125,
+        "One evaluation confirms the synthesis—not each branch.",
+        ha="left",
+        va="center",
+        fontsize=5.75,
+        color=COLORS["navy"],
+        fontweight="bold",
+    )
+    ax_c.text(
+        0.02,
+        0.072,
+        "Train fits; validation fixes checkpoints and thresholds.",
+        ha="left",
+        va="center",
+        fontsize=5.55,
+        color=COLORS["gray"],
+    )
+    figure.subplots_adjust(left=0.058, right=0.992, top=0.915, bottom=0.065)
     save(figure, output, "figure1_systematic_dissection")
 
 

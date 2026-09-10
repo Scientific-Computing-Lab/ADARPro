@@ -253,6 +253,39 @@
       "vector_asset": "paper/figure_assets/selected/search_target_scale.svg",
       "vector_format": "SVG paths (no embedded raster image)",
       "vector_sha256": "56325d521574e5aad8519fea390b40abafe98e4875f0f405aabb9eeb3150b70b"
+    },
+    {
+      "family": "benchmark_pair_unit_editorial",
+      "selected_candidate": 6,
+      "source": "paper/figure_assets/candidates/benchmark_pair_unit_editorial_candidate_06.png",
+      "asset": "paper/figure_assets/selected/benchmark_pair_unit_editorial.png",
+      "rationale": "The continuous, low-profile transcript contour reads as one complete RNA substrate and leaves a clean paired region for controlled vector site markers.",
+      "sha256": "550f4e79abe1ac4a5ec19ab2ca1f78405f257e08714daabbd7dca3669928378d",
+      "vector_asset": "paper/figure_assets/selected/benchmark_pair_unit_editorial.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "473e79237b82249105fac50a30ed781d49c1edb42d12df574bf6ad68e9957978"
+    },
+    {
+      "family": "development_fold_pool_editorial",
+      "selected_candidate": 4,
+      "source": "paper/figure_assets/candidates/development_fold_pool_editorial_candidate_04.png",
+      "asset": "paper/figure_assets/selected/development_fold_pool_editorial.png",
+      "rationale": "Five separate horizontal RNA substrates remain visually equal and compact enough to identify the pair pool without turning the fold strip into clipart.",
+      "sha256": "bef7bb713f332d7a4575003511e05cb217da284849b305992351d1fcfa21a216",
+      "vector_asset": "paper/figure_assets/selected/development_fold_pool_editorial.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "5e0f39089507eb887a2dcade3deb7391e90f179eeecb537ac485f3670bcddb5c"
+    },
+    {
+      "family": "frozen_specification_editorial",
+      "selected_candidate": 2,
+      "source": "paper/figure_assets/candidates/frozen_specification_editorial_candidate_02.png",
+      "asset": "paper/figure_assets/selected/frozen_specification_editorial.png",
+      "rationale": "The layered analytical bundle conveys a fixed specification and provenance without using a padlock, software control, or biological mechanism metaphor.",
+      "sha256": "6171ab4c67144bb48bd18a5162e593d5d18c2f7522a68a30129c1eaf37187516",
+      "vector_asset": "paper/figure_assets/selected/frozen_specification_editorial.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "4e625a458e8c463db46daab4d86867faba53a49714c031179243ad7ff707d673"
     }
   ]
 }
