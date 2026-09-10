@@ -72,6 +72,13 @@ pooled GTEx endpoint, not a fifth tissue.
 | `18_unified_end_to_end_deferred_objective.md` | Deferred integrated-model objective |
 | `19_unified_model_preregistration.md` | Frozen unified architecture, gates, and controls |
 | `20_unified_end_to_end_result.md` | Unified result and development-only rejection |
+| `21_post_analysis_plan.md` | Prespecified use of retained outputs for focused scale diagnostics |
+| `22_focused_post_analysis_results.md` | Within-duplex, tissue-context, pair-weighting, and structural diagnostics |
+| `23_prose_quality_audit.md` | Natural-academic-writing and scientific-precision audit |
+| `24_figure_asset_redesign.md` | Generated-asset curation and vector-first figure redesign |
+| `25_targeted_asset_and_branding_pass.md` | Targeted figure refinement and descriptive model terminology |
+| `26_svg_figure_typography_pass.md` | Vector-only placement and document-matched typography audit |
+| `27_systematic_search_reframing.md` | Biological search-space map, model-sufficiency axis, and anchor figure |
 | `FINAL_REPORT.md` | Complete scientific synthesis |
 
 The append-only machine-readable record is

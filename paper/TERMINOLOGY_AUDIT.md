@@ -6,6 +6,8 @@ The paper and SI use the following terms consistently.
 
 | Concept | Preferred term | Boundary enforced in the manuscript |
 |---|---|---|
+| Search coverage | major biologically defined information scales accessible to the benchmark | ``Systematic'' refers to the explicit substrate, context/realization, target-local, statistical-dependence, and model-sufficiency axes; it never means every determinant in nature was tested. |
+| Secondary AI question | model-sufficiency search | Groups richer supervision, cross-context or multitask learning, richer representations, and capacity or integration; conclusions remain conditional on the tested regime. |
 | Biological RNA object | substrate or duplex | `pair` is reserved for the benchmark/genomic grouping when the statistical unit matters. |
 | Intrinsic RNA property | intrinsic substrate suitability or intrinsic editability | `Intrinsic competence` is avoided in prose because it can sound like a directly measured phenotype. |
 | Cluster identifier | Alu pair / pair ID | Confidence intervals resample pair IDs and retain every site from a sampled pair. |

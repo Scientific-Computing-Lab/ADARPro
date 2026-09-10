@@ -1,38 +1,40 @@
+\begin{landscape}
 \begingroup
-\setlength{\tabcolsep}{4.5pt}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
-\caption{Hypotheses examined and their final scientific disposition. Historical priorities, data sources, leakage risks, selection rules, stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
+\fontsize{6.4}{7.0}\selectfont
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.00}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
+\caption{Search-space coverage and final disposition. Rows group the complete retained campaign by scientific question. ``Not supported'' applies only to the tested measurement and formulation; ``deferred'' means the benchmark lacked a valid matched measurement and is not negative evidence. Exact quantitative effects remain in Table~\ref{tab:evidencemap}; historical priorities, data sources, stopping criteria, and run artifacts remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
 \toprule
-Axis & Hypothesis & Evidence status & Final disposition \\
+Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule
 \endfirsthead
-\multicolumn{4}{l}{\textit{Table continued}}\\
+\multicolumn{7}{l}{\textit{Table continued}}\\
 \toprule
-Axis & Hypothesis & Evidence status & Final disposition \\
+Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule
 \endhead
-Biology & IRAlu architecture + transcript state & Supported pair-level; site panel not supported & Broad panel terminated; geometry retained for pair-level analysis \\
-AI & Expanded high/low supervision & Selected & Selected component \\
-AI & Continuous + ordinal + binary multi-task & Limited & Limited ranking signal; not selected \\
-Biology $\times$ AI & Expanded cross-tissue shared supervision & Limited & Limited shared signal; not selected \\
-Biology $\times$ AI & Cross-fitted all-adenosine substrate profile & Not supported & Terminated after stronger-model control \\
-Biology $\times$ AI & Substrate-wide multi-A + engagement latent & Not supported & Terminated in tested formulation \\
-Biology $\times$ AI & Target-centered ADAR contact geometry & Limited; informed selected model & Advanced to aligned local encoder \\
-AI & Focal-node + global graph pooling & Limited; complementary & Validated fallback/complementary view \\
-AI & Target-local multiscale CNN + graph fusion & Selected & Selected component \\
-Biology & Chromatin/co-transcriptional state & Limited & Bulk peak-overlap formulation terminated \\
-Biology $\times$ AI & Hierarchical engagement $\times$ site chemistry & Limited & Stopped for futility \\
-Biology & In vivo/ensemble RNA structure & Deferred & Deferred: coverage/context mismatch \\
-Biology $\times$ AI & Donor/sample-level multimodal model & Deferred & Deferred: no matched donor outcomes \\
-AI & Self-supervised IRAlu pretraining & Deferred & Deferred: corpus not benchmark-ready \\
-AI & Frozen RNA foundation-model fusion & Not supported & Terminated after 150M-model confirmation \\
-AI & Graph Transformer / GATv2 multi-scale encoder & Not pursued; superseded & Not pursued after target-aligned lower-capacity gain \\
-Biology & ADAR isoform/IFN/localization state & Deferred & Deferred: no matched state/outcomes \\
-Biology & Cell-matched perturbation RBP effects & Deferred & Deferred: matched perturbation data unavailable \\
-AI & Fixed prediction-level equal-logit integration & Selected & Selected final integration \\
-AI $\times$ Biology & Unified end-to-end representation learning & Not supported & Terminated after preregistered primary \\
-AI & Larger/deeper GNN alone & Not supported & Terminated \\
-Biology & Generic RBP binding $\times$ bulk GTEx & Not supported & Terminated \\
+Intrinsic substrate & How much is recoverable from the duplex itself? & Whole-duplex sequence and predicted secondary structure & Compact AdarEdit sequence--structure graph; pair-disjoint benchmark & Supported reference\newline\textit{Retained benchmark characterization} & Substantial within-context signal; transfer is structured but not universal & Reference for all incremental tests \\
+Intrinsic substrate & Does genomic organization add information absent from the folded graph? & Inter-arm gap, span, arm geometry, graph summaries, edited-site burden & Geometry plus graph summaries versus graph summaries alone; shuffled targets & Supported pair-level\newline\textit{Development pair-level} & Geometry adds reproducible between-substrate burden signal in all four tissues & Retain biological result; not a selected site feature \\
+Intrinsic substrate & Do broad static annotations improve individual-site prediction? & Repeat subfamily/divergence/neighborhood and transcript/exon/intron annotations & Same-fold baseline-logit residual models; matched random block & Not supported\newline\textit{Development OOF} & No stable residual increment beyond the graph representation & Close tested site-level formulation \\
+Context / realization & Do fixed sites change across tissue contexts? & Matched-site EditingIndex, strict edited/nonedited switches, matched-site pair summaries & Same genomic sites across four individual tissues; Combined excluded & Supported descriptive\newline\textit{Post-hoc development observation} & Tissue-dependent site outcomes coexist with stable substrate rankings & Retain as positive evidence of context dependence \\
+Context / realization & Do available RBP measurements resolve residual site variation? & ENCODE eCLIP, PrismNet, RBPNet, bulk GTEx abundance and interactions & Same-fold reference; randomized RBP identities, shuffled tissue vectors, matched noise & Not supported\newline\textit{Development OOF and matched-site controls} & No reproducible residual increment at the available cell-line and tissue-average resolution & Close tested bulk/cell-line formulation \\
+Context / realization & Does bulk chromatin add substrate or site information? & Exact-tissue H3K36me3 peak overlap & Same-fold reference; +1-Mb shifted-locus control; pair-level geometry reference & Limited\newline\textit{Development OOF} & Small liver AUPRC-only effect; no stable site or pair-level gain & Close H3K36me3 peak-overlap formulation \\
+Context / realization & Can other chromatin states be tested with matched coverage? & H2A.Z and other quantitative chromatin measurements & Tissue-match and coverage feasibility audit & Deferred\newline\textit{Feasibility only} & No adequately matched and powered tissue resource was available & New matched data required; not negative evidence \\
+Context / realization & Can substrate propensity improve site prediction? & Cross-fitted burden gate and neural auxiliary engagement head & Pair-first site predictor; graph-only and shuffled-engagement controls & Limited\newline\textit{Development OOF} & Pair burden is learnable but does not yield a stable site-level correction & Retain pair-level insight; do not select gate \\
+Context / realization & Can matched cellular state be tested directly? & Donor/cell-resolved editing, ADAR isoform and IFN state, localization, regulator perturbation, in vivo structure & Resource compatibility, coverage, and leakage audit & Deferred\newline\textit{Feasibility only} & Required outcomes and state measurements are not matched to benchmark sites at adequate scale & New matched data required; not negative evidence \\
+Target-local selection & Is target-specific information lost by whole-duplex pooling? & Target/contact geometry and explicit focal-node retention & Same-fold graph reference; duplicate-global width control & Limited but informative\newline\textit{Development OOF} & Ranking gains localize additional signal near the target & Use to motivate aligned local representation \\
+Target-local selection & Does correctly centered local context add information? & Target/helix-partner-aligned local representation & Pair-first whole-duplex predictor; matched-capacity window shifted by 96 nt & Selected\newline\textit{Development OOF with liver replication} & Aligned local context improves prediction; the shifted representation is strongly adverse & Retain selected local component \\
+Target-local selection & Do global and local views remain complementary? & Fixed 0.5/0.5 equal-logit combination & Whole-duplex-only predictor; no weight search & Selected\newline\textit{Development OOF with liver replication} & Independent whole-duplex and local-augmented views improve combined prediction & Retain frozen synthesis \\
+Statistical dependence & Do additional valid labels help before weighting changes? & Expanded high/low labels under row-wise sampling & Original internal reference; identical folds and fixed epoch budget & Selected\newline\textit{Development OOF} & Recovering valid labels adds an independent gain & Retain expanded training pool \\
+Statistical dependence & Does correcting substrate weight add a second gain? & Pair-first sampling on the same expanded labels & Expanded row-wise sampling; identical folds, labels, and epoch budget & Selected\newline\textit{Development OOF across five endpoints} & Pair-first weighting prevents site-rich substrates from receiving disproportionate influence & Retain pair-first learning principle \\
+Model sufficiency & Does richer supervision or cross-tissue sharing add enough information? & Continuous/ordinal auxiliary tasks and masked four-tissue shared learning & Pair-first binary or independent-tissue predictors; Combined excluded & Limited\newline\textit{Development OOF} & Small ranking or transfer gains miss selection criteria and worsen calibration or prevalence behavior & Retain concise boundary; omit from selected predictor \\
+Model sufficiency & Do generic representations or greater graph capacity recover more signal? & Frozen RiNALMo embeddings and larger/deeper graph networks & Matched random features or compact graph reference & Not supported\newline\textit{Development OOF and retained checkpoint comparison} & Frozen generic representations and extra capacity do not add stable ranking signal & Close tested formulations \\
+Model sufficiency & Should a graph-transformer expansion be opened after the local result? & Graph Transformer / GATv2 multiscale encoder & Value-of-information review after the lower-capacity aligned-local gain & Superseded / not pursued\newline\textit{Protocol decision} & The stronger targeted result removed the rationale for a larger generic search & Do not interpret as negative evidence \\
+Model sufficiency & Can task-specific pretraining be tested without leakage? & Self-supervised inverted-Alu pretraining & Corpus connectivity, foldability, and redundancy audit & Deferred\newline\textit{Feasibility only} & A benchmark-safe task-specific corpus was not ready & Requires a new validated pretraining resource \\
+Model sufficiency & Does joint substrate decoding or connected integration help? & All-A decoder, cross-fitted within-pair rank, substrate-wide latent model, unified end-to-end model & Pair-first predictor, shuffled-rank control, or immutable fixed ensemble & Not supported\newline\textit{Development OOF; unified model preregistered} & Joint decoding and connected integration are neutral or adverse under the tested effective sample size & Close tested formulations \\
+Final synthesis & Do the principles selected during development combine on unseen pairs? & Frozen two-view predictor with pair-first learning & Reproduced supplied-checkpoint AdarEdit; untouched canonical pairs & Supported held-out\newline\textit{Canonical held-out} & AUROC, AUPRC, F1, and Brier improve in all five reported endpoints & Validates synthesis within the benchmark construction \\
 \bottomrule
 \end{longtable}
 \endgroup
+\end{landscape}

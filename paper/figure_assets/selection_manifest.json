@@ -8,9 +8,9 @@
       "asset": "paper/figure_assets/selected/rna_duplex.png",
       "rationale": "Most legible horizontal duplex and focal site after reduction.",
       "sha256": "9597ed9a96d97ac5dd0ba0348f3293457ff022e72cfeb19e431ecb471b44c5fc",
-      "vector_sha256": "4d5866ef5171693956d811d2a0410b3c7c5a3020aee6dd86bc0e0765b4553813",
       "vector_asset": "paper/figure_assets/selected/rna_duplex.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "79296eca5cdc00ba679927cc1713357fce10ba8f96719ec9f5e2ebf22c24b0a1"
     },
     {
       "family": "cell_context",
@@ -19,9 +19,9 @@
       "asset": "paper/figure_assets/selected/cell_context.png",
       "rationale": "Cleanest nuclear context with the least extraneous anatomy.",
       "sha256": "131427c22ee44270152128ef9bdc34062353038085b2bbbc3805cbc8108e8d5e",
-      "vector_sha256": "be7a2ca2ba62e4ac8ccf7cbe07560f05ec13b1d55dbcaad12d8937ea4476bfe6",
       "vector_asset": "paper/figure_assets/selected/cell_context.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "be7a2ca2ba62e4ac8ccf7cbe07560f05ec13b1d55dbcaad12d8937ea4476bfe6"
     },
     {
       "family": "cell_context_rna",
@@ -30,9 +30,9 @@
       "asset": "paper/figure_assets/selected/cell_context_rna.png",
       "rationale": "Clearest single-contour RNA transcript, local fold-back cue, and cell-state context without a DNA-like ladder or genomic imagery.",
       "sha256": "f30e0cd12d48e7e8b785966715c0569151806ff9f3f593013f44fbcf40787698",
-      "vector_sha256": "7425437054cec406325fdf6a16589b1745e2354f1924ee2fb89a3f57f57913c6",
       "vector_asset": "paper/figure_assets/selected/cell_context_rna.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "9d3473ef410db337ced98c7666a2dbe872493925b6b2ff0090a1dbb866c01fce"
     },
     {
       "family": "human_contexts",
@@ -41,9 +41,9 @@
       "asset": "paper/figure_assets/selected/human_contexts.png",
       "rationale": "Most coherent and recognizable four-tissue atlas strip.",
       "sha256": "ee18d4fbfc780974c7cbd5610f397a40d8d562067fb07bc53abb2f51136dad2b",
-      "vector_sha256": "8fa7d8308b48d2b02beab170440ea1173960b7a9087106dd68298c53c20b4088",
       "vector_asset": "paper/figure_assets/selected/human_contexts.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "8fa7d8308b48d2b02beab170440ea1173960b7a9087106dd68298c53c20b4088"
     },
     {
       "family": "marine_lineages",
@@ -52,9 +52,9 @@
       "asset": "paper/figure_assets/selected/marine_lineages.png",
       "rationale": "All three organisms are complete and anatomically distinguishable.",
       "sha256": "9db5d56345fc9569b6bd629db9d9b6480f7d3e7b935af739b5c5284954a97354",
-      "vector_sha256": "215354974a63eb5a3fd74347d1fb0e10ff6b186668cfef87ffaa6068e1806eb4",
       "vector_asset": "paper/figure_assets/selected/marine_lineages.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "d3ecb1e8e5f51c5f35eca9f190633f68d2ae8b42f4e9b0ab6f428a0e54d49da4"
     },
     {
       "family": "latent_context",
@@ -63,9 +63,9 @@
       "asset": "paper/figure_assets/selected/latent_context.png",
       "rationale": "Layering conveys unavailable context without quantitative symbolism.",
       "sha256": "5d42ca085259118dea2a1ea720061de050cb7ce05235369fa9e6bb24fe45e98b",
-      "vector_sha256": "c2fbd985af1bd09f8d85105b3a64e0dcb91b5985d47b79222b1e3a2b76ccc4e4",
       "vector_asset": "paper/figure_assets/selected/latent_context.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "c2fbd985af1bd09f8d85105b3a64e0dcb91b5985d47b79222b1e3a2b76ccc4e4"
     },
     {
       "family": "rna_substrate_editorial",
@@ -74,9 +74,9 @@
       "asset": "paper/figure_assets/selected/rna_substrate_editorial.png",
       "rationale": "The continuous fold-back contour, asymmetric bulges, and low-profile paired stem remain legible after reduction without resembling canonical B-DNA.",
       "sha256": "259014dbc38f6dd21ce97fa45184bd56515fbc61e4ceb4916cdd465a01166e6b",
-      "vector_sha256": "dd3d7d2450b3eb0715f7af7ca9a35e126f225e1d6a52733d7d9978e71685c24d",
       "vector_asset": "paper/figure_assets/selected/rna_substrate_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "dd3d7d2450b3eb0715f7af7ca9a35e126f225e1d6a52733d7d9978e71685c24d"
     },
     {
       "family": "target_pair_context",
@@ -85,9 +85,9 @@
       "asset": "paper/figure_assets/selected/target_pair_context.png",
       "rationale": "The central amber/teal pair is unambiguous, the neighboring imperfect stem provides local context, and open margins support controlled vector callouts.",
       "sha256": "bb54c8aee3479f90a872a15b838b5ff57ad56acf9a45f41d3498034cb531acc4",
-      "vector_sha256": "5cd61e4b92e3268e04d104848568ef8d2488d78b11e4171f17f13df4de2034e4",
       "vector_asset": "paper/figure_assets/selected/target_pair_context.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "4ed9966516b85d3829aa9625d399ce89e120de8ceb56b8c5cf31e821ba02b753"
     },
     {
       "family": "substrate_organization",
@@ -96,9 +96,9 @@
       "asset": "paper/figure_assets/selected/substrate_organization.png",
       "rationale": "A single continuous transcript forms a compact imperfect stem while the broad arc communicates transcript-scale organization without a numeric claim.",
       "sha256": "5c40441177f93b831166e6a50e85e9e189e18979005a4824432562d324928b7c",
-      "vector_sha256": "304a7eb90fee11ceeeb043e6547e477e26331ebaba842394db797076d148a743",
       "vector_asset": "paper/figure_assets/selected/substrate_organization.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "304a7eb90fee11ceeeb043e6547e477e26331ebaba842394db797076d148a743"
     },
     {
       "family": "matched_cell_state",
@@ -107,9 +107,9 @@
       "asset": "paper/figure_assets/selected/matched_cell_state.png",
       "rationale": "RNA remains visually dominant within a restrained cell/nuclear context and no DNA helix, chromosome, or quantitative encoding is present.",
       "sha256": "df2bc484500b4db7015652fb553a77ae0c919b13b4c7fe6b99a6e5536c60e4e0",
-      "vector_sha256": "c97e7824f36b8233a1edc1d7cfdd828c06f191593d8f36564e048657b7c89692",
       "vector_asset": "paper/figure_assets/selected/matched_cell_state.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "c97e7824f36b8233a1edc1d7cfdd828c06f191593d8f36564e048657b7c89692"
     },
     {
       "family": "pooled_human_context",
@@ -118,9 +118,9 @@
       "asset": "paper/figure_assets/selected/pooled_human_context.png",
       "rationale": "The artery, brain, liver, and muscle cues remain equally weighted and recognizable within one pooled endpoint without a mathematical badge.",
       "sha256": "a00e90627f9a0e959e40204c376de350e9cdc1efb3905c8ddf3044c5d105a44b",
-      "vector_sha256": "9202d4777cb172b7270154e24ead3d60629f13474274344b1ee89080b51513b2",
       "vector_asset": "paper/figure_assets/selected/pooled_human_context.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "9202d4777cb172b7270154e24ead3d60629f13474274344b1ee89080b51513b2"
     },
     {
       "family": "whole_duplex_graph_view",
@@ -129,9 +129,9 @@
       "asset": "paper/figure_assets/selected/whole_duplex_graph_view.png",
       "rationale": "The integrated nucleotide nodes and backbone/pairing edges follow one irregular planar RNA fold without canonical DNA-helix imagery.",
       "sha256": "fff58f8d13951b9660e5554d4762deb05cc96147427b588f8053aa9201c8f384",
-      "vector_sha256": "47046645d6fd2bd7090b9bf292c0028fdc416a5373766d4900f3bb626d10a28f",
       "vector_asset": "paper/figure_assets/selected/whole_duplex_graph_view.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "47046645d6fd2bd7090b9bf292c0028fdc416a5373766d4900f3bb626d10a28f"
     },
     {
       "family": "pair_weighting_editorial",
@@ -140,9 +140,9 @@
       "asset": "paper/figure_assets/selected/pair_weighting_editorial.png",
       "rationale": "Two distinct imperfect RNA substrates carry different site densities at matched visual weight, directly supporting the pair-first concept.",
       "sha256": "a4e22204eb234e6ceee0123c0954e1031b1cbcf26e07220132ddd313bb530f21",
-      "vector_sha256": "b2680f2c892088cf70679a5794704bd48ed2c7a71ee1402e8ac0038b32bfda37",
       "vector_asset": "paper/figure_assets/selected/pair_weighting_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "b2680f2c892088cf70679a5794704bd48ed2c7a71ee1402e8ac0038b32bfda37"
     },
     {
       "family": "target_local_editorial",
@@ -151,9 +151,9 @@
       "asset": "paper/figure_assets/selected/target_local_editorial.png",
       "rationale": "The nearly planar local stem makes the central amber target and teal partner immediately legible while flanking context recedes cleanly.",
       "sha256": "21181516c2911dc265258366459b620f856a0edefa16a15e63784b574332e144",
-      "vector_sha256": "7b5f25de8ae2bad156d50fc4521fceca05a3bd9f03419ea3219bd4f7e99afdef",
       "vector_asset": "paper/figure_assets/selected/target_local_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "7b5f25de8ae2bad156d50fc4521fceca05a3bd9f03419ea3219bd4f7e99afdef"
     },
     {
       "family": "substrate_context_editorial",
@@ -162,9 +162,9 @@
       "asset": "paper/figure_assets/selected/substrate_context_editorial.png",
       "rationale": "A dominant continuous RNA contour and imperfect fold sit against a restrained cellular field without DNA, chromatin, or causal iconography.",
       "sha256": "9e29fdf2a5285586dc2581f9bb29c78ae4995501b5970eb34f79ec31b1a4e810",
-      "vector_sha256": "83cb1f4096001e8f2e7fee55f9be257d1dbb1c7516275e6b2aaf2be7764ad7cd",
       "vector_asset": "paper/figure_assets/selected/substrate_context_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "83cb1f4096001e8f2e7fee55f9be257d1dbb1c7516275e6b2aaf2be7764ad7cd"
     },
     {
       "family": "complementary_views_editorial",
@@ -173,9 +173,9 @@
       "asset": "paper/figure_assets/selected/complementary_views_editorial.png",
       "rationale": "The full folded substrate and isolated target-pair detail remain visually distinct and coordinated without an imposed processing arrow.",
       "sha256": "9cf6816d399d3d1bcd096619578153f5fe2533d8fb3bb59e258ca0fb00c454e0",
-      "vector_sha256": "3830f423c2fd8553dcdbe8a7b46b8daefc5c2f30bce142393546a19cab195633",
       "vector_asset": "paper/figure_assets/selected/complementary_views_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "3830f423c2fd8553dcdbe8a7b46b8daefc5c2f30bce142393546a19cab195633"
     },
     {
       "family": "global_graph_encoder_editorial",
@@ -184,9 +184,9 @@
       "asset": "paper/figure_assets/selected/global_graph_encoder_editorial.png",
       "rationale": "The sequence-structure graph, restrained aggregation field, and compact feature bundle remain distinct after reduction without UI or DNA imagery.",
       "sha256": "56a9cd05b01c325922bb9761d119bf38f457799e3c50431a9e95958c139f0cc0",
-      "vector_sha256": "ccf462cdf94f02df4bb0aa3ff5fdfb8d6b3f3a525c7b1ade594ae6b9ae3f149a",
       "vector_asset": "paper/figure_assets/selected/global_graph_encoder_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "ccf462cdf94f02df4bb0aa3ff5fdfb8d6b3f3a525c7b1ade594ae6b9ae3f149a"
     },
     {
       "family": "graph_local_encoder_editorial",
@@ -195,9 +195,9 @@
       "asset": "paper/figure_assets/selected/graph_local_encoder_editorial.png",
       "rationale": "Separate global and focal RNA cues resolve into a shared representation, making the additional local input visible at the module's small footprint.",
       "sha256": "f904185f8950ae81063e33185f6b348803173bb56b18be1c6f8bc87f49f56834",
-      "vector_sha256": "6a401c947f3e868e120eccbf333fba7d2617a544e92098f9a3ce81abec77496b",
       "vector_asset": "paper/figure_assets/selected/graph_local_encoder_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "6a401c947f3e868e120eccbf333fba7d2617a544e92098f9a3ce81abec77496b"
     },
     {
       "family": "prediction_integration_editorial",
@@ -206,9 +206,9 @@
       "asset": "paper/figure_assets/selected/prediction_integration_editorial.png",
       "rationale": "The clearest generated two-lane concept; retained for provenance, while the final miniature uses a more legible vector assembly at print scale.",
       "sha256": "0e9ca2cb72b20a70c296221a03d7d024b513dc0029c0e0b2f1f3b228470e1152",
-      "vector_sha256": "7814704cdee0026d14d089f5a5557eeba0d7c59e18ac2f713963e78d0c65a685",
       "vector_asset": "paper/figure_assets/selected/prediction_integration_editorial.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "7814704cdee0026d14d089f5a5557eeba0d7c59e18ac2f713963e78d0c65a685"
     },
     {
       "family": "observed_editing_readout",
@@ -217,9 +217,42 @@
       "asset": "paper/figure_assets/selected/observed_editing_readout.png",
       "rationale": "A single-contour paired RNA target leads into a restrained measurement trace, reading as an observed endpoint without a DNA helix or mechanism claim.",
       "sha256": "dd1eae4ab77782d4be86beaaf03544796afca9f86aa6b12a9a9c3eec01636dd7",
-      "vector_sha256": "3d000f2ca574e6a57a5b96c96bcbb18850d41d0c02ad093214e463e9037c8829",
       "vector_asset": "paper/figure_assets/selected/observed_editing_readout.svg",
-      "vector_format": "SVG paths (no embedded raster image)"
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "3d000f2ca574e6a57a5b96c96bcbb18850d41d0c02ad093214e463e9037c8829"
+    },
+    {
+      "family": "search_substrate_scale",
+      "selected_candidate": 3,
+      "source": "paper/figure_assets/candidates/search_substrate_scale_candidate_03.png",
+      "asset": "paper/figure_assets/selected/search_substrate_scale.png",
+      "rationale": "The continuous fold-back contour and asymmetric central stem best convey substrate formation; the more DNA-like multihelix alternatives were rejected.",
+      "sha256": "e2e46a0548ee630e78b70da83783cae27bf6aaab404fb01f5c7f37b433eb0573",
+      "vector_asset": "paper/figure_assets/selected/search_substrate_scale.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "86a6ef1c52d5f55b809e5e2a8b8a8e1a1d3c27d1bea4956d6378544096f33427"
+    },
+    {
+      "family": "search_context_scale",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/search_context_scale_candidate_01.png",
+      "asset": "paper/figure_assets/selected/search_context_scale.png",
+      "rationale": "The RNA strand remains the dominant continuous object within a restrained cellular field, with no chromosome or genomic DNA motif.",
+      "sha256": "a76f9c21eac230e6fb00d991f7039df16b7a4e069d0a19c5ac7d691b7ece9319",
+      "vector_asset": "paper/figure_assets/selected/search_context_scale.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "c67c3e7af94b24e4b96c142683fa9b07d8a4833888d03e9db5f6f1172f179f51"
+    },
+    {
+      "family": "search_target_scale",
+      "selected_candidate": 2,
+      "source": "paper/figure_assets/candidates/search_target_scale_candidate_02.png",
+      "asset": "paper/figure_assets/selected/search_target_scale.png",
+      "rationale": "The central opposing nucleotides and surrounding asymmetric stem remain visible at small scale; alternatives lost the paired-neighborhood context.",
+      "sha256": "a548f9bad638e8c29f84d7a6873f1b2b1efc9d4623d062ecb607914841de0b02",
+      "vector_asset": "paper/figure_assets/selected/search_target_scale.svg",
+      "vector_format": "SVG paths (no embedded raster image)",
+      "vector_sha256": "56325d521574e5aad8519fea390b40abafe98e4875f0f405aabb9eeb3150b70b"
     }
   ]
 }

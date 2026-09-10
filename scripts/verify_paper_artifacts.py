@@ -50,11 +50,11 @@ def verify_pnas_fields() -> None:
     if not keywords or not 3 <= len(keywords.group(1).split(r"$|$")) <= 5:
         raise AssertionError("manuscript must contain 3--5 keywords")
     regime_markers = (
-        "pair-disjoint out-of-fold comparisons",
+        "pair-disjoint out-of-fold",
         "frozen before the canonical held-out evaluation",
         "component attribution comes from adaptively selected",
     )
-    if not all(marker in main for marker in regime_markers):
+    if not all(marker in main.lower() for marker in regime_markers):
         raise AssertionError("development/canonical regime distinction is absent")
 
 
@@ -63,8 +63,8 @@ def verify_claim_traceability() -> None:
         newline="", encoding="utf-8"
     ) as handle:
         rows = list(csv.DictReader(handle))
-    if len(rows) != 29 or len({row["claim_id"] for row in rows}) != 29:
-        raise AssertionError("claim traceability must contain 29 unique claims")
+    if len(rows) != 31 or len({row["claim_id"] for row in rows}) != 31:
+        raise AssertionError("claim traceability must contain 31 unique claims")
     for row in rows:
         for item in row["authoritative_artifact"].split("; "):
             paths = list(ROOT.glob(item)) if "*" in item else [ROOT / item]

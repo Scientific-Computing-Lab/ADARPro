@@ -1,11 +1,12 @@
-# ADARPro
+# Mapping recoverable information in endogenous A-to-I RNA editing
 
-ADARPro is a leakage-controlled study of **where predictive information for
-endogenous A-to-I RNA editing resides**. Starting from the published AdarEdit
-human inverted-Alu benchmark, the project tested biological context,
-supervision, representation, transfer, pretraining, and integration
-hypotheses under pair-disjoint development evaluation. The study retains both
-successful and negative experiments.
+This repository contains a leakage-controlled study of **where predictive
+information for endogenous A-to-I RNA editing resides**. Starting from the
+published AdarEdit human inverted-Alu benchmark, the project traverses three
+biological information scales, a separate within-substrate dependence problem,
+and four classes of model-sufficiency tests under pair-disjoint development
+evaluation. The study retains supported, limited, unsupported, superseded, and
+data-limited branches.
 
 The evidence supports a hierarchical picture. Whole-duplex sequence and
 structure encode intrinsic substrate suitability. Genomic geometry and pair-level models
@@ -26,9 +27,9 @@ developed before test access and rejected on development data alone.
 
 The canonical test was evaluated once after the complete pipeline was frozen.
 The table below compares the reproduced supplied-checkpoint AdarEdit baseline
-with the frozen ADARPro ensemble on the original published task and split.
+with the frozen selected predictor on the original published task and split.
 
-| Context | AdarEdit AUROC | ADARPro AUROC | AdarEdit AUPRC | ADARPro AUPRC | AdarEdit F1 | ADARPro F1 |
+| Context | AdarEdit AUROC | Selected predictor AUROC | AdarEdit AUPRC | Selected predictor AUPRC | AdarEdit F1 | Selected predictor F1 |
 |---|---:|---:|---:|---:|---:|---:|
 | Artery | 0.9238 | 0.9477 | 0.9262 | 0.9485 | 0.8671 | 0.8869 |
 | Brain | 0.9301 | 0.9508 | 0.9286 | 0.9504 | 0.8689 | 0.8902 |
@@ -40,7 +41,7 @@ Mean gains across the five reported benchmark endpoints were **+0.0277 AUROC,
 +0.0261 AUPRC, and +0.0253 F1**.
 Every endpoint had a positive pair-clustered 95% interval for all three
 differences. In a post-test descriptive analysis at matched
-reproduced-baseline recall, ADARPro avoided 126, 119, 158, 68, and 148 false
+reproduced-baseline recall, the selected predictor avoided 126, 119, 158, 68, and 148 false
 positives, respectively, with positive clustered intervals throughout.
 
 These held-out results are the authoritative performance claim. The lower
@@ -103,7 +104,7 @@ traceability.
 | `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
-| `reports/` | Chronological campaign reports 00–20 and final synthesis |
+| `reports/` | Chronological campaign reports 00–27 and final synthesis |
 | `provenance/` | Input hashes, freeze manifests, audit chain, inventory, and exclusions |
 | `paper/` | PNAS manuscript, SI, verified bibliography, and paper source tables |
 | `docs/` | Campaign, data, reproducibility, and upstream documentation |

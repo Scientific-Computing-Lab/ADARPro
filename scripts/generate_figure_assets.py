@@ -429,6 +429,50 @@ FAMILIES = {
         "signals observation without encoding quantitative values. Use an open compact silhouette. No labels, causal "
         "arrows, enzyme, chemical reaction, rectangular UI card, DNA helix, microscope, or chart frame.",
     ],
+    "search_substrate_scale": [
+        "A publication-grade scientific vignette for the intrinsic substrate scale of endogenous A-to-I "
+        "RNA editing. Show one continuous RNA transcript folding into an imperfect, elongated double-stranded "
+        "RNA substrate with subtle nucleotide nodes and predicted pairing contacts. Include one small bulge and "
+        "a restrained cue that the two arms arose from separated transcript regions. Keep the silhouette compact "
+        "and horizontal. No DNA double helix, chromosome, protein, labels, arrows, chart, or mechanistic claim.",
+        "A refined molecular-biology illustration of whole-duplex suitability: two regions of one RNA strand form "
+        "an irregular A-form duplex with mismatches, a loop, and delicate sequence-structure graph cues embedded "
+        "along the backbone. The image should communicate an RNA substrate and its organization at a glance, with "
+        "a low-profile editorial composition. No DNA iconography, enzyme, text, arrows, scales, or data encoding.",
+        "A high-end PNAS-style cutaway of an inverted-repeat RNA substrate. One continuous pre-mRNA bends into two "
+        "paired arms; the paired region contains fine backbone and cross-arm contacts, slight asymmetry, and one "
+        "bulged base. Preserve open transparent margins for vector labels. Avoid canonical DNA helices, rigid ladders, "
+        "chromosomes, proteins, quantitative marks, and decorative scenery.",
+    ],
+    "search_context_scale": [
+        "A restrained publication-quality vignette for transcript and cellular context in endogenous RNA editing. "
+        "Inside a translucent mammalian cell and nucleus, show one dominant continuous RNA transcript with a small "
+        "imperfect fold-back duplex, two faint alternative transcript paths, and sparse generic regulator shapes at "
+        "different proximities. The image must read as unresolved matched RNA/cellular state. No DNA, chromosomes, "
+        "chromatin fibers, labels, arrows, gauges, or causal mechanism.",
+        "A refined scientific illustration of context-dependent RNA substrate realization: a simple cell boundary and "
+        "nuclear region contain one RNA transcript whose local duplex is crisp while alternative processing and generic "
+        "regulator cues fade softly around it. Keep RNA visually dominant and the composition compact. No DNA helix, "
+        "transcription machinery, labels, question marks, charts, or decorative organelle catalogue.",
+        "A PNAS-style conceptual asset showing the same RNA substrate embedded in a layered cellular environment. "
+        "Include one continuous transcript, a small imperfect dsRNA fold, translucent isoform branches, and a few "
+        "abstract RNA-binding protein forms. Use subtle depth to suggest context without encoding a measured value. "
+        "No genomic DNA, chromosomes, arrows, text, causal interaction, or photorealism.",
+    ],
+    "search_target_scale": [
+        "A precise target-local scientific illustration for A-to-I RNA editing. Show a short imperfect RNA duplex in "
+        "nearly planar view, centered on one amber focal adenosine opposite a teal predicted partner. Flanking paired "
+        "nucleotides, one mismatch, and one small bulge define the local neighborhood; the central pair must be obvious "
+        "at thumbnail size. No DNA twist, protein, labels, arrows, brackets, glow, or quantitative data.",
+        "A high-end molecular-biology close-up of target selection within an RNA duplex. Center one warm focal "
+        "ribonucleotide and its directly aligned cool-colored partner inside an asymmetric local stem, with five or six "
+        "subtle neighboring contacts and an off-center loop. Keep generous transparent space for vector callouts. No "
+        "letters, DNA ladder, enzyme, arrows, labels, atom model, or decorative effects.",
+        "A compact editorial view of an aligned target window in dsRNA: two gently curved RNA backbones frame a short "
+        "paired region, one central upper adenosine is amber and the paired lower nucleotide is teal, and nearby bases "
+        "fade toward the edges to emphasize local selection. The structure must remain biologically schematic and RNA-"
+        "specific. No text, arrow, bracket, DNA helix, protein, or numerical mark.",
+    ],
 }
 
 SELECTIONS = {
@@ -555,6 +599,27 @@ SELECTIONS = {
         "rationale": (
             "A single-contour paired RNA target leads into a restrained measurement trace, "
             "reading as an observed endpoint without a DNA helix or mechanism claim."
+        ),
+    },
+    "search_substrate_scale": {
+        "candidate": 3,
+        "rationale": (
+            "The continuous fold-back contour and asymmetric central stem best convey "
+            "substrate formation; the more DNA-like multihelix alternatives were rejected."
+        ),
+    },
+    "search_context_scale": {
+        "candidate": 1,
+        "rationale": (
+            "The RNA strand remains the dominant continuous object within a restrained "
+            "cellular field, with no chromosome or genomic DNA motif."
+        ),
+    },
+    "search_target_scale": {
+        "candidate": 2,
+        "rationale": (
+            "The central opposing nucleotides and surrounding asymmetric stem remain "
+            "visible at small scale; alternatives lost the paired-neighborhood context."
         ),
     },
 }

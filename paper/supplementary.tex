@@ -12,7 +12,7 @@
 \@ifundefined{PNAS@linecount}{\newcount\PNAS@linecount\PNAS@linecount\@ne}{}
 \makeatother
 
-\title{Supporting Information for: Multiscale recoverable information in endogenous A-to-I RNA editing}
+\title{Supporting Information for: A systematic search maps recoverable information in endogenous A-to-I RNA editing}
 \author{Author list pending}
 \correspondingauthor{Corresponding author and e-mail pending author confirmation.}
 
@@ -21,7 +21,7 @@
 \maketitle
 \SItext
 
-This appendix documents the complete evidence audit used to map information recoverable under the tested data, representations, effective sample size, and evaluation regime, including branches that were limited, stopped, deferred, or superseded. Four evaluation regimes remain distinct throughout: \emph{development OOF} denotes pair-disjoint cross-fitted comparisons used for discovery and selection; \emph{selection diagnostic} denotes published-validation quantities used for checkpoints or thresholds; \emph{canonical held-out} denotes the single evaluation after the final manifest was frozen; and \emph{secondary} denotes robustness or descriptive analyses that do not define the benchmark claim. Evidence status is reported separately. \emph{Selected} denotes a controlled contribution retained in the final predictor; \emph{supported, not yet actionable} denotes a reproducible observation that did not improve the leading site predictor; \emph{limited} denotes a small, metric-specific, or context-specific effect; and \emph{not supported} refers only to the tested representation at the available resolution. Deferred hypotheses lacked benchmark-compatible measurements. Superseded branches were not interpreted as negative evidence.
+This appendix documents the search over biological information scales and the evidence audit used to interpret it. The search separates intrinsic substrate properties, transcript and cellular realization, target-local selection, and statistical dependence among sites from one duplex. It includes branches that were selected, supported but not actionable, limited, unsupported in the tested formulation, deferred for unavailable matched data, or superseded by stronger lower-complexity evidence. Four evaluation regimes remain distinct: \emph{development OOF} denotes pair-disjoint cross-fitted comparisons used for discovery and selection; \emph{selection diagnostic} denotes published-validation quantities used for checkpoints or thresholds; \emph{canonical held-out} denotes the single evaluation after the final manifest was frozen; and \emph{secondary} denotes robustness or descriptive analyses that do not define the benchmark claim. These labels keep a negative result for an available measurement separate from a biological question that the benchmark could not validly test.
 
 \section*{A. Benchmark reproduction and leakage control}
 
@@ -62,9 +62,11 @@ The accompanying within-context table compares the compact baseline with a bio-a
 
 The upstream study also reported strong GTEx--RNAAtlas concordance for shared editing measurements, supporting label reproducibility across cohorts and processing pipelines \cite{Rosenwasser2026AdarEdit}. The selected predictor was not evaluated on RNAAtlas; this observation therefore does not test transportability to an independently generated human cohort.
 
-\section*{C. Complete hypothesis map}
+\section*{C. Search-space definition and evidence classes}
 
-Hypotheses were prioritized by mechanistic rationale, novelty relative to AdarEdit, data compatibility, leakage risk, effective sample size, and expected value. A direction advanced only after comparison with its same-fold reference and controls. Table~\ref{tab:evidencemap} gives the quantitative synthesis; every row states its own comparator because the estimands cannot be ranked on one common scale. The machine-readable record retains historical priorities, sources, selection and stopping criteria, and final decisions. Table~\ref{tab:taxonomy} summarizes the scientific disposition of every branch.
+The biological decomposition organizes the retained campaign. Intrinsic-substrate tests asked what whole-duplex sequence, predicted structure, and genomic organization recover. Context tests examined same-site tissue variation and available RBP, abundance, transcript, repeat, and chromatin measurements. Target-local tests asked what is lost when a whole duplex is pooled into one representation. A separate statistical branch examined dependence among sites and distinguished label recovery from pair-first weighting. An accompanying model-sufficiency axis grouped four routes: richer supervision, cross-context or multitask learning, more sophisticated representations, and greater capacity or integration. Candidates were prioritized by biological rationale, novelty relative to AdarEdit, data compatibility, leakage risk, effective sample size, and expected value.
+
+A valid branch advanced only after comparison with its same-fold reference and relevant controls. Table~\ref{tab:evidencemap} gives quantitative effects; the estimands differ and are not ranked on one common scale. Table~\ref{tab:taxonomy} maps every retained direction to its scale, question, measurement or representation, comparator, evidence status, result, and disposition. Deferred donor-, cell-, regulator-, and in vivo structure measurements lacked benchmark-compatible outcomes and are not counted as negative evidence. The machine-readable record retains the historical priorities, sources, stopping criteria, and run-level artifacts.
 
 \section*{D. Biological-context tests}
 
@@ -179,9 +181,9 @@ The selected predictor improved ROC and precision--recall curves in every endpoi
 
 \input{generated/table_s9_false_positives.tex}
 
-\section*{M. Complete campaign taxonomy and provenance}
+\section*{M. Search-space coverage and provenance}
 
-Table~\ref{tab:taxonomy} records every research direction and its final scientific disposition, including branches deferred for unavailable measurements and those not pursued after stronger lower-complexity evidence emerged. The immutable registry at \path{experiments/experiments.csv} contains one row per run with code revision, input hashes, fold definition, seed, features, hyperparameters, artifact path, serialized metrics, and test-access status. Exact OOF predictions, fold-level tables, controls, ablations, and bootstrap results remain under \path{experiments/runs/}; reports 00--20 preserve chronological interpretation and stopping decisions. A machine-generated numerical claim ledger maps paper quantities to authoritative artifacts and selectors.
+Table~\ref{tab:taxonomy} records the full accessible search space and the final disposition of every meaningful branch, including measurements that could not be tested validly and directions superseded by stronger lower-complexity evidence. The immutable registry at \path{experiments/experiments.csv} contains one row per run with code revision, input hashes, fold definition, seed, features, hyperparameters, artifact path, serialized metrics, and test-access status. Exact OOF predictions, fold-level tables, controls, ablations, and bootstrap results remain under \path{experiments/runs/}; reports 00--27 preserve chronological interpretation, stopping decisions, post-hoc analyses, and editorial provenance. A machine-generated numerical claim ledger maps paper quantities to authoritative artifacts and selectors.
 
 \input{generated/table_s10_experiment_taxonomy.tex}
 
@@ -217,7 +219,7 @@ Two completed diagnostics further delimit interpretation. Pair-first weighting p
 
 \section*{O. Interpretation and decisive future measurements}
 
-The results distinguish three information levels and one learning principle. Whole-duplex sequence and predicted structure encode intrinsic substrate suitability. Pair geometry and editing burden reveal a reproducible substrate-level propensity consistent with, but not diagnostic of, variation in realization or engagement. Current bulk features do not recover the residual site-level variation, and matched cellular state remains a biological hypothesis rather than an observed latent variable. A target-centered local representation organized by predicted pairing recovers additional selectivity, while pair-first sampling respects dependence among observations from one duplex. The selected predictor combines a whole-duplex-only graph model with an independently trained graph-plus-local model and does not claim to measure the cellular environment directly.
+The search distinguishes three biological scales and one statistical principle. Whole-duplex sequence and predicted structure encode broad intrinsic suitability. Pair geometry and editing burden identify a reproducible substrate-level propensity consistent with, but not diagnostic of, variation in realization or engagement. Same-site tissue variation shows that context matters, while current bulk features do not recover the residual site-level state. A target-centered local representation organized by predicted pairing recovers additional selectivity, and pair-first sampling respects dependence among observations from one duplex. The selected predictor combines a whole-duplex-only graph model with an independently trained graph-plus-local model; it does not measure the cellular environment directly.
 
 The next decisive study should pair donor- or cell-resolved editing with transcript abundance, splicing and intron retention, ADAR1 isoform and interferon state, regulator activity, quantitative chromatin, and in vivo RNA structure from the same samples. Perturbing ILF2/ILF3/ZFR-family regulators on substrates selected for high intrinsic suitability would distinguish occupancy correlation from causal suppression. Such measurements could test a two-stage model in which cellular state controls substrate realization and local RNA context controls adenosine selectivity.
 

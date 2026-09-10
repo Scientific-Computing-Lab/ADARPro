@@ -760,82 +760,37 @@ Metric & Unified $-$ ensemble, points [95\% CI] \\
 
 
 def experiment_taxonomy() -> None:
-    df = pd.read_csv(ROOT / "experiments/performance_frontier_opportunities.csv")
-    status_names = {
-        "terminate_sitewise_broad_panel_advance_geometry_as_engagement": "Broad panel terminated; geometry retained for pair-level analysis",
-        "validated_across_all_five_endpoints_selected_component": "Selected component",
-        "terminated_from_primary_retain_secondary_ranking_result": "Limited ranking signal; not selected",
-        "terminated_from_primary_secondary_shared_signal": "Limited shared signal; not selected",
-        "terminated_after_stronger_model_control": "Terminated after stronger-model control",
-        "terminated_current_formulations": "Terminated in tested formulation",
-        "advance_to_local_fusion_not_standalone": "Advanced to aligned local encoder",
-        "validated_complementary_ranking_signal_retain_for_fixed_ensemble": "Validated fallback/complementary view",
-        "validated_selected_successor_component": "Selected component",
-        "terminated_current_bulk_peak_overlap_formulation": "Bulk peak-overlap formulation terminated",
-        "stopped_direct_fusion_after_three_fold_futility": "Stopped for futility",
-        "defer_public_icshape_for_coverage_and_context_mismatch": "Deferred: coverage/context mismatch",
-        "deferred_missing_authorized_site_by_donor_outcomes": "Deferred: no matched donor outcomes",
-        "deferred_future_corpus_not_benchmark_ready": "Deferred: corpus not benchmark-ready",
-        "terminated_after_fixed_150m_confirmation": "Terminated after 150M-model confirmation",
-        "deferred_after_target_local_controlled_gain": "Not pursued after target-aligned lower-capacity gain",
-        "deferred_missing_matched_state_and_outcomes": "Deferred: no matched state/outcomes",
-        "deprioritized": "Deferred: matched perturbation data unavailable",
-        "pair_local_equal_logit_selected": "Selected final integration",
-        "terminated_after_preregistered_primary": "Terminated after preregistered primary",
-        "terminated": "Terminated",
-    }
-    evidence_names = {
-        "terminate_sitewise_broad_panel_advance_geometry_as_engagement": "Supported pair-level; site panel not supported",
-        "validated_across_all_five_endpoints_selected_component": "Selected",
-        "terminated_from_primary_retain_secondary_ranking_result": "Limited",
-        "terminated_from_primary_secondary_shared_signal": "Limited",
-        "terminated_after_stronger_model_control": "Not supported",
-        "terminated_current_formulations": "Not supported",
-        "advance_to_local_fusion_not_standalone": "Limited; informed selected model",
-        "validated_complementary_ranking_signal_retain_for_fixed_ensemble": "Limited; complementary",
-        "validated_selected_successor_component": "Selected",
-        "terminated_current_bulk_peak_overlap_formulation": "Limited",
-        "stopped_direct_fusion_after_three_fold_futility": "Limited",
-        "defer_public_icshape_for_coverage_and_context_mismatch": "Deferred",
-        "deferred_missing_authorized_site_by_donor_outcomes": "Deferred",
-        "deferred_future_corpus_not_benchmark_ready": "Deferred",
-        "terminated_after_fixed_150m_confirmation": "Not supported",
-        "deferred_after_target_local_controlled_gain": "Not pursued; superseded",
-        "deferred_missing_matched_state_and_outcomes": "Deferred",
-        "deprioritized": "Deferred",
-        "pair_local_equal_logit_selected": "Selected",
-        "terminated_after_preregistered_primary": "Not supported",
-        "terminated": "Not supported",
-    }
+    df = pd.read_csv(SOURCE / "search_space_coverage.csv")
     rows = []
-    for _, row in df.sort_values("rank").iterrows():
-        axis = tex(row["frontier"]).replace(" x ", r" $\times$ ")
-        direction = (
-            tex(row["direction"])
-            .replace(" x ", r" $\times$ ")
-            .replace("In-vivo", "In vivo")
-            .replace(
-                "Calibration/stacking/ensemble",
-                "Fixed prediction-level equal-logit integration",
-            )
+    for _, row in df.iterrows():
+        status = (
+            f"{tex(row['outcome_class'])}"
+            + r"\newline\textit{"
+            + tex(row["evidence_regime"])
+            + "}"
         )
         rows.append(
-            f"{axis} & {direction} & {tex(evidence_names[row['initial_status']])} & "
-            f"{tex(status_names[row['initial_status']])} \\\\"
+            f"{tex(row['scale'])} & {tex(row['question'])} & "
+            f"{tex(row['candidates_or_measurements'])} & "
+            f"{tex(row['control_or_reference'])} & {status} & "
+            f"{tex(row['principal_outcome'])} & {tex(row['disposition'])} \\\\"
         )
     write(
         "table_s10_experiment_taxonomy.tex",
-        r"""\begingroup
-\setlength{\tabcolsep}{4.5pt}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
-\caption{Hypotheses examined and their final scientific disposition. Historical priorities, data sources, leakage risks, selection rules, stopping criteria, and result summaries remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
+        r"""\begin{landscape}
+\begingroup
+\fontsize{6.4}{7.0}\selectfont
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.00}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
+\caption{Search-space coverage and final disposition. Rows group the complete retained campaign by scientific question. ``Not supported'' applies only to the tested measurement and formulation; ``deferred'' means the benchmark lacked a valid matched measurement and is not negative evidence. Exact quantitative effects remain in Table~\ref{tab:evidencemap}; historical priorities, data sources, stopping criteria, and run artifacts remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
 \toprule
-Axis & Hypothesis & Evidence status & Final disposition \\
+Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule
 \endfirsthead
-\multicolumn{4}{l}{\textit{Table continued}}\\
+\multicolumn{7}{l}{\textit{Table continued}}\\
 \toprule
-Axis & Hypothesis & Evidence status & Final disposition \\
+Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule
 \endhead
 """
@@ -843,7 +798,8 @@ Axis & Hypothesis & Evidence status & Final disposition \\
         + r"""
 \bottomrule
 \end{longtable}
-\endgroup""",
+\endgroup
+\end{landscape}""",
     )
 
 

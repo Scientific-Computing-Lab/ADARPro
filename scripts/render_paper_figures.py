@@ -406,6 +406,477 @@ def benchmark_split_table(source: Path) -> pd.DataFrame:
     return result
 
 
+def figure_search_space(output: Path, source: Path) -> None:
+    """Render the anchor map of the accessible biological search space."""
+    coverage = pd.read_csv(source / "search_space_coverage.csv")
+    required_scales = {
+        "Intrinsic substrate",
+        "Context / realization",
+        "Target-local selection",
+        "Statistical dependence",
+        "Model sufficiency",
+        "Final synthesis",
+    }
+    if not required_scales.issubset(set(coverage["scale"])):
+        raise RuntimeError("Search-space coverage table is missing a required scale")
+
+    figure = plt.figure(figsize=(7.15, 7.45))
+    grid = figure.add_gridspec(
+        3, 1, height_ratios=[1.20, 1.62, 1.08], hspace=0.18
+    )
+    ax_a = figure.add_subplot(grid[0, 0])
+    ax_b = figure.add_subplot(grid[1, 0])
+    ax_c = figure.add_subplot(grid[2, 0])
+    for axis in (ax_a, ax_b, ax_c):
+        axis.set_axis_off()
+        axis.set_xlim(0, 1)
+        axis.set_ylim(0, 1)
+
+    panel_label(ax_a, "A")
+    ax_a.set_title(
+        "The selection problem defines biological and analytical axes",
+        loc="left",
+        fontweight="bold",
+    )
+    lanes = [
+        (
+            0.015,
+            0.315,
+            COLORS["blue"],
+            "INTRINSIC SUBSTRATE",
+            "Can this transcript form a suitable duplex?",
+            "sequence · predicted fold\ngenomic organization · burden",
+            "rna_substrate_editorial",
+        ),
+        (
+            0.345,
+            0.315,
+            COLORS["amber"],
+            "CONTEXT / REALIZATION",
+            "Does that substrate exist in the relevant state?",
+            "tissue variation · RBP / abundance\ntranscript / repeat · chromatin",
+            "search_context_scale",
+        ),
+        (
+            0.675,
+            0.310,
+            COLORS["green"],
+            "TARGET-LOCAL SELECTION",
+            "Which adenosine is selected within the duplex?",
+            "target geometry · focal state\naligned local neighborhood",
+            "target_local_editorial",
+        ),
+    ]
+    for x, width, color, title, question, detail, asset in lanes:
+        ax_a.axvspan(x, x + width, ymin=0.28, ymax=0.92, color=color, alpha=0.065)
+        ax_a.plot(
+            [x + 0.012, x + width - 0.012],
+            [0.88, 0.88],
+            color=color,
+            lw=2.2,
+            solid_capstyle="round",
+        )
+        ax_a.text(
+            x + 0.015,
+            0.825,
+            title,
+            ha="left",
+            va="top",
+            fontsize=7.1,
+            fontweight="bold",
+            color=color,
+        )
+        ax_a.text(
+            x + 0.015,
+            0.735,
+            question,
+            ha="left",
+            va="top",
+            fontsize=6.5,
+            color=COLORS["ink"],
+        )
+        add_asset(
+            ax_a,
+            asset,
+            (x + 0.040, 0.420, width - 0.080, 0.255),
+            alpha=0.97,
+            zorder=2,
+            trim=True,
+        )
+        ax_a.text(
+            x + 0.015,
+            0.365,
+            detail,
+            ha="left",
+            va="top",
+            fontsize=5.95,
+            linespacing=1.35,
+            color=COLORS["gray"],
+        )
+
+    ax_a.plot([0.015, 0.985], [0.205, 0.205], color=COLORS["purple"], lw=1.35)
+    ax_a.text(
+        0.018,
+        0.152,
+        "STATISTICAL DEPENDENCE",
+        ha="left",
+        va="center",
+        fontsize=6.8,
+        fontweight="bold",
+        color=COLORS["purple"],
+    )
+    ax_a.text(
+        0.220,
+        0.152,
+        "Sites within one duplex are dependent; label recovery and pair-first weighting were separated.",
+        ha="left",
+        va="center",
+        fontsize=6.15,
+        color=COLORS["ink"],
+    )
+    ax_a.plot([0.015, 0.985], [0.085, 0.085], color=COLORS["navy"], lw=1.35)
+    ax_a.text(
+        0.018,
+        0.032,
+        "AI / MODELING SEARCH",
+        ha="left",
+        va="center",
+        fontsize=6.8,
+        fontweight="bold",
+        color=COLORS["navy"],
+    )
+    ax_a.text(
+        0.220,
+        0.032,
+        "more supervision · cross-context sharing / multitask learning · richer representations · capacity / integration",
+        ha="left",
+        va="center",
+        fontsize=6.05,
+        color=COLORS["ink"],
+    )
+
+    panel_label(ax_b, "B")
+    ax_b.set_title(
+        "A common test turns candidate information into an evidence map",
+        loc="left",
+        fontweight="bold",
+    )
+    protocol = [
+        (0.045, "SEQUENCE–STRUCTURE\nREFERENCE", COLORS["navy"]),
+        (0.325, "PAIR-DISJOINT\nDEVELOPMENT OOF", COLORS["blue"]),
+        (0.605, "SAME-FOLD +\nMATCHED CONTROL", COLORS["teal"]),
+        (0.885, "EFFECT + UNCERTAINTY\nSTATUS + STOP RULE", COLORS["purple"]),
+    ]
+    ax_b.plot([0.055, 0.895], [0.825, 0.825], color="#BCC8CD", lw=1.0, zorder=1)
+    for x, text_value, color in protocol:
+        ax_b.add_patch(
+            Circle(
+                (x, 0.825),
+                0.019,
+                facecolor="white",
+                edgecolor=color,
+                lw=1.25,
+                zorder=3,
+            )
+        )
+        ax_b.add_patch(
+            Circle((x, 0.825), 0.006, facecolor=color, edgecolor="none", zorder=4)
+        )
+        ax_b.text(
+            x,
+            0.755,
+            text_value,
+            ha="center",
+            va="top",
+            fontsize=5.7,
+            linespacing=1.25,
+            fontweight="bold",
+            color=color,
+        )
+
+    ax_b.text(
+        0.015,
+        0.645,
+        "BIOLOGICAL SCALE",
+        fontsize=5.5,
+        color=COLORS["gray"],
+        fontweight="bold",
+    )
+    ax_b.text(
+        0.205,
+        0.645,
+        "CANDIDATE INFORMATION AND RESULT",
+        fontsize=5.5,
+        color=COLORS["gray"],
+        fontweight="bold",
+    )
+    ax_b.text(
+        0.835,
+        0.645,
+        "MAP UPDATE",
+        fontsize=5.5,
+        color=COLORS["gray"],
+        fontweight="bold",
+    )
+
+    status = {
+        "positive": ("●", COLORS["green"]),
+        "limited": ("▲", COLORS["amber"]),
+        "unsupported": ("×", COLORS["red"]),
+        "deferred": ("○", COLORS["gray"]),
+    }
+    row_specs = [
+        (
+            0.555,
+            COLORS["blue"],
+            "INTRINSIC\nSUBSTRATE",
+            [
+                ("positive", "Sequence +\npredicted fold"),
+                ("positive", "Geometry →\npair burden"),
+                ("unsupported", "Broad repeat /\ntranscript panel"),
+            ],
+            "whole-duplex signal\n+ between-substrate propensity",
+        ),
+        (
+            0.445,
+            COLORS["amber"],
+            "CONTEXT /\nREALIZATION",
+            [
+                ("positive", "Same-site\ntissue variation"),
+                ("unsupported", "RBP × bulk\nabundance"),
+                ("limited", "Bulk\nH3K36me3"),
+                ("deferred", "Matched donor / cell /\nin vivo state"),
+            ],
+            "context dependence visible;\nresponsible state unresolved",
+        ),
+        (
+            0.335,
+            COLORS["green"],
+            "TARGET-LOCAL\nSELECTION",
+            [
+                ("limited", "Contact geometry +\nfocal node"),
+                ("positive", "Aligned local\nrepresentation"),
+                ("unsupported", "Shifted matched-\ncapacity control"),
+            ],
+            "target-centered local\nsignal recovered",
+        ),
+        (
+            0.225,
+            COLORS["purple"],
+            "STATISTICAL\nDEPENDENCE",
+            [
+                ("positive", "Additional valid\nhigh / low labels"),
+                ("positive", "Pair-first\nweighting"),
+            ],
+            "label recovery and weighting\nmake separable gains",
+        ),
+        (
+            0.115,
+            COLORS["navy"],
+            "AI / MODEL\nSUFFICIENCY",
+            [
+                ("limited", "Graded objectives +\nshared tissues"),
+                ("unsupported", "Foundation\nrepresentations"),
+                ("unsupported", "Capacity + joint\ndecoding"),
+                ("positive", "Fixed prediction\nintegration"),
+            ],
+            "targeted changes help; generic\ncomplexity yields little more",
+        ),
+    ]
+    for row_index, (y, color, label, items, conclusion) in enumerate(row_specs):
+        if row_index % 2 == 0:
+            ax_b.axhspan(
+                y - 0.057,
+                y + 0.060,
+                xmin=0.008,
+                xmax=0.992,
+                color="#F6F8F9",
+                zorder=0,
+            )
+        ax_b.plot(
+            [0.018, 0.018],
+            [y - 0.048, y + 0.050],
+            color=color,
+            lw=3.0,
+            solid_capstyle="round",
+        )
+        ax_b.text(
+            0.038,
+            y,
+            label,
+            ha="left",
+            va="center",
+            fontsize=6.25,
+            linespacing=1.18,
+            fontweight="bold",
+            color=color,
+        )
+        item_x = [0.205, 0.355, 0.505, 0.655]
+        for x, (kind, item) in zip(item_x, items):
+            marker, marker_color = status[kind]
+            ax_b.text(
+                x,
+                y + 0.016,
+                marker,
+                ha="left",
+                va="center",
+                fontsize=8.0,
+                fontweight="bold",
+                color=marker_color,
+            )
+            ax_b.text(
+                x + 0.023,
+                y + 0.016,
+                item,
+                ha="left",
+                va="center",
+                fontsize=5.35,
+                color=COLORS["ink"],
+                linespacing=1.18,
+            )
+        ax_b.text(
+            0.810,
+            y,
+            conclusion,
+            ha="left",
+            va="center",
+            fontsize=5.75,
+            linespacing=1.25,
+            color=COLORS["navy"],
+            fontweight="bold",
+        )
+
+    legend_items = [
+        ("positive", "supported / selected"),
+        ("limited", "limited"),
+        ("unsupported", "not supported in tested formulation"),
+        ("deferred", "matched data unavailable"),
+    ]
+    for x, (kind, label) in zip([0.205, 0.405, 0.535, 0.755], legend_items):
+        marker, color = status[kind]
+        ax_b.text(
+            x,
+            0.018,
+            marker,
+            ha="left",
+            va="center",
+            fontsize=7.8,
+            fontweight="bold",
+            color=color,
+        )
+        ax_b.text(
+            x + 0.025,
+            0.018,
+            label,
+            ha="left",
+            va="center",
+            fontsize=5.35,
+            color=COLORS["gray"],
+        )
+
+    panel_label(ax_c, "C")
+    ax_c.set_title(
+        "The completed search changes the next question",
+        loc="left",
+        fontweight="bold",
+    )
+    synthesis = [
+        (
+            0.015,
+            0.300,
+            COLORS["green"],
+            "RECOVERABLE",
+            "Whole-duplex sequence–structure\nPair geometry at substrate level\nAligned target-local information\nPair-aware statistical weighting",
+        ),
+        (
+            0.345,
+            0.300,
+            COLORS["amber"],
+            "PARTIALLY RESOLVED",
+            "Tissue-associated variation is visible\nBulk context adds no stable residual site signal\nGeneric model expansion shows diminishing returns",
+        ),
+        (
+            0.675,
+            0.310,
+            COLORS["purple"],
+            "MEASURE NEXT",
+            "Editing paired to donor and cell state\nTranscript processing and regulator occupancy\nADAR state and in vivo RNA conformation",
+        ),
+    ]
+    for x, width, color, heading, detail in synthesis:
+        ax_c.axvspan(x, x + width, ymin=0.25, ymax=0.88, color=color, alpha=0.065)
+        ax_c.plot(
+            [x + 0.012, x + width - 0.012],
+            [0.84, 0.84],
+            color=color,
+            lw=2.4,
+            solid_capstyle="round",
+        )
+        ax_c.text(
+            x + 0.015,
+            0.775,
+            heading,
+            ha="left",
+            va="top",
+            fontsize=7.0,
+            fontweight="bold",
+            color=color,
+        )
+        ax_c.text(
+            x + 0.015,
+            0.650,
+            detail,
+            ha="left",
+            va="top",
+            fontsize=6.15,
+            linespacing=1.50,
+            color=COLORS["ink"],
+        )
+
+    ax_c.add_patch(
+        FancyArrowPatch(
+            (0.660, 0.545),
+            (0.680, 0.545),
+            arrowstyle="-|>",
+            mutation_scale=8.0,
+            color=COLORS["purple"],
+            lw=1.0,
+        )
+    )
+    ax_c.plot([0.015, 0.985], [0.185, 0.185], color="#C6D0D5", lw=0.8)
+    ax_c.text(
+        0.018,
+        0.120,
+        "FROZEN SYNTHESIS CHECK",
+        ha="left",
+        va="center",
+        fontsize=6.3,
+        fontweight="bold",
+        color=COLORS["navy"],
+    )
+    ax_c.text(
+        0.205,
+        0.120,
+        "The selected principles improved AUROC, AUPRC, F1, and Brier score in all five held-out endpoints.",
+        ha="left",
+        va="center",
+        fontsize=6.35,
+        color=COLORS["ink"],
+    )
+    ax_c.text(
+        0.205,
+        0.063,
+        "unseen benchmark pairs · external-cohort transport remains untested",
+        ha="left",
+        va="center",
+        fontsize=5.45,
+        color=COLORS["gray"],
+    )
+
+    figure.subplots_adjust(left=0.055, right=0.992, top=0.975, bottom=0.025)
+    save(figure, output, "figure0_search_space")
+
+
 def figure1(output: Path, source: Path) -> None:
     figure = plt.figure(figsize=(7.0, 5.65))
     grid = figure.add_gridspec(
@@ -3628,6 +4099,7 @@ def main() -> None:
     output = args.output if args.output.is_absolute() else ROOT / args.output
     source = args.source if args.source.is_absolute() else ROOT / args.source
     configure()
+    figure_search_space(output, source)
     figure1(output, source)
     figure_scope(output, source)
     figure2(output, source)
