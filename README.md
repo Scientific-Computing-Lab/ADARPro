@@ -1,4 +1,4 @@
-# Mapping recoverable information in endogenous A-to-I RNA editing
+# Where predictive information resides in endogenous A-to-I RNA editing
 
 This repository contains a leakage-controlled study of **where predictive
 information for endogenous A-to-I RNA editing resides**. Starting from the
