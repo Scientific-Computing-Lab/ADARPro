@@ -72,8 +72,8 @@ paper and are not applied.
 
 ## Post-edit verification
 
-- The main source decreased from 3,793 to 3,632 whitespace-delimited tokens
-  (4.2%) without removing a result or evidence boundary.
+- The main source decreased from 3,793 to 3,618 whitespace-delimited tokens
+  (4.6%) without removing a result or evidence boundary.
 - Uses of `information` decreased from 41 to 13. The remaining instances name
   the paper's central construct or a specific model input.
 - Formulaic inference and transition phrases were reduced without adding
