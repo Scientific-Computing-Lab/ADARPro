@@ -217,7 +217,7 @@ def save(figure: plt.Figure, output: Path, stem: str) -> None:
     output.mkdir(parents=True, exist_ok=True)
     for suffix in ("pdf", "svg", "png"):
         if suffix == "pdf":
-            fixed_time = dt.datetime(2026, 9, 9, tzinfo=dt.timezone.utc)
+            fixed_time = dt.datetime(2026, 9, 10, tzinfo=dt.timezone.utc)
             metadata: dict[str, object] = {
                 "Creator": "ADARPro figure pipeline",
                 "Producer": "Matplotlib",
@@ -225,7 +225,7 @@ def save(figure: plt.Figure, output: Path, stem: str) -> None:
                 "ModDate": fixed_time,
             }
         elif suffix == "svg":
-            metadata = {"Creator": "ADARPro figure pipeline", "Date": "2026-09-09"}
+            metadata = {"Creator": "ADARPro figure pipeline", "Date": "2026-09-10"}
         else:
             metadata = {"Software": "ADARPro figure pipeline"}
         figure.savefig(
@@ -325,7 +325,7 @@ def figure1(output: Path, source: Path) -> None:
 
     panel_label(ax_a, "A")
     ax_a.set_title(
-        "A layered information map of endogenous editing",
+        "A layered map of recoverable information",
         loc="left",
         fontweight="bold",
     )
@@ -364,7 +364,7 @@ def figure1(output: Path, source: Path) -> None:
         0.695,
         0.86,
         0.27,
-        "CELLULAR REALIZATION",
+        "CELLULAR / TRANSCRIPT CONTEXT",
         COLORS["amber"],
         "transcript state · ADAR access · regulators",
     )
@@ -466,7 +466,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.text(
         0.505,
         0.235,
-        "alignment adds information",
+        "target centering adds information",
         ha="center",
         fontsize=6.2,
         color=COLORS["green"],
@@ -475,7 +475,7 @@ def figure1(output: Path, source: Path) -> None:
     ax_a.text(
         0.835,
         0.235,
-        "bulk proxies incompletely resolve state",
+        "tested bulk proxies add little residual signal",
         ha="center",
         fontsize=6.2,
         color=COLORS["amber"],
@@ -2154,7 +2154,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_c.set_ylim(0.64, 0.94)
     ax_c.set_ylabel("Development OOF performance")
     ax_c.set_title(
-        "Target alignment recovers local selectivity",
+        "Target-centered local information\nimproves prediction",
         loc="left",
         fontweight="bold",
     )
@@ -2315,7 +2315,7 @@ def figure4(output: Path, source: Path) -> None:
     ax_a.invert_yaxis()
     ax_a.set_xlabel("ADARPro − published AdarEdit (points; 95% pair-clustered CI)")
     ax_a.set_title(
-        "Single-use canonical held-out evaluation",
+        "Frozen canonical held-out evaluation",
         loc="left",
         fontweight="bold",
     )
@@ -2421,25 +2421,25 @@ def figure4(output: Path, source: Path) -> None:
 
     panel_label(ax_e, "E")
     ax_e.set_axis_off()
-    ax_e.set_title("Present explanatory boundary", loc="left", fontweight="bold")
+    ax_e.set_title("Present recoverability boundary", loc="left", fontweight="bold")
     boundary = [
         (
             0.70,
-            "Captured",
-            "duplex suitability\ntarget/partner context",
+            "Recoverable",
+            "whole-duplex signal\ntarget-centered signal",
             COLORS["green"],
             COLORS["pale_green"],
         ),
         (
             0.41,
-            "Partially resolved",
-            "pair-level propensity\ntransferable tissue rules",
+            "Partially recoverable",
+            "pair-level propensity\ncross-context transfer",
             COLORS["amber"],
             COLORS["pale_amber"],
         ),
         (
             0.12,
-            "Missing at matched scale",
+            "Unmeasured at matched scale",
             "cell/donor state · in vivo fold\nregulator exposure",
             COLORS["purple"],
             "#F1EDF7",
@@ -2862,6 +2862,327 @@ def supplementary_figures(output: Path, source: Path) -> None:
     figure.suptitle("Canonical held-out calibration", fontsize=9.5, fontweight="bold")
     figure.tight_layout(rect=(0, 0, 1, 0.92))
     save(figure, output, "figureS6_locked_calibration")
+
+    # S7: tissue-dependent site changes over stable substrate rankings.
+    variation_path = (
+        ROOT / "experiments/runs/post_analysis/tissue_variation/per_site_variation.parquet"
+    )
+    switch_path = (
+        ROOT / "experiments/runs/post_analysis/tissue_variation/strict_switch_matrix.csv"
+    )
+    stability_path = (
+        ROOT
+        / "experiments/runs/post_analysis/pair_stability/cross_tissue_pair_stability.csv"
+    )
+    variation = pd.read_parquet(variation_path)
+    variation = variation[variation.observed_tissues == 4].copy()
+    switches = pd.read_csv(switch_path)
+    stability = pd.read_csv(stability_path)
+    copy_source(
+        pd.DataFrame(
+            {
+                "editing_index_range": np.sort(variation.editing_index_range),
+                "fraction_at_or_above": 1
+                - np.arange(len(variation), dtype=float) / len(variation),
+            }
+        ),
+        source,
+        "figureS7_editing_range_survival.csv",
+    )
+
+    figure = plt.figure(figsize=(7.0, 5.0))
+    grid = figure.add_gridspec(
+        2,
+        2,
+        height_ratios=[1.0, 1.1],
+        width_ratios=[1.05, 0.95],
+        hspace=0.56,
+        wspace=0.42,
+    )
+    ax_a = figure.add_subplot(grid[0, 0])
+    ax_b = figure.add_subplot(grid[0, 1])
+    ax_c = figure.add_subplot(grid[1, :])
+
+    ordered_range = np.sort(variation.editing_index_range.to_numpy(dtype=float))
+    survival = 100 * (1 - np.arange(len(ordered_range)) / len(ordered_range))
+    ax_a.plot(ordered_range, survival, color=COLORS["purple"], lw=1.7)
+    for threshold in (1, 5, 10, 15):
+        fraction = 100 * variation.editing_index_range.ge(threshold).mean()
+        ax_a.scatter(threshold, fraction, s=24, color=COLORS["purple"], zorder=3)
+        ax_a.text(
+            threshold + 0.8,
+            fraction + 1.5,
+            f"{fraction:.1f}%",
+            fontsize=6.7,
+            color=COLORS["purple"],
+            va="bottom",
+        )
+    ax_a.set_xlim(0, 50)
+    ax_a.set_ylim(0, 102)
+    ax_a.set_xlabel("Within-site EditingIndex range (percentage points)")
+    ax_a.set_ylabel("Sites at or above range (%)")
+    ax_a.set_title(
+        "Matched sites change across tissues",
+        loc="left",
+        fontweight="bold",
+    )
+    ax_a.text(
+        0.99,
+        0.95,
+        f"{len(variation):,} sites observed in all four tissues",
+        transform=ax_a.transAxes,
+        ha="right",
+        va="top",
+        fontsize=6.6,
+        color=COLORS["gray"],
+    )
+    panel_label(ax_a, "A")
+    clean_axis(ax_a, "both")
+
+    tissues = ["Artery", "Brain", "Liver", "MuscleSkeletal"]
+    tissue_labels = ["Artery", "Brain", "Liver", "Skeletal\nmuscle"]
+    matrix = np.full((4, 4), np.nan)
+    counts = np.zeros((4, 4), dtype=int)
+    for row in switches.itertuples(index=False):
+        i = tissues.index(row.edited_tissue)
+        j = tissues.index(row.nonedited_tissue)
+        matrix[i, j] = row.strict_switch_per_10000_shared
+        counts[i, j] = row.strict_switch_sites
+    image_plot = ax_b.imshow(matrix, cmap="YlOrRd", vmin=0, vmax=np.nanmax(matrix))
+    for i in range(4):
+        for j in range(4):
+            if i == j:
+                ax_b.add_patch(
+                    plt.Rectangle(
+                        (j - 0.5, i - 0.5),
+                        1,
+                        1,
+                        facecolor="#F1F3F4",
+                        edgecolor="white",
+                        lw=1,
+                    )
+                )
+                continue
+            color = "white" if matrix[i, j] > 0.48 * np.nanmax(matrix) else COLORS["ink"]
+            ax_b.text(
+                j,
+                i,
+                f"{counts[i, j]:,}\n({matrix[i, j]:.1f})",
+                ha="center",
+                va="center",
+                fontsize=6.2,
+                color=color,
+                linespacing=1.0,
+            )
+    ax_b.set_xticks(range(4), tissue_labels)
+    ax_b.set_yticks(range(4), tissue_labels)
+    ax_b.set_xlabel("Nonedited tissue (<1%)")
+    ax_b.set_ylabel("Edited tissue (≥15%)")
+    ax_b.set_title("Strict state switches are asymmetric", loc="left", fontweight="bold")
+    colorbar = figure.colorbar(image_plot, ax=ax_b, fraction=0.046, pad=0.04)
+    colorbar.set_label("Switches per 10,000 shared sites", fontsize=6.8)
+    colorbar.ax.tick_params(labelsize=6.4)
+    panel_label(ax_b, "B")
+
+    pairs = [
+        ("Artery", "Brain"),
+        ("Artery", "Liver"),
+        ("Artery", "MuscleSkeletal"),
+        ("Brain", "Liver"),
+        ("Brain", "MuscleSkeletal"),
+        ("Liver", "MuscleSkeletal"),
+    ]
+    pair_labels = [
+        "Artery–Brain",
+        "Artery–Liver",
+        "Artery–Muscle",
+        "Brain–Liver",
+        "Brain–Muscle",
+        "Liver–Muscle",
+    ]
+    y = np.arange(len(pairs))[::-1]
+    metric_specs = [
+        ("mean_editing_spearman", "Mean EditingIndex", COLORS["blue"], 0.11),
+        ("high_fraction_spearman", "High-editing fraction", COLORS["teal"], -0.11),
+    ]
+    for metric, label, color, offset in metric_specs:
+        ordered = []
+        for first, second in pairs:
+            row = stability[
+                stability.first_tissue.eq(first)
+                & stability.second_tissue.eq(second)
+                & stability.metric.eq(metric)
+            ]
+            if len(row) != 1:
+                raise RuntimeError(f"missing pair-stability row: {first}, {second}, {metric}")
+            ordered.append(row.iloc[0])
+        values = pd.DataFrame(ordered)
+        ax_c.errorbar(
+            values.spearman,
+            y + offset,
+            xerr=np.vstack(
+                [values.spearman - values.lower, values.upper - values.spearman]
+            ),
+            fmt="o",
+            ms=4.2,
+            capsize=2,
+            color=color,
+            label=label,
+        )
+    ax_c.set_yticks(y, pair_labels)
+    ax_c.set_xlim(0.5, 1.0)
+    ax_c.axvline(0, color=COLORS["ink"], lw=0.6)
+    ax_c.set_xlabel("Spearman correlation across Alu pairs (95% pair-bootstrap interval)")
+    ax_c.set_title(
+        "Substrate rankings remain correlated across tissues on identical site sets",
+        loc="left",
+        fontweight="bold",
+    )
+    ax_c.legend(frameon=False, ncol=2, loc="lower right")
+    panel_label(ax_c, "C")
+    clean_axis(ax_c)
+    figure.suptitle(
+        "Tissue-dependent editing overlays stable substrate rankings",
+        fontsize=10.5,
+        fontweight="bold",
+        y=0.995,
+    )
+    figure.subplots_adjust(left=0.12, right=0.98, top=0.91, bottom=0.10)
+    save(figure, output, "figureS7_tissue_context_and_pair_stability")
+
+    # S8: post-hoc diagnostics of the selected statistical and local principles.
+    within = pd.read_csv(
+        ROOT / "experiments/runs/post_analysis/within_duplex/within_duplex_summary.csv"
+    )
+    pair_size = pd.read_csv(
+        ROOT
+        / "experiments/runs/richer_supervision/pair_balance_diagnostic/raw_site_count_quintiles.csv"
+    )
+    strata = pd.read_csv(
+        ROOT
+        / "experiments/runs/target_local_interpretation/MuscleSkeletal/geometry_strata.csv"
+    )
+    copy_source(pair_size, source, "figureS8_pair_size_quintiles.csv")
+    copy_source(strata, source, "figureS8_target_structure_strata.csv")
+
+    figure, axes = plt.subplots(2, 2, figsize=(7.0, 5.2))
+    ax_a, ax_b, ax_c, ax_d = axes.ravel()
+    models = [
+        "development_reference",
+        "pair_first",
+        "focal",
+        "target_local",
+        "fixed_ensemble",
+    ]
+    model_labels = ["Internal\nreference", "Pair-first", "Focal", "Target-\ncentered", "Fixed\nensemble"]
+    x = np.arange(len(models))
+    for context, color, marker in [
+        ("Liver", COLORS["teal"], "o"),
+        ("MuscleSkeletal", COLORS["amber"], "s"),
+    ]:
+        values = within[within.context.eq(context)].set_index("model").loc[models]
+        ax_a.errorbar(
+            x,
+            values.mean_within_pair_auc,
+            yerr=np.vstack(
+                [
+                    values.mean_within_pair_auc - values.lower,
+                    values.upper - values.mean_within_pair_auc,
+                ]
+            ),
+            marker=marker,
+            ms=4,
+            capsize=2,
+            lw=1.1,
+            color=color,
+            label=CONTEXT_LABELS[context],
+        )
+    ax_a.set_xticks(x, model_labels)
+    ax_a.set_ylim(0.87, 0.97)
+    ax_a.set_ylabel("Mean within-pair AUROC")
+    ax_a.set_title("Within-duplex discrimination", loc="left", fontweight="bold")
+    ax_a.legend(frameon=False, loc="lower right")
+    panel_label(ax_a, "A")
+    clean_axis(ax_a, "y")
+
+    ax_b.plot(
+        pair_size.raw_site_count_median,
+        pair_size.pair_gain_vs_site_balanced,
+        color=COLORS["green"],
+        marker="o",
+        ms=5,
+        lw=1.4,
+    )
+    ax_b.axhline(0, color=COLORS["ink"], lw=0.7)
+    for row in pair_size.itertuples(index=False):
+        ax_b.text(
+            row.raw_site_count_median,
+            row.pair_gain_vs_site_balanced + (0.006 if row.pair_gain_vs_site_balanced >= 0 else -0.009),
+            f"Q{int(row.raw_site_count_quintile) + 1}",
+            ha="center",
+            va="center",
+            fontsize=6.5,
+            color=COLORS["green"],
+        )
+    ax_b.set_xlabel("Median eligible sites per pair")
+    ax_b.set_ylabel("Log-loss gain from pair-first\n(>0 favors pair-first)")
+    ax_b.set_title("Pair-first learning redistributes gain", loc="left", fontweight="bold")
+    panel_label(ax_b, "B")
+    clean_axis(ax_b, "both")
+
+    model_colors = {"local": COLORS["blue"], "ensemble": COLORS["purple"]}
+    target = strata[strata.stratum.eq("target_paired")].copy()
+    target["level"] = pd.Categorical(
+        target["level"], categories=["unpaired", "paired"], ordered=True
+    )
+    target = target.sort_values(["level", "candidate"])
+    levels = ["Unpaired", "Paired"]
+    for index, candidate in enumerate(["local", "ensemble"]):
+        values = target[target.candidate.eq(candidate)].sort_values("level")
+        ax_c.scatter(
+            np.arange(2) + (index - 0.5) * 0.12,
+            values.mean_brier_difference,
+            s=28,
+            color=model_colors[candidate],
+            label="Local model" if candidate == "local" else "Fixed ensemble",
+        )
+    ax_c.axhline(0, color=COLORS["ink"], lw=0.7)
+    ax_c.set_xticks(range(2), levels)
+    ax_c.set_ylabel("Candidate − pair-first Brier")
+    ax_c.set_title("Gain is not a paired/unpaired split", loc="left", fontweight="bold")
+    ax_c.legend(frameon=False, loc="lower left")
+    panel_label(ax_c, "C")
+    clean_axis(ax_c, "y")
+
+    stem = strata[strata.stratum.eq("stem_extent")].copy()
+    order = ["0", "1-5", "6-10", "11-20", ">20"]
+    stem["level"] = pd.Categorical(stem["level"], categories=order, ordered=True)
+    for index, candidate in enumerate(["local", "ensemble"]):
+        values = stem[stem.candidate.eq(candidate)].sort_values("level")
+        ax_d.plot(
+            np.arange(len(order)) + (index - 0.5) * 0.08,
+            values.mean_brier_difference,
+            marker="o" if candidate == "local" else "s",
+            ms=4,
+            lw=1.0,
+            color=model_colors[candidate],
+            label="Local model" if candidate == "local" else "Fixed ensemble",
+        )
+    ax_d.axhline(0, color=COLORS["ink"], lw=0.7)
+    ax_d.set_xticks(range(len(order)), order)
+    ax_d.set_xlabel("Contiguous target stem extent (nt)")
+    ax_d.set_ylabel("Candidate − pair-first Brier")
+    ax_d.set_title("Benefit spans stem extents", loc="left", fontweight="bold")
+    panel_label(ax_d, "D")
+    clean_axis(ax_d, "y")
+    figure.suptitle(
+        "Post-hoc diagnostics support the selected learning and representation principles",
+        fontsize=10.5,
+        fontweight="bold",
+        y=0.995,
+    )
+    figure.subplots_adjust(left=0.11, right=0.98, top=0.91, bottom=0.10, hspace=0.48, wspace=0.38)
+    save(figure, output, "figureS8_post_analysis_diagnostics")
 
 
 def write_manifest(source: Path, output: Path) -> None:

@@ -1,0 +1,27 @@
+{
+  "all_four_tissue_metrics": {
+    "fraction_range_ge_1": 0.5462102786970217,
+    "fraction_range_ge_10": 0.22770224472708425,
+    "fraction_range_ge_15": 0.17413580000797416,
+    "fraction_range_ge_5": 0.3201826083489494,
+    "mean_range": 7.90627186788763,
+    "median_range": 1.3900576330871004,
+    "pairs": 481.0,
+    "sites": 50162.0,
+    "strict_switch_fraction": 0.016765679199393965
+  },
+  "bootstrap_replicates": 2000,
+  "canonical_test_access": false,
+  "combined_excluded": true,
+  "individual_tissues": [
+    "Artery",
+    "Brain",
+    "Liver",
+    "MuscleSkeletal"
+  ],
+  "scope": "post-hoc descriptive matched-site analysis on development pairs",
+  "seed": 20260910,
+  "sites_observed_in_all_four_tissues": 50162,
+  "sites_observed_in_at_least_two_tissues": 74758,
+  "unique_strict_switch_sites": 1221
+}

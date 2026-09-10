@@ -2,19 +2,19 @@
 
 Selected title:
 
-> Multiscale information and predictive limits of endogenous A-to-I RNA
-> editing
+> Multiscale recoverable information in endogenous A-to-I RNA editing
 
-This title states the revised scientific thesis: the study maps both the
-information recoverable from current measurements and the boundary exposed by
-controlled failures and saturation. “Information” is deliberately more precise
-than “determinants” because the experiments establish predictive contribution,
-not a complete causal inventory. The model name is intentionally absent.
+This title states the evidence level directly. “Recoverable” restricts the
+claim to the tested data, representations, effective sample size, and evaluation
+regime; “information” is more precise than “determinants” because the experiments
+establish predictive contribution, not a complete causal inventory. The model
+name is intentionally absent.
 
 Strong alternatives considered:
 
 1. **Systematic dissection reveals the information hierarchy and predictive
-   limits of A-to-I RNA editing.** Strong but less explicit about measurement.
+   limits of A-to-I RNA editing.** Strong, but “limits” can imply a universal
+   boundary not established by the benchmark.
 2. **Substrate organization, target context, and the unexplained cellular layer
    of A-to-I RNA editing.** Biologically concrete, but too long.
 3. **A predictive information map of endogenous A-to-I RNA editing.** Concise,

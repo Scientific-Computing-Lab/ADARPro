@@ -46,7 +46,7 @@ main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
   benchmark, PaperBanana workflow, curation criteria, and nonfabrication rules.
 
 The manuscript deliberately separates pair-disjoint development OOF evidence
-from the authoritative, one-use canonical held-out comparison. Development
+from the frozen canonical held-out comparison. Development
 deltas are never added to published test metrics.
 
 ## Author placeholders

@@ -1012,6 +1012,130 @@ def add_synthesis_table_claims() -> None:
             )
 
 
+def add_post_analysis_claims() -> None:
+    """Register retained post-hoc development diagnostics."""
+
+    variation_path = (
+        ROOT
+        / "experiments/runs/post_analysis/tissue_variation/variation_summary.csv"
+    )
+    variation = pd.read_csv(variation_path)
+    all_four = variation[variation.group == "all_four_tissues"].set_index("metric")
+    summary_path = ROOT / "experiments/runs/post_analysis/tissue_variation/summary.json"
+    summary = json.loads(summary_path.read_text())
+    for claim_id, quantity, value, macro in (
+        (
+            "matched_sites_two_tissues",
+            "Sites observed in at least two individual tissues",
+            int(summary["sites_observed_in_at_least_two_tissues"]),
+            "NMatchedSitesTwoTissues",
+        ),
+        (
+            "matched_sites_four_tissues",
+            "Sites observed in all four individual tissues",
+            int(summary["sites_observed_in_all_four_tissues"]),
+            "NMatchedSitesFourTissues",
+        ),
+        (
+            "strict_switch_sites",
+            "Sites with at least one strict edited/nonedited tissue switch",
+            int(summary["unique_strict_switch_sites"]),
+            "NStrictSwitchSites",
+        ),
+    ):
+        add(
+            claim_id,
+            quantity,
+            value,
+            f"{value:,}",
+            "sites",
+            "post-hoc descriptive development analysis",
+            summary_path,
+            quantity,
+            "Results; SI post-hoc scale diagnostics; Figure S7",
+            "integer with thousands separator",
+            macro,
+        )
+    for threshold, macro in (
+        (1, "AllFourRangeOnePct"),
+        (5, "AllFourRangeFivePct"),
+        (15, "AllFourRangeFifteenPct"),
+    ):
+        row = all_four.loc[f"fraction_range_ge_{threshold}"]
+        add(
+            f"all_four_range_ge_{threshold}",
+            f"Fraction of four-tissue matched sites with EditingIndex range >= {threshold}",
+            float(row["value"]),
+            f"{100 * row['value']:.1f}",
+            "percent",
+            "post-hoc descriptive development analysis with pair-clustered interval",
+            variation_path,
+            f"group=all_four_tissues; metric=fraction_range_ge_{threshold}; column=value",
+            "Results; SI post-hoc scale diagnostics; Figure S7",
+            "one decimal after multiplication by 100",
+            macro,
+        )
+
+    stability_path = (
+        ROOT
+        / "experiments/runs/post_analysis/pair_stability/cross_tissue_pair_stability.csv"
+    )
+    stability = pd.read_csv(stability_path)
+    for metric, stem in (
+        ("mean_editing_spearman", "PairMeanEditingRho"),
+        ("high_fraction_spearman", "PairHighFractionRho"),
+    ):
+        subset = stability[stability.metric == metric]
+        for bound, reducer in (("Min", min), ("Max", max)):
+            value = float(reducer(subset.spearman))
+            add(
+                f"{metric}_{bound.lower()}",
+                f"{metric} across-tissue {bound.lower()}",
+                value,
+                f"{value:.3f}",
+                "Spearman rho",
+                "post-hoc descriptive matched-site development analysis",
+                stability_path,
+                f"metric={metric}; {bound.lower()}(spearman)",
+                "Results; SI post-hoc scale diagnostics; Figure S7",
+                "three decimals",
+                f"{stem}{bound}",
+            )
+
+    within_path = (
+        ROOT / "experiments/runs/post_analysis/within_duplex/within_duplex_contrasts.csv"
+    )
+    within = pd.read_csv(within_path)
+    for context in ("Liver", "MuscleSkeletal"):
+        for candidate, stem in (
+            ("target_local", "WithinLocal"),
+            ("fixed_ensemble", "WithinEnsemble"),
+        ):
+            row = within[
+                within.context.eq(context) & within.candidate.eq(candidate)
+            ].iloc[0]
+            context_stem = CONTEXT_MACRO[context]
+            for column, suffix in (
+                ("lower", "Lower"),
+                ("mean_difference", "Mean"),
+                ("upper", "Upper"),
+            ):
+                value = float(row[column])
+                add(
+                    f"within_pair_{context}_{candidate}_{column}",
+                    f"{context} {candidate} minus pair-first mean within-pair AUROC {column}",
+                    value,
+                    f"{100 * value:+.2f}",
+                    "AUROC percentage points",
+                    "post-hoc descriptive development OOF pair-bootstrap",
+                    within_path,
+                    f"context={context}; candidate={candidate}; column={column}",
+                    "Results; SI post-hoc scale diagnostics; Figure S8",
+                    "two decimals after multiplication by 100",
+                    f"{context_stem}{stem}{suffix}",
+                )
+
+
 def write_outputs() -> None:
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1041,6 +1165,7 @@ def main() -> None:
     add_local_and_unified_claims()
     add_limited_branch_claims()
     add_synthesis_table_claims()
+    add_post_analysis_claims()
     write_outputs()
 
 

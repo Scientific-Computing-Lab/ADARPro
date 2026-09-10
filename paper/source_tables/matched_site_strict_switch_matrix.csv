@@ -1,0 +1,13 @@
+edited_tissue,nonedited_tissue,shared_sites,strict_switch_sites,strict_switch_per_10000_shared
+Artery,Brain,66866,33,4.935243621571502
+Artery,Liver,53931,157,29.111271810276094
+Artery,MuscleSkeletal,69482,840,120.89462018940158
+Brain,Artery,66866,3,0.44865851105195464
+Brain,Liver,51142,60,11.732040201791092
+Brain,MuscleSkeletal,65550,415,63.310450038138825
+Liver,Artery,53931,0,0.0
+Liver,Brain,51142,11,2.1508740369950337
+Liver,MuscleSkeletal,53201,190,35.71361440574425
+MuscleSkeletal,Artery,69482,0,0.0
+MuscleSkeletal,Brain,65550,1,0.15255530129672007
+MuscleSkeletal,Liver,53201,0,0.0

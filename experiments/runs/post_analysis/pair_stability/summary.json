@@ -1,0 +1,149 @@
+{
+  "bootstrap_replicates": 2000,
+  "canonical_test_access": false,
+  "combined_excluded": true,
+  "comparisons": [
+    {
+      "bootstrap_median": 0.9209687096318436,
+      "eligible_pairs": 573,
+      "first_tissue": "Artery",
+      "lower": 0.9009095510447149,
+      "median_matched_sites": 132.0,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "Brain",
+      "spearman": 0.9212014521042743,
+      "upper": 0.9368574475871426
+    },
+    {
+      "bootstrap_median": 0.8937476980046604,
+      "eligible_pairs": 573,
+      "first_tissue": "Artery",
+      "lower": 0.8654695488920802,
+      "median_matched_sites": 132.0,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "Brain",
+      "spearman": 0.8937258727437188,
+      "upper": 0.9167058603014704
+    },
+    {
+      "bootstrap_median": 0.8958834219941467,
+      "eligible_pairs": 498,
+      "first_tissue": "Artery",
+      "lower": 0.8705472174526914,
+      "median_matched_sites": 126.0,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "Liver",
+      "spearman": 0.8962996147272516,
+      "upper": 0.9166858205518154
+    },
+    {
+      "bootstrap_median": 0.8756735618180654,
+      "eligible_pairs": 498,
+      "first_tissue": "Artery",
+      "lower": 0.8446436488450746,
+      "median_matched_sites": 126.0,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "Liver",
+      "spearman": 0.8758478034003994,
+      "upper": 0.8996054388902172
+    },
+    {
+      "bootstrap_median": 0.726510262619522,
+      "eligible_pairs": 570,
+      "first_tissue": "Artery",
+      "lower": 0.6759600455563897,
+      "median_matched_sites": 134.0,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.7273423109141126,
+      "upper": 0.7700044683638644
+    },
+    {
+      "bootstrap_median": 0.6329772258653954,
+      "eligible_pairs": 570,
+      "first_tissue": "Artery",
+      "lower": 0.5751404973571209,
+      "median_matched_sites": 134.0,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.6328984480820824,
+      "upper": 0.6836258007943053
+    },
+    {
+      "bootstrap_median": 0.8643896933361002,
+      "eligible_pairs": 482,
+      "first_tissue": "Brain",
+      "lower": 0.8354443475138535,
+      "median_matched_sites": 124.5,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "Liver",
+      "spearman": 0.8660750182691627,
+      "upper": 0.8896311421021483
+    },
+    {
+      "bootstrap_median": 0.8421575473023561,
+      "eligible_pairs": 482,
+      "first_tissue": "Brain",
+      "lower": 0.8063865982155886,
+      "median_matched_sites": 124.5,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "Liver",
+      "spearman": 0.8434781040300963,
+      "upper": 0.8720925451868893
+    },
+    {
+      "bootstrap_median": 0.7310588529599436,
+      "eligible_pairs": 557,
+      "first_tissue": "Brain",
+      "lower": 0.6798636089504144,
+      "median_matched_sites": 133.0,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.7304629684796785,
+      "upper": 0.7744384781444927
+    },
+    {
+      "bootstrap_median": 0.6427132784261633,
+      "eligible_pairs": 557,
+      "first_tissue": "Brain",
+      "lower": 0.5824068004579186,
+      "median_matched_sites": 133.0,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.6428076415558598,
+      "upper": 0.6982471044284158
+    },
+    {
+      "bootstrap_median": 0.7353982539580899,
+      "eligible_pairs": 493,
+      "first_tissue": "Liver",
+      "lower": 0.6829036379155047,
+      "median_matched_sites": 125.0,
+      "metric": "mean_editing_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.7353571725975232,
+      "upper": 0.7817718100393971
+    },
+    {
+      "bootstrap_median": 0.6340122560686237,
+      "eligible_pairs": 493,
+      "first_tissue": "Liver",
+      "lower": 0.5707861188197209,
+      "median_matched_sites": 125.0,
+      "metric": "high_fraction_spearman",
+      "second_tissue": "MuscleSkeletal",
+      "spearman": 0.6339821953208611,
+      "upper": 0.6912276304818283
+    }
+  ],
+  "individual_tissues": [
+    "Artery",
+    "Brain",
+    "Liver",
+    "MuscleSkeletal"
+  ],
+  "minimum_matched_sites_per_pair": 5,
+  "prespecified_retention_rule_passed": true,
+  "scope": "post-hoc descriptive matched-site analysis on development pairs",
+  "seed": 20260910
+}
