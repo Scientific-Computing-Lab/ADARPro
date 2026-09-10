@@ -29,9 +29,10 @@ DEFAULT_ENDPOINT = (
 
 COMMON = (
     " Isolated publication-quality scientific illustration asset on a native "
-    "transparent background. Refined Nature/PNAS biology-figure aesthetic, "
-    "precise scientific visual language, thin charcoal outlines, restrained "
-    "navy teal amber coral palette, subtle dimensionality, no photorealism, "
+    "transparent background. Refined Nature/PNAS molecular-biology figure aesthetic, "
+    "precise scientific visual language, fine charcoal outlines, restrained "
+    "navy teal amber coral palette, subtle dimensionality, no photorealism, no glossy "
+    "app-icon finish, no thick cartoon outline, "
     "no text, no letters, no numerals, no labels, no arrows, no border, no "
     "chart, no decorative background, no watermark, generous transparent margin."
 )
@@ -114,6 +115,101 @@ FAMILIES = {
         "cellular and conformational influences are crisp, while more distant donor-state and "
         "regulator-context motifs dissolve softly; no question marks or symbolic text.",
     ],
+    "rna_substrate_editorial": [
+        "A horizontal endogenous double-stranded RNA substrate formed when two regions "
+        "of one flexible RNA transcript fold back and pair. Show an imperfect, nearly "
+        "planar antiparallel duplex with fine ribose-phosphate rails, short base-pair "
+        "bridges, one asymmetric internal bulge, and one small loop. One central adenosine "
+        "may be marked by a restrained amber accent. It must read as folded RNA, not a "
+        "regular DNA double helix, chromosome, molecular ball-and-stick model, or ladder.",
+        "A refined editorial cutaway of an inverted-repeat RNA duplex: one continuous "
+        "single-stranded transcript curves into two paired arms, with visible imperfect "
+        "base pairing, a small mismatch, and a bulged nucleotide. Use an elongated low "
+        "profile suitable for a journal figure. Avoid DNA helices, equal rigid rungs, "
+        "chromosomes, proteins, and cellular scenery.",
+        "A compact biological illustration of a long imperfect dsRNA stem embedded in a "
+        "continuous transcript, shown as two gently curved RNA backbones connected by "
+        "delicate hydrogen-bond cues. Include minor asymmetry and a single focal amber "
+        "nucleotide. The silhouette should be horizontal, elegant, and unmistakably RNA; "
+        "never depict the canonical twisted DNA double helix.",
+        "A horizontal A-form double-stranded RNA substrate rendered as a restrained molecular "
+        "ribbon cutaway. Show the compact helical pitch and broad shallow groove characteristic "
+        "of dsRNA, short single-stranded transcript tails, one small asymmetric bulge, and one "
+        "amber target nucleotide. Use fine scientific-illustration detail without atomistic clutter. "
+        "Do not use the familiar symmetric B-DNA icon, rectangular colored base bars, or a ladder.",
+        "A polished molecular-biology plate of an inverted-Alu RNA fold: two flexible transcript "
+        "arms meet in an imperfect A-form RNA stem with short tails, uneven pairing, a small loop, "
+        "and a bulged adenosine. Three-quarter horizontal view, delicate backbone texture, crisp at "
+        "thumbnail scale. Explicitly avoid DNA-like symmetry, chromosomes, nucleosomes, and textbook "
+        "double-helix iconography.",
+        "A refined semi-flat illustration of one endogenous RNA transcript folding into a compact "
+        "imperfect duplex. Preserve a visibly continuous RNA contour, a broad A-form stem, several "
+        "paired contacts, one mismatch, and one warm focal nucleotide. Horizontal editorial layout; "
+        "no regular DNA helix, no colored ladder, no atom spheres, and no hand-drawn doodle style.",
+    ],
+    "target_pair_context": [
+        "A close editorial view of a short imperfect RNA duplex centered on one paired "
+        "position. The upper focal adenosine is a small amber nucleotide and the directly "
+        "paired lower nucleotide is teal; both sit within a visibly paired local RNA "
+        "neighborhood with one nearby bulge. Keep the two highlighted nucleotides vertically "
+        "aligned near the exact center and leave open space above and below for vector callouts. "
+        "No DNA helix, no protein, no cell, no labels, brackets, arrows, or glow.",
+        "A precise horizontal target-centered RNA pairing motif, almost planar rather than "
+        "twisted: two fine antiparallel RNA strands, seven to nine local pairing contacts, "
+        "an amber focal nucleotide on the upper strand and a teal predicted partner directly "
+        "below it. Add one subtle mismatch outside the central pair. Clean scientific plate, "
+        "with the central pair dominant and generous transparent space for annotation.",
+        "A high-end molecular-biology figure insert showing an imperfect local RNA stem. "
+        "Center a single amber adenosine opposite a teal partner, connected by a delicate "
+        "pairing cue; flank them with several neutral paired nucleotides and a modest bulge. "
+        "Use restrained flat depth and fine linework. Avoid a generic DNA ladder, helical "
+        "twist, atom model, labels, arrows, halos, or decorative effects.",
+        "A horizontal close-up cutaway through an imperfect A-form RNA stem, designed as a small "
+        "journal figure insert. At the exact center, show one amber ribonucleotide opposite one teal "
+        "ribonucleotide with a delicate pairing interaction. Neighboring paired bases and one bulge "
+        "provide local context. Keep the geometry planar enough for vector labels; no DNA helix, "
+        "rectangular ladder, glow, letters, brackets, or arrows.",
+        "A precise molecular editorial illustration of target-centered RNA pairing: two gently curved "
+        "ribose-phosphate backbones frame a short imperfect paired region. One central upper nucleotide "
+        "is amber and its directly aligned lower partner is teal; all other nucleotides are restrained "
+        "blue-gray. Include open transparent space around the central pair. No DNA iconography, no "
+        "protein, no cell, no labels, no radiance, and no toy-like colored blocks.",
+        "A high-end PNAS-style detail view of a local dsRNA neighborhood, horizontal and nearly planar. "
+        "Render a central amber adenosine paired directly to a teal partner, with five flanking pairing "
+        "contacts and one small asymmetric loop. Use subtle material depth and fine linework that remains "
+        "clear at print scale. Avoid DNA twist, rigid rungs, geometric tokens, text, callouts, and arrows.",
+    ],
+    "substrate_organization": [
+        "A compact horizontal concept of substrate organization in an inverted-repeat RNA: "
+        "a single transcript contains two separated repeat-derived arms that curve together "
+        "into one imperfect dsRNA stem, while a restrained open arc between their origins "
+        "suggests inter-arm genomic separation. Show one substrate only. No chromosome, DNA "
+        "double helix, scale numbers, labels, arrows, or quantitative encoding.",
+        "An editorial biological vignette of two distant regions of one pre-mRNA forming an "
+        "imperfect RNA duplex. Keep the paired stem crisp in the foreground and show the long "
+        "intervening transcript as a soft curved path behind it, communicating pair-level "
+        "organization without implying a measured mechanism. No cell, DNA, ruler, text, or icons.",
+        "A polished schematic illustration of one folded transcript whose separated inverted "
+        "repeat arms meet to form an asymmetric RNA duplex. Emphasize the relation between "
+        "transcript-scale spacing and the paired substrate using spatial composition alone. "
+        "No arrows, brackets, labels, DNA helix, chromosomes, or numeric distance marks.",
+    ],
+    "matched_cell_state": [
+        "A compact cutaway mammalian cell representing unresolved matched cellular state for "
+        "RNA editing. Show a translucent cell and nucleus, one continuous orange RNA transcript "
+        "with a small imperfect fold-back duplex, two faint alternative transcript paths, and "
+        "several generic regulator shapes with varied proximity. No DNA, chromosomes, chromatin "
+        "fibers, transcription forks, regular double helices, labels, or question marks.",
+        "A restrained scientific cell-state vignette centered on RNA: a soft cell boundary and "
+        "nuclear region contain one clearly single-contour transcript, a local imperfect dsRNA "
+        "fold, sparse generic RNA-binding proteins, and subtle alternative processing branches. "
+        "The RNA must remain visually dominant. Exclude DNA, chromosomes, chromatin, organelle "
+        "catalogues, labels, and decorative particles.",
+        "A refined PNAS-style conceptual asset for transcript and cellular context at matched "
+        "scale. Inside a simple mammalian cell silhouette, show one folded RNA substrate, a few "
+        "translucent regulator forms, and two softly diverging transcript isoform paths. Keep "
+        "the scene sparse, biologically restrained, and unmistakably about RNA rather than DNA."
+    ],
 }
 
 SELECTIONS = {
@@ -143,6 +239,34 @@ SELECTIONS = {
     "latent_context": {
         "candidate": 1,
         "rationale": "Layering conveys unavailable context without quantitative symbolism.",
+    },
+    "rna_substrate_editorial": {
+        "candidate": 1,
+        "rationale": (
+            "The continuous fold-back contour, asymmetric bulges, and low-profile paired "
+            "stem remain legible after reduction without resembling canonical B-DNA."
+        ),
+    },
+    "target_pair_context": {
+        "candidate": 4,
+        "rationale": (
+            "The central amber/teal pair is unambiguous, the neighboring imperfect stem "
+            "provides local context, and open margins support controlled vector callouts."
+        ),
+    },
+    "substrate_organization": {
+        "candidate": 1,
+        "rationale": (
+            "A single continuous transcript forms a compact imperfect stem while the broad "
+            "arc communicates transcript-scale organization without a numeric claim."
+        ),
+    },
+    "matched_cell_state": {
+        "candidate": 1,
+        "rationale": (
+            "RNA remains visually dominant within a restrained cell/nuclear context and no "
+            "DNA helix, chromosome, or quantitative encoding is present."
+        ),
     },
 }
 

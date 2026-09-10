@@ -48,6 +48,38 @@
       "asset": "paper/figure_assets/selected/latent_context.png",
       "rationale": "Layering conveys unavailable context without quantitative symbolism.",
       "sha256": "5d42ca085259118dea2a1ea720061de050cb7ce05235369fa9e6bb24fe45e98b"
+    },
+    {
+      "family": "rna_substrate_editorial",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/rna_substrate_editorial_candidate_01.png",
+      "asset": "paper/figure_assets/selected/rna_substrate_editorial.png",
+      "rationale": "The continuous fold-back contour, asymmetric bulges, and low-profile paired stem remain legible after reduction without resembling canonical B-DNA.",
+      "sha256": "259014dbc38f6dd21ce97fa45184bd56515fbc61e4ceb4916cdd465a01166e6b"
+    },
+    {
+      "family": "target_pair_context",
+      "selected_candidate": 4,
+      "source": "paper/figure_assets/candidates/target_pair_context_candidate_04.png",
+      "asset": "paper/figure_assets/selected/target_pair_context.png",
+      "rationale": "The central amber/teal pair is unambiguous, the neighboring imperfect stem provides local context, and open margins support controlled vector callouts.",
+      "sha256": "bb54c8aee3479f90a872a15b838b5ff57ad56acf9a45f41d3498034cb531acc4"
+    },
+    {
+      "family": "substrate_organization",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/substrate_organization_candidate_01.png",
+      "asset": "paper/figure_assets/selected/substrate_organization.png",
+      "rationale": "A single continuous transcript forms a compact imperfect stem while the broad arc communicates transcript-scale organization without a numeric claim.",
+      "sha256": "5c40441177f93b831166e6a50e85e9e189e18979005a4824432562d324928b7c"
+    },
+    {
+      "family": "matched_cell_state",
+      "selected_candidate": 1,
+      "source": "paper/figure_assets/candidates/matched_cell_state_candidate_01.png",
+      "asset": "paper/figure_assets/selected/matched_cell_state.png",
+      "rationale": "RNA remains visually dominant within a restrained cell/nuclear context and no DNA helix, chromosome, or quantitative encoding is present.",
+      "sha256": "df2bc484500b4db7015652fb553a77ae0c919b13b4c7fe6b99a6e5536c60e4e0"
     }
   ]
 }
