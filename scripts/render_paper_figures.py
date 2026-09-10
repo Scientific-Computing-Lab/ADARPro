@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import Normalize
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch
+from paper_licensed_art import embed_licensed_art
 from paper_vector_diagrams import draw_motif
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,7 +80,7 @@ def configure() -> None:
 
 
 def add_asset(axis, name, bounds, **kwargs):
-    """Place a code-defined conceptual diagram, never an image-model asset."""
+    """Place a credited SVG illustration or a native scientific diagram."""
     return draw_motif(axis, name, bounds, **kwargs)
 
 
@@ -220,6 +221,7 @@ def save(figure: plt.Figure, output: Path, stem: str) -> None:
         metadata={"Creator": "A-to-I editing figure pipeline", "Date": "2026-09-10"},
     )
     plt.close(figure)
+    embed_licensed_art(svg_path)
     _verify_vector_only(svg_path)
     pdf_bytes = cairosvg.svg2pdf(bytestring=svg_path.read_bytes())
     (output / f"{stem}.pdf").write_bytes(pdf_bytes)
@@ -315,7 +317,7 @@ def figure_search_space(output: Path, source: Path) -> None:
         raise RuntimeError("Search-space coverage table is missing a required scale")
 
     figure = plt.figure(figsize=(7.15, 7.45))
-    grid = figure.add_gridspec(3, 1, height_ratios=[1.20, 1.62, 1.08], hspace=0.18)
+    grid = figure.add_gridspec(3, 1, height_ratios=[1.42, 1.46, 1.08], hspace=0.16)
     ax_a = figure.add_subplot(grid[0, 0])
     ax_b = figure.add_subplot(grid[1, 0])
     ax_c = figure.add_subplot(grid[2, 0])
@@ -380,7 +382,7 @@ def figure_search_space(output: Path, source: Path) -> None:
         )
         ax_a.text(
             x + 0.015,
-            0.735,
+            0.750,
             question,
             ha="left",
             va="top",
@@ -390,14 +392,14 @@ def figure_search_space(output: Path, source: Path) -> None:
         add_asset(
             ax_a,
             asset,
-            (x + 0.040, 0.420, width - 0.080, 0.255),
+            (x + 0.027, 0.382, width - 0.054, 0.335),
             alpha=0.97,
             zorder=2,
             trim=True,
         )
         ax_a.text(
             x + 0.015,
-            0.365,
+            0.370,
             detail,
             ha="left",
             va="top",
@@ -459,11 +461,11 @@ def figure_search_space(output: Path, source: Path) -> None:
         (0.605, "SAME-FOLD +\nMATCHED CONTROLS", COLORS["teal"]),
         (0.885, "EFFECT + UNCERTAINTY\nEVIDENCE STATUS", COLORS["purple"]),
     ]
-    ax_b.plot([0.055, 0.895], [0.825, 0.825], color="#BCC8CD", lw=1.0, zorder=1)
+    ax_b.plot([0.055, 0.895], [0.850, 0.850], color="#BCC8CD", lw=1.0, zorder=1)
     for x, text_value, color in protocol:
         ax_b.add_patch(
             Circle(
-                (x, 0.825),
+                (x, 0.850),
                 0.019,
                 facecolor="white",
                 edgecolor=color,
@@ -472,11 +474,11 @@ def figure_search_space(output: Path, source: Path) -> None:
             )
         )
         ax_b.add_patch(
-            Circle((x, 0.825), 0.006, facecolor=color, edgecolor="none", zorder=4)
+            Circle((x, 0.850), 0.006, facecolor=color, edgecolor="none", zorder=4)
         )
         ax_b.text(
             x,
-            0.755,
+            0.790,
             text_value,
             ha="center",
             va="top",
@@ -1826,8 +1828,11 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
         text(0.33, y + 0.117, title, 7.1, color, fontweight="bold")
         add_asset(axis, motif, (0.257, y - 0.107, 0.15, 0.165))
-        arrow(junction, (0.25, y - 0.02), color)
-        arrow((0.415, y - 0.02), (0.460, y - 0.02), color)
+        # Route to the illustrated representation, including the narrower local
+        # enlargement; the branch must not terminate in its surrounding space.
+        local_view = motif == "target_local_editorial"
+        arrow(junction, (0.291 if local_view else 0.25, y - 0.02), color)
+        arrow((0.381 if local_view else 0.415, y - 0.02), (0.460, y - 0.02), color)
         # Text names the operations; braces define scope, without decorative nodes.
         text(0.565, y + 0.022, computation, 6.7, color)
         text(0.565, y - 0.074, detail, 6.25, COLORS["gray"])
@@ -3149,15 +3154,28 @@ def write_manifest(source: Path, output: Path) -> None:
                 "role": "rendered publication figure (SVG; no embedded raster)",
             }
         )
-    for name in ("render_paper_figures.py", "paper_vector_diagrams.py"):
+    for name in (
+        "render_paper_figures.py",
+        "paper_vector_diagrams.py",
+        "paper_licensed_art.py",
+    ):
         path = ROOT / "scripts" / name
         rows.append(
             {
                 "artifact": path.relative_to(ROOT).as_posix(),
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "role": "code-defined vector composition; no image-model assets",
+                "role": "vector composition and licensed-art adaptation; no image-model assets",
             }
         )
+    for path in sorted((ROOT / "paper/illustration_sources").rglob("*")):
+        if path.is_file():
+            rows.append(
+                {
+                    "artifact": path.relative_to(ROOT).as_posix(),
+                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                    "role": "licensed third-party illustration or source attribution",
+                }
+            )
     pd.DataFrame(rows).to_csv(source / "figure_source_manifest.csv", index=False)
 
 

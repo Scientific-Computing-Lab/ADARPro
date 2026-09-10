@@ -6,8 +6,10 @@ remain here solely to preserve provenance. Converting a generated image into
 SVG does not remove its image-generation provenance.
 
 The active figures are composed by `scripts/render_paper_figures.py` and
-`scripts/paper_vector_diagrams.py`, using quantitative source tables and
-code-defined conceptual diagrams. All placements in the manuscript are SVG;
+`scripts/paper_vector_diagrams.py`, using quantitative source tables,
+code-defined diagrams, and [licensed scientific SVG artwork](../illustration_sources/README.md).
+The credited third-party originals are separate from this archive.
+All placements in the manuscript are SVG;
 their PDF derivatives serve the LaTeX build. Labels use Nimbus Sans, matching
 the native PNAS template's sans-serif figure/caption typography.
 

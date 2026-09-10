@@ -93,8 +93,12 @@ programmatically generated figure and table sources are retained in
 correspondence fields remain explicit placeholders pending author approval.
 The [independent submission audit](reports/29_independent_submission_audit.md)
 also identifies the residual-screen evidence gap and the unresolved PNAS
-AI-assisted-graphics policy question. Historical GPT Image assets are excluded
-from the active SVG build; see [artwork provenance](paper/figure_assets/README.md).
+AI-assisted-graphics policy question. Biological illustrations now use
+[credited DBCLS/TogoTV and Servier SVG artwork](paper/illustration_sources/README.md).
+Historical GPT Image assets remain excluded from the active build;
+see [archive provenance](paper/figure_assets/README.md).
+The [licensed-illustration revision](reports/30_licensed_illustration_revision.md)
+records source selection, figure changes, and verification.
 These PDFs are revised author-review drafts, not certified submission-ready files.
 
 ```bash
@@ -115,7 +119,7 @@ traceability.
 | `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
-| `reports/` | Campaign/editorial reports 00–29 and final synthesis |
+| `reports/` | Campaign/editorial reports 00–30 and final synthesis |
 | `provenance/` | Input hashes, freeze manifests, audit chain, inventory, and exclusions |
 | `paper/` | PNAS manuscript, SI, verified bibliography, and paper source tables |
 | `docs/` | Campaign, data, reproducibility, and upstream documentation |

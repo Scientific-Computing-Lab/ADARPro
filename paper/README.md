@@ -37,19 +37,20 @@ main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
 - `reference_audit.csv` records DOI-level bibliographic verification.
 - `scripts/render_paper_figures.py` and `scripts/render_paper_tables.py`
   regenerate the publication outputs.
-- `figure_assets/` contains the GPT Image 1.5 candidate/selection manifests
-  and the curated transparent, nonquantitative illustration components.
-- `scripts/generate_figure_assets.py` regenerates three candidates in each
-  illustration family when `AZURE_OPENAI_API_KEY` is available; the quantitative
-  figure build itself does not require API access.
+- `illustration_sources/` contains the licensed DBCLS/TogoTV and Servier SVG
+  originals, attribution, and precise adaptation/figure mappings. The active
+  build embeds their original vector paths, never raster proxies or traces.
+- `figure_assets/` retains historical GPT Image 1.5 candidate/selection
+  manifests and illustrations solely for provenance; none enters the build.
 - `../reports/FIGURE_REDESIGN_WORKFLOW.md` documents the PNAS/Nature visual
   benchmark, PaperBanana workflow, curation criteria, and nonfabrication rules.
 
 PNAS currently prohibits AI tools for creating manuscript images or graphics
-unless the software is itself the subject of the paper. The affected SVG
-sub-assets and required replacements are listed in
-`../reports/28_pre_submission_revision.md`; disclosure alone is not sufficient
-for submission under the current policy.
+unless the software is itself the subject of the paper. Generated imagery has
+been removed, but the composition code was AI-assisted: journal eligibility
+still requires author/editorial confirmation. Source licensing and image-model
+provenance are distinct questions; neither attribution nor an SVG extension
+certifies compliance with the broader policy.
 
 The manuscript deliberately separates pair-disjoint development OOF evidence
 from the frozen canonical held-out comparison. Development

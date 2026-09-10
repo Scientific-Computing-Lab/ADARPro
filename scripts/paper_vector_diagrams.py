@@ -1,4 +1,4 @@
-"""Code-defined scientific schematics; no raster, tracing, or image-model assets.
+"""Licensed biological illustrations and precise code-defined schematics.
 
 Coordinates describe conceptual secondary structure and information flow, not
 an observed molecular conformation. Every mark has a stated semantic role.
@@ -8,8 +8,8 @@ These replacements require author review under the journal's AI-use policy.
 from __future__ import annotations
 
 import numpy as np
-from matplotlib.patches import Arc, Ellipse, PathPatch, Polygon
-from matplotlib.path import Path
+from matplotlib.patches import Arc, Polygon
+from paper_licensed_art import place_artwork
 
 BLUE = "#2166AC"
 TEAL = "#138D90"
@@ -19,131 +19,115 @@ GRAY = "#68737D"
 INK = "#172126"
 
 
-def curve(ax, vertices, color=BLUE, lw=1.2, alpha=1.0):
-    codes = [Path.MOVETO] + [Path.CURVE4] * (len(vertices) - 1)
-    ax.add_patch(
-        PathPatch(
-            Path(vertices, codes),
-            fill=False,
-            color=color,
-            lw=lw,
-            capstyle="round",
-            alpha=alpha,
-        )
-    )
-
-
 def duplex(ax, *, local=False, graph=False, labels=False, sites=False):
-    """Antiparallel arms of one RNA, joined by an unpaired loop; no DNA helix."""
-    xs = np.linspace(0.09, 0.83, 23)
-    top = 0.67 + 0.025 * np.cos(xs * 12)
-    bottom = 0.30 + 0.020 * np.sin(xs * 10)
-    # One schematic bulge makes the imperfect-duplex convention explicit.
-    top[6:9] += [0.04, 0.11, 0.04]
+    """Credited RNA artwork with vector annotations on identifiable bases."""
+    box = (0.07, 0.18, 0.86, 0.65) if local and labels else (0.025, 0.07, 0.95, 0.86)
+    x, y, w, h = place_artwork(ax, "local" if local else "rna", box)
+
+    def point(sx, sy):
+        vx, vy, vw, vh = (96, 168, 112, 64) if local else (0, 150, 400, 96)
+        return x + w * (sx - vx) / vw, y + h * (1 - (sy - vy) / vh)
+
     if local:
-        ax.axvspan(0.35, 0.64, ymin=0.16, ymax=0.88, color=GREEN, alpha=0.085)
-        for x in (0.35, 0.64):
-            ax.plot([x, x], [0.16, 0.87], color=GREEN, lw=0.55, linestyle=(0, (2, 2)))
-    ax.plot(xs, top, color=BLUE, lw=1.5, solid_capstyle="round")
-    ax.plot(xs, bottom, color=TEAL, lw=1.5, solid_capstyle="round")
-    curve(
-        ax,
-        [(xs[-1], top[-1]), (1.02, 0.77), (1.01, 0.15), (xs[-1], bottom[-1])],
-        color=GRAY,
-        lw=1.15,
-    )
-    for i, x in enumerate(xs):
-        if i in (6, 7, 8, 17):
-            continue
+        # A crop is an enlarged local representation, not a new fold. The source
+        # base pair is highlighted in the adapted SVG itself.
+        left, bottom = point(107, 227)
+        right, top = point(200, 173)
         ax.plot(
-            [x, x],
-            [bottom[i] + 0.035, top[i] - 0.035],
-            color="#A3B4BE",
-            lw=0.75 if graph else 0.6,
-            zorder=1,
+            [left, left, right, right],
+            [bottom + 0.03, bottom, bottom, bottom + 0.03],
+            color=GREEN,
+            lw=0.75,
         )
-    if graph:
-        ax.scatter(xs, top, s=5, facecolor="white", edgecolor=BLUE, lw=0.5, zorder=3)
-        ax.scatter(xs, bottom, s=5, facecolor="white", edgecolor=TEAL, lw=0.5, zorder=3)
-    elif not sites:
-        for x, y, color in zip(xs, top, [BLUE] * len(xs)):
-            ax.plot([x, x], [y - 0.016, y + 0.016], color=color, lw=1.0)
-    if local:
-        target = 12
-        x = xs[target]
-        ax.plot([x, x], [bottom[target], top[target]], color=GREEN, lw=1.1, zorder=4)
-        ax.scatter(
-            [x, x],
-            [top[target], bottom[target]],
-            s=28 if labels else 14,
-            facecolor=[GREEN, "white"],
-            edgecolor=GREEN,
-            lw=0.85,
-            zorder=5,
+        ax.plot(
+            [left, left, right, right],
+            [top - 0.03, top, top, top - 0.03],
+            color=GREEN,
+            lw=0.75,
         )
+        tx, ty = point(153.7, 186.4)
+        px, py = point(153.7, 214.5)
         if labels:
-            ax.text(
-                x, 0.93, "focal A", ha="center", va="center", fontsize=6.3, color=GREEN
-            )
-            ax.text(
-                x,
-                0.035,
-                "predicted partner",
+            ax.annotate(
+                "focal A",
+                xy=(tx, ty),
+                xytext=(tx, 0.97),
+                fontsize=6.25,
+                color=GREEN,
                 ha="center",
-                va="center",
-                fontsize=6.0,
-                color=GRAY,
+                va="top",
+                arrowprops={"arrowstyle": "-", "color": GREEN, "lw": 0.65},
             )
-    if sites:
-        for i, color, face in [
-            (4, GREEN, GREEN),
-            (12, BLUE, "white"),
-            (19, GRAY, "white"),
+            ax.annotate(
+                "predicted partner",
+                xy=(px, py),
+                xytext=(px, 0.045),
+                fontsize=5.9,
+                color=GREEN,
+                ha="center",
+                va="bottom",
+                arrowprops={"arrowstyle": "-", "color": GREEN, "lw": 0.65},
+            )
+        else:
+            # One readable letter identifies the highlighted adenosine even in
+            # the smallest architecture/evidence-map placement.
+            ax.text(
+                tx,
+                min(0.98, ty + 0.13),
+                "A",
+                color=GREEN,
+                fontsize=6.1,
+                ha="center",
+                va="bottom",
+                fontweight="bold",
+            )
+    elif sites:
+        for sx, color, face in [
+            (145.17, GREEN, GREEN),
+            (205.02, BLUE, "white"),
+            (288.52, GRAY, "white"),
         ]:
+            px, py = point(sx, 183.9)
             ax.scatter(
-                [xs[i]],
-                [top[i]],
-                s=29,
-                facecolor=face,
-                edgecolor=color,
-                lw=0.95,
-                zorder=6,
+                [px], [py], s=27, facecolor=face, edgecolor=color, lw=0.95, zorder=6
+            )
+    elif graph:
+        # A sparse overlay identifies the nucleotide/backbone graph view.
+        sx = np.array(
+            [37.9, 69.63, 95.1, 145.17, 179.37, 205.02, 239.2, 264.85, 297.3, 314.8]
+        )
+        for sy in [183.9, 217.5]:
+            px, py = point(sx, sy)
+            ax.scatter(
+                px,
+                np.full_like(px, py),
+                s=3.4,
+                facecolor="white",
+                edgecolor=BLUE,
+                lw=0.4,
+                zorder=5,
             )
     if labels and not local:
-        ax.text(0.04, top[0], "5′", ha="right", va="center", fontsize=6.0, color=BLUE)
-        ax.text(
-            0.04, bottom[0], "3′", ha="right", va="center", fontsize=6.0, color=TEAL
-        )
+        for sy, label in [(160, "5′"), (239, "3′")]:
+            px, py = point(8, sy)
+            ax.text(
+                px - 0.013, py, label, fontsize=6.1, color=BLUE, ha="right", va="center"
+            )
 
 
 def context(ax, *, labels=False):
-    """Unmeasured cell/transcript context: RNA in two compartments, no mechanism."""
-    ax.add_patch(
-        Ellipse(
-            (0.5, 0.5), 0.88, 0.78, facecolor="#F5F8FA", edgecolor="#A9B8C2", lw=0.85
-        )
-    )
-    ax.add_patch(
-        Ellipse(
-            (0.35, 0.51), 0.36, 0.51, facecolor="#E9F1F6", edgecolor="#A9B8C2", lw=0.65
-        )
-    )
-    curve(ax, [(0.22, 0.55), (0.29, 0.76), (0.41, 0.25), (0.49, 0.52)], lw=1.25)
-    curve(
-        ax,
-        [(0.59, 0.61), (0.68, 0.79), (0.75, 0.39), (0.83, 0.61)],
-        color=TEAL,
-        lw=1.25,
-    )
-    curve(
-        ax,
-        [(0.55, 0.34), (0.60, 0.49), (0.70, 0.13), (0.78, 0.35)],
-        color=PURPLE,
-        lw=1.25,
-    )
+    """Licensed compartment artwork containing generic RNA motifs."""
+    x, y, w, h = place_artwork(ax, "cell", (0.025, 0.025, 0.95, 0.95))
     if labels:
-        ax.text(0.34, 0.22, "RNA", ha="center", fontsize=6.1, color=BLUE)
-        ax.text(0.74, 0.77, "RNA", ha="center", fontsize=6.1, color=TEAL)
+        ax.text(
+            x + w * 0.73,
+            y + h * 0.34,
+            "RNA",
+            ha="center",
+            va="center",
+            color=BLUE,
+            fontsize=6.2,
+        )
 
 
 def geometry(ax, *, labels=False):
@@ -186,7 +170,7 @@ def learning(ax):
 
 
 def draw_motif(axis, name, bounds, *, zorder=2, **_):
-    """Place native vector primitives; legacy asset names only identify concepts."""
+    """Place native vectors or credited source art; names identify concepts."""
     ax = axis.inset_axes(bounds, transform=axis.transAxes, zorder=zorder)
     ax.set(xlim=(0, 1), ylim=(0, 1))
     ax.set_axis_off()
