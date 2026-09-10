@@ -216,7 +216,7 @@ def evidence_map() -> None:
     add(
         "Target/contact geometry",
         "Representation",
-        "Cross-fitted baseline logit",
+        "Pooled-score reference (exploratory)",
         effect(
             "auroc",
             select(geometry, "auroc", model="baseline_plus_multiscale_structure"),
@@ -312,7 +312,7 @@ def evidence_map() -> None:
     add(
         "Cross-fitted engagement gate",
         "Biology × AI",
-        "Pair-first site predictor",
+        "Expanded row-wise site predictor",
         effect(
             "auprc", select(gate, "auprc", model="expanded_plus_combined_engagement")
         ),
@@ -339,7 +339,7 @@ def evidence_map() -> None:
     add(
         "Bulk H3K36me3 occupancy",
         "Biological context",
-        "Cross-fitted baseline logit; liver",
+        "Pooled-score reference; liver (exploratory)",
         effect(
             "auprc",
             select(
@@ -353,20 +353,20 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "Liver AUPRC only; no stable AUROC, F1, or pair-level gain.",
+        "Liver: AUPRC only. Muscle threshold effects did not extend to ranking; no stable pair-level gain.",
         chromatin,
     )
     rbp = "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv"
     add(
         "RBP binding × bulk abundance",
         "Biological context",
-        "Cross-fitted baseline logit",
+        "Pooled-score reference (exploratory)",
         effect(
             "auroc", select(rbp, "auroc", model="baseline_plus_biological_suppressors")
         ),
         effect("f1", select(rbp, "f1", model="baseline_plus_biological_suppressors")),
         "Not supported",
-        "No residual gain; broader predicted panels were adverse.",
+        "No consistent screen gain; broader predicted panels were adverse.",
         rbp,
     )
     genomic = (
@@ -375,7 +375,7 @@ def evidence_map() -> None:
     add(
         "Transcript/repeat annotation panel",
         "Biological context",
-        "Cross-fitted baseline logit",
+        "Pooled-score reference (exploratory)",
         effect(
             "auroc",
             select(genomic, "auroc", model="baseline_plus_architecture_and_intrinsic"),
@@ -449,13 +449,13 @@ def evidence_map() -> None:
         unified,
     )
     add(
-        "Larger/deeper graph capacity",
-        "Capacity",
+        "Supplied Bio-aware variant",
+        "Descriptive comparison",
         "Supplied Bio-aware vs compact checkpoints",
         "No common OOF effect estimate",
         "Not uniformly better across endpoints",
-        "Not supported",
-        "No consistent advantage from generic capacity.",
+        "Mixed; descriptive",
+        "Features and architecture change together; capacity is not isolated.",
         "results/adaredit_baseline_metrics.csv",
     )
 
@@ -476,7 +476,7 @@ def evidence_map() -> None:
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
-\caption{Development evidence synthesis. Every quantitative row states its own comparator; effects are not rankable across rows because the estimands differ. Values are percentage-point medians with 95\% pair-clustered bootstrap intervals unless noted. ``Not supported'' refers only to the tested measurement and formulation.}\label{tab:evidencemap}\\
+\caption{Development evidence synthesis. Each row states its comparator; estimands differ across rows. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact residual screens reuse pooled first-stage OOF scores and are exploratory, not fully nested (section A). ``Not supported'' applies to the tested formulation and selection criterion.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
@@ -779,11 +779,11 @@ def experiment_taxonomy() -> None:
         "table_s10_experiment_taxonomy.tex",
         r"""\begin{landscape}
 \begingroup
-\fontsize{6.4}{7.0}\selectfont
+\fontsize{7.5}{8.6}\selectfont
 \setlength{\tabcolsep}{1.5pt}
 \renewcommand{\arraystretch}{1.00}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
-\caption{Search-space coverage and final disposition. Rows group the complete retained campaign by scientific question. ``Not supported'' applies only to the tested measurement and formulation; ``deferred'' means the benchmark lacked a valid matched measurement and is not negative evidence. Exact quantitative effects remain in Table~\ref{tab:evidencemap}; historical priorities, data sources, stopping criteria, and run artifacts remain in the machine-readable campaign record.}\label{tab:taxonomy}\\
+\caption{Search-space coverage and final disposition. Rows group the adaptive campaign by question and distinguish controlled, exploratory, descriptive, and untested evidence. ``Deferred'' means suitable data or a validated resource was unavailable, not that the hypothesis failed. Quantitative effects are in Table~\ref{tab:evidencemap}; historical priorities, stopping rules, and run artifacts remain in the machine-readable record.}\label{tab:taxonomy}\\
 \toprule
 Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule

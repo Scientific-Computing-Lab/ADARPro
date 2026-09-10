@@ -62,7 +62,9 @@ def verify_pnas_fields() -> None:
         ),
     )
     manuscript = main.lower()
-    if not all(any(marker in manuscript for marker in group) for group in regime_concepts):
+    if not all(
+        any(marker in manuscript for marker in group) for group in regime_concepts
+    ):
         raise AssertionError("development/canonical regime distinction is absent")
 
 
@@ -114,6 +116,16 @@ def verify_quantitative_sources() -> None:
         PAPER / "source_tables/figure_source_manifest.csv", "artifact", rooted=True
     )
     verify_manifest(PAPER / "generated/table_manifest.csv", "file", rooted=False)
+    with (PAPER / "source_tables/figure_source_manifest.csv").open(
+        newline="", encoding="utf-8"
+    ) as handle:
+        if any(
+            row["artifact"].startswith("paper/figure_assets/")
+            for row in csv.DictReader(handle)
+        ):
+            raise AssertionError(
+                "historical image-model assets entered the active figure build"
+            )
 
     locked = pd.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
     source = pd.read_csv(PAPER / "source_tables/figure4_locked_metrics.csv")
@@ -143,7 +155,9 @@ def verify_svg_figures() -> None:
     for manuscript in (PAPER / "main.tex", PAPER / "supplementary.tex"):
         text = manuscript.read_text(encoding="utf-8")
         if re.search(r"\\includegraphics[^\n]*\{figures/", text):
-            raise AssertionError(f"{manuscript} places a figure through includegraphics")
+            raise AssertionError(
+                f"{manuscript} places a figure through includegraphics"
+            )
         names = re.findall(r"\\includesvg(?:\[[^]]*\])?\{([^}]+\.svg)\}", text)
         if not names:
             raise AssertionError(f"{manuscript} contains no SVG figure placements")
@@ -216,7 +230,9 @@ def verify_main_pdf_page_bounds() -> None:
     for page_number, page in enumerate(pages, start=1):
         width = float(page.attrib["width"])
         height = float(page.attrib["height"])
-        for word in (element for element in page.iter() if element.tag.endswith("word")):
+        for word in (
+            element for element in page.iter() if element.tag.endswith("word")
+        ):
             x_min = float(word.attrib["xMin"])
             x_max = float(word.attrib["xMax"])
             y_min = float(word.attrib["yMin"])

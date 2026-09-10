@@ -24,7 +24,6 @@ manifest:
 verify: split results test lint manifest
 
 paper-figures:
-	$(PYTHON) scripts/vectorize_figure_assets.py
 	$(PYTHON) scripts/render_paper_figures.py
 
 paper-claims:
@@ -34,8 +33,8 @@ paper-tables:
 	$(PYTHON) scripts/render_paper_tables.py
 
 paper: paper-figures paper-claims paper-tables
-	cd paper && SOURCE_DATE_EPOCH=1788955200 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-	cd paper && SOURCE_DATE_EPOCH=1788955200 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
+	cd paper && SOURCE_DATE_EPOCH=1789041600 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+	cd paper && SOURCE_DATE_EPOCH=1789041600 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
 
 paper-check: paper
 	$(PYTHON) scripts/verify_paper_references.py

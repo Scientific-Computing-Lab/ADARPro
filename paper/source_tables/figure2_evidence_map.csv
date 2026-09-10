@@ -2,17 +2,17 @@ group,scale,hypothesis,status,interpretation
 Learning & supervision,Substrate-aware learning,Pair-first expanded supervision,selected,More labels; correct pair weight
 Learning & supervision,Supervision,Continuous + ordinal auxiliary labels,limited,Small ranking gain
 Learning & supervision,Cross-tissue,Shared four-tissue training,limited,Transfer below preset criteria
-Target representation,Target selectivity,Aligned target + helix-partner view,selected,Passes shifted-window control
-Target representation,Target selectivity,Focal node / contact geometry,limited,Localizes target effect
+Target representation,Target selectivity,Target/partner-aligned local view,selected,Passes shifted-window control
+Target representation,Target selectivity,Focal node / contact geometry*,limited,Target-position signal
 Target representation,Representation,Frozen RNA-language embeddings,not supported,F1-only; no ranking gain
 Target representation,Representation,Substrate-wide all-A decoder,not supported,Stopped for futility
-Target representation,Capacity,Larger / deeper graph networks,not supported,No consistent benefit
-Target representation,Capacity,Graph Transformer / GATv2 expansion,not pursued,Simpler validated model sufficient
+Target representation,Capacity,Supplied Bio-aware variant,limited,Features/capacity confounded
+Target representation,Capacity,Graph Transformer / GATv2 expansion,not pursued,Not tested after local gains
 Substrate & cellular context,Substrate propensity,Pair geometry / editing burden,"supported, not yet actionable",Substrate propensity detectable
 Substrate & cellular context,Substrate propensity,Hierarchical engagement gate,limited,Ranking gain; unstable F1
-Substrate & cellular context,Biological context,Bulk H3K36me3 overlap,limited,Liver AUPRC only
-Substrate & cellular context,Biological context,RBP binding × bulk expression,not supported,No residual gain
-Substrate & cellular context,Biological context,Transcript / repeat annotation panel,not supported,No site-level gain
+Substrate & cellular context,Biological context,Bulk H3K36me3 overlap*,limited,Metric-specific screen effects
+Substrate & cellular context,Biological context,RBP binding × bulk expression*,not supported,No consistent screen gain
+Substrate & cellular context,Biological context,Transcript / repeat annotations*,not supported,No site-level gain
 Substrate & cellular context,Cellular state,Matched donor/cell multimodality,deferred,Matched data unavailable
 Substrate & cellular context,RNA state,Matched in vivo structure / isoforms,deferred,Matched data unavailable
 Integration,Integration,Fixed whole-duplex + local-augmented logits,selected,Complementary predictions

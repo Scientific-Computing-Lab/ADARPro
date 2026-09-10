@@ -1,6 +1,6 @@
 # Where predictive information resides in endogenous A-to-I RNA editing
 
-This repository contains a leakage-controlled study of **where predictive
+This repository contains a study of **where predictive
 information for endogenous A-to-I RNA editing resides**. Starting from the
 published AdarEdit human inverted-Alu benchmark, the project traverses three
 biological information scales, a separate within-substrate dependence problem,
@@ -8,14 +8,13 @@ and four classes of model-sufficiency tests under pair-disjoint development
 evaluation. The study retains supported, limited, unsupported, superseded, and
 data-limited branches.
 
-The evidence supports a hierarchical picture. Whole-duplex sequence and
-structure encode intrinsic substrate suitability. Genomic geometry and pair-level models
-identify reproducible variation in substrate editing burden, consistent with a
-realization or engagement dimension, although current bulk context proxies do
-not resolve the underlying cellular state well enough to improve the leading
-site classifier. Pair-first learning respects the substrate as the statistical
-unit, while a target/helix-partner-aligned representation recovers
-nucleotide-level information diluted by whole-duplex pooling.
+Whole-duplex sequence and predicted structure provide a strong reference.
+Genomic organization adds between-substrate information about editing burden;
+correctly centered local representations improve use of the target neighborhood.
+Class-balanced pair-first learning reduces the influence of site-rich substrates
+within each class. Current context proxies have not supplied a consistent
+site-level correction in the retained comparisons. Neither substrate realization
+nor an underlying cellular state was measured directly.
 
 The frozen predictor is an unchanged 50:50 equal-logit ensemble of two
 independently trained models: a pair-first whole-duplex-only graph model and a
@@ -53,23 +52,30 @@ not replace or redefine the published benchmark.
 
 - Pair-first expanded high/low supervision improved all five development
   endpoints under the same-fold internal comparison.
-- Recovering all valid high/low labels and correcting pair weighting each made
-  an independent contribution in the existing same-fold ablation.
+- Recovering all valid high/low labels and correcting pair weighting made
+  separable contributions in the muscle same-fold ablation.
 - Inter-arm geometry and low-capacity pair models predicted substrate editing
-  burden, but available static/bulk context did not resolve the latent cellular
-  state well enough to strengthen site classification.
+  burden, but its tested site-level integrations remained limited.
 - A graph model augmented with an aligned target/helix-partner local view added
   complementary information. An otherwise identical model centered 96 nt away
-  failed decisively, ruling out generic additional CNN capacity as the
-  explanation.
+  underperformed, supporting correct target centering beyond added CNN capacity.
+  This control does not isolate predicted partner identity.
 - Fixed prediction-level integration outperformed the preregistered unified
   joint model at the available effective pair-level sample size.
 - Tested eCLIP/PrismNet/RBPNet × bulk GTEx representations, current bulk
   H3K36me3 overlap, broad site-level annotations, frozen RNA foundation-model
-  embeddings, generic extra GNN capacity, and several richer-task formulations
+  embeddings, and several richer-task formulations
   did not provide sufficiently robust incremental information for promotion.
   These are statements about the tested measurements and models, not claims
   that the corresponding biology is absent.
+
+The independent source-code audit found that early residual screens reused
+pooled first-stage OOF scores in pair-disjoint second-stage fits. They are
+exploratory, not fully nested evaluations. The supplied Bio-aware comparison also
+changes features and architecture together and cannot isolate capacity. These
+limits, corrected sampler/comparator descriptions, and the unaffected controlled
+neural and final-test evidence are documented in
+[`reports/29_independent_submission_audit.md`](reports/29_independent_submission_audit.md).
 
 The full decision trail is indexed in
 [`docs/CAMPAIGN_INDEX.md`](docs/CAMPAIGN_INDEX.md). The scientific synthesis is
@@ -85,6 +91,11 @@ official-template provenance, verified BibTeX, claim-to-artifact audit, and
 programmatically generated figure and table sources are retained in
 [`paper/`](paper/). Author, affiliation, contribution, funding, and
 correspondence fields remain explicit placeholders pending author approval.
+The [independent submission audit](reports/29_independent_submission_audit.md)
+also identifies the residual-screen evidence gap and the unresolved PNAS
+AI-assisted-graphics policy question. Historical GPT Image assets are excluded
+from the active SVG build; see [artwork provenance](paper/figure_assets/README.md).
+These PDFs are revised author-review drafts, not certified submission-ready files.
 
 ```bash
 make paper-check
@@ -104,7 +115,7 @@ traceability.
 | `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
-| `reports/` | Chronological campaign reports 00–27 and final synthesis |
+| `reports/` | Campaign/editorial reports 00–29 and final synthesis |
 | `provenance/` | Input hashes, freeze manifests, audit chain, inventory, and exclusions |
 | `paper/` | PNAS manuscript, SI, verified bibliography, and paper source tables |
 | `docs/` | Campaign, data, reproducibility, and upstream documentation |

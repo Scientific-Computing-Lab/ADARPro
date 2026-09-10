@@ -1,0 +1,6 @@
+% Keep the upstream class unchanged. It labels LastPage at the bibliography
+% while also loading lastpage; let the package label the actual final page.
+\AtBeginDocument{%
+  \patchcmd{\endthebibliography}{\label{LastPage}}{}{}%
+    {\PackageError{template-compat}{PNAS LastPage patch did not match}{Check the upstream class.}}%
+}
