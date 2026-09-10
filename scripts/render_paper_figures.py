@@ -4,20 +4,27 @@
 from __future__ import annotations
 
 import argparse
-import datetime as dt
+import copy
 import hashlib
+import itertools
 import json
 import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import cairosvg
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Polygon
+from matplotlib.colors import Normalize
+from matplotlib.patches import Circle, Ellipse, FancyArrowPatch, FancyBboxPatch, Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIR = ROOT / "paper/figure_assets/selected"
+SVG_NS = "http://www.w3.org/2000/svg"
+ASSET_PLACEMENTS: dict[str, dict[str, object]] = {}
+ASSET_SERIAL = 0
 CONTEXTS = ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]
 CONTEXT_LABELS = {
     "Artery": "Artery",
@@ -50,7 +57,12 @@ def configure() -> None:
     plt.rcParams.update(
         {
             "font.family": "sans-serif",
-            "font.sans-serif": ["Liberation Sans", "Arial", "DejaVu Sans"],
+            "font.sans-serif": ["Nimbus Sans", "Helvetica", "Arial", "sans-serif"],
+            "font.cursive": ["Nimbus Sans"],
+            "mathtext.fontset": "custom",
+            "mathtext.rm": "Nimbus Sans",
+            "mathtext.it": "Nimbus Sans:italic",
+            "mathtext.bf": "Nimbus Sans:bold",
             "font.size": 8.2,
             "axes.titlesize": 9.2,
             "axes.labelsize": 8.2,
@@ -63,6 +75,7 @@ def configure() -> None:
             "pdf.fonttype": 42,
             "ps.fonttype": 42,
             "svg.hashsalt": "ADARPro-2026",
+            "svg.fonttype": "none",
             "savefig.dpi": 450,
             "figure.facecolor": "white",
             "axes.facecolor": "white",
@@ -79,20 +92,32 @@ def add_asset(
     crop: tuple[float, float, float, float] | None = None,
     trim: bool = False,
 ) -> plt.Axes:
-    """Place a curated transparent illustration inside an otherwise vector panel."""
+    """Place a curated illustration for layout and register its SVG replacement."""
+    global ASSET_SERIAL
     path = ASSET_DIR / f"{name}.png"
+    vector_path = ASSET_DIR / f"{name}.svg"
     if not path.exists():
         raise FileNotFoundError(
             f"Missing curated figure asset {path}; run generate_figure_assets.py"
         )
+    if not vector_path.exists():
+        raise FileNotFoundError(
+            f"Missing vector figure asset {vector_path}; run vectorize_figure_assets.py"
+        )
     image = mpimg.imread(path)
+    original_height, original_width = image.shape[:2]
+    pixel_x0, pixel_y0 = 0, 0
+    pixel_x1, pixel_y1 = original_width, original_height
     if crop is not None:
         x0, y0, x1, y1 = crop
         height, width = image.shape[:2]
-        image = image[
-            round(y0 * height) : round(y1 * height),
-            round(x0 * width) : round(x1 * width),
-        ]
+        crop_x0, crop_y0 = round(x0 * width), round(y0 * height)
+        crop_x1, crop_y1 = round(x1 * width), round(y1 * height)
+        image = image[crop_y0:crop_y1, crop_x0:crop_x1]
+        pixel_x0 += crop_x0
+        pixel_y0 += crop_y0
+        pixel_x1 = pixel_x0 + image.shape[1]
+        pixel_y1 = pixel_y0 + image.shape[0]
     if trim and image.ndim == 3 and image.shape[2] == 4:
         mask = image[:, :, 3] > 0.035
         if np.any(mask):
@@ -103,8 +128,24 @@ def add_asset(
             x0 = max(0, int(x_index.min()) - pad)
             x1 = min(image.shape[1], int(x_index.max()) + pad + 1)
             image = image[y0:y1, x0:x1]
+            pixel_x0 += x0
+            pixel_y0 += y0
+            pixel_x1 = pixel_x0 + image.shape[1]
+            pixel_y1 = pixel_y0 + image.shape[0]
     inset = axis.inset_axes(bounds, transform=axis.transAxes, zorder=zorder)
-    inset.imshow(image, interpolation="lanczos", alpha=alpha)
+    artist = inset.imshow(image, interpolation="lanczos", alpha=alpha)
+    asset_id = f"figure_asset_{ASSET_SERIAL:04d}"
+    ASSET_SERIAL += 1
+    artist.set_gid(asset_id)
+    ASSET_PLACEMENTS[asset_id] = {
+        "path": vector_path,
+        "view_box": (
+            pixel_x0,
+            pixel_y0,
+            pixel_x1 - pixel_x0,
+            pixel_y1 - pixel_y0,
+        ),
+    }
     inset.set_axis_off()
     return inset
 
@@ -224,25 +265,72 @@ def draw_rna_duplex(
     return x[target_index], top[target_index]
 
 
+def _replace_raster_assets(svg_path: Path) -> None:
+    """Replace temporary layout rasters with their traced SVG path geometry."""
+    ET.register_namespace("", SVG_NS)
+    ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
+    tree = ET.parse(svg_path)
+    root = tree.getroot()
+    replaced = 0
+    for parent in root.iter():
+        for raster in list(parent):
+            if raster.tag != f"{{{SVG_NS}}}image":
+                continue
+            asset_id = raster.attrib.get("id")
+            if asset_id not in ASSET_PLACEMENTS:
+                continue
+            placement = ASSET_PLACEMENTS[asset_id]
+            source_root = ET.parse(Path(placement["path"])).getroot()
+            x0, y0, width, height = placement["view_box"]
+            nested = ET.Element(
+                f"{{{SVG_NS}}}svg",
+                {
+                    key: raster.attrib[key]
+                    for key in (
+                        "x",
+                        "y",
+                        "width",
+                        "height",
+                        "transform",
+                        "opacity",
+                    )
+                    if key in raster.attrib
+                },
+            )
+            nested.set("id", asset_id)
+            nested.set("viewBox", f"{x0:g} {y0:g} {width:g} {height:g}")
+            nested.set("preserveAspectRatio", "none")
+            for child in source_root:
+                nested.append(copy.deepcopy(child))
+            child_index = list(parent).index(raster)
+            parent.remove(raster)
+            parent.insert(child_index, nested)
+            replaced += 1
+    tree.write(svg_path, encoding="utf-8", xml_declaration=True)
+    markup = svg_path.read_text(encoding="utf-8")
+    if "<image" in markup or "data:image" in markup:
+        raise RuntimeError(f"Embedded raster content remained in {svg_path}")
+    if replaced == 0 and any(
+        asset_id in markup for asset_id in ASSET_PLACEMENTS
+    ):
+        raise RuntimeError(f"Failed to replace registered vector assets in {svg_path}")
+
+
 def save(figure: plt.Figure, output: Path, stem: str) -> None:
     output.mkdir(parents=True, exist_ok=True)
-    for suffix in ("pdf", "svg", "png"):
-        if suffix == "pdf":
-            fixed_time = dt.datetime(2026, 9, 10, tzinfo=dt.timezone.utc)
-            metadata: dict[str, object] = {
-                "Creator": "ADARPro figure pipeline",
-                "Producer": "Matplotlib",
-                "CreationDate": fixed_time,
-                "ModDate": fixed_time,
-            }
-        elif suffix == "svg":
-            metadata = {"Creator": "ADARPro figure pipeline", "Date": "2026-09-10"}
-        else:
-            metadata = {"Software": "ADARPro figure pipeline"}
-        figure.savefig(
-            output / f"{stem}.{suffix}", bbox_inches="tight", metadata=metadata
-        )
+    svg_path = output / f"{stem}.svg"
+    figure.savefig(
+        svg_path,
+        format="svg",
+        bbox_inches="tight",
+        metadata={"Creator": "A-to-I editing figure pipeline", "Date": "2026-09-10"},
+    )
     plt.close(figure)
+    _replace_raster_assets(svg_path)
+    pdf_bytes = cairosvg.svg2pdf(bytestring=svg_path.read_bytes())
+    (output / f"{stem}.pdf").write_bytes(pdf_bytes)
+    # svg.sty uses this deterministic cache name when Inkscape invocation is disabled.
+    (output / f"{stem}_svg-raw.pdf").write_bytes(pdf_bytes)
 
 
 def copy_source(frame: pd.DataFrame, source: Path, name: str) -> Path:
@@ -486,50 +574,78 @@ def figure1(output: Path, source: Path) -> None:
         color=COLORS["amber"],
         fontweight="bold",
     )
-    for xpos, endpoint, color in [
-        (0.165, 0.400, COLORS["blue"]),
-        (0.505, 0.500, COLORS["green"]),
-        (0.835, 0.600, COLORS["amber"]),
+    # All three information scales converge on one measured endpoint.
+    convergence = (0.500, 0.154)
+    for start, endpoint, color, curvature in [
+        ((0.165, 0.210), (0.486, 0.169), COLORS["blue"], -0.035),
+        ((0.505, 0.210), (0.500, 0.171), COLORS["green"], 0.000),
+        ((0.835, 0.210), (0.514, 0.169), COLORS["amber"], 0.035),
     ]:
         ax_a.add_patch(
             FancyArrowPatch(
-                (xpos, 0.205),
-                (endpoint, 0.112),
+                start,
+                endpoint,
                 arrowstyle="-|>",
-                connectionstyle="arc3,rad=0",
-                mutation_scale=8.5,
+                connectionstyle=f"arc3,rad={curvature}",
+                mutation_scale=7.8,
                 color=color,
-                lw=0.95,
-                alpha=0.92,
-                zorder=2,
+                lw=0.92,
+                alpha=0.96,
+                zorder=4,
             )
         )
     ax_a.add_patch(
-        plt.Rectangle(
-            (0.31, 0.038),
-            0.38,
-            0.066,
-            facecolor="#EEF3F5",
-            edgecolor="none",
+        Circle(
+            convergence,
+            0.0075,
+            facecolor="white",
+            edgecolor=COLORS["navy"],
+            lw=0.85,
+            zorder=6,
+        )
+    )
+    ax_a.add_patch(
+        FancyArrowPatch(
+            (0.500, 0.146),
+            (0.500, 0.126),
+            arrowstyle="-|>",
+            mutation_scale=7.4,
+            color=COLORS["navy"],
+            lw=0.95,
+            zorder=5,
+        )
+    )
+    # A quiet analytical aperture gives the endpoint authority without the
+    # rectangular silhouette of a software control.
+    ax_a.add_patch(
+        Ellipse(
+            (0.500, 0.087),
+            0.145,
+            0.078,
+            facecolor="white",
+            edgecolor="#B5C2C8",
+            lw=0.72,
+            alpha=0.94,
             zorder=3,
         )
     )
-    ax_a.plot(
-        [0.31, 0.69],
-        [0.104, 0.104],
-        color=COLORS["navy"],
-        lw=1.05,
-        solid_capstyle="butt",
+    add_asset(
+        ax_a,
+        "observed_editing_readout",
+        (0.440, 0.052, 0.120, 0.070),
+        alpha=0.98,
         zorder=4,
+        crop=(0.00, 0.00, 0.76, 1.00),
+        trim=True,
     )
     ax_a.text(
         0.50,
-        0.070,
+        0.021,
         "OBSERVED ENDOGENOUS EDITING",
         ha="center",
         va="center",
         color=COLORS["navy"],
-        fontsize=7.0,
+        fontsize=6.65,
         fontweight="bold",
     )
     ax_a.set_xlim(0, 1)
@@ -958,13 +1074,19 @@ def figure_scope(output: Path, source: Path) -> None:
 
     panel_label(ax_b, "B")
     heatmap = baseline.loc[contexts, contexts]
-    image_handle = ax_b.imshow(
-        heatmap.to_numpy(),
+    heatmap_values = heatmap.to_numpy()
+    image_handle = ax_b.pcolormesh(
+        np.arange(len(contexts) + 1) - 0.5,
+        np.arange(len(contexts) + 1) - 0.5,
+        heatmap_values,
         vmin=0.65,
         vmax=0.94,
         cmap="YlGnBu",
-        aspect="auto",
+        shading="flat",
+        rasterized=False,
     )
+    ax_b.set_xlim(-0.5, len(contexts) - 0.5)
+    ax_b.set_ylim(len(contexts) - 0.5, -0.5)
     ax_b.set_xticks(np.arange(len(contexts)), labels, rotation=47, ha="right")
     ax_b.set_yticks(np.arange(len(contexts)), labels)
     ax_b.axhline(human_n - 0.5, color="white", lw=1.2)
@@ -1016,6 +1138,7 @@ def figure_scope(output: Path, source: Path) -> None:
         color=COLORS["gray"],
     )
     colorbar = figure.colorbar(image_handle, ax=ax_b, fraction=0.04, pad=0.025)
+    colorbar.solids.set_rasterized(False)
     colorbar.set_label("AUROC", fontsize=7)
     colorbar.ax.tick_params(labelsize=6.5)
 
@@ -1491,7 +1614,6 @@ def figure2(output: Path, source: Path) -> None:
             "Learning & supervision": "pair_weighting_editorial",
             "Target representation": "target_local_editorial",
             "Substrate & cellular context": "substrate_context_editorial",
-            "Integration": "complementary_views_editorial",
         }
         asset_height = {
             "Learning & supervision": 0.090,
@@ -1499,14 +1621,93 @@ def figure2(output: Path, source: Path) -> None:
             "Substrate & cellular context": 0.130,
             "Integration": 0.080,
         }[group]
-        add_asset(
-            ax_a,
-            level_assets[group],
-            (0.016, center_y - asset_height / 2 + 0.016, 0.115, asset_height),
-            alpha=0.98,
-            zorder=2,
-            trim=True,
-        )
+        if group == "Integration":
+            # Computational integration, shown as two identifiable prediction
+            # views converging on one neutral readout—not as molecular fusion.
+            lane_offset = 0.015
+            add_asset(
+                ax_a,
+                "whole_duplex_graph_view",
+                (0.017, center_y + lane_offset - 0.013, 0.066, 0.027),
+                alpha=0.98,
+                zorder=3,
+                trim=True,
+            )
+            add_asset(
+                ax_a,
+                "target_local_editorial",
+                (0.017, center_y - lane_offset - 0.013, 0.066, 0.027),
+                alpha=0.98,
+                zorder=3,
+                trim=True,
+            )
+            junction = (0.104, center_y)
+            for ypos, color in [
+                (center_y + lane_offset, COLORS["blue"]),
+                (center_y - lane_offset, COLORS["purple"]),
+            ]:
+                ax_a.add_patch(
+                    FancyArrowPatch(
+                        (0.078, ypos),
+                        junction,
+                        arrowstyle="-|>",
+                        mutation_scale=5.2,
+                        color=color,
+                        lw=0.70,
+                        zorder=4,
+                    )
+                )
+            ax_a.add_patch(
+                Circle(
+                    junction,
+                    0.0055,
+                    facecolor="white",
+                    edgecolor=COLORS["navy"],
+                    lw=0.70,
+                    zorder=5,
+                )
+            )
+            ax_a.add_patch(
+                FancyArrowPatch(
+                    (0.110, center_y),
+                    (0.123, center_y),
+                    arrowstyle="-|>",
+                    mutation_scale=5.2,
+                    color=COLORS["navy"],
+                    lw=0.72,
+                    zorder=4,
+                )
+            )
+            ax_a.add_patch(
+                Circle(
+                    (0.130, center_y),
+                    0.0083,
+                    facecolor="white",
+                    edgecolor=COLORS["navy"],
+                    lw=0.65,
+                    zorder=5,
+                )
+            )
+            ax_a.text(
+                0.130,
+                center_y,
+                r"$p$",
+                ha="center",
+                va="center",
+                fontsize=4.5,
+                color=COLORS["navy"],
+                fontweight="bold",
+                zorder=6,
+            )
+        else:
+            add_asset(
+                ax_a,
+                level_assets[group],
+                (0.016, center_y - asset_height / 2 + 0.016, 0.115, asset_height),
+                alpha=0.98,
+                zorder=2,
+                trim=True,
+            )
         label_y = lower_y + (0.008 if group == "Integration" else 0.014)
         ax_a.text(
             0.072,
@@ -1759,56 +1960,222 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         trim=True,
     )
 
-    def draw_encoder(y0: float, color: str, label: str) -> None:
-        x0, x1, half_height, bevel = 0.500, 0.640, 0.060, 0.012
-        module = Polygon(
-            [
-                (x0 + bevel, y0 - half_height),
-                (x1 - bevel, y0 - half_height),
-                (x1, y0),
-                (x1 - bevel, y0 + half_height),
-                (x0 + bevel, y0 + half_height),
-                (x0, y0),
-            ],
-            closed=True,
-            facecolor="white",
-            edgecolor=color,
-            lw=0.9,
-            zorder=3,
-        )
-        axis.add_patch(module)
-        for xpos, alpha in [(0.516, 0.35), (0.527, 0.55), (0.538, 0.78)]:
-            axis.plot(
-                [xpos, xpos],
-                [y0 - 0.034, y0 + 0.034],
-                color=color,
-                lw=1.25,
-                alpha=alpha,
-                solid_capstyle="round",
-                zorder=4,
+    def draw_encoder(
+        y0: float,
+        color: str,
+        title: str,
+        subtitle: str,
+        include_local: bool,
+    ) -> None:
+        """Draw an open analytical module with a semantic processing cue."""
+        x0, x1, half_height, tick = 0.477, 0.659, 0.074, 0.012
+        axis.add_patch(
+            plt.Rectangle(
+                (x0, y0 - half_height),
+                x1 - x0,
+                2 * half_height,
+                facecolor="white",
+                edgecolor="none",
+                alpha=0.78,
+                zorder=2,
             )
+        )
+        # Open brackets identify a processing operator without producing a
+        # badge/button silhouette.  Internal marks show the actual distinction:
+        # graph message passing alone versus graph and target-local fusion.
+        axis.plot(
+            [x0 + tick, x0, x0, x0 + tick],
+            [y0 + half_height, y0 + half_height, y0 - half_height, y0 - half_height],
+            color=color,
+            lw=0.85,
+            solid_capstyle="round",
+            zorder=4,
+        )
+        axis.plot(
+            [x1 - tick, x1, x1, x1 - tick],
+            [y0 + half_height, y0 + half_height, y0 - half_height, y0 - half_height],
+            color=color,
+            lw=0.85,
+            solid_capstyle="round",
+            zorder=4,
+        )
         axis.text(
-            0.586,
-            y0,
-            label,
+            (x0 + x1) / 2,
+            y0 + 0.056,
+            title,
             ha="center",
             va="center",
-            fontsize=5.25,
+            fontsize=5.05,
             color=COLORS["ink"],
             fontweight="bold",
-            linespacing=1.05,
+            zorder=5,
+        )
+        graph_nodes = [
+            (0.500, y0 + 0.010),
+            (0.510, y0 + 0.021),
+            (0.522, y0 + 0.010),
+            (0.516, y0 - 0.010),
+            (0.501, y0 - 0.012),
+        ]
+        for first, second in [(0, 1), (1, 2), (2, 3), (3, 4), (4, 0), (0, 3), (1, 3)]:
+            axis.plot(
+                [graph_nodes[first][0], graph_nodes[second][0]],
+                [graph_nodes[first][1], graph_nodes[second][1]],
+                color="#7D8C94",
+                lw=0.48,
+                zorder=4,
+            )
+        for index, (xpos, ypos) in enumerate(graph_nodes):
+            axis.add_patch(
+                Circle(
+                    (xpos, ypos),
+                    0.0043,
+                    facecolor=(COLORS["amber"] if index == 1 else COLORS["sky"]),
+                    edgecolor=COLORS["navy"],
+                    lw=0.35,
+                    zorder=5,
+                )
+            )
+
+        if include_local:
+            # A separate aligned target/partner cue enters the same encoder.
+            axis.plot(
+                [0.497, 0.523],
+                [y0 - 0.025, y0 - 0.025],
+                color=COLORS["purple"],
+                lw=0.62,
+                alpha=0.78,
+                zorder=4,
+            )
+            for xpos, fill in [
+                (0.505, COLORS["amber"]),
+                (0.516, COLORS["teal"]),
+            ]:
+                axis.add_patch(
+                    Circle(
+                        (xpos, y0 - 0.025),
+                        0.0048,
+                        facecolor=fill,
+                        edgecolor="white",
+                        lw=0.35,
+                        zorder=5,
+                    )
+                )
+            axis.plot(
+                [0.524, 0.547],
+                [y0 - 0.025, y0 - 0.003],
+                color=COLORS["purple"],
+                lw=0.62,
+                zorder=4,
+            )
+        axis.plot(
+            [0.524, 0.547],
+            [y0 + 0.005, y0 + 0.003],
+            color=color,
+            lw=0.62,
             zorder=4,
         )
 
-    for y0, color, label in [
-        (0.690, COLORS["blue"], "STRUCTURE GRAPH\nENCODER"),
-        (0.345, COLORS["purple"], "GRAPH + LOCAL\nENCODER"),
+        aggregation = (0.563, y0)
+        axis.add_patch(
+            Circle(
+                aggregation,
+                0.021,
+                facecolor=("#F0EEF8" if include_local else "#EEF5F9"),
+                edgecolor="none",
+                zorder=3,
+            )
+        )
+        for angle in np.linspace(0, 2 * np.pi, 5, endpoint=False):
+            xpos = aggregation[0] + 0.014 * np.cos(angle)
+            ypos = aggregation[1] + 0.014 * np.sin(angle)
+            axis.plot(
+                [aggregation[0], xpos],
+                [aggregation[1], ypos],
+                color=color,
+                lw=0.45,
+                alpha=0.65,
+                zorder=4,
+            )
+            axis.add_patch(
+                Circle(
+                    (xpos, ypos),
+                    0.0032,
+                    facecolor="white",
+                    edgecolor=color,
+                    lw=0.42,
+                    zorder=5,
+                )
+            )
+        axis.add_patch(
+            Circle(
+                aggregation,
+                0.0048,
+                facecolor=color,
+                edgecolor="white",
+                lw=0.35,
+                zorder=6,
+            )
+        )
+        axis.add_patch(
+            FancyArrowPatch(
+                (0.586, y0),
+                (0.605, y0),
+                arrowstyle="-|>",
+                mutation_scale=5.5,
+                color=color,
+                lw=0.62,
+                zorder=4,
+            )
+        )
+        for offset, length, alpha in [
+            (0.016, 0.029, 0.55),
+            (0.005, 0.037, 0.75),
+            (-0.006, 0.033, 0.90),
+            (-0.017, 0.024, 1.00),
+        ]:
+            axis.plot(
+                [0.608, 0.608 + length],
+                [y0 + offset, y0 + offset],
+                color=color,
+                lw=1.05,
+                alpha=alpha,
+                solid_capstyle="round",
+                zorder=5,
+            )
+        axis.text(
+            (x0 + x1) / 2,
+            y0 - 0.057,
+            subtitle,
+            ha="center",
+            va="center",
+            fontsize=4.55,
+            color=color,
+            fontweight="bold",
+            zorder=5,
+        )
+
+    for y0, color, title, subtitle, include_local in [
+        (
+            0.690,
+            COLORS["blue"],
+            "STRUCTURE GRAPH",
+            "MESSAGE PASSING",
+            False,
+        ),
+        (
+            0.345,
+            COLORS["purple"],
+            "GRAPH + LOCAL",
+            "JOINT ENCODING",
+            True,
+        ),
     ]:
-        draw_encoder(y0, color, label)
+        draw_encoder(y0, color, title, subtitle, include_local)
         axis.add_patch(
             FancyArrowPatch(
                 (0.458, y0),
-                (0.496, y0),
+                (0.473, y0),
                 arrowstyle="-|>",
                 mutation_scale=7.5,
                 color=color,
@@ -1818,7 +2185,7 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         )
         axis.add_patch(
             FancyArrowPatch(
-                (0.642, y0),
+                (0.663, y0),
                 (0.676, y0),
                 arrowstyle="-|>",
                 mutation_scale=7.5,
@@ -2312,9 +2679,7 @@ def figure4(output: Path, source: Path) -> None:
     ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
     ax_a.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_a.invert_yaxis()
-    ax_a.set_xlabel(
-        "Selected predictor − AdarEdit (points; 95% pair-clustered CI)"
-    )
+    ax_a.set_xlabel("Selected predictor − AdarEdit (points; 95% pair-clustered CI)")
     ax_a.set_title(
         "Frozen canonical held-out evaluation",
         loc="left",
@@ -2932,23 +3297,32 @@ def supplementary_figures(output: Path, source: Path) -> None:
         j = tissues.index(row.nonedited_tissue)
         matrix[i, j] = row.strict_switch_per_10000_shared
         counts[i, j] = row.strict_switch_sites
-    image_plot = ax_b.imshow(matrix, cmap="YlOrRd", vmin=0, vmax=np.nanmax(matrix))
+    matrix_max = float(np.nanmax(matrix))
+    switch_norm = Normalize(vmin=0, vmax=matrix_max)
+    switch_cmap = plt.get_cmap("YlOrRd")
+    ax_b.set_xlim(-0.5, 3.5)
+    ax_b.set_ylim(3.5, -0.5)
     for i in range(4):
         for j in range(4):
-            if i == j:
-                ax_b.add_patch(
-                    plt.Rectangle(
-                        (j - 0.5, i - 0.5),
-                        1,
-                        1,
-                        facecolor="#F1F3F4",
-                        edgecolor="white",
-                        lw=1,
-                    )
+            facecolor = (
+                "#F1F3F4"
+                if i == j or np.isnan(matrix[i, j])
+                else switch_cmap(switch_norm(matrix[i, j]))
+            )
+            ax_b.add_patch(
+                plt.Rectangle(
+                    (j - 0.5, i - 0.5),
+                    1,
+                    1,
+                    facecolor=facecolor,
+                    edgecolor="white",
+                    lw=1,
                 )
+            )
+            if i == j:
                 continue
             color = (
-                "white" if matrix[i, j] > 0.48 * np.nanmax(matrix) else COLORS["ink"]
+                "white" if matrix[i, j] > 0.48 * matrix_max else COLORS["ink"]
             )
             ax_b.text(
                 j,
@@ -2967,9 +3341,27 @@ def supplementary_figures(output: Path, source: Path) -> None:
     ax_b.set_title(
         "Strict state switches are asymmetric", loc="left", fontweight="bold"
     )
-    colorbar = figure.colorbar(image_plot, ax=ax_b, fraction=0.046, pad=0.04)
-    colorbar.set_label("Switches per 10,000 shared sites", fontsize=6.8)
-    colorbar.ax.tick_params(labelsize=6.4)
+    color_axis = ax_b.inset_axes([1.055, 0.0, 0.042, 1.0])
+    color_steps = np.linspace(0, matrix_max, 49)
+    for lower, upper in itertools.pairwise(color_steps):
+        color_axis.add_patch(
+            plt.Rectangle(
+                (0, lower),
+                1,
+                upper - lower,
+                facecolor=switch_cmap(switch_norm((lower + upper) / 2)),
+                edgecolor="none",
+            )
+        )
+    color_axis.set_xlim(0, 1)
+    color_axis.set_ylim(0, matrix_max)
+    color_axis.set_xticks([])
+    color_axis.yaxis.tick_right()
+    color_axis.yaxis.set_label_position("right")
+    color_axis.set_ylabel("Switches per 10,000 shared sites", fontsize=6.8)
+    color_axis.tick_params(axis="y", labelsize=6.4, width=0.6, length=2.5)
+    color_axis.spines[["top", "bottom", "left"]].set_visible(False)
+    color_axis.spines["right"].set_linewidth(0.6)
     panel_label(ax_b, "B")
 
     pairs = [
@@ -3200,20 +3592,20 @@ def write_manifest(source: Path, output: Path) -> None:
                 "role": "quantitative figure source table",
             }
         )
-    for path in sorted(output.glob("*.pdf")):
+    for path in sorted(output.glob("*.svg")):
         rows.append(
             {
                 "artifact": path.relative_to(ROOT).as_posix(),
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "role": "rendered publication figure",
+                "role": "rendered publication figure (SVG; no embedded raster)",
             }
         )
-    for path in sorted(ASSET_DIR.glob("*.png")):
+    for path in sorted(ASSET_DIR.glob("*.svg")):
         rows.append(
             {
                 "artifact": path.relative_to(ROOT).as_posix(),
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "role": "curated non-quantitative GPT Image 1.5 sub-asset",
+                "role": "curated non-quantitative GPT Image 1.5 SVG sub-asset",
             }
         )
     for name in ("generation_manifest.json", "selection_manifest.json"):

@@ -1,4 +1,5 @@
 \documentclass[9pt,twocolumn,twoside]{pnas-new}
+\usepackage[inkscape=false,inkscapelatex=false,inkscapepath=svgpath]{svg}
 
 \articletype{BIOLOGICAL SCIENCES}
 \templatetype{pnasresearcharticle}
@@ -53,7 +54,7 @@ We analyzed \NSubstrates{} graph-buildable inverted-Alu substrates across four i
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figure1_systematic_dissection.pdf}
+\includesvg[width=\textwidth]{figures/figure1_systematic_dissection.svg}
 \caption{\textbf{Study design separates biological scales from held-out evaluation.} (A) Intrinsic substrate properties, target-centered local context organized by predicted pairing, and transcript/cellular context may contribute to observed editing; pair burden is an indirect measure of substrate propensity. Illustrations are conceptual. (B) Controlled comparisons test context, supervision, representation, and generalization. (C) Complete pairs were partitioned globally, development used pair-disjoint folds, and the final specification was frozen before held-out evaluation. Combined is pooled and received no tissue-specific state vector.}
 \label{fig:overview}
 \end{figure*}
@@ -68,7 +69,7 @@ High discrimination does not imply biological completeness. A sequence--structur
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figure2_sequence_scope.pdf}
+\includesvg[width=\textwidth]{figures/figure2_sequence_scope.svg}
 \caption{\textbf{Sequence and predicted structure carry substantial but non-universal signal.} The tissue and lineage illustrations identify dataset classes and encode no measured values. (A) Within-context AUROC and F1 for the retained compact sequence--structure baseline across five human endpoints and three nonhuman datasets. Combined is pooled. (B) AUROC when each training context is evaluated in every context; white lines separate human and nonhuman blocks, and outlined diagonal cells mark matched-context evaluations. (C) Transfer grouped by the relation between training and evaluation contexts; horizontal bars are group means. Dataset heterogeneity precludes causal attribution or meta-analysis.}
 \label{fig:scope}
 \end{figure*}
@@ -79,7 +80,7 @@ Genomic separation between Alu arms correlated negatively with edited-site fract
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=0.98\textwidth]{figures/figure2_evidence_map.pdf}
+\includesvg[width=0.98\textwidth]{figures/figure2_evidence_map.svg}
 \caption{\textbf{Genomic organization predicts substrate-level editing burden.} (A) Tested measurements grouped by scale and outcome; the left hierarchy corresponds to the Results sections. SI Appendix, Table S2 gives each comparator, effect size, and interval. ``Supported$\dagger$'' denotes a reproducible substrate-level observation not yet useful for site prediction; ``not supported'' applies only to the tested formulation, and deferred measurements were unavailable. (B) Mean edited-site fraction across octiles of inter-arm gap in four tissues; $\rho$ is calculated over individual development pairs. (C) Increment in pair-level $R^2$ after adding genomic geometry to graph summaries. Bars are 95\% pair-clustered bootstrap intervals; labels give absolute $R^2$ for the combined model.}
 \label{fig:evidence}
 \end{figure*}
@@ -124,7 +125,7 @@ In a post-hoc equal-pair analysis restricted to duplexes containing both labels,
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figure3_organizing_principles.pdf}
+\includesvg[width=\textwidth]{figures/figure3_organizing_principles.svg}
 \caption{\textbf{Pair-first learning and target-centered representation provide complementary gains.} (A) Same-fold ablations separate recovery of additional valid high/low labels from pair-first weighting. (B) Pair-first expanded supervision improves the internal reference across all five endpoints; points and bars are pair-clustered medians and 95\% intervals. (C) Whole-duplex pooling, focal-state retention, and aligned-local fusion form an evidence ladder; an otherwise identical local model is shifted by \LocalControlShift{} nt. (D) A fixed equal-logit ensemble improves its whole-duplex-only component in muscle and liver. (E) The predictor combines independently trained whole-duplex-only and graph-plus-local models without searched weights or post-test fitting. The RNA illustrations are conceptual. All panels show development evidence.}
 \label{fig:principles}
 \end{figure*}
@@ -145,7 +146,7 @@ At frozen validation-selected thresholds, the selected predictor corrected \Comb
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figure4_locked_validation.pdf}
+\includesvg[width=\textwidth]{figures/figure4_locked_validation.svg}
 \caption{\textbf{Frozen evaluation confirms within-benchmark generalization and summarizes what current measurements recover.} (A) Selected predictor minus reproduced supplied-checkpoint AdarEdit for AUROC, AUPRC, and F1; bars are 95\% pair-clustered bootstrap intervals. (B) Absolute F1. (C) Reduction in Brier score. (D) Baseline false positives corrected and baseline true positives converted to false negatives at frozen validation-selected thresholds. (E) Information captured, partially resolved, and unavailable at matched biological scale; tier-specific icons are conceptual. Combined is pooled. All quantitative panels use the frozen canonical held-out evaluation.}
 \label{fig:locked}
 \end{figure*}

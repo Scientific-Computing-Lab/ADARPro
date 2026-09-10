@@ -16,7 +16,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.9"]
 tables = ["pyarrow>=17"]
-paper = ["matplotlib>=3.9", "pyarrow>=17"]
+paper = ["CairoSVG>=2.7", "matplotlib>=3.9", "pyarrow>=17", "vtracer>=0.6"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

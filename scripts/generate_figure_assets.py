@@ -354,6 +354,81 @@ FAMILIES = {
         "gently curved near-planar RNA contours with delicate pairing cues. No spiral helices, DNA iconography, "
         "magnifier, arrows, borders, equations, labels, or protein complexes.",
     ],
+    "global_graph_encoder_editorial": [
+        "A compact horizontal interior cue for an RNA structure-graph encoder. On the left, show a small "
+        "imperfect planar RNA fold with nucleotide nodes and backbone/pairing edges; through the center, "
+        "show two restrained layers of neighborhood aggregation as nested translucent graph fields; on the "
+        "right, resolve into one concise latent feature motif. The composition must communicate structure-aware "
+        "message passing without a surrounding box, pipeline arrow, computer chip, neural-network cliché, DNA "
+        "helix, text, or mathematical symbol.",
+        "A refined computational-biology module interior showing a whole RNA sequence-structure graph becoming "
+        "a compact learned representation. Use one irregular folded RNA graph at left, a central field of linked "
+        "local neighborhoods, and a small ordered feature bundle at right. Keep the horizontal silhouette simple "
+        "and legible at thumbnail scale. No container, badge, arrows, labels, circuitry, brain icon, DNA, or chart.",
+        "A publication-grade visual cue for global structure-graph encoding: a near-planar imperfect RNA duplex "
+        "with embedded nodes enters a quiet sequence of two graph-aggregation layers and emerges as a restrained "
+        "set of aligned latent marks. Use continuity of form rather than arrows to imply processing. No UI panel, "
+        "processor chip, text, equations, regular ladder, DNA twist, or decorative vertical bars.",
+    ],
+    "graph_local_encoder_editorial": [
+        "A compact horizontal interior cue for an RNA graph-plus-local encoder. At the left, show the same whole-"
+        "duplex structure graph together with a clearly distinct target-centered local RNA segment containing one "
+        "amber target and teal partner; let both representations meet in a restrained shared aggregation field and "
+        "resolve into one latent feature motif at right. No surrounding box, arrows, text, plus sign, DNA helix, "
+        "computer chip, or generic neural-network icon.",
+        "A refined computational-biology module interior that visibly combines two inputs: an irregular global RNA "
+        "sequence-structure graph and a short aligned local target/partner view. Preserve blue for the global view "
+        "and violet/amber/teal accents for the local view; merge them through one compact analytical field into a "
+        "single ordered representation. No badge, container, pipeline arrow, label, equation, DNA, or circuitry.",
+        "A publication-grade cue for graph and target-local encoding. Place a miniature whole RNA graph above a "
+        "short target-centered paired neighborhood, then integrate their contours into two subtle message-passing "
+        "layers and one compact latent bundle. Make the added local stream unmistakable while retaining the same "
+        "visual grammar as a global graph encoder. No text, arrows, boxes, processor icon, DNA twist, or chart.",
+    ],
+    "prediction_integration_editorial": [
+        "A compact scientific concept for computational prediction integration. Show two distinct but coordinated "
+        "RNA information views on the left: one complete structure-aware RNA graph and one target-centered local "
+        "paired-site detail. Their visual paths narrow toward one restrained analytical readout motif on the right, "
+        "without arrows, equations, text, geometric molecule tokens, boxes, or biological fusion machinery. The "
+        "meaning is two predictive representations combined into one result, not molecular interaction.",
+        "A refined PNAS-style miniature showing whole-duplex and target-local representations as two parallel, "
+        "scientifically consistent RNA motifs that resolve into one compact prediction readout. Keep the inputs "
+        "visibly separate until the final shared analytical field. No arrows, plus signs, sigma, gauges, text, UI "
+        "container, protein complex, DNA iconography, or mechanistic implication.",
+        "A publication-quality computational integration asset: an imperfect full RNA graph and a cropped focal "
+        "target/partner neighborhood occupy two aligned lanes, then converge spatially into one subtle neutral "
+        "feature/readout mark. Use a single coherent molecular-illustration style and preserve open space for vector "
+        "connectors. No labels, arrows, equation symbols, decorative polygons, network cloud, DNA helix, or chart.",
+        "A thin horizontal scientific asset with exactly two input lanes and one output. The upper lane is one "
+        "complete irregular planar RNA sequence-structure graph; the lower lane is one short target-centered local "
+        "RNA pairing motif with an amber site opposite a teal partner. Keep the lanes separate on the left and let "
+        "them end near one small neutral analytical readout mark on the right, leaving transparent gaps for vector "
+        "connectors. No arrows, text, plus sign, DNA helix, protein, equation, node cloud, or decorative shapes.",
+        "A compact two-view prediction vignette designed for a tiny journal panel. Stack a refined whole-RNA graph "
+        "above a refined paired-site local view; align both toward one restrained set of three neutral output marks "
+        "at the far right. Use the same fine editorial linework in both lanes and abundant transparency. Do not merge "
+        "the molecules biologically. No pipeline arrows, labels, symbols, boxes, twisted helix, chart, or UI styling.",
+        "A publication-grade miniature of computational integration, not molecular interaction. At left, show two "
+        "parallel analytical portraits of the same RNA: a full imperfect fold with embedded graph nodes above and a "
+        "cropped target/partner neighborhood below. At right, place one small neutral latent-output motif, separated "
+        "from both inputs by open space for later vector arrows. No text, equation, sigma, convergence lines, DNA "
+        "twist, protein complex, random network cloud, gauge, or decorative polygon.",
+    ],
+    "observed_editing_readout": [
+        "A compact scientific observation motif for measured endogenous A-to-I RNA editing. Show a short imperfect "
+        "RNA duplex with one focal amber adenosine and, beside it, a restrained analytical readout made of a few "
+        "ordered measurement marks that clearly belong to the RNA observation. Keep the RNA and readout visually "
+        "integrated but do not depict an enzyme, reaction mechanism, protein, arrow, letter, gauge, chart axis, box, "
+        "DNA helix, or clinical-device icon.",
+        "A refined endpoint illustration for observed RNA editing: one concise target-centered dsRNA segment with "
+        "a highlighted focal nucleotide sits within a subtle measurement aperture, accompanied by a minimal row of "
+        "sampled signal marks. It must read as a measured RNA state, not a process mechanism or software control. No "
+        "text, arrows, equation, button, border, protein, DNA, or instrument dashboard.",
+        "A publication-grade readout vignette centered on one endogenous RNA paired site. Render the local imperfect "
+        "RNA context crisply, emphasize one amber target, and add a small neutral analytical trace or dot pattern that "
+        "signals observation without encoding quantitative values. Use an open compact silhouette. No labels, causal "
+        "arrows, enzyme, chemical reaction, rectangular UI card, DNA helix, microscope, or chart frame.",
+    ],
 }
 
 SELECTIONS = {
@@ -452,6 +527,34 @@ SELECTIONS = {
         "rationale": (
             "The full folded substrate and isolated target-pair detail remain visually "
             "distinct and coordinated without an imposed processing arrow."
+        ),
+    },
+    "global_graph_encoder_editorial": {
+        "candidate": 2,
+        "rationale": (
+            "The sequence-structure graph, restrained aggregation field, and compact "
+            "feature bundle remain distinct after reduction without UI or DNA imagery."
+        ),
+    },
+    "graph_local_encoder_editorial": {
+        "candidate": 1,
+        "rationale": (
+            "Separate global and focal RNA cues resolve into a shared representation, "
+            "making the additional local input visible at the module's small footprint."
+        ),
+    },
+    "prediction_integration_editorial": {
+        "candidate": 4,
+        "rationale": (
+            "The clearest generated two-lane concept; retained for provenance, while "
+            "the final miniature uses a more legible vector assembly at print scale."
+        ),
+    },
+    "observed_editing_readout": {
+        "candidate": 3,
+        "rationale": (
+            "A single-contour paired RNA target leads into a restrained measurement trace, "
+            "reading as an observed endpoint without a DNA helix or mechanism claim."
         ),
     },
 }

@@ -24,6 +24,7 @@ manifest:
 verify: split results test lint manifest
 
 paper-figures:
+	$(PYTHON) scripts/vectorize_figure_assets.py
 	$(PYTHON) scripts/render_paper_figures.py
 
 paper-claims:

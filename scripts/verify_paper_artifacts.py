@@ -129,6 +129,31 @@ def verify_quantitative_sources() -> None:
         raise AssertionError("README canonical table is not synchronized")
 
 
+def verify_svg_figures() -> None:
+    """Require SVG placement, vector-only content, and PNAS-matched typography."""
+    placed: set[Path] = set()
+    for manuscript in (PAPER / "main.tex", PAPER / "supplementary.tex"):
+        text = manuscript.read_text(encoding="utf-8")
+        if re.search(r"\\includegraphics[^\n]*\{figures/", text):
+            raise AssertionError(f"{manuscript} places a figure through includegraphics")
+        names = re.findall(r"\\includesvg(?:\[[^]]*\])?\{([^}]+\.svg)\}", text)
+        if not names:
+            raise AssertionError(f"{manuscript} contains no SVG figure placements")
+        placed.update(manuscript.parent / name for name in names)
+
+    for figure in sorted(placed):
+        if not figure.exists():
+            raise AssertionError(f"missing placed SVG figure: {figure}")
+        markup = figure.read_text(encoding="utf-8")
+        if "<image" in markup or "data:image" in markup:
+            raise AssertionError(f"SVG contains embedded raster content: {figure}")
+        if "Nimbus Sans" not in markup:
+            raise AssertionError(f"SVG does not use the PNAS-matched font: {figure}")
+        cache = figure.with_name(f"{figure.stem}_svg-raw.pdf")
+        if not cache.exists():
+            raise AssertionError(f"missing svg.sty PDF derivative: {cache}")
+
+
 def verify_template_provenance() -> None:
     readme = (PAPER / "template/README.md").read_text(encoding="utf-8")
     rows = re.findall(r"\| `([^`]+)` \| `([0-9a-f]{64})` \|", readme)
@@ -209,12 +234,13 @@ def main() -> None:
     verify_pnas_fields()
     verify_claim_traceability()
     verify_quantitative_sources()
+    verify_svg_figures()
     verify_template_provenance()
     verify_compilation()
     verify_main_pdf_page_bounds()
     print(
         "PASS: PNAS limits, claim traceability, quantitative source hashes, "
-        "manuscript builds, and main-paper page bounds verified"
+        "vector-only SVG placement, manuscript builds, and main-paper page bounds verified"
     )
 
 

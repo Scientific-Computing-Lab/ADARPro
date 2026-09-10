@@ -1,4 +1,5 @@
 \documentclass[9pt,twoside,lineno]{pnas-new}
+\usepackage[inkscape=false,inkscapelatex=false,inkscapepath=svgpath]{svg}
 \usepackage{longtable}
 \usepackage{tabularx}
 \usepackage{pdflscape}
@@ -44,7 +45,7 @@ We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, M
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS1_development_regime.pdf}
+\includesvg[width=\textwidth]{figures/figureS1_development_regime.svg}
 \caption{\textbf{Two evaluation regimes answer different questions.} Development OOF comparisons use an identical-fold internal reference to attribute incremental effects. The separately reproduced supplied-checkpoint canonical test is the authoritative final benchmark.}
 \label{fig:s1}
 \end{figure}
@@ -83,7 +84,7 @@ Exact-tissue compatible H3K36me3 tracks were summarized at the target, local win
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS2_biological_feature_controls.pdf}
+\includesvg[width=\textwidth]{figures/figureS2_biological_feature_controls.svg}
 \caption{\textbf{Tested biological annotations and matched controls.} Every point is labeled by formulation. Pair-clustered bootstrap development differences use the documented same-fold reference. The RBP, genomic, and chromatin measurements shown did not add a reproducible increment across ranking and thresholded metrics.}
 \label{fig:s2}
 \end{figure}
@@ -135,7 +136,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS3_natural_prevalence.pdf}
+\includesvg[width=\textwidth]{figures/figureS3_natural_prevalence.svg}
 \caption{\textbf{Secondary natural-prevalence development evaluation.} Performance for the same-fold internal reference, pair-first whole-duplex-only model, local-augmented graph model, and fixed ensemble on all eligible high/low observations from unchanged muscle and liver development pairs.}
 \label{fig:s3}
 \end{figure}
@@ -150,7 +151,7 @@ The unified model's AUROC and AUPRC were below the frozen ensemble in every oute
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.84\textwidth]{figures/figureS4_unified_negative_result.pdf}
+\includesvg[width=0.84\textwidth]{figures/figureS4_unified_negative_result.svg}
 \caption{\textbf{Preregistered unified model versus the immutable ensemble.} Bars are 95\% pair-clustered bootstrap intervals for unified minus ensemble in muscle development OOF data. A positive Brier difference is adverse.}
 \label{fig:s4}
 \end{figure}
@@ -165,13 +166,13 @@ The selected predictor improved ROC and precision--recall curves in every endpoi
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS5_locked_curves.pdf}
+\includesvg[width=\textwidth]{figures/figureS5_locked_curves.svg}
 \caption{\textbf{Canonical held-out ROC and precision--recall curves.} The selected predictor and supplied-checkpoint AdarEdit are shown for four individual tissue endpoints and Combined.}
 \label{fig:s5}
 \end{figure}
 
 \begin{center}
-\includegraphics[width=\textwidth]{figures/figureS6_locked_calibration.pdf}
+\includesvg[width=\textwidth]{figures/figureS6_locked_calibration.svg}
 \captionof{figure}{\textbf{Canonical held-out calibration.} Reliability curves for the selected predictor and supplied-checkpoint AdarEdit. Brier score is lower for the selected predictor in every endpoint.}
 \label{fig:s6}
 \end{center}
@@ -196,7 +197,7 @@ To test substrate-level stability without coverage composition changing between 
 
 \begin{figure}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS7_tissue_context_and_pair_stability.pdf}
+\includesvg[width=\textwidth]{figures/figureS7_tissue_context_and_pair_stability.svg}
 \caption{\textbf{Tissue-dependent editing overlays stable substrate rankings.} (A) Complementary cumulative distribution of the within-site EditingIndex range for sites observed in all four individual tissues. Markers give prespecified range thresholds. (B) Strict edited/nonedited switches. Each off-diagonal cell gives the directed site count and, in parentheses, switches per 10,000 sites shared by that tissue pair; diagonal cells are undefined. (C) Spearman correlation of pair-level mean EditingIndex and high-editing-site fraction between tissues after restricting each Alu pair to identical sites and requiring at least five shared sites. Bars are 95\% whole-pair bootstrap intervals. Combined is excluded throughout.}
 \label{fig:s7_context}
 \end{figure}
@@ -209,7 +210,7 @@ Two completed diagnostics further delimit interpretation. Pair-first weighting p
 
 \begin{figure}[t!]
 \centering
-\includegraphics[width=\textwidth]{figures/figureS8_post_analysis_diagnostics.pdf}
+\includesvg[width=\textwidth]{figures/figureS8_post_analysis_diagnostics.svg}
 \caption{\textbf{Post-hoc diagnostics of selected learning and representation principles.} (A) Equal-pair mean within-duplex AUROC among mixed-label pairs; bars are 95\% whole-pair bootstrap intervals. The full five-endpoint pair-first comparison is in the source table. (B) Mean per-pair log-loss gain from pair-first versus row-wise expanded supervision across eligible-site-count quintiles; positive values favor pair-first. This is a descriptive development diagnostic. (C and D) Mean Brier difference relative to pair-first prediction by target paired status and contiguous target-stem extent in muscle. Negative values favor the candidate. Stratum means are descriptive and do not constitute subgroup-specific confirmatory tests.}
 \label{fig:s8_diagnostics}
 \end{figure}
