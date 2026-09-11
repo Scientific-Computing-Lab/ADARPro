@@ -8,6 +8,7 @@
 \usepackage{pdflscape}
 
 \templatetype{pnassupportinginfo}
+\captionsetup[table]{textfont={small,sf}}
 \input{generated/quantitative_claims.tex}
 
 % Compatibility shim for the current PNAS class/SI-style combination.
@@ -79,7 +80,7 @@ We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, M
 \begin{figure}[H]
 \centering
 \includesvg[width=\textwidth]{figures/figureS1_development_regime.svg}
-\caption{\textbf{Controlled neural comparisons in development.} Candidate and internal reference predictions use identical pair folds. Absolute OOF scores are not substitutes for the separate canonical held-out comparison.}
+\caption{\textbf{Pair-first learning and local RNA context improve prediction beyond the same-fold reference.} The gains in ranking and F1 occur in both muscle and liver, with a further increment from combining whole-duplex and local-augmented predictions. All models predict identical development pairs excluded from their own fitting and selection. These out-of-fold scores compare additions under a common regime; they do not replace the separate canonical held-out evaluation.}
 \label{fig:s1}
 \end{figure}
 
@@ -130,7 +131,7 @@ Native-gap/flank-aware RNAfold ensemble summaries were also screened against the
 \begin{figure}[H]
 \centering
 \includesvg[width=\textwidth]{figures/figureS2_biological_feature_controls.svg}
-\caption{\textbf{Exploratory residual screens of biological annotations.} Pair-clustered differences use the corresponding pooled-score reference. These second-stage screens are pair-disjoint but not fully nested with first-stage fitting (section A). The tested formulations did not consistently improve ranking and thresholded metrics.}
+\caption{\textbf{The tested biological annotations do not consistently improve site prediction.} Metric-specific gains do not extend consistently across ranking and classification, limiting these proxies as corrections to the RNA reference. Differences use each screen's corresponding pooled-score reference and pair-clustered uncertainty. Second-stage fits keep pairs separate, but first-stage fitting is not fully nested (section A); these are exploratory findings, not evidence that the underlying regulators are biologically unimportant.}
 \label{fig:s2}
 \end{figure}
 
@@ -184,7 +185,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 \begin{figure}[H]
 \centering
 \includesvg[width=\textwidth]{figures/figureS3_natural_prevalence.svg}
-\caption{\textbf{Secondary natural-prevalence development evaluation.} Performance for the same-fold internal reference, pair-first whole-duplex-only model, local-augmented graph model, and fixed ensemble on all eligible high/low observations from unchanged muscle and liver development pairs.}
+\caption{\textbf{The gains persist when all eligible high/low sites are retained.} In muscle and liver, the fixed ensemble improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex-only model. The internal reference and local-augmented model show the contributions along this comparison. All models use the same development pairs without class downsampling. This secondary evaluation tests the undownsampled high/low pool, not population-wide editing prevalence or an independent cohort.}
 \label{fig:s3}
 \end{figure}
 
@@ -199,7 +200,7 @@ The unified model's AUROC and AUPRC were below the frozen ensemble in every oute
 \begin{figure}[H]
 \centering
 \includesvg[width=0.84\textwidth]{figures/figureS4_unified_negative_result.svg}
-\caption{\textbf{Preregistered unified model versus the immutable ensemble.} Bars are 95\% pair-clustered bootstrap intervals for unified minus ensemble in muscle development OOF data. A positive Brier difference is adverse.}
+\caption{\textbf{Joint training worsens ranking and probability error relative to the fixed ensemble.} The connected model did not improve on independently trained, fixed-weight predictions in the preregistered muscle comparison; F1 showed no clear gain. Bars are 95\% pair-clustered bootstrap intervals for unified minus ensemble in development OOF data. Negative AUROC/AUPRC differences and positive Brier differences are adverse. The branch stopped before canonical-test access.}
 \label{fig:s4}
 \end{figure}
 
@@ -214,15 +215,15 @@ AUROC and AUPRC improved in every endpoint (Fig.~\ref{fig:s5}; Table~\ref{tab:lo
 \begin{figure}[H]
 \centering
 \includesvg[width=\textwidth]{figures/figureS5_locked_curves.svg}
-\caption{\textbf{Canonical held-out ROC and precision--recall curves.} The selected predictor and supplied-checkpoint AdarEdit are shown for four individual tissue endpoints and Combined.}
+\caption{\textbf{Held-out gains extend beyond a single classification threshold.} ROC and precision--recall curves compare the frozen selected predictor with supplied-checkpoint AdarEdit. AUROC and AUPRC improve in all four tissues and pooled Combined, without implying dominance at every threshold.}
 \label{fig:s5}
 \end{figure}
 
-\begin{center}
+\begingroup\centering
 \includesvg[width=\textwidth]{figures/figureS6_locked_calibration.svg}
-\captionof{figure}{\textbf{Canonical held-out calibration.} Reliability curves compare the observed fraction of high-editing sites with the mean predicted class probability in each bin. The diagonal marks agreement. Brier score is lower for the selected predictor than for supplied-checkpoint AdarEdit in every endpoint, but this metric alone does not isolate calibration.}
+\captionof{figure}{\textbf{Lower probability error coexists with imperfect calibration.} Brier score is lower than for supplied-checkpoint AdarEdit in every endpoint, but reliability curves still depart from the agreement diagonal. Bins compare mean class probability with the observed fraction of high-editing sites, not the fraction of RNA molecules edited. Lower Brier error alone does not establish better calibration.}
 \label{fig:s6}
-\end{center}
+\par\endgroup
 
 \input{generated/table_s9_false_positives.tex}
 
@@ -245,7 +246,7 @@ To test substrate-level stability without coverage composition changing between 
 \begin{figure}[t!]
 \centering
 \includesvg[width=\textwidth]{figures/figureS7_tissue_context_and_pair_stability.svg}
-\caption{\textbf{Tissue-dependent editing overlays stable substrate rankings.} (A) Complementary cumulative distribution of the within-site EditingIndex range for sites observed in all four individual tissues. Markers give prespecified range thresholds. (B) Strict edited/nonedited switches. Each off-diagonal cell gives the directed site count and, in parentheses, switches per 10,000 sites shared by that tissue pair; diagonal cells are undefined. (C) Spearman correlation of pair-level mean EditingIndex and high-editing-site fraction between tissues after restricting each Alu pair to identical sites and requiring at least five shared sites. Bars are 95\% whole-pair bootstrap intervals. Combined is excluded throughout.}
+\caption{\textbf{Editing varies across tissues at the same sites, yet duplex-level rankings remain correlated.} (A) The curve gives the fraction of sites whose across-tissue EditingIndex range reaches each value, using sites observed in all four individual tissues. Markers give prespecified range thresholds. (B) Some sites switch strictly between edited and nonedited states. Off-diagonal cells give directed counts and switches per 10,000 shared sites in parentheses; diagonal cells are undefined. (C) Pair-level mean EditingIndex and high-editing-site fraction retain positive rank correlations when each Alu pair is restricted to identical sites, with at least five shared sites. Bars are 95\% whole-pair bootstrap intervals. These post-hoc development observations identify tissue association, not a regulator or invariant cellular state. Combined is excluded.}
 \label{fig:s7_context}
 \end{figure}
 
@@ -258,7 +259,7 @@ Pair-first weighting preferentially reduced log loss for substrates with fewer e
 \begin{figure}[t!]
 \centering
 \includesvg[width=\textwidth]{figures/figureS8_post_analysis_diagnostics.svg}
-\caption{\textbf{Post-hoc diagnostics of selected learning and representation principles.} (A) Equal-pair mean within-duplex AUROC among mixed-label pairs; bars are 95\% whole-pair bootstrap intervals. The full five-endpoint pair-first comparison is in the source table. (B) Mean per-pair log-loss gain from pair-first versus row-wise expanded supervision across eligible-site-count quintiles; positive values favor pair-first. This is a descriptive development diagnostic. (C and D) Mean Brier difference relative to pair-first prediction by target paired status and contiguous target-stem extent in muscle. Negative values favor the candidate. Stratum means are descriptive and do not constitute subgroup-specific confirmatory tests.}
+\caption{\textbf{Predictive gains extend within duplexes and across structural strata.} (A) The fixed ensemble improves discrimination among edited and nonedited sites within the same duplex in muscle and liver; a clear local-component increment occurs only in muscle. Each mixed-label pair contributes equally to mean AUROC; bars are 95\% whole-pair bootstrap intervals. The full five-endpoint pair-first comparison is in the source table. (B) Pair-first weighting reduces log loss most for pairs with fewer eligible sites; the largest two site-count quintiles favor row-wise learning. Positive mean per-pair gains favor pair-first. (C and D) Local and ensemble Brier improvements span paired/unpaired targets and contiguous-stem strata in muscle. Differences are relative to pair-first prediction; negative values favor the candidate. All panels are post-hoc development diagnostics, not subgroup-specific confirmatory tests.}
 \label{fig:s8_diagnostics}
 \end{figure}
 

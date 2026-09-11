@@ -49,7 +49,7 @@ def locked_metrics() -> None:
         "table_s1_locked_metrics.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Complete one-use canonical held-out metrics. Thresholds were frozen from the published validation partition before test access. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
+\caption{\textbf{Ranking, classification, and probability accuracy improve across all five held-out endpoints.} Relative to reproduced AdarEdit, the selected predictor has higher AUROC, AUPRC, and F1 and lower Brier score. Precision and recall show the classification trade-off at thresholds frozen from the published validation partition before test access. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l@{\hspace{2\tabcolsep}\hspace{0.6em}}lrrrrrrr}
 \toprule
@@ -476,7 +476,7 @@ def evidence_map() -> None:
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
-\caption{Development evidence synthesis. Each row states its comparator; estimands differ across rows. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact residual screens reuse pooled first-stage OOF scores and are exploratory, not fully nested (section A). ``Not supported'' applies to the tested formulation and selection criterion.}\label{tab:evidencemap}\\
+\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section A). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
@@ -537,7 +537,7 @@ def supervision_decomposition() -> None:
         "table_s4_supervision_decomposition.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are pair-clustered bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
+\caption{\textbf{More valid labels and more balanced substrate weights make separate contributions.} In muscle development data, recovering eligible high/low labels improves prediction under row-wise sampling. Pair-first weighting adds a further gain with the label pool and class balance fixed. The same-fold comparisons isolate the label and weighting effects; intervals are pair-clustered bootstrap intervals for each indicated step, in percentage points.}\label{tab:supervisiondecomposition}
 \begin{tabular}{lrrr@{\hspace{2\tabcolsep}\hspace{0.6em}}rr}
 \toprule
 Metric & Original reference & All high/low, row-wise & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
@@ -567,7 +567,7 @@ def substrate_realization() -> None:
         "table_s3_substrate_realization.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Pair geometry identifies a reproducible component of substrate-level editing burden. Spearman $\rho$ relates genomic inter-arm gap to edited-site fraction. The low-capacity pair model combines genomic geometry with graph-derived summaries; $\Delta R^2$ is relative to graph summaries alone with a 95\% pair-clustered bootstrap interval. ``Any high'' denotes whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes do not directly measure molecular realization or engagement.}\label{tab:substraterealization}
+\caption{\textbf{Genomic geometry improves prediction of the edited-site fraction in all four tissues.} Larger inter-arm gaps correlate with lower burden (Spearman $\rho$). Burden is the high-editing fraction among eligible high/low sites within a pair. Adding geometry to graph-derived summaries improves pair-level $R^2$; $\Delta R^2$ is relative to graph summaries alone, with a 95\% pair-clustered bootstrap interval. ``Any high'' asks whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes measure editing burden, not molecular realization or ADAR engagement.}\label{tab:substraterealization}
 \begin{tabular}{lrrrrr}
 \toprule
 Context & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
@@ -599,7 +599,7 @@ def target_controls() -> None:
         "table_s6_target_controls.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Target-representation controls in muscle development OOF data. All values are evaluated on the same canonical development rows.}\label{tab:targetcontrols}
+\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned graph-plus-local model improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
 \begin{tabular}{lrrrr}
 \toprule
 Representation & AUROC & AUPRC & F1 & Brier \\
@@ -626,7 +626,7 @@ def pair_balance() -> None:
         "table_s5_pair_balance.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Pair-first expanded supervision versus the same-fold internal AdarEdit reference. Values are percentage-point median differences with 95\% pair-clustered bootstrap intervals.}\label{tab:pairbalance}
+\caption{\textbf{Expanded pair-first learning improves ranking and classification across all five endpoints.} The combined change in label coverage and within-class pair weighting outperforms the same-fold internal AdarEdit reference; every interval is positive. Values are percentage-point median differences with 95\% pair-clustered bootstrap intervals. Combined is pooled, and these development comparisons do not isolate weighting from label recovery outside muscle.}\label{tab:pairbalance}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
@@ -657,7 +657,7 @@ def false_positive_table() -> None:
         "table_s9_false_positives.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Canonical-test false-positive transitions. Rescue and damage use frozen validation-selected thresholds. The final column is a post-test descriptive analysis that rethresholds the selected predictor to match published-baseline recall exactly.}\label{tab:falsepositives}
+\caption{\textbf{False-positive reduction persists at matched recall.} At frozen validation-selected thresholds, rescue and damage percentages use baseline false positives and true positives, respectively; ``New FP'' counts new false positives. The final column matches published-baseline recall exactly. This rethresholding is post-test descriptive, not model selection.}\label{tab:falsepositives}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
@@ -691,7 +691,7 @@ def natural_prevalence() -> None:
         "table_s7_natural_prevalence.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Secondary natural-prevalence development evaluation. All eligible high/low observations from unchanged development pairs are included; fold-specific validation thresholds are used.}\label{tab:natural}
+\caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the fixed ensemble improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \toprule
@@ -733,7 +733,7 @@ def unified() -> None:
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{Preregistered unified-model comparison on skeletal-muscle development data. The unified architecture was rejected before canonical-test access. Pair-clustered intervals compare the unified model with the immutable ensemble.}\label{tab:unified}
+\caption{\textbf{The joint model loses ranking and probability accuracy without a clear F1 gain.} In the preregistered skeletal-muscle development comparison, the unified architecture has lower AUROC and AUPRC and higher Brier error than the fixed ensemble. Its higher recall does not compensate on the selection criteria, and the branch stopped before canonical-test access. Pair-clustered intervals give unified-minus-ensemble differences; positive Brier differences are adverse.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
@@ -783,7 +783,7 @@ def experiment_taxonomy() -> None:
 \setlength{\tabcolsep}{1.5pt}
 \renewcommand{\arraystretch}{1.00}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
-\caption{Search-space coverage and final disposition. Rows group the adaptive campaign by question and distinguish controlled, exploratory, descriptive, and untested evidence. ``Deferred'' means suitable data or a validated resource was unavailable, not that the hypothesis failed. Quantitative effects are in Table~\ref{tab:evidencemap}; historical priorities, stopping rules, and run artifacts remain in the machine-readable record.}\label{tab:taxonomy}\\
+\caption{\textbf{The search separates supported improvements from unsuccessful tests and questions that lack suitable data.} Rows connect each biological or modeling question to its candidate information, control, evidence regime, and disposition. Limited effects, unsupported formulations, deferred measurements, and superseded directions remain distinct. ``Deferred'' means suitable data or a validated resource was unavailable, not that the hypothesis failed. Table~\ref{tab:evidencemap} gives quantitative effects; historical priorities, stopping rules, and run artifacts remain in the machine-readable record.}\label{tab:taxonomy}\\
 \toprule
 Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
 \midrule
