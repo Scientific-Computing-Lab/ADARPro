@@ -64,8 +64,9 @@ interpretations, and future hypotheses. Quantitative provenance is recorded in
   the frozen predictor.
 - **Supported, not yet actionable:** reproducible biological or information-
   level observation that did not strengthen the leading site classifier.
-- **Limited:** small, metric-specific, context-specific, or insufficiently
-  calibrated effect below the prespecified promotion criterion.
+- **Limited:** small, metric-specific, context-specific, or insufficient for
+  the recorded selection criterion. Criteria were predeclared only where
+  documented in the corresponding protocol; Brier error is not calibration alone.
 - **Not supported in the tested formulation:** no robust incremental value for
   the stated measurement and model; never generalized to biological absence.
 - **Deferred / not validly tested:** benchmark-compatible measurements were

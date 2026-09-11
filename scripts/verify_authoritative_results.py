@@ -34,6 +34,20 @@ EXPECTED_MANIFEST_HASH = (
 EXPECTED_METRICS_HASH = (
     "ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e"
 )
+# Three development-only diagnostics were appended in revision 9fb11dc.
+# Keep their identities and evidence regime explicit rather than relaxing the
+# original frozen-campaign count to an open-ended minimum.
+POST_HOC_DEVELOPMENT_RUNS = {
+    "post_analysis_within_duplex_discrimination_v1": (
+        "post_hoc_development_oof_within_pair_discrimination"
+    ),
+    "post_analysis_matched_site_tissue_variation_v1": (
+        "post_hoc_matched_site_tissue_variation"
+    ),
+    "post_analysis_cross_tissue_pair_stability_v1": (
+        "post_hoc_matched_site_pair_propensity_stability"
+    ),
+}
 
 
 def sha256(path: Path) -> str:
@@ -149,8 +163,20 @@ def verify_registry() -> None:
     with path.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
     ids = [row["run_id"] for row in rows]
-    if len(ids) != 128 or len(ids) != len(set(ids)):
-        raise AssertionError("experiment registry must contain 128 unique runs")
+    expected_count = 128 + len(POST_HOC_DEVELOPMENT_RUNS)
+    if len(ids) != expected_count or len(ids) != len(set(ids)):
+        raise AssertionError(
+            f"experiment registry must contain {expected_count} unique runs"
+        )
+    by_id = {row["run_id"]: row for row in rows}
+    for run_id, experiment_type in POST_HOC_DEVELOPMENT_RUNS.items():
+        row = by_id.get(run_id)
+        if (
+            row is None
+            or row["experiment_type"] != experiment_type
+            or row["canonical_test_access"].lower() != "false"
+        ):
+            raise AssertionError(f"post-hoc development identity mismatch: {run_id}")
     final_rows = [
         row
         for row in rows

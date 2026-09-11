@@ -104,6 +104,10 @@ The [sequential reader-comprehension walkthrough](reports/32_reader_comprehensio
 records where an adjacent-field reader could lose the argument, the resulting
 revisions, and the second-pass checks. It is an editorial simulation, not a
 human-participant comprehension study.
+The [final scientific-writing pass](reports/33_final_editorial_pass.md) and
+[multilingual semantic audit](reports/34_multilingual_semantic_audit.md) record
+the implemented readability revisions, Hebrew/German/Japanese/Spanish meaning
+checks, quantitative preservation, and remaining author-completion items.
 
 ```bash
 make paper-check
@@ -123,7 +127,7 @@ traceability.
 | `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
-| `reports/` | Campaign/editorial reports 00–32 and final synthesis |
+| `reports/` | Campaign/editorial reports 00–34 and final synthesis |
 | `provenance/` | Input hashes, freeze manifests, audit chain, inventory, and exclusions |
 | `paper/` | PNAS manuscript, SI, verified bibliography, and paper source tables |
 | `docs/` | Campaign, data, reproducibility, and upstream documentation |

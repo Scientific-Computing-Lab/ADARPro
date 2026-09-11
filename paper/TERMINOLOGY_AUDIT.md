@@ -29,7 +29,7 @@ The paper and SI use the following terms consistently.
 | Empirical scope | present recoverability boundary or conditional saturation | Applies only to the tested measurements, representations, effective sample size, and evaluation regime; `universal limit` and `ceiling` are avoided. |
 | Unresolved context | residual site-level variation | Matched cellular state is a biologically motivated hypothesis, not the uniquely identified source of residual error. |
 | Cellular RNA conformation | in vivo RNA structure/conformation | The phrase is not hyphenated in paper prose. |
-| Status criterion | predeclared selection criterion or prespecified stopping criterion | `Promotion criterion` is retained only in historical provenance, not paper prose. |
+| Status criterion | recorded selection criterion; predeclared or prespecified only where documented | Individual protocols may have prospective rules; the full adaptive program was not preregistered. `Promotion criterion` is retained only in historical provenance, not paper prose. |
 
 Machine-readable context names, historical experiment IDs, and authoritative
 artifact paths are intentionally unchanged because altering them would break

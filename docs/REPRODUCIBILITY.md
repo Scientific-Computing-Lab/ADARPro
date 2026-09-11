@@ -69,8 +69,8 @@ single-use quarantine record, unified-model decision, and registry uniqueness.
 Paper scripts read retained authoritative CSV/Parquet/JSON artifacts and never
 rerun model selection. Quantitative figure panels are traceable through
 `paper/source_tables/figure_source_manifest.csv`.
-Figure and manuscript PDF timestamps are fixed to the date of the locked test,
-so repeated builds from an unchanged checkout are byte-reproducible.
+The figure scripts and manuscript build recipe use fixed PDF timestamps for
+reproducible outputs; these timestamps do not mark a new test evaluation.
 
 The PNAS build requires a TeX Live installation with the packages used by the
 official `pnas-new` class. On Debian/Ubuntu, `texlive-latex-extra`,
@@ -89,9 +89,13 @@ the grouping unit.
 During development:
 
 - canonical test labels were quarantined;
-- all learned preprocessing, selection, checkpointing, thresholds, and
-  hyperparameters excluded the outer pair fold;
+- direct neural comparisons excluded the outer pair fold from learned
+  preprocessing, selection, checkpointing, thresholds, and hyperparameters;
 - out-of-fold predictions were produced before residual analysis;
+- early residual screens reused pooled first-stage OOF scores: second-stage
+  fits excluded the outer pair fold, but first-stage models supplying their
+  training scores could include it. These screens are exploratory, not fully
+  nested; the main Methods and SI section A identify the affected branches;
 - feature and model comparisons used identical pair folds;
 - uncertainty resampled whole Alu pairs;
 - natural-prevalence analyses retained the published pair assignment;

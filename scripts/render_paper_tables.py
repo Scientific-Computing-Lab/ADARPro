@@ -51,7 +51,7 @@ def locked_metrics() -> None:
 \centering
 \caption{Complete one-use canonical held-out metrics. Thresholds were frozen from the published validation partition before test access. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrrr}
+\begin{tabular}{l@{\hspace{2\tabcolsep}\hspace{0.6em}}lrrrrrrr}
 \toprule
 Context & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
 \midrule
@@ -538,7 +538,7 @@ def supervision_decomposition() -> None:
         r"""\begin{table}[H]
 \centering
 \caption{Same-fold decomposition of expanded supervision and pair-first weighting in muscle development data. Intervals are pair-clustered bootstrap intervals for the incremental step indicated, in percentage points.}\label{tab:supervisiondecomposition}
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrr@{\hspace{2\tabcolsep}\hspace{0.6em}}rr}
 \toprule
 Metric & Original reference & All high/low, row-wise & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
 \midrule
