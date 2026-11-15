@@ -208,6 +208,20 @@ def test_final_training_refuses_the_published_frozen_folder(tmp_path):
             tmp_path / "models" / "frozen", 1, 2, 1, 42, torch.device("cpu"))
 
 
+def test_final_training_still_reruns_published_graph_only_components(tmp_path):
+    from adarpro.models.final_training import run
+
+    # a graph-only component reads no window, so the lane flag (default "opposite") must not trip the guard:
+    # the call gets past it and stops only on the missing synthetic input
+    for mode in ("binary_pair_balanced", "binary_pair_balanced_target_pool"):
+        with pytest.raises(FileNotFoundError):
+            run(tmp_path, tmp_path / "none.parquet", tmp_path / "none.parquet", "Artery", mode,
+                tmp_path / "models" / "frozen", 1, 2, 1, 42, torch.device("cpu"))
+    with pytest.raises(RuntimeError, match="models/frozen"):
+        run(tmp_path, tmp_path / "none.parquet", tmp_path / "none.parquet", "Artery",
+            "binary_pair_balanced_local", tmp_path / "models" / "frozen", 1, 2, 1, 42, torch.device("cpu"))
+
+
 def test_final_ensemble_refuses_the_published_ensemble_folder(tmp_path):
     from adarpro.models.final_ensemble import run
 
@@ -231,6 +245,15 @@ def test_final_ensemble_refuses_the_published_ensemble_folder(tmp_path):
     destination = tmp_path / "elsewhere" / "MuscleSkeletal"
     destination.mkdir(parents=True)
     (destination / "summary.json").write_text(json.dumps({"components": {"pair": "binary_pair_balanced"}}))
+    with pytest.raises(RuntimeError, match="different ensemble"):
+        run(tmp_path, tmp_path / "master.parquet", "MuscleSkeletal", paths,
+            tmp_path / "elsewhere", 2, 42, torch.device("cpu"))
+    # same names, modes and lane, but other checkpoints: still a different ensemble
+    (destination / "summary.json").write_text(json.dumps({
+        "components": {"pair": "binary_pair_balanced", "cnn": CNN},
+        "partner_lane": "opposite",
+        "checkpoint_sha256": {"pair": "0" * 64, "cnn": "1" * 64},
+    }))
     with pytest.raises(RuntimeError, match="different ensemble"):
         run(tmp_path, tmp_path / "master.parquet", "MuscleSkeletal", paths,
             tmp_path / "elsewhere", 2, 42, torch.device("cpu"))

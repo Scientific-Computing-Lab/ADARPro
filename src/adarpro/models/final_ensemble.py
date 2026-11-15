@@ -98,12 +98,16 @@ def run(
         raise RuntimeError(
             "refusing to write a new ensemble into the published models/frozen_ensemble; pass --output-dir"
         )
+    checkpoint_hashes = {name: sha256_file(checkpoint) for name, _, checkpoint in components}
     existing = destination / "summary.json"
     if existing.exists():
         previous = json.loads(existing.read_text())
-        if previous.get("components") != {name: mode for name, mode, _ in components} or previous.get(
-            "partner_lane", "legacy"
-        ) != partner_lane:
+        same = (
+            previous.get("components") == {name: mode for name, mode, _ in components}
+            and previous.get("partner_lane", "legacy") == partner_lane
+            and previous.get("checkpoint_sha256", checkpoint_hashes) == checkpoint_hashes
+        )
+        if not same:
             raise RuntimeError(f"refusing to overwrite a different ensemble: {existing}")
     # Graphs only for graph components; window-only examples (same row order) for a graph-free CNN component.
     loaders = {}
@@ -117,7 +121,6 @@ def run(
         loaders["window"] = DataLoader(windows, batch_size=batch_size, shuffle=False)
 
     probabilities = []
-    checkpoint_hashes = {}
     checkpoint_paths = {}
     for (name, mode, checkpoint), saved in zip(components, saved_components):
         model = model_for_mode(mode, device)
@@ -128,7 +131,6 @@ def run(
             raise RuntimeError(f"validation row mismatch for component {name}")
         probabilities.append(probability)
         validation[f"{name}_probability"] = probability
-        checkpoint_hashes[name] = sha256_file(checkpoint)
         checkpoint_paths[name] = str(checkpoint.relative_to(repository))
 
     validation["probability"] = equal_logit_average_many(probabilities)
@@ -159,7 +161,7 @@ def run(
         "checkpoint_sha256": checkpoint_hashes,
         "canonical_test_access": False,
     }
-    if local_lanes and partner_lane != "legacy":
+    if local_lanes and (partner_lane != "legacy" or any(graph_free)):
         summary["partner_lane"] = partner_lane
     summary_path = destination / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")

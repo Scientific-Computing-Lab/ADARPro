@@ -240,7 +240,7 @@ def run_components(
         ),
         "canonical_test_access": False,
     }
-    if local_lanes and partner_lane != "legacy":
+    if local_lanes and (partner_lane != "legacy" or len(graph_modes) < len(components)):
         summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"

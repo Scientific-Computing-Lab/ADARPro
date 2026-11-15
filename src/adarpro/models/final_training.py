@@ -102,9 +102,10 @@ def run(
         raise ValueError(f"unsupported frozen component mode: {mode}")
     check_partner_lane(partner_lane)
     graph_free = mode_is_graph_free(mode)
+    use_local = mode_uses_local_window(mode)
     published = (repository / "models" / "frozen").resolve()
     if output_dir.resolve().is_relative_to(published) and (
-        graph_free or partner_lane != "legacy"
+        graph_free or (use_local and partner_lane != "legacy")
     ):
         raise RuntimeError(
             "refusing to write a new component into the published models/frozen; pass --output-dir"
@@ -135,7 +136,6 @@ def run(
     if set(raw.loc[train_indices, "pair_id"]) & set(validation["pair_id"]):
         raise RuntimeError("pair leakage between final training and validation")
 
-    use_local = mode_uses_local_window(mode)
     if graph_free:
         baseline = None
         validation_graphs = canonical_window_examples(
@@ -302,6 +302,8 @@ def run(
         "checkpoint": str(best_path.relative_to(repository)),
         "canonical_test_access": False,
     }
+    if use_local and (partner_lane != "legacy" or graph_free):
+        summary["partner_lane"] = partner_lane
     (destination / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"
     )
