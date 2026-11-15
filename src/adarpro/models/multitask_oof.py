@@ -1040,8 +1040,16 @@ def run(
     device: torch.device,
     *,
     partner_lane: str = DEFAULT_PARTNER_LANE,
+    outer_folds: tuple[int, ...] | None = None,
 ) -> dict:
+    """Grouped OOF run. ``outer_folds`` trains only those outer folds and stops before assembling (one fold per
+    job); every fold reseeds itself in ``run_fold``, so a fold trained alone equals the same fold trained in
+    sequence. A later call with all five folds resumes the finished folds and assembles and registers the run."""
+
     check_partner_lane(partner_lane)
+    folds = tuple(range(5)) if outer_folds is None else tuple(sorted(set(outer_folds)))
+    if not folds or any(fold not in range(5) for fold in folds):
+        raise ValueError(f"outer folds must be a non-empty subset of 0-4: {outer_folds}")
     graph_free = mode_is_graph_free(mode)
     baseline = None if graph_free else upstream_modules(repository)
     master = pd.read_parquet(site_master_path)
@@ -1101,8 +1109,15 @@ def run(
             output_dir,
             partner_lane=partner_lane,
         )
-        for outer_fold in range(5)
+        for outer_fold in folds
     ]
+    if folds != tuple(range(5)):
+        return {
+            "context": context,
+            "mode": mode,
+            "trained_outer_folds": list(folds),
+            "assembled": False,
+        }
     oof = pd.concat(predictions, ignore_index=True)
     destination = output_dir / mode / context
     oof_path = destination / "oof_predictions.parquet"
@@ -1279,6 +1294,13 @@ def main() -> None:
         default=DEFAULT_PARTNER_LANE,
         help="partner lane for unpaired window anchors (graph + CNN hybrids and the CNN alone); 'legacy' reproduces the published runs",
     )
+    parser.add_argument(
+        "--outer-folds",
+        type=int,
+        nargs="+",
+        choices=range(5),
+        help="train only these outer folds and stop before assembling (default: all five, then assemble)",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -1304,6 +1326,7 @@ def main() -> None:
                 args.seed,
                 device,
                 partner_lane=args.partner_lane,
+                outer_folds=tuple(args.outer_folds) if args.outer_folds else None,
             ),
             indent=2,
         )

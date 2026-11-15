@@ -257,3 +257,12 @@ def test_final_ensemble_refuses_the_published_ensemble_folder(tmp_path):
     with pytest.raises(RuntimeError, match="different ensemble"):
         run(tmp_path, tmp_path / "master.parquet", "MuscleSkeletal", paths,
             tmp_path / "elsewhere", 2, 42, torch.device("cpu"))
+
+
+def test_outer_folds_must_be_a_subset_of_the_five_folds(tmp_path):
+    from adarpro.models.multitask_oof import run
+
+    for bad in ((), (5,), (-1, 0)):
+        with pytest.raises(ValueError, match="outer folds"):
+            run(tmp_path, tmp_path / "none.parquet", tmp_path / "none.parquet", "MuscleSkeletal", CNN,
+                tmp_path / "out", 1, 2, 1, 10, 42, torch.device("cpu"), outer_folds=bad)
