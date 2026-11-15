@@ -21,7 +21,10 @@ from adarpro.models.fixed_checkpoint_ensemble import (
 )
 from adarpro.models.multitask_oof import (
     attach_local_windows,
+    canonical_window_examples,
     common_partner_lane,
+    mode_is_graph_free,
+    mode_uses_local_window,
     predict_binary,
     saved_partner_lane,
 )
@@ -304,11 +307,22 @@ def candidate_predictions(
     local_lanes = [
         saved_partner_lane(saved)
         for component, saved in zip(specification["components"], saved_components)
-        if component["mode"].endswith("_local")
+        if mode_uses_local_window(component["mode"])
     ]
+    modes = [component["mode"] for component in specification["components"]]
+    loaders = {"graph": None, "window": None}
     if local_lanes:
-        attach_local_windows(graphs, table, partner_lane=common_partner_lane(local_lanes))
-    loader = DataLoader(graphs, batch_size=batch_size, shuffle=False)
+        partner_lane = common_partner_lane(local_lanes)
+        if any(mode.endswith("_local") for mode in modes):
+            attach_local_windows(graphs, table, partner_lane=partner_lane)
+        if any(mode_is_graph_free(mode) for mode in modes):
+            # a graph-free CNN component reads window-only examples built from the same ordered table
+            loaders["window"] = DataLoader(
+                canonical_window_examples(table, partner_lane=partner_lane),
+                batch_size=batch_size,
+                shuffle=False,
+            )
+    loaders["graph"] = DataLoader(graphs, batch_size=batch_size, shuffle=False)
     outputs = {}
     probabilities = []
     for component, saved in zip(specification["components"], saved_components):
@@ -319,6 +333,7 @@ def candidate_predictions(
             raise RuntimeError("frozen checkpoint mode mismatch")
         model = model_for_mode(component["mode"], device)
         model.load_state_dict(saved["model_state"])
+        loader = loaders["window" if mode_is_graph_free(component["mode"]) else "graph"]
         probability, labels = predict_binary(model, loader, device)
         if not np.array_equal(labels, table["label"].to_numpy()):
             raise RuntimeError("candidate canonical row mismatch")

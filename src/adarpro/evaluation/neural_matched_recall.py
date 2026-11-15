@@ -18,10 +18,14 @@ from adarpro.models.baseline_oof import (
     upstream_modules,
 )
 from adarpro.models.multitask_oof import (
+    LocalCNN,
     MultiTaskGAT,
     attach_local_windows,
     attach_pair_context,
     bootstrap_delta,
+    canonical_window_examples,
+    mode_is_graph_free,
+    mode_uses_local_window,
     pair_context_table,
     partner_lane_run_suffix,
     predict_binary,
@@ -51,13 +55,16 @@ def run(
     canonical = master[master["context"] == context].copy().reset_index(drop=True)
     if canonical["baseline_oof_probability"].isna().any():
         raise RuntimeError(f"development reference is incomplete for {context}")
-    baseline = upstream_modules(repository)
-    graphs = build_graphs(canonical, baseline)
+    graph_free = mode_is_graph_free(mode)
     # The fold checkpoints say which partner-lane rule their local CNN was trained with.
-    use_local = mode.endswith("_local")
+    use_local = mode_uses_local_window(mode)
     partner_lane = run_dir_partner_lane(run_dir, device) if use_local else "legacy"
-    if use_local:
-        attach_local_windows(graphs, canonical, partner_lane=partner_lane)
+    if graph_free:
+        graphs = canonical_window_examples(canonical, partner_lane=partner_lane)
+    else:
+        graphs = build_graphs(canonical, upstream_modules(repository))
+        if use_local:
+            attach_local_windows(graphs, canonical, partner_lane=partner_lane)
     if "_context" in mode:
         raw = pd.read_parquet(raw_path)
         raw = raw[raw["context"] == context].copy()
@@ -76,13 +83,17 @@ def run(
         checkpoint_path = run_dir / f"outer_{outer_fold}" / "best.pth"
         checkpoint_hashes[f"outer_{outer_fold}"] = sha256_file(checkpoint_path)
         saved = torch_load(checkpoint_path, device)
-        model = MultiTaskGAT(
-            use_local=mode.endswith("_local"),
-            use_target_pool=mode.endswith("_target_pool"),
-            use_anchor_pool=mode.endswith("_anchor_pool"),
-            use_duplicate_pool=mode.endswith("_duplicate_pool"),
-            use_pair_context="_context" in mode,
-        ).to(device)
+        model = (
+            LocalCNN().to(device)
+            if graph_free
+            else MultiTaskGAT(
+                use_local=mode.endswith("_local"),
+                use_target_pool=mode.endswith("_target_pool"),
+                use_anchor_pool=mode.endswith("_anchor_pool"),
+                use_duplicate_pool=mode.endswith("_duplicate_pool"),
+                use_pair_context="_context" in mode,
+            ).to(device)
+        )
         model.load_state_dict(saved["model_state"])
         probability, labels = predict_binary(model, inner_loader, device)
         baseline_recall = recall_score(
@@ -143,7 +154,7 @@ def run(
         "development_reference_metrics": reference_metrics,
         "canonical_test_access": False,
     }
-    if use_local and partner_lane != "legacy":
+    if use_local and (partner_lane != "legacy" or graph_free):
         summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"

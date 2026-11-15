@@ -12,10 +12,13 @@ from torch_geometric.loader import DataLoader
 
 from adarpro.models.baseline_oof import metric_row, torch_load, upstream_modules
 from adarpro.models.multitask_oof import (
+    LocalCNN,
     MultiTaskGAT,
     attach_pair_context,
     bootstrap_delta,
     make_training_graphs,
+    mode_is_graph_free,
+    mode_uses_local_window,
     pair_context_table,
     partner_lane_run_suffix,
     predict_binary,
@@ -69,9 +72,10 @@ def run(
         raise RuntimeError(
             "natural-prevalence reference does not match raw high/low rows"
         )
-    baseline = upstream_modules(repository)
+    graph_free = mode_is_graph_free(mode)
+    baseline = None if graph_free else upstream_modules(repository)
     # The fold checkpoints say which partner-lane rule their local CNN was trained with.
-    use_local = mode.endswith("_local")
+    use_local = mode_uses_local_window(mode)
     partner_lane = run_dir_partner_lane(run_dir, device) if use_local else "legacy"
     graphs = make_training_graphs(
         raw,
@@ -79,6 +83,7 @@ def run(
         include_local=use_local,
         shifted_local=mode.endswith("_shifted_local"),
         partner_lane=partner_lane,
+        include_graph=not graph_free,
     )
     if "_context" in mode:
         attach_pair_context(graphs, raw, pair_context_table(raw))
@@ -91,13 +96,17 @@ def run(
         checkpoint_path = run_dir / f"outer_{fold}" / "best.pth"
         checkpoint_hashes[f"outer_{fold}"] = sha256_file(checkpoint_path)
         saved = torch_load(checkpoint_path, device)
-        model = MultiTaskGAT(
-            use_local=mode.endswith("_local"),
-            use_target_pool=mode.endswith("_target_pool"),
-            use_anchor_pool=mode.endswith("_anchor_pool"),
-            use_duplicate_pool=mode.endswith("_duplicate_pool"),
-            use_pair_context="_context" in mode,
-        ).to(device)
+        model = (
+            LocalCNN().to(device)
+            if graph_free
+            else MultiTaskGAT(
+                use_local=mode.endswith("_local"),
+                use_target_pool=mode.endswith("_target_pool"),
+                use_anchor_pool=mode.endswith("_anchor_pool"),
+                use_duplicate_pool=mode.endswith("_duplicate_pool"),
+                use_pair_context="_context" in mode,
+            ).to(device)
+        )
         model.load_state_dict(saved["model_state"])
         probability, _ = predict_binary(model, loader, device)
         outer = raw.loc[indices, identity + ["editing_index", "binary_label"]].copy()
@@ -150,7 +159,7 @@ def run(
         "development_reference_metrics": reference_metrics,
         "canonical_test_access": False,
     }
-    if use_local and partner_lane != "legacy":
+    if use_local and (partner_lane != "legacy" or graph_free):
         summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"

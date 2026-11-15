@@ -23,7 +23,10 @@ from adarpro.models.fixed_checkpoint_ensemble import (
 )
 from adarpro.models.multitask_oof import (
     attach_local_windows,
+    canonical_window_examples,
     common_partner_lane,
+    mode_is_graph_free,
+    mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
     saved_partner_lane,
@@ -83,13 +86,35 @@ def run(
     local_lanes = [
         saved_partner_lane(saved)
         for (_, mode, _), saved in zip(components, saved_components)
-        if mode.endswith("_local")
+        if mode_uses_local_window(mode)
     ]
     partner_lane = common_partner_lane(local_lanes) if local_lanes else "legacy"
-    graphs = build_graphs(validation, upstream_modules(repository))
-    if local_lanes:
-        attach_local_windows(graphs, validation, partner_lane=partner_lane)
-    loader = DataLoader(graphs, batch_size=batch_size, shuffle=False)
+    graph_free = [mode_is_graph_free(mode) for _, mode, _ in components]
+    destination = output_dir / context
+    published = (repository / "models" / "frozen_ensemble").resolve()
+    if output_dir.resolve().is_relative_to(published) and (
+        any(graph_free) or partner_lane != "legacy"
+    ):
+        raise RuntimeError(
+            "refusing to write a new ensemble into the published models/frozen_ensemble; pass --output-dir"
+        )
+    existing = destination / "summary.json"
+    if existing.exists():
+        previous = json.loads(existing.read_text())
+        if previous.get("components") != {name: mode for name, mode, _ in components} or previous.get(
+            "partner_lane", "legacy"
+        ) != partner_lane:
+            raise RuntimeError(f"refusing to overwrite a different ensemble: {existing}")
+    # Graphs only for graph components; window-only examples (same row order) for a graph-free CNN component.
+    loaders = {}
+    if not all(graph_free):
+        graphs = build_graphs(validation, upstream_modules(repository))
+        if any(mode.endswith("_local") for _, mode, _ in components):
+            attach_local_windows(graphs, validation, partner_lane=partner_lane)
+        loaders["graph"] = DataLoader(graphs, batch_size=batch_size, shuffle=False)
+    if any(graph_free):
+        windows = canonical_window_examples(validation, partner_lane=partner_lane)
+        loaders["window"] = DataLoader(windows, batch_size=batch_size, shuffle=False)
 
     probabilities = []
     checkpoint_hashes = {}
@@ -97,6 +122,7 @@ def run(
     for (name, mode, checkpoint), saved in zip(components, saved_components):
         model = model_for_mode(mode, device)
         model.load_state_dict(saved["model_state"])
+        loader = loaders["window" if mode_is_graph_free(mode) else "graph"]
         probability, labels = predict_binary(model, loader, device)
         if not (labels == validation["label"].to_numpy()).all():
             raise RuntimeError(f"validation row mismatch for component {name}")
@@ -113,7 +139,6 @@ def run(
     validation["prediction"] = (
         validation["probability"] >= threshold
     ).astype(int)
-    destination = output_dir / context
     destination.mkdir(parents=True, exist_ok=True)
     prediction_path = destination / "validation_predictions.parquet"
     validation.to_parquet(prediction_path, index=False)
@@ -143,6 +168,11 @@ def run(
         {
             "run_id": (
                 f"frozen_equal_logit_ensemble_{context}_seed{seed}"
+                + (
+                    "_" + "_".join(mode for _, mode, _ in components)
+                    if any(graph_free)
+                    else ""
+                )
                 + partner_lane_run_suffix(partner_lane, bool(local_lanes))
             ),
             "experiment_type": "frozen_ensemble_validation_only",

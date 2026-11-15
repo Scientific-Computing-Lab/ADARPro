@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
+from torch import nn
 from torch_geometric.loader import DataLoader
 
 from adarpro.models.baseline_oof import (
@@ -19,9 +20,13 @@ from adarpro.models.baseline_oof import (
     upstream_modules,
 )
 from adarpro.models.multitask_oof import (
+    LocalCNN,
     MultiTaskGAT,
     attach_local_windows,
+    canonical_window_examples,
     common_partner_lane,
+    mode_is_graph_free,
+    mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
     run_dir_partner_lane,
@@ -52,7 +57,9 @@ def equal_logit_average(left: np.ndarray, right: np.ndarray) -> np.ndarray:
     return equal_logit_average_many([left, right])
 
 
-def model_for_mode(mode: str, device: torch.device) -> MultiTaskGAT:
+def model_for_mode(mode: str, device: torch.device) -> nn.Module:
+    if mode_is_graph_free(mode):
+        return LocalCNN().to(device)
     return MultiTaskGAT(
         use_local=mode.endswith("_local"),
         use_target_pool=mode.endswith("_target_pool"),
@@ -102,19 +109,27 @@ def run_components(
     canonical = master[master["context"] == context].copy().reset_index(drop=True)
     if canonical["baseline_oof_probability"].isna().any():
         raise RuntimeError(f"development reference is incomplete for {context}")
-    graphs = build_graphs(canonical, upstream_modules(repository))
-    # Local attributes are ignored by graph-only components. Adding the
-    # target-aligned window once lets local and graph-only checkpoints share
-    # the exact same ordered loaders without duplicating graph construction.
-    # The local component's five fold checkpoints say which partner-lane rule they were trained with.
+    # Graphs are built only for graph components; a graph-free CNN component gets window-only examples from the
+    # same ordered canonical table. Local attributes are ignored by graph-only components, so adding the
+    # target-aligned window once lets graph and hybrid checkpoints share the same ordered loaders.
+    # The local components' five fold checkpoints say which partner-lane rule they were trained with.
     local_lanes = [
         run_dir_partner_lane(run_dir, device)
         for _, mode, run_dir in components
-        if mode.endswith("_local")
+        if mode_uses_local_window(mode)
     ]
     partner_lane = common_partner_lane(local_lanes) if local_lanes else "legacy"
-    if local_lanes:
+    graph_modes = [mode for _, mode, _ in components if not mode_is_graph_free(mode)]
+    graphs = (
+        build_graphs(canonical, upstream_modules(repository)) if graph_modes else None
+    )
+    if graphs is not None and any(mode.endswith("_local") for mode in graph_modes):
         attach_local_windows(graphs, canonical, partner_lane=partner_lane)
+    windows = (
+        canonical_window_examples(canonical, partner_lane=partner_lane)
+        if len(graph_modes) < len(components)
+        else None
+    )
     outputs, selections, checkpoint_hashes = [], [], {}
     for outer_fold in range(5):
         inner_fold = (outer_fold + 1) % 5
@@ -124,16 +139,17 @@ def run_components(
         outer_indices = canonical.index[
             canonical["development_fold"] == outer_fold
         ].to_numpy()
-        inner_loader = DataLoader(
-            [graphs[index] for index in inner_indices],
-            batch_size=batch_size,
-            shuffle=False,
-        )
-        outer_loader = DataLoader(
-            [graphs[index] for index in outer_indices],
-            batch_size=batch_size,
-            shuffle=False,
-        )
+        loaders = {}
+        for kind, examples in (("graph", graphs), ("window", windows)):
+            if examples is not None:
+                loaders[kind] = tuple(
+                    DataLoader(
+                        [examples[index] for index in indices],
+                        batch_size=batch_size,
+                        shuffle=False,
+                    )
+                    for indices in (inner_indices, outer_indices)
+                )
         component_predictions = {}
         labels = None
         for name, mode, run_dir in components:
@@ -141,6 +157,9 @@ def run_components(
             checkpoint_hashes[f"{name}_outer_{outer_fold}"] = sha256_file(
                 checkpoint_path
             )
+            inner_loader, outer_loader = loaders[
+                "window" if mode_is_graph_free(mode) else "graph"
+            ]
             inner_p, inner_y, outer_p, outer_y = predict_checkpoint(
                 checkpoint_path, mode, inner_loader, outer_loader, device
             )

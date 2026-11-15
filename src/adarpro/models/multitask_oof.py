@@ -21,6 +21,7 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from torch import nn
+from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GATConv, global_mean_pool
 
@@ -55,6 +56,7 @@ MODES = (
     "binary_pair_balanced_duplicate_pool",
     "binary_pair_balanced_context",
     "binary_pair_balanced_context_engagement",
+    "binary_pair_balanced_cnn",
 )
 LOCAL_RADIUS = 32
 LOCAL_CONTROL_SHIFT = 96
@@ -65,6 +67,20 @@ LOCAL_CONTROL_SHIFT = 96
 #             trained with). A saved config without a ``partner_lane`` key predates the option and is "legacy".
 PARTNER_LANES = ("opposite", "legacy")
 DEFAULT_PARTNER_LANE = "opposite"
+# Graph-free modes: the hybrid's local CNN alone (``LocalCNN``). No graph is built for their examples and no GAT
+# exists in the model; each example carries only its local window and labels. The name must not end in "_local"
+# (that switches on ``MultiTaskGAT(use_local=True)``) and must not contain "_context".
+CNN_MODES = ("binary_pair_balanced_cnn",)
+
+
+def mode_is_graph_free(mode: str) -> bool:
+    return mode in CNN_MODES
+
+
+def mode_uses_local_window(mode: str) -> bool:
+    """True when the model reads a local window: the graph + CNN hybrids ("_local") and the CNN alone."""
+
+    return mode.endswith("_local") or mode in CNN_MODES
 PAIR_CONTEXT_COLUMNS = (
     "geometry__arm1_length",
     "geometry__arm2_length",
@@ -222,6 +238,49 @@ class MultiTaskGAT(nn.Module):
         )
 
 
+class LocalCNN(nn.Module):
+    """The hybrid's local CNN branch on its own, with no graph.
+
+    Same two convolution layers and the same 64-d readout (window centre + global max-pool) as
+    ``MultiTaskGAT(use_local=True)``'s ``local_convolution``, and the same three output layers, here on the 64-d
+    readout. No GAT layers, BatchNorm or dropout exist (the hybrid's CNN branch has none either). Reads only
+    ``data.local_window``.
+    """
+
+    use_local = True
+    use_pair_context = False
+
+    def __init__(self):
+        super().__init__()
+        self.local_convolution = nn.Sequential(
+            nn.Conv1d(12, 32, kernel_size=5, padding=2),
+            nn.ReLU(),
+            nn.Conv1d(32, 32, kernel_size=5, padding=4, dilation=2),
+            nn.ReLU(),
+        )
+        self.binary_head = nn.Linear(64, 1)
+        self.ordinal_head = nn.Linear(64, 3)
+        self.continuous_head = nn.Linear(64, 1)
+
+    def encode(self, data) -> torch.Tensor:
+        local_map = self.local_convolution(data.local_window)
+        return torch.cat(
+            [
+                local_map[:, :, LOCAL_RADIUS],
+                F.adaptive_max_pool1d(local_map, 1).squeeze(-1),
+            ],
+            dim=1,
+        )
+
+    def forward(self, data) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        embedding = self.encode(data)
+        return (
+            self.binary_head(embedding).view(-1),
+            self.ordinal_head(embedding),
+            torch.sigmoid(self.continuous_head(embedding).view(-1)),
+        )
+
+
 def check_partner_lane(partner_lane: str) -> str:
     if partner_lane not in PARTNER_LANES:
         raise ValueError(f"partner_lane must be one of {PARTNER_LANES}, got {partner_lane!r}")
@@ -343,7 +402,11 @@ def partner_lane_run_suffix(partner_lane: str, uses_local: bool = True) -> str:
 def saved_partner_lane(saved: dict) -> str:
     """Partner-lane rule a saved model was trained with ("legacy" when its config predates the option)."""
 
-    lane = (saved.get("config") or {}).get("partner_lane", "legacy")
+    config = saved.get("config") or {}
+    if config.get("mode") in CNN_MODES and "partner_lane" not in config:
+        # every CNN-alone run records its lane (no published CNN-alone model exists to default to)
+        raise RuntimeError("graph-free checkpoint does not record its partner_lane")
+    lane = config.get("partner_lane", "legacy")
     if lane not in PARTNER_LANES:
         raise RuntimeError(f"saved config has an unknown partner_lane: {lane!r}")
     return lane
@@ -387,6 +450,24 @@ def attach_local_windows(
         )
 
 
+def canonical_window_examples(
+    table: pd.DataFrame,
+    *,
+    shifted: bool = False,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
+) -> list:
+    """Graph-free canonical examples for ``LocalCNN``: one ``Data`` per row, in row order, carrying only ``y``
+    (the canonical label, float32 [1], as ``build_graphs`` sets it) and ``local_window``. No graph is built."""
+
+    examples = []
+    for row in table.itertuples(index=False):
+        if not row.sequence or len(row.sequence) != len(row.structure):
+            raise RuntimeError(f"unbuildable example: {row.example_id}")
+        examples.append(Data(y=torch.tensor([float(int(row.label))], dtype=torch.float32)))
+    attach_local_windows(examples, table, shifted=shifted, partner_lane=partner_lane)
+    return examples
+
+
 def make_training_graphs(
     raw: pd.DataFrame,
     baseline,
@@ -394,13 +475,22 @@ def make_training_graphs(
     include_local: bool = True,
     shifted_local: bool = False,
     partner_lane: str = DEFAULT_PARTNER_LANE,
+    include_graph: bool = True,
 ) -> list:
+    """Raw training examples. ``include_graph=False`` (graph-free modes) skips the RNA graph: each ``Data`` then
+    carries only ``y`` (0, as for raw graphs), the label fields below and, when ``include_local``, the window."""
+
     check_partner_lane(partner_lane)
     graphs = []
     for row in raw.itertuples(index=False):
-        graph = baseline.create_rna_graph(
-            row.sequence, row.structure, int(row.local_position), 0
-        )
+        if include_graph:
+            graph = baseline.create_rna_graph(
+                row.sequence, row.structure, int(row.local_position), 0
+            )
+        elif row.sequence and len(row.sequence) == len(row.structure):
+            graph = Data(y=torch.tensor([0.0], dtype=torch.float32))
+        else:
+            graph = None
         if graph is None:
             raise RuntimeError(f"unbuildable raw graph: {row.example_id}")
         state = 0 if row.editing_index < 1 else 2 if row.editing_index >= 15 else 1
@@ -474,6 +564,10 @@ def create_model(
     pair_context_mean: torch.Tensor | None = None,
     pair_context_std: torch.Tensor | None = None,
 ):
+    if mode_is_graph_free(mode):
+        model = LocalCNN().to(device)
+        optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
+        return model, optimizer
     use_pair_context = "_context" in mode
     model = MultiTaskGAT(
         use_local=mode.endswith("_local"),
@@ -522,7 +616,7 @@ def sample_epoch_indices(
 
 
 def train_epoch(
-    model: MultiTaskGAT,
+    model: MultiTaskGAT | LocalCNN,
     loader: DataLoader,
     optimizer: torch.optim.Optimizer,
     mode: str,
@@ -580,7 +674,7 @@ def train_epoch(
 
 @torch.no_grad()
 def predict_binary(
-    model: MultiTaskGAT, loader: DataLoader, device: torch.device
+    model: MultiTaskGAT | LocalCNN, loader: DataLoader, device: torch.device
 ) -> tuple[np.ndarray, np.ndarray]:
     model.eval()
     probabilities, labels = [], []
@@ -714,6 +808,11 @@ def run_fold(
         config["architecture"] = (
             "compact GAT + target/helix-partner-aligned +/-32 nt dilated local CNN"
         )
+    elif mode_is_graph_free(mode):
+        config["architecture"] = (
+            "graph-free target/helix-partner-aligned +/-32 nt dilated local CNN alone "
+            "(the hybrid's local branch and 64-d readout, three heads; no GAT)"
+        )
     if mode.endswith("_target_pool"):
         config["architecture"] = (
             "compact GAT global mean embedding concatenated with the final focal-node embedding"
@@ -728,7 +827,9 @@ def run_fold(
             "compact GAT global mean embedding concatenated with itself; "
             "matched-width negative control for focal-node pooling"
         )
-    if mode.endswith("_local") and partner_lane != "legacy":
+    if mode_uses_local_window(mode) and (
+        partner_lane != "legacy" or mode_is_graph_free(mode)
+    ):
         config["partner_lane"] = partner_lane
     if "_context" in mode:
         config["architecture"] = (
@@ -941,7 +1042,8 @@ def run(
     partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> dict:
     check_partner_lane(partner_lane)
-    baseline = upstream_modules(repository)
+    graph_free = mode_is_graph_free(mode)
+    baseline = None if graph_free else upstream_modules(repository)
     master = pd.read_parquet(site_master_path)
     if set(master["source_split"].unique()) - {"train", "valid"}:
         raise RuntimeError("multi-task site master contains a sealed split")
@@ -952,23 +1054,31 @@ def run(
     raw = raw[raw["context"] == context].copy().reset_index(drop=True)
     if set(raw["development_fold"].unique()) != set(range(5)):
         raise RuntimeError("raw multi-task table lacks five development folds")
+    kind = "graph-free window examples" if graph_free else "graphs"
     print(
-        f"[{mode} {context}] building {len(canonical)} canonical and {len(raw)} raw graphs",
+        f"[{mode} {context}] building {len(canonical)} canonical and {len(raw)} raw {kind}",
         flush=True,
     )
-    canonical_graphs = build_graphs(canonical, baseline)
-    use_local = mode.endswith("_local")
+    use_local = mode_uses_local_window(mode)
     shifted_local = mode.endswith("_shifted_local")
-    if use_local:
-        attach_local_windows(
-            canonical_graphs, canonical, shifted=shifted_local, partner_lane=partner_lane
-        )
+    if graph_free:
+        canonical_graphs = canonical_window_examples(canonical, partner_lane=partner_lane)
+    else:
+        canonical_graphs = build_graphs(canonical, baseline)
+        if use_local:
+            attach_local_windows(
+                canonical_graphs,
+                canonical,
+                shifted=shifted_local,
+                partner_lane=partner_lane,
+            )
     raw_graphs = make_training_graphs(
         raw,
         baseline,
         include_local=use_local,
         shifted_local=shifted_local,
         partner_lane=partner_lane,
+        include_graph=not graph_free,
     )
     pair_context = pair_context_table(raw)
     attach_pair_context(canonical_graphs, canonical, pair_context)
@@ -1040,7 +1150,7 @@ def run(
         "development_reference_metrics": baseline_metrics,
         "canonical_test_access": False,
     }
-    if use_local and partner_lane != "legacy":
+    if use_local and (partner_lane != "legacy" or graph_free):
         summary["partner_lane"] = partner_lane
     if "predicted_engagement" in oof:
         pair_predictions = oof[
@@ -1086,7 +1196,9 @@ def run(
             "fold_definition": "five global pair folds; outer k; inner (k+1)%5",
             "seed": seed,
             "features": (
-                "exact compact GAT graph plus capacity-matched nonfocal +/-32 nt local CNN shifted 96 nt from target"
+                "graph-free target/partner-aligned +/-32 nt local CNN alone (the hybrid's local branch; no GAT)"
+                if graph_free
+                else "exact compact GAT graph plus capacity-matched nonfocal +/-32 nt local CNN shifted 96 nt from target"
                 if mode.endswith("_shifted_local")
                 else (
                     "exact compact GAT graph plus prespecified target/partner-aligned +/-32 nt local CNN"
@@ -1121,7 +1233,7 @@ def run(
                 "per_epoch_update_budget": "canonical training rows",
                 **(
                     {"partner_lane": partner_lane}
-                    if use_local and partner_lane != "legacy"
+                    if use_local and (partner_lane != "legacy" or graph_free)
                     else {}
                 ),
             },
@@ -1165,7 +1277,7 @@ def main() -> None:
         "--partner-lane",
         choices=PARTNER_LANES,
         default=DEFAULT_PARTNER_LANE,
-        help="partner lane for unpaired local-window anchors; 'legacy' reproduces the published runs",
+        help="partner lane for unpaired window anchors (graph + CNN hybrids and the CNN alone); 'legacy' reproduces the published runs",
     )
     args = parser.parse_args()
     root = args.repository.resolve()

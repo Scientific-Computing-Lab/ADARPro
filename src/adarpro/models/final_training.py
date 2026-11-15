@@ -30,9 +30,12 @@ from adarpro.models.multitask_oof import (
     PARTNER_LANES,
     append_history,
     attach_local_windows,
+    canonical_window_examples,
     check_partner_lane,
     create_model,
     make_training_graphs,
+    mode_is_graph_free,
+    mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
     sample_epoch_indices,
@@ -44,6 +47,7 @@ FINAL_MODES = (
     "binary_pair_balanced",
     "binary_pair_balanced_target_pool",
     "binary_pair_balanced_local",
+    "binary_pair_balanced_cnn",
 )
 
 
@@ -97,6 +101,14 @@ def run(
     if mode not in FINAL_MODES or mode not in MODES:
         raise ValueError(f"unsupported frozen component mode: {mode}")
     check_partner_lane(partner_lane)
+    graph_free = mode_is_graph_free(mode)
+    published = (repository / "models" / "frozen").resolve()
+    if output_dir.resolve().is_relative_to(published) and (
+        graph_free or partner_lane != "legacy"
+    ):
+        raise RuntimeError(
+            "refusing to write a new component into the published models/frozen; pass --output-dir"
+        )
     # Capture input identity before loading so a concurrent, development-only
     # OOF annotation cannot make the registry describe a later file revision.
     site_master_sha256 = sha256_file(site_master_path)
@@ -123,13 +135,25 @@ def run(
     if set(raw.loc[train_indices, "pair_id"]) & set(validation["pair_id"]):
         raise RuntimeError("pair leakage between final training and validation")
 
-    baseline = upstream_modules(repository)
-    validation_graphs = build_graphs(validation, baseline)
-    use_local = mode.endswith("_local")
-    if use_local:
-        attach_local_windows(validation_graphs, validation, partner_lane=partner_lane)
+    use_local = mode_uses_local_window(mode)
+    if graph_free:
+        baseline = None
+        validation_graphs = canonical_window_examples(
+            validation, partner_lane=partner_lane
+        )
+    else:
+        baseline = upstream_modules(repository)
+        validation_graphs = build_graphs(validation, baseline)
+        if use_local:
+            attach_local_windows(
+                validation_graphs, validation, partner_lane=partner_lane
+            )
     raw_graphs = make_training_graphs(
-        raw, baseline, include_local=use_local, partner_lane=partner_lane
+        raw,
+        baseline,
+        include_local=use_local,
+        partner_lane=partner_lane,
+        include_graph=not graph_free,
     )
     raw_states = np.where(
         raw["editing_index"].to_numpy() < 1,
@@ -154,7 +178,7 @@ def run(
         "sampler": "equal high/low; uniform pair then uniform site within pair",
         "canonical_test_access": False,
     }
-    if use_local and partner_lane != "legacy":
+    if use_local and (partner_lane != "legacy" or graph_free):
         config["partner_lane"] = partner_lane
     config_path = destination / "config.json"
     serialized = json.dumps(config, indent=2, sort_keys=True) + "\n"
@@ -325,7 +349,7 @@ def main() -> None:
         "--partner-lane",
         choices=PARTNER_LANES,
         default=DEFAULT_PARTNER_LANE,
-        help="partner lane for unpaired local-window anchors; 'legacy' reproduces models/frozen",
+        help="partner lane for unpaired window anchors (hybrid and CNN alone); 'legacy' reproduces models/frozen",
     )
     args = parser.parse_args()
     root = args.repository.resolve()
