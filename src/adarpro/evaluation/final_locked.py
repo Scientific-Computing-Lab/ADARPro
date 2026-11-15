@@ -19,7 +19,12 @@ from adarpro.models.fixed_checkpoint_ensemble import (
     equal_logit_average_many,
     model_for_mode,
 )
-from adarpro.models.multitask_oof import attach_local_windows, predict_binary
+from adarpro.models.multitask_oof import (
+    attach_local_windows,
+    common_partner_lane,
+    predict_binary,
+    saved_partner_lane,
+)
 from adarpro.models.residual import metrics
 from adarpro.quarantine import (
     CONTEXTS,
@@ -289,16 +294,24 @@ def candidate_predictions(
     device: torch.device,
     batch_size: int,
 ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
-    if any(component["mode"].endswith("_local") for component in specification["components"]):
-        attach_local_windows(graphs, table)
-    loader = DataLoader(graphs, batch_size=batch_size, shuffle=False)
-    outputs = {}
-    probabilities = []
+    saved_components = []
     for component in specification["components"]:
         checkpoint = repository / component["checkpoint"]
         if sha256_file(checkpoint) != component["sha256"]:
             raise RuntimeError(f"frozen checkpoint hash mismatch: {checkpoint}")
-        saved = torch_load(checkpoint, device)
+        saved_components.append(torch_load(checkpoint, device))
+    # Local windows follow the partner-lane rule the local component was trained with.
+    local_lanes = [
+        saved_partner_lane(saved)
+        for component, saved in zip(specification["components"], saved_components)
+        if component["mode"].endswith("_local")
+    ]
+    if local_lanes:
+        attach_local_windows(graphs, table, partner_lane=common_partner_lane(local_lanes))
+    loader = DataLoader(graphs, batch_size=batch_size, shuffle=False)
+    outputs = {}
+    probabilities = []
+    for component, saved in zip(specification["components"], saved_components):
         config = saved.get("config", {})
         if config.get("context") != table["context"].iloc[0]:
             raise RuntimeError("frozen checkpoint context mismatch")

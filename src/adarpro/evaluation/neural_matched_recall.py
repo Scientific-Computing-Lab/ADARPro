@@ -23,7 +23,9 @@ from adarpro.models.multitask_oof import (
     attach_pair_context,
     bootstrap_delta,
     pair_context_table,
+    partner_lane_run_suffix,
     predict_binary,
+    run_dir_partner_lane,
 )
 from adarpro.models.residual import matched_recall_threshold, rescue_metrics
 from adarpro.quarantine import sha256_file
@@ -51,8 +53,11 @@ def run(
         raise RuntimeError(f"development reference is incomplete for {context}")
     baseline = upstream_modules(repository)
     graphs = build_graphs(canonical, baseline)
-    if mode.endswith("_local"):
-        attach_local_windows(graphs, canonical)
+    # The fold checkpoints say which partner-lane rule their local CNN was trained with.
+    use_local = mode.endswith("_local")
+    partner_lane = run_dir_partner_lane(run_dir, device) if use_local else "legacy"
+    if use_local:
+        attach_local_windows(graphs, canonical, partner_lane=partner_lane)
     if "_context" in mode:
         raw = pd.read_parquet(raw_path)
         raw = raw[raw["context"] == context].copy()
@@ -138,13 +143,18 @@ def run(
         "development_reference_metrics": reference_metrics,
         "canonical_test_access": False,
     }
+    if use_local and partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"
     )
     register(
         repository,
         {
-            "run_id": f"matched_recall_{mode}_{context}_seed{seed}",
+            "run_id": (
+                f"matched_recall_{mode}_{context}_seed{seed}"
+                + partner_lane_run_suffix(partner_lane, use_local)
+            ),
             "experiment_type": "neural_oof_matched_recall_audit",
             "context": context,
             "input_hashes": {

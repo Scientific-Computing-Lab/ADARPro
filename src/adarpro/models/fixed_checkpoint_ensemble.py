@@ -21,7 +21,10 @@ from adarpro.models.baseline_oof import (
 from adarpro.models.multitask_oof import (
     MultiTaskGAT,
     attach_local_windows,
+    common_partner_lane,
+    partner_lane_run_suffix,
     predict_binary,
+    run_dir_partner_lane,
 )
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
@@ -103,8 +106,15 @@ def run_components(
     # Local attributes are ignored by graph-only components. Adding the
     # target-aligned window once lets local and graph-only checkpoints share
     # the exact same ordered loaders without duplicating graph construction.
-    if any(mode.endswith("_local") for _, mode, _ in components):
-        attach_local_windows(graphs, canonical)
+    # The local component's five fold checkpoints say which partner-lane rule they were trained with.
+    local_lanes = [
+        run_dir_partner_lane(run_dir, device)
+        for _, mode, run_dir in components
+        if mode.endswith("_local")
+    ]
+    partner_lane = common_partner_lane(local_lanes) if local_lanes else "legacy"
+    if local_lanes:
+        attach_local_windows(graphs, canonical, partner_lane=partner_lane)
     outputs, selections, checkpoint_hashes = [], [], {}
     for outer_fold in range(5):
         inner_fold = (outer_fold + 1) % 5
@@ -211,6 +221,8 @@ def run_components(
         ),
         "canonical_test_access": False,
     }
+    if local_lanes and partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"
     )
@@ -221,6 +233,7 @@ def run_components(
                 "fixed_logit_ensemble_"
                 + "_".join(mode for _, mode, _ in components)
                 + f"_{context}_seed{seed}"
+                + partner_lane_run_suffix(partner_lane, bool(local_lanes))
             ),
             "experiment_type": "fixed_checkpoint_ensemble_grouped_oof",
             "context": context,

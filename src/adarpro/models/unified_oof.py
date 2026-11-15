@@ -28,9 +28,13 @@ from adarpro.models.baseline_oof import (
 )
 from adarpro.models.final_training import truncate_history_after_checkpoint
 from adarpro.models.multitask_oof import (
+    DEFAULT_PARTNER_LANE,
+    PARTNER_LANES,
     append_history,
     attach_local_windows,
+    check_partner_lane,
     make_training_graphs,
+    partner_lane_run_suffix,
     sample_epoch_indices,
 )
 from adarpro.models.unified import VARIANTS, UnifiedADARPro, parameter_count
@@ -133,9 +137,12 @@ def run_fold(
     seed: int,
     device: torch.device,
     output_dir: Path,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> pd.DataFrame:
     """Fit one outer-fold model with an isolated inner selection fold."""
 
+    check_partner_lane(partner_lane)
     variant = VARIANTS[variant_name]
     inner_fold = (outer_fold + 1) % 5
     canonical_masks = {
@@ -186,6 +193,8 @@ def run_fold(
             UnifiedADARPro(anchor=variant.anchor)
         ),
     }
+    if partner_lane != "legacy":
+        config["partner_lane"] = partner_lane
     config_path = fold_dir / "config.json"
     serialized = json.dumps(config, indent=2, sort_keys=True) + "\n"
     if config_path.exists() and config_path.read_text() != serialized:
@@ -331,8 +340,12 @@ def run(
     checkpoint_every: int,
     seed: int,
     device: torch.device,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> dict:
     """Train all five outer folds and save development-only OOF predictions."""
+
+    check_partner_lane(partner_lane)
 
     if variant_name not in VARIANTS:
         raise ValueError(f"unsupported unified variant: {variant_name}")
@@ -353,13 +366,17 @@ def run(
     canonical_graphs = build_graphs(canonical, baseline)
     variant = VARIANTS[variant_name]
     attach_local_windows(
-        canonical_graphs, canonical, shifted=variant.shifted_local
+        canonical_graphs,
+        canonical,
+        shifted=variant.shifted_local,
+        partner_lane=partner_lane,
     )
     raw_graphs = make_training_graphs(
         raw,
         baseline,
         include_local=True,
         shifted_local=variant.shifted_local,
+        partner_lane=partner_lane,
     )
     predictions = [
         run_fold(
@@ -376,6 +393,7 @@ def run(
             seed,
             device,
             output_dir,
+            partner_lane=partner_lane,
         )
         for outer_fold in range(5)
     ]
@@ -403,6 +421,8 @@ def run(
             UnifiedADARPro(anchor=variant.anchor)
         ),
     }
+    if partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     summary_path = destination / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
     register(
@@ -410,6 +430,7 @@ def run(
         {
             "run_id": (
                 f"{variant_name}_oof_{context}_seed{seed}_epochs{epochs}"
+                + partner_lane_run_suffix(partner_lane)
             ),
             "experiment_type": "unified_end_to_end_grouped_oof",
             "context": context,
@@ -432,6 +453,7 @@ def run(
                 "batch_size": batch_size,
                 "epochs": epochs,
                 "per_epoch_update_budget": "canonical training rows",
+                **({"partner_lane": partner_lane} if partner_lane != "legacy" else {}),
             },
             "artifact": str(prediction_path.relative_to(repository)),
             "metrics": summary,
@@ -458,6 +480,12 @@ def main() -> None:
     parser.add_argument("--checkpoint-every", type=int, default=25)
     parser.add_argument("--seed", type=int, default=20260821)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument(
+        "--partner-lane",
+        choices=PARTNER_LANES,
+        default=DEFAULT_PARTNER_LANE,
+        help="partner lane for unpaired local-window anchors; 'legacy' reproduces the published runs",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -487,6 +515,7 @@ def main() -> None:
         args.checkpoint_every,
         args.seed,
         device,
+        partner_lane=args.partner_lane,
     )
     print(json.dumps(summary, indent=2))
 

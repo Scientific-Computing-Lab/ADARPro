@@ -21,7 +21,13 @@ from adarpro.models.fixed_checkpoint_ensemble import (
     equal_logit_average_many,
     model_for_mode,
 )
-from adarpro.models.multitask_oof import attach_local_windows, predict_binary
+from adarpro.models.multitask_oof import (
+    attach_local_windows,
+    common_partner_lane,
+    partner_lane_run_suffix,
+    predict_binary,
+    saved_partner_lane,
+)
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
 
@@ -68,17 +74,27 @@ def run(
     ].copy().reset_index(drop=True)
     if validation.empty:
         raise RuntimeError(f"no published validation rows for {context}")
+    saved_components = []
+    for _, mode, checkpoint in components:
+        saved = torch_load(checkpoint, device)
+        validate_checkpoint(saved, context, mode)
+        saved_components.append(saved)
+    # Local windows are rebuilt with the partner-lane rule the local component was trained with.
+    local_lanes = [
+        saved_partner_lane(saved)
+        for (_, mode, _), saved in zip(components, saved_components)
+        if mode.endswith("_local")
+    ]
+    partner_lane = common_partner_lane(local_lanes) if local_lanes else "legacy"
     graphs = build_graphs(validation, upstream_modules(repository))
-    if any(mode.endswith("_local") for _, mode, _ in components):
-        attach_local_windows(graphs, validation)
+    if local_lanes:
+        attach_local_windows(graphs, validation, partner_lane=partner_lane)
     loader = DataLoader(graphs, batch_size=batch_size, shuffle=False)
 
     probabilities = []
     checkpoint_hashes = {}
     checkpoint_paths = {}
-    for name, mode, checkpoint in components:
-        saved = torch_load(checkpoint, device)
-        validate_checkpoint(saved, context, mode)
+    for (name, mode, checkpoint), saved in zip(components, saved_components):
         model = model_for_mode(mode, device)
         model.load_state_dict(saved["model_state"])
         probability, labels = predict_binary(model, loader, device)
@@ -118,12 +134,17 @@ def run(
         "checkpoint_sha256": checkpoint_hashes,
         "canonical_test_access": False,
     }
+    if local_lanes and partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     summary_path = destination / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
     register(
         repository,
         {
-            "run_id": f"frozen_equal_logit_ensemble_{context}_seed{seed}",
+            "run_id": (
+                f"frozen_equal_logit_ensemble_{context}_seed{seed}"
+                + partner_lane_run_suffix(partner_lane, bool(local_lanes))
+            ),
             "experiment_type": "frozen_ensemble_validation_only",
             "context": context,
             "input_hashes": {

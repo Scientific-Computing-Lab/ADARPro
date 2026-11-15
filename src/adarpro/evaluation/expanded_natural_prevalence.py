@@ -17,7 +17,9 @@ from adarpro.models.multitask_oof import (
     bootstrap_delta,
     make_training_graphs,
     pair_context_table,
+    partner_lane_run_suffix,
     predict_binary,
+    run_dir_partner_lane,
 )
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
@@ -68,11 +70,15 @@ def run(
             "natural-prevalence reference does not match raw high/low rows"
         )
     baseline = upstream_modules(repository)
+    # The fold checkpoints say which partner-lane rule their local CNN was trained with.
+    use_local = mode.endswith("_local")
+    partner_lane = run_dir_partner_lane(run_dir, device) if use_local else "legacy"
     graphs = make_training_graphs(
         raw,
         baseline,
-        include_local=mode.endswith("_local"),
+        include_local=use_local,
         shifted_local=mode.endswith("_shifted_local"),
+        partner_lane=partner_lane,
     )
     if "_context" in mode:
         attach_pair_context(graphs, raw, pair_context_table(raw))
@@ -144,13 +150,18 @@ def run(
         "development_reference_metrics": reference_metrics,
         "canonical_test_access": False,
     }
+    if use_local and partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"
     )
     register(
         repository,
         {
-            "run_id": f"natural_prevalence_{mode}_{context}_seed{seed}",
+            "run_id": (
+                f"natural_prevalence_{mode}_{context}_seed{seed}"
+                + partner_lane_run_suffix(partner_lane, use_local)
+            ),
             "experiment_type": "expanded_supervision_natural_prevalence_oof",
             "context": context,
             "input_hashes": {

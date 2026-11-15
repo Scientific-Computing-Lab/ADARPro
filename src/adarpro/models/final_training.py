@@ -25,11 +25,15 @@ from adarpro.models.baseline_oof import (
     upstream_modules,
 )
 from adarpro.models.multitask_oof import (
+    DEFAULT_PARTNER_LANE,
     MODES,
+    PARTNER_LANES,
     append_history,
     attach_local_windows,
+    check_partner_lane,
     create_model,
     make_training_graphs,
+    partner_lane_run_suffix,
     predict_binary,
     sample_epoch_indices,
 )
@@ -87,9 +91,12 @@ def run(
     checkpoint_every: int,
     seed: int,
     device: torch.device,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> dict:
     if mode not in FINAL_MODES or mode not in MODES:
         raise ValueError(f"unsupported frozen component mode: {mode}")
+    check_partner_lane(partner_lane)
     # Capture input identity before loading so a concurrent, development-only
     # OOF annotation cannot make the registry describe a later file revision.
     site_master_sha256 = sha256_file(site_master_path)
@@ -120,8 +127,10 @@ def run(
     validation_graphs = build_graphs(validation, baseline)
     use_local = mode.endswith("_local")
     if use_local:
-        attach_local_windows(validation_graphs, validation)
-    raw_graphs = make_training_graphs(raw, baseline, include_local=use_local)
+        attach_local_windows(validation_graphs, validation, partner_lane=partner_lane)
+    raw_graphs = make_training_graphs(
+        raw, baseline, include_local=use_local, partner_lane=partner_lane
+    )
     raw_states = np.where(
         raw["editing_index"].to_numpy() < 1,
         0,
@@ -145,6 +154,8 @@ def run(
         "sampler": "equal high/low; uniform pair then uniform site within pair",
         "canonical_test_access": False,
     }
+    if use_local and partner_lane != "legacy":
+        config["partner_lane"] = partner_lane
     config_path = destination / "config.json"
     serialized = json.dumps(config, indent=2, sort_keys=True) + "\n"
     if config_path.exists() and config_path.read_text() != serialized:
@@ -273,7 +284,10 @@ def run(
     register(
         repository,
         {
-            "run_id": f"final_training_{context}_{mode}_seed{seed}_epochs{epochs}",
+            "run_id": (
+                f"final_training_{context}_{mode}_seed{seed}_epochs{epochs}"
+                + partner_lane_run_suffix(partner_lane, use_local)
+            ),
             "experiment_type": "frozen_candidate_train_validation_only",
             "context": context,
             "input_hashes": {
@@ -307,6 +321,12 @@ def main() -> None:
     parser.add_argument("--checkpoint-every", type=int, default=25)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument(
+        "--partner-lane",
+        choices=PARTNER_LANES,
+        default=DEFAULT_PARTNER_LANE,
+        help="partner lane for unpaired local-window anchors; 'legacy' reproduces models/frozen",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -337,6 +357,7 @@ def main() -> None:
                 args.checkpoint_every,
                 args.seed,
                 device,
+                partner_lane=args.partner_lane,
             ),
             indent=2,
         )

@@ -58,6 +58,13 @@ MODES = (
 )
 LOCAL_RADIUS = 32
 LOCAL_CONTROL_SHIFT = 96
+# How the local CNN's helix-partner lane is filled when the window anchor is unpaired.
+# "opposite": centre the lane on the base directly across a symmetric internal loop (see ``opposite_base``);
+#             anchors with no such base keep the blank lane.
+# "legacy":   always leave the lane blank for an unpaired anchor (the rule the published checkpoints were
+#             trained with). A saved config without a ``partner_lane`` key predates the option and is "legacy".
+PARTNER_LANES = ("opposite", "legacy")
+DEFAULT_PARTNER_LANE = "opposite"
 PAIR_CONTEXT_COLUMNS = (
     "geometry__arm1_length",
     "geometry__arm2_length",
@@ -215,14 +222,15 @@ class MultiTaskGAT(nn.Module):
         )
 
 
-def local_window(sequence: str, structure: str, target: int) -> torch.Tensor:
-    """Encode target and helix-aligned partner windows for a local CNN."""
+def check_partner_lane(partner_lane: str) -> str:
+    if partner_lane not in PARTNER_LANES:
+        raise ValueError(f"partner_lane must be one of {PARTNER_LANES}, got {partner_lane!r}")
+    return partner_lane
 
-    base_index = {"A": 0, "G": 1, "C": 2, "T": 3, "U": 3, "N": 4}
-    width = 2 * LOCAL_RADIUS + 1
-    values = torch.zeros((1, 12, width), dtype=torch.float32)
-    values[:, 4, :] = 1.0
-    values[:, 10, :] = 1.0
+
+def structure_partners(structure: str) -> np.ndarray:
+    """Pairing partner of every position in a dot-bracket structure, -1 when unpaired."""
+
     partners = np.full(len(structure), -1, dtype=np.int64)
     stack = []
     for index, symbol in enumerate(structure):
@@ -232,7 +240,70 @@ def local_window(sequence: str, structure: str, target: int) -> torch.Tensor:
             partner = stack.pop()
             partners[index] = partner
             partners[partner] = index
+    return partners
+
+
+def opposite_base(sequence: str, partners: np.ndarray, position: int) -> int:
+    """Index of the base across a symmetric internal loop from an unpaired position, else -1.
+
+    Let l < position < r be the nearest paired positions on the position's own strand, pairing with L and R. If the
+    two pairs close an internal loop (R < L, nothing paired strictly between R and L, and the pairs nested on either
+    side of the loop) holding the same number of unpaired bases on both strands, the loop is read as aligned
+    mismatches: one step along the position's strand is one step back along the opposite strand, so the opposite
+    base is L - (position - l). Bulges (nothing opposite), asymmetric loops, hairpin / multi-branch / exterior loops,
+    unpaired ends, and an opposite base that is a linker N have no opposite base. Paired positions return -1 too:
+    their structure partner is used directly.
+    """
+
+    length = len(partners)
+    if not 0 <= position < length or partners[position] >= 0:
+        return -1
+    left = position - 1
+    while left >= 0 and partners[left] < 0:
+        left -= 1
+    right = position + 1
+    while right < length and partners[right] < 0:
+        right += 1
+    if left < 0 or right >= length:
+        return -1
+    left_partner, right_partner = int(partners[left]), int(partners[right])
+    nested = right_partner < left_partner and (right < right_partner or left_partner < left)
+    if not nested or bool((partners[right_partner + 1 : left_partner] >= 0).any()):
+        return -1
+    own_side = right - left - 1
+    opposite_side = left_partner - right_partner - 1
+    if opposite_side == 0 or own_side != opposite_side:
+        return -1
+    opposite = left_partner - (position - left)
+    if sequence[opposite].upper() == "N":
+        return -1
+    return opposite
+
+
+def local_window(
+    sequence: str,
+    structure: str,
+    target: int,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
+) -> torch.Tensor:
+    """Encode target and helix-aligned partner windows for a local CNN.
+
+    The partner lane is read antiparallel from the anchor's structure partner. For an unpaired anchor it is
+    centred on ``opposite_base`` when ``partner_lane`` is "opposite" (and blank when there is none); with
+    "legacy" it is always blank for an unpaired anchor.
+    """
+
+    check_partner_lane(partner_lane)
+    base_index = {"A": 0, "G": 1, "C": 2, "T": 3, "U": 3, "N": 4}
+    width = 2 * LOCAL_RADIUS + 1
+    values = torch.zeros((1, 12, width), dtype=torch.float32)
+    values[:, 4, :] = 1.0
+    values[:, 10, :] = 1.0
+    partners = structure_partners(structure)
     target_partner = int(partners[target])
+    if target_partner < 0 and partner_lane == "opposite":
+        target_partner = opposite_base(sequence, partners, target)
     for output_position, offset in enumerate(range(-LOCAL_RADIUS, LOCAL_RADIUS + 1)):
         partner_position = target_partner - offset if target_partner >= 0 else -1
         positions = (target + offset, partner_position)
@@ -262,9 +333,48 @@ def shifted_local_position(sequence_length: int, target: int) -> int:
     return 0 if target >= sequence_length - 1 - target else sequence_length - 1
 
 
+def partner_lane_run_suffix(partner_lane: str, uses_local: bool = True) -> str:
+    """Registry run_id suffix that keeps a fixed-lane rerun distinct from the published (legacy) run."""
+
+    check_partner_lane(partner_lane)
+    return f"_partner_{partner_lane}" if uses_local and partner_lane != "legacy" else ""
+
+
+def saved_partner_lane(saved: dict) -> str:
+    """Partner-lane rule a saved model was trained with ("legacy" when its config predates the option)."""
+
+    lane = (saved.get("config") or {}).get("partner_lane", "legacy")
+    if lane not in PARTNER_LANES:
+        raise RuntimeError(f"saved config has an unknown partner_lane: {lane!r}")
+    return lane
+
+
+def common_partner_lane(lanes) -> str:
+    """The one partner-lane rule shared by all local components; refuses a mixture."""
+
+    unique = sorted(set(lanes))
+    if len(unique) != 1:
+        raise RuntimeError(f"local components disagree on partner_lane: {unique}")
+    return unique[0]
+
+
+def run_dir_partner_lane(run_dir: Path, device: torch.device) -> str:
+    """Partner-lane rule shared by the five outer-fold checkpoints of a grouped-OOF run."""
+
+    return common_partner_lane(
+        saved_partner_lane(torch_load(run_dir / f"outer_{fold}" / "best.pth", device))
+        for fold in range(5)
+    )
+
+
 def attach_local_windows(
-    graphs: list, table: pd.DataFrame, *, shifted: bool = False
+    graphs: list,
+    table: pd.DataFrame,
+    *,
+    shifted: bool = False,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> None:
+    check_partner_lane(partner_lane)
     if len(graphs) != len(table):
         raise RuntimeError("local-window graph/table length mismatch")
     for graph, row in zip(graphs, table.itertuples(index=False)):
@@ -272,7 +382,9 @@ def attach_local_windows(
         anchor = (
             shifted_local_position(len(row.sequence), target) if shifted else target
         )
-        graph.local_window = local_window(row.sequence, row.structure, anchor)
+        graph.local_window = local_window(
+            row.sequence, row.structure, anchor, partner_lane=partner_lane
+        )
 
 
 def make_training_graphs(
@@ -281,7 +393,9 @@ def make_training_graphs(
     *,
     include_local: bool = True,
     shifted_local: bool = False,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> list:
+    check_partner_lane(partner_lane)
     graphs = []
     for row in raw.itertuples(index=False):
         graph = baseline.create_rna_graph(
@@ -303,7 +417,9 @@ def make_training_graphs(
                 if shifted_local
                 else target
             )
-            graph.local_window = local_window(row.sequence, row.structure, anchor)
+            graph.local_window = local_window(
+                row.sequence, row.structure, anchor, partner_lane=partner_lane
+            )
         graphs.append(graph)
     return graphs
 
@@ -519,7 +635,10 @@ def run_fold(
     seed: int,
     device: torch.device,
     output_dir: Path,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> pd.DataFrame:
+    check_partner_lane(partner_lane)
     inner_fold = (outer_fold + 1) % 5
     canonical_masks = {
         "train": ~canonical["development_fold"].isin([outer_fold, inner_fold]),
@@ -609,6 +728,8 @@ def run_fold(
             "compact GAT global mean embedding concatenated with itself; "
             "matched-width negative control for focal-node pooling"
         )
+    if mode.endswith("_local") and partner_lane != "legacy":
+        config["partner_lane"] = partner_lane
     if "_context" in mode:
         config["architecture"] = (
             config.get("architecture", "compact GAT")
@@ -816,7 +937,10 @@ def run(
     bootstrap_replicates: int,
     seed: int,
     device: torch.device,
+    *,
+    partner_lane: str = DEFAULT_PARTNER_LANE,
 ) -> dict:
+    check_partner_lane(partner_lane)
     baseline = upstream_modules(repository)
     master = pd.read_parquet(site_master_path)
     if set(master["source_split"].unique()) - {"train", "valid"}:
@@ -836,12 +960,15 @@ def run(
     use_local = mode.endswith("_local")
     shifted_local = mode.endswith("_shifted_local")
     if use_local:
-        attach_local_windows(canonical_graphs, canonical, shifted=shifted_local)
+        attach_local_windows(
+            canonical_graphs, canonical, shifted=shifted_local, partner_lane=partner_lane
+        )
     raw_graphs = make_training_graphs(
         raw,
         baseline,
         include_local=use_local,
         shifted_local=shifted_local,
+        partner_lane=partner_lane,
     )
     pair_context = pair_context_table(raw)
     attach_pair_context(canonical_graphs, canonical, pair_context)
@@ -862,6 +989,7 @@ def run(
             seed,
             device,
             output_dir,
+            partner_lane=partner_lane,
         )
         for outer_fold in range(5)
     ]
@@ -912,6 +1040,8 @@ def run(
         "development_reference_metrics": baseline_metrics,
         "canonical_test_access": False,
     }
+    if use_local and partner_lane != "legacy":
+        summary["partner_lane"] = partner_lane
     if "predicted_engagement" in oof:
         pair_predictions = oof[
             ["pair_id", "observed_engagement", "predicted_engagement"]
@@ -943,7 +1073,10 @@ def run(
     register(
         repository,
         {
-            "run_id": f"{mode}_oof_{context}_seed{seed}_epochs{epochs}",
+            "run_id": (
+                f"{mode}_oof_{context}_seed{seed}_epochs{epochs}"
+                + partner_lane_run_suffix(partner_lane, use_local)
+            ),
             "experiment_type": "natural_binary_or_multitask_grouped_oof",
             "context": context,
             "input_hashes": {
@@ -986,6 +1119,11 @@ def run(
                 "epochs": epochs,
                 "batch_size": batch_size,
                 "per_epoch_update_budget": "canonical training rows",
+                **(
+                    {"partner_lane": partner_lane}
+                    if use_local and partner_lane != "legacy"
+                    else {}
+                ),
             },
             "artifact": str(
                 oof_path.relative_to(repository)
@@ -1023,6 +1161,12 @@ def main() -> None:
     parser.add_argument("--bootstrap-replicates", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=20260821)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument(
+        "--partner-lane",
+        choices=PARTNER_LANES,
+        default=DEFAULT_PARTNER_LANE,
+        help="partner lane for unpaired local-window anchors; 'legacy' reproduces the published runs",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -1047,6 +1191,7 @@ def main() -> None:
                 args.bootstrap_replicates,
                 args.seed,
                 device,
+                partner_lane=args.partner_lane,
             ),
             indent=2,
         )
