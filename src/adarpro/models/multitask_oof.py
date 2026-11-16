@@ -399,6 +399,16 @@ def partner_lane_run_suffix(partner_lane: str, uses_local: bool = True) -> str:
     return f"_partner_{partner_lane}" if uses_local and partner_lane != "legacy" else ""
 
 
+def run_tag_suffix(run_tag: str | None) -> str:
+    """Registry run_id suffix for a tagged rerun (e.g. ``v2``); no tag keeps the published run_id."""
+
+    if run_tag is None:
+        return ""
+    if not (run_tag.isascii() and run_tag.isalnum()):
+        raise ValueError(f"run tag must be ASCII letters and digits only: {run_tag!r}")
+    return f"_{run_tag}"
+
+
 def saved_partner_lane(saved: dict) -> str:
     """Partner-lane rule a saved model was trained with ("legacy" when its config predates the option)."""
 
@@ -1041,12 +1051,15 @@ def run(
     *,
     partner_lane: str = DEFAULT_PARTNER_LANE,
     outer_folds: tuple[int, ...] | None = None,
+    run_tag: str | None = None,
 ) -> dict:
     """Grouped OOF run. ``outer_folds`` trains only those outer folds and stops before assembling (one fold per
     job); every fold reseeds itself in ``run_fold``, so a fold trained alone equals the same fold trained in
-    sequence. A later call with all five folds resumes the finished folds and assembles and registers the run."""
+    sequence. A later call with all five folds resumes the finished folds and assembles and registers the run.
+    ``run_tag`` appends ``_<tag>`` to the registry run_id (no tag: the published run_id)."""
 
     check_partner_lane(partner_lane)
+    run_tag_suffix(run_tag)
     folds = tuple(range(5)) if outer_folds is None else tuple(sorted(set(outer_folds)))
     if not folds or any(fold not in range(5) for fold in folds):
         raise ValueError(f"outer folds must be a non-empty subset of 0-4: {outer_folds}")
@@ -1167,6 +1180,8 @@ def run(
     }
     if use_local and (partner_lane != "legacy" or graph_free):
         summary["partner_lane"] = partner_lane
+    if run_tag is not None:
+        summary["run_tag"] = run_tag
     if "predicted_engagement" in oof:
         pair_predictions = oof[
             ["pair_id", "observed_engagement", "predicted_engagement"]
@@ -1201,6 +1216,7 @@ def run(
             "run_id": (
                 f"{mode}_oof_{context}_seed{seed}_epochs{epochs}"
                 + partner_lane_run_suffix(partner_lane, use_local)
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "natural_binary_or_multitask_grouped_oof",
             "context": context,
@@ -1301,6 +1317,10 @@ def main() -> None:
         choices=range(5),
         help="train only these outer folds and stop before assembling (default: all five, then assemble)",
     )
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id, e.g. v2 for a rerun of a published configuration (default: the published run_id)",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -1327,6 +1347,7 @@ def main() -> None:
                 device,
                 partner_lane=args.partner_lane,
                 outer_folds=tuple(args.outer_folds) if args.outer_folds else None,
+                run_tag=args.run_tag,
             ),
             indent=2,
         )

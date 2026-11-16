@@ -38,6 +38,7 @@ from adarpro.models.multitask_oof import (
     mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
+    run_tag_suffix,
     sample_epoch_indices,
 )
 from adarpro.quarantine import sha256_file
@@ -97,10 +98,12 @@ def run(
     device: torch.device,
     *,
     partner_lane: str = DEFAULT_PARTNER_LANE,
+    run_tag: str | None = None,
 ) -> dict:
     if mode not in FINAL_MODES or mode not in MODES:
         raise ValueError(f"unsupported frozen component mode: {mode}")
     check_partner_lane(partner_lane)
+    run_tag_suffix(run_tag)
     graph_free = mode_is_graph_free(mode)
     use_local = mode_uses_local_window(mode)
     published = (repository / "models" / "frozen").resolve()
@@ -304,6 +307,8 @@ def run(
     }
     if use_local and (partner_lane != "legacy" or graph_free):
         summary["partner_lane"] = partner_lane
+    if run_tag is not None:
+        summary["run_tag"] = run_tag
     (destination / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"
     )
@@ -313,6 +318,7 @@ def run(
             "run_id": (
                 f"final_training_{context}_{mode}_seed{seed}_epochs{epochs}"
                 + partner_lane_run_suffix(partner_lane, use_local)
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "frozen_candidate_train_validation_only",
             "context": context,
@@ -353,6 +359,10 @@ def main() -> None:
         default=DEFAULT_PARTNER_LANE,
         help="partner lane for unpaired window anchors (hybrid and CNN alone); 'legacy' reproduces models/frozen",
     )
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id, e.g. v2 for a rerun of a published configuration (default: the published run_id)",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -384,6 +394,7 @@ def main() -> None:
                 args.seed,
                 device,
                 partner_lane=args.partner_lane,
+                run_tag=args.run_tag,
             ),
             indent=2,
         )
