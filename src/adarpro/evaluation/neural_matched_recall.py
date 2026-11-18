@@ -24,7 +24,9 @@ from adarpro.models.multitask_oof import (
     attach_pair_context,
     bootstrap_delta,
     canonical_window_examples,
+    check_checkpoint_mode,
     mode_is_graph_free,
+    mode_is_shifted,
     mode_uses_local_window,
     pair_context_table,
     partner_lane_run_suffix,
@@ -49,6 +51,8 @@ def run(
     seed: int,
     device: torch.device,
 ) -> dict:
+    if mode_is_shifted(mode):
+        raise ValueError("matched-recall audit builds windows at the target; shifted-window controls are unsupported")
     master = pd.read_parquet(site_master_path)
     if set(master["source_split"].unique()) - {"train", "valid"}:
         raise RuntimeError("matched-recall audit received a sealed split")
@@ -83,6 +87,7 @@ def run(
         checkpoint_path = run_dir / f"outer_{outer_fold}" / "best.pth"
         checkpoint_hashes[f"outer_{outer_fold}"] = sha256_file(checkpoint_path)
         saved = torch_load(checkpoint_path, device)
+        check_checkpoint_mode(saved, mode, checkpoint_path)
         model = (
             LocalCNN().to(device)
             if graph_free

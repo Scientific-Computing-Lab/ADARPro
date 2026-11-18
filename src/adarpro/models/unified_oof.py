@@ -345,8 +345,9 @@ def run(
     partner_lane: str = DEFAULT_PARTNER_LANE,
     run_tag: str | None = None,
 ) -> dict:
-    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     """Train all five outer folds and save development-only OOF predictions."""
+
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
 
     check_partner_lane(partner_lane)
 

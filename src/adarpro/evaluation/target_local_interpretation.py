@@ -165,6 +165,9 @@ def pair_bootstrap_all(
     return pd.DataFrame(rows)
 
 
+PUBLISHED_OUTPUT_DIR = Path("experiments/runs/target_local_interpretation/MuscleSkeletal")
+
+
 def run(
     repository: Path,
     site_master_path: Path,
@@ -176,6 +179,8 @@ def run(
     run_tag: str | None = None,
 ) -> dict:
     run_tag_suffix(run_tag)  # refuse a bad tag before any work
+    if run_tag and output_dir.resolve() == (repository / PUBLISHED_OUTPUT_DIR).resolve():
+        raise ValueError("a tagged rerun must not write into the published output folder; pass --output-dir")
     if "pair" not in prediction_paths or len(prediction_paths) < 2:
         raise ValueError("pair and at least one candidate prediction are required")
     tables = load_predictions(prediction_paths)
@@ -344,7 +349,7 @@ def main() -> None:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("experiments/runs/target_local_interpretation/MuscleSkeletal"),
+        default=PUBLISHED_OUTPUT_DIR,
     )
     parser.add_argument("--bootstrap-replicates", type=int, default=2000)
     parser.add_argument("--seed", type=int, default=20260821)

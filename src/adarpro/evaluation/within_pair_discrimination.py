@@ -168,6 +168,10 @@ def bootstrap_summary(
     return pd.DataFrame(summary_rows), pd.DataFrame(contrast_rows)
 
 
+PUBLISHED_OUTPUT_DIR = Path("experiments/runs/post_analysis/within_duplex")
+PUBLISHED_SOURCE_DIR = Path("paper/source_tables")
+
+
 def available_paths(repository: Path, context: str) -> dict[str, Path]:
     base = repository / "experiments/runs/richer_supervision"
     candidates = {
@@ -218,9 +222,18 @@ def run(
     run_tag: str | None = None,
 ) -> dict:
     """``predictions`` (optional) replaces the published input files: when given, each context uses exactly the
-    files listed for it (no fallback to the published paths). Omitted, the published paths are read as before."""
+    files listed for it (no fallback to the published paths), each file's ``context`` column must equal its context,
+    a ``run_tag`` is required, and neither output folder may be a published default (the paper's source tables and
+    figure inputs). Omitted, the published paths are read and written as before."""
 
     run_tag_suffix(run_tag)  # refuse a bad tag before any work
+    if predictions is not None:
+        if not run_tag:
+            raise ValueError("--prediction requires --run-tag (the published run_id belongs to the published inputs)")
+        published = {(repository / PUBLISHED_OUTPUT_DIR).resolve(), (repository / PUBLISHED_SOURCE_DIR).resolve()}
+        clash = [str(folder) for folder in (output_dir, source_dir) if folder.resolve() in published]
+        if clash:
+            raise ValueError(f"--prediction must not write into a published output folder: {clash}")
     all_pairs = []
     all_summary = []
     all_contrasts = []
@@ -233,6 +246,10 @@ def run(
             missing = [str(path) for path in paths.values() if not path.is_file()]
             if missing:
                 raise FileNotFoundError(f"missing --prediction files: {missing}")
+            for model, path in paths.items():
+                found = set(pd.read_parquet(path, columns=["context"])["context"].unique())
+                if found != {context}:
+                    raise ValueError(f"--prediction {context}:{model} holds context(s) {sorted(found)}: {path}")
         if "pair_first" not in paths:
             raise FileNotFoundError(f"missing pair-first OOF predictions for {context}")
         input_hashes.update(
@@ -334,10 +351,10 @@ def main() -> None:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("experiments/runs/post_analysis/within_duplex"),
+        default=PUBLISHED_OUTPUT_DIR,
     )
     parser.add_argument(
-        "--source-dir", type=Path, default=Path("paper/source_tables")
+        "--source-dir", type=Path, default=PUBLISHED_SOURCE_DIR
     )
     parser.add_argument("--bootstrap-replicates", type=int, default=5000)
     parser.add_argument("--seed", type=int, default=20260910)

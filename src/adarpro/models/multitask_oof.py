@@ -86,6 +86,15 @@ def mode_is_shifted(mode: str) -> bool:
     return mode.endswith("_shifted_local") or mode == "binary_pair_balanced_shifted_cnn"
 
 
+def check_checkpoint_mode(saved: dict, mode: str, path: Path) -> None:
+    """Refuse a checkpoint trained under another mode. The aligned and shifted variants share one weight layout,
+    so loading the wrong one runs cleanly and predicts on windows at the wrong anchor."""
+
+    recorded = (saved.get("config") or {}).get("mode")
+    if recorded != mode:
+        raise ValueError(f"checkpoint {path} was trained as mode {recorded!r}, not {mode!r}")
+
+
 def mode_uses_local_window(mode: str) -> bool:
     """True when the model reads a local window: the graph + CNN hybrids ("_local") and the CNN alone."""
 
@@ -490,7 +499,8 @@ def canonical_window_examples(
 def canonical_examples_for_mode(
     canonical: pd.DataFrame, mode: str, baseline, partner_lane: str = DEFAULT_PARTNER_LANE
 ) -> list:
-    """The ordered canonical examples a grouped-OOF run of ``mode`` trains, selects and predicts on: window-only
+    """The ordered canonical examples a grouped-OOF run of ``mode`` selects on (inner fold) and predicts on (outer
+    fold); training draws from the raw examples (``make_training_graphs``) with the same window rule. Window-only
     examples for the graph-free modes, graphs otherwise; local windows at the shifted anchor for the controls."""
 
     shifted = mode_is_shifted(mode)

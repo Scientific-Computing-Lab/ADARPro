@@ -16,6 +16,7 @@ from adarpro.models.multitask_oof import (
     MultiTaskGAT,
     attach_pair_context,
     bootstrap_delta,
+    check_checkpoint_mode,
     make_training_graphs,
     mode_is_graph_free,
     mode_is_shifted,
@@ -100,6 +101,7 @@ def run(
         checkpoint_path = run_dir / f"outer_{fold}" / "best.pth"
         checkpoint_hashes[f"outer_{fold}"] = sha256_file(checkpoint_path)
         saved = torch_load(checkpoint_path, device)
+        check_checkpoint_mode(saved, mode, checkpoint_path)
         model = (
             LocalCNN().to(device)
             if graph_free

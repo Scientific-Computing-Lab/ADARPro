@@ -2,8 +2,9 @@
 the paper's development analyses on the selected design: ``within_pair_discrimination --prediction/--run-tag`` and
 ``unified_oof --run-tag``.
 
-References are independent of the code under test: the shifted anchor is recomputed from the published shift rule
-(``shifted_local_position``, unchanged) and compared window-for-window with ``local_window`` at that anchor.
+The window tests are wiring tests, not independent validations: their expected windows come from the same published
+helpers the code calls (``shifted_local_position`` and ``local_window``, both unchanged). They catch a shift flag that
+is never passed, or passed to the wrong path, not an error inside those helpers.
 """
 
 from pathlib import Path
@@ -131,14 +132,87 @@ def test_prediction_specifications_parse_and_refuse_bad_input(tmp_path):
 
 
 def test_within_pair_override_never_falls_back_to_published_files(tmp_path):
-    from adarpro.evaluation.within_pair_discrimination import run
+    from adarpro.evaluation.within_pair_discrimination import available_paths, run
 
-    # an override that omits a context must fail (no silent mix with the published paths)
+    # a published pair-first file exists, so a fallback would find it and fail later with another error
+    published = tmp_path / "experiments/runs/richer_supervision/binary_pair_balanced/Artery/oof_predictions.parquet"
+    published.parent.mkdir(parents=True)
+    pd.DataFrame({"example_id": ["e0"], "context": ["Artery"]}).to_parquet(published, index=False)
+    assert available_paths(tmp_path, "Artery") == {"pair_first": published}
+    # an override that omits a context must fail on that context (no silent mix with the published paths)
     with pytest.raises(FileNotFoundError, match="pair-first"):
         run(tmp_path, tmp_path / "out", tmp_path / "src", 10, 1, predictions={}, run_tag="v2")
     with pytest.raises(FileNotFoundError, match="missing --prediction"):
         run(tmp_path, tmp_path / "out", tmp_path / "src", 10, 1,
             predictions={"Artery": {"pair_first": tmp_path / "nope.parquet"}}, run_tag="v2")
+
+
+def test_within_pair_override_needs_a_tag_and_its_own_folders(tmp_path):
+    from adarpro.evaluation.within_pair_discrimination import (
+        PUBLISHED_OUTPUT_DIR,
+        PUBLISHED_SOURCE_DIR,
+        run,
+    )
+
+    override = {"Artery": {"pair_first": tmp_path / "a.parquet"}}
+    with pytest.raises(ValueError, match="requires --run-tag"):
+        run(tmp_path, tmp_path / "out", tmp_path / "src", 10, 1, predictions=override, run_tag=None)
+    for output_dir, source_dir in ((tmp_path / PUBLISHED_OUTPUT_DIR, tmp_path / "src"),
+                                   (tmp_path / "out", tmp_path / PUBLISHED_SOURCE_DIR)):
+        with pytest.raises(ValueError, match="published output folder"):
+            run(tmp_path, output_dir, source_dir, 10, 1, predictions=override, run_tag="v2")
+    assert not (tmp_path / "out").exists() and not (tmp_path / PUBLISHED_SOURCE_DIR).exists()
+
+
+def test_within_pair_override_refuses_a_file_from_another_context(tmp_path):
+    from adarpro.evaluation.within_pair_discrimination import run
+
+    wrong = tmp_path / "liver.parquet"
+    pd.DataFrame({"example_id": ["e0"], "context": ["Liver"]}).to_parquet(wrong, index=False)
+    with pytest.raises(ValueError, match="holds context"):
+        run(tmp_path, tmp_path / "out", tmp_path / "src", 10, 1,
+            predictions={"Artery": {"pair_first": wrong}}, run_tag="v2")
+    assert not (tmp_path / "out").exists()
+
+
+# --- checkpoint-mode and published-folder guards ---
+def test_checkpoint_mode_must_match(tmp_path):
+    from adarpro.models.multitask_oof import check_checkpoint_mode
+
+    check_checkpoint_mode({"config": {"mode": CNN}}, CNN, tmp_path)
+    for saved in ({"config": {"mode": SHIFTED_CNN}}, {"config": {}}, {}):
+        with pytest.raises(ValueError, match="trained as mode"):
+            check_checkpoint_mode(saved, CNN, tmp_path)
+
+
+def test_matched_recall_refuses_shifted_controls(tmp_path):
+    from adarpro.evaluation.neural_matched_recall import run
+
+    absent = tmp_path / "absent.parquet"
+    for mode in (SHIFTED_CNN, "binary_pair_balanced_shifted_local"):
+        with pytest.raises(ValueError, match="shifted-window controls"):
+            run(tmp_path, absent, absent, tmp_path, mode, "MuscleSkeletal", tmp_path / "out", 2, 10, 1,
+                torch.device("cpu"))
+
+
+def test_tagged_strata_rerun_refuses_the_published_folder(tmp_path):
+    from adarpro.evaluation.target_local_interpretation import PUBLISHED_OUTPUT_DIR, run
+
+    absent = tmp_path / "absent.parquet"
+    with pytest.raises(ValueError, match="published output folder"):
+        run(tmp_path, absent, absent, {"pair": absent, "local": absent}, tmp_path / PUBLISHED_OUTPUT_DIR, 10, 1,
+            run_tag="v2")
+
+
+def test_natural_ensemble_left_right_path_refuses_a_run_tag(tmp_path, monkeypatch):
+    from adarpro.evaluation import fixed_ensemble_natural_prevalence
+
+    monkeypatch.setattr("sys.argv", ["x", "--repository", str(tmp_path), "--left-predictions", "a.parquet",
+                                     "--right-predictions", "b.parquet", "--fold-selections", "f.csv",
+                                     "--output-dir", "out", "--run-tag", "v2"])
+    with pytest.raises(SystemExit):
+        fixed_ensemble_natural_prevalence.main()
+    assert not (tmp_path / "out").exists()
 
 
 def test_bad_run_tags_are_refused_before_any_work(tmp_path):

@@ -208,6 +208,8 @@ def main() -> None:
             args.run_tag,
         )
     else:
+        if args.run_tag:
+            parser.error("--run-tag is supported only with --component")
         if args.left_predictions is None or args.right_predictions is None:
             parser.error(
                 "--left-predictions and --right-predictions are required without "
