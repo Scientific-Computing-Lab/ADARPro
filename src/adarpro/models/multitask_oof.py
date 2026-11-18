@@ -57,6 +57,7 @@ MODES = (
     "binary_pair_balanced_context",
     "binary_pair_balanced_context_engagement",
     "binary_pair_balanced_cnn",
+    "binary_pair_balanced_shifted_cnn",
 )
 LOCAL_RADIUS = 32
 LOCAL_CONTROL_SHIFT = 96
@@ -70,11 +71,19 @@ DEFAULT_PARTNER_LANE = "opposite"
 # Graph-free modes: the hybrid's local CNN alone (``LocalCNN``). No graph is built for their examples and no GAT
 # exists in the model; each example carries only its local window and labels. The name must not end in "_local"
 # (that switches on ``MultiTaskGAT(use_local=True)``) and must not contain "_context".
-CNN_MODES = ("binary_pair_balanced_cnn",)
+# ``binary_pair_balanced_shifted_cnn`` is the CNN alone with its window centred LOCAL_CONTROL_SHIFT nt away from the
+# target (the alignment control for the CNN alone; same shift rule as ``binary_pair_balanced_shifted_local``).
+CNN_MODES = ("binary_pair_balanced_cnn", "binary_pair_balanced_shifted_cnn")
 
 
 def mode_is_graph_free(mode: str) -> bool:
     return mode in CNN_MODES
+
+
+def mode_is_shifted(mode: str) -> bool:
+    """True for the nonfocal alignment controls: the shifted hybrid and the shifted CNN alone."""
+
+    return mode.endswith("_shifted_local") or mode == "binary_pair_balanced_shifted_cnn"
 
 
 def mode_uses_local_window(mode: str) -> bool:
@@ -478,6 +487,21 @@ def canonical_window_examples(
     return examples
 
 
+def canonical_examples_for_mode(
+    canonical: pd.DataFrame, mode: str, baseline, partner_lane: str = DEFAULT_PARTNER_LANE
+) -> list:
+    """The ordered canonical examples a grouped-OOF run of ``mode`` trains, selects and predicts on: window-only
+    examples for the graph-free modes, graphs otherwise; local windows at the shifted anchor for the controls."""
+
+    shifted = mode_is_shifted(mode)
+    if mode_is_graph_free(mode):
+        return canonical_window_examples(canonical, shifted=shifted, partner_lane=partner_lane)
+    graphs = build_graphs(canonical, baseline)
+    if mode_uses_local_window(mode):
+        attach_local_windows(graphs, canonical, shifted=shifted, partner_lane=partner_lane)
+    return graphs
+
+
 def make_training_graphs(
     raw: pd.DataFrame,
     baseline,
@@ -814,6 +838,11 @@ def run_fold(
             "compact GAT + capacity-matched +/-32 nt dilated local CNN centered "
             "96 nt away from the target; nonfocal alignment control"
         )
+    elif mode_is_shifted(mode):
+        config["architecture"] = (
+            "graph-free +/-32 nt dilated local CNN alone centered 96 nt away from the target "
+            "(the CNN alone's network unchanged; no GAT); nonfocal alignment control"
+        )
     elif mode.endswith("_local"):
         config["architecture"] = (
             "compact GAT + target/helix-partner-aligned +/-32 nt dilated local CNN"
@@ -1081,18 +1110,8 @@ def run(
         flush=True,
     )
     use_local = mode_uses_local_window(mode)
-    shifted_local = mode.endswith("_shifted_local")
-    if graph_free:
-        canonical_graphs = canonical_window_examples(canonical, partner_lane=partner_lane)
-    else:
-        canonical_graphs = build_graphs(canonical, baseline)
-        if use_local:
-            attach_local_windows(
-                canonical_graphs,
-                canonical,
-                shifted=shifted_local,
-                partner_lane=partner_lane,
-            )
+    shifted_local = mode_is_shifted(mode)
+    canonical_graphs = canonical_examples_for_mode(canonical, mode, baseline, partner_lane)
     raw_graphs = make_training_graphs(
         raw,
         baseline,
@@ -1227,7 +1246,9 @@ def run(
             "fold_definition": "five global pair folds; outer k; inner (k+1)%5",
             "seed": seed,
             "features": (
-                "graph-free target/partner-aligned +/-32 nt local CNN alone (the hybrid's local branch; no GAT)"
+                "graph-free nonfocal +/-32 nt local CNN alone shifted 96 nt from target (alignment control; no GAT)"
+                if mode == "binary_pair_balanced_shifted_cnn"
+                else "graph-free target/partner-aligned +/-32 nt local CNN alone (the hybrid's local branch; no GAT)"
                 if graph_free
                 else "exact compact GAT graph plus capacity-matched nonfocal +/-32 nt local CNN shifted 96 nt from target"
                 if mode.endswith("_shifted_local")

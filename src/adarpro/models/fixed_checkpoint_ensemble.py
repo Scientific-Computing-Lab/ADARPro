@@ -26,6 +26,7 @@ from adarpro.models.multitask_oof import (
     canonical_window_examples,
     common_partner_lane,
     mode_is_graph_free,
+    mode_is_shifted,
     mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
@@ -55,6 +56,14 @@ def equal_logit_average(left: np.ndarray, right: np.ndarray) -> np.ndarray:
     """Average two logits with a fixed 50:50 weight and return probabilities."""
 
     return equal_logit_average_many([left, right])
+
+
+def example_kind(mode: str) -> str:
+    """Which ordered example set a component predicts on: graphs, aligned windows, or shifted windows."""
+
+    if not mode_is_graph_free(mode):
+        return "graph"
+    return "shifted_window" if mode_is_shifted(mode) else "window"
 
 
 def model_for_mode(mode: str, device: torch.device) -> nn.Module:
@@ -101,6 +110,9 @@ def run_components(
         raise ValueError("ensemble component names must be unique")
     if any(mode.endswith("_shifted_local") for _, mode, _ in components):
         raise ValueError("shifted-local controls cannot be ensemble components")
+    # The shifted CNN alone is allowed, for the alignment control at the ensemble level (graph + shifted CNN alone
+    # against graph + CNN alone); it gets its own window-only examples at the shifted anchor. Final ensembles still
+    # refuse every control (final_ensemble).
     if any("_context" in mode for _, mode, _ in components):
         raise ValueError("pair-context ensembles require an explicit graph adapter")
     master = pd.read_parquet(site_master_path)
@@ -125,9 +137,15 @@ def run_components(
     )
     if graphs is not None and any(mode.endswith("_local") for mode in graph_modes):
         attach_local_windows(graphs, canonical, partner_lane=partner_lane)
+    window_modes = [mode for _, mode, _ in components if mode_is_graph_free(mode)]
     windows = (
         canonical_window_examples(canonical, partner_lane=partner_lane)
-        if len(graph_modes) < len(components)
+        if any(not mode_is_shifted(mode) for mode in window_modes)
+        else None
+    )
+    shifted_windows = (
+        canonical_window_examples(canonical, shifted=True, partner_lane=partner_lane)
+        if any(mode_is_shifted(mode) for mode in window_modes)
         else None
     )
     outputs, selections, checkpoint_hashes = [], [], {}
@@ -140,7 +158,11 @@ def run_components(
             canonical["development_fold"] == outer_fold
         ].to_numpy()
         loaders = {}
-        for kind, examples in (("graph", graphs), ("window", windows)):
+        for kind, examples in (
+            ("graph", graphs),
+            ("window", windows),
+            ("shifted_window", shifted_windows),
+        ):
             if examples is not None:
                 loaders[kind] = tuple(
                     DataLoader(
@@ -157,9 +179,7 @@ def run_components(
             checkpoint_hashes[f"{name}_outer_{outer_fold}"] = sha256_file(
                 checkpoint_path
             )
-            inner_loader, outer_loader = loaders[
-                "window" if mode_is_graph_free(mode) else "graph"
-            ]
+            inner_loader, outer_loader = loaders[example_kind(mode)]
             inner_p, inner_y, outer_p, outer_y = predict_checkpoint(
                 checkpoint_path, mode, inner_loader, outer_loader, device
             )

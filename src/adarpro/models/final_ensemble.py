@@ -26,6 +26,7 @@ from adarpro.models.multitask_oof import (
     canonical_window_examples,
     common_partner_lane,
     mode_is_graph_free,
+    mode_is_shifted,
     mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
@@ -66,7 +67,7 @@ def run(
     names = [name for name, _, _ in components]
     if len(names) != len(set(names)):
         raise ValueError("component names must be unique")
-    if any("_context" in mode or mode.endswith("_shifted_local") for _, mode, _ in components):
+    if any("_context" in mode or mode_is_shifted(mode) for _, mode, _ in components):
         raise ValueError("unsupported frozen ensemble component")
 
     master = pd.read_parquet(site_master_path)

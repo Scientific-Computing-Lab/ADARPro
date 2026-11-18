@@ -35,6 +35,7 @@ from adarpro.models.multitask_oof import (
     check_partner_lane,
     make_training_graphs,
     partner_lane_run_suffix,
+    run_tag_suffix,
     sample_epoch_indices,
 )
 from adarpro.models.unified import VARIANTS, UnifiedADARPro, parameter_count
@@ -342,7 +343,9 @@ def run(
     device: torch.device,
     *,
     partner_lane: str = DEFAULT_PARTNER_LANE,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     """Train all five outer folds and save development-only OOF predictions."""
 
     check_partner_lane(partner_lane)
@@ -431,6 +434,7 @@ def run(
             "run_id": (
                 f"{variant_name}_oof_{context}_seed{seed}_epochs{epochs}"
                 + partner_lane_run_suffix(partner_lane)
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "unified_end_to_end_grouped_oof",
             "context": context,
@@ -486,6 +490,10 @@ def main() -> None:
         default=DEFAULT_PARTNER_LANE,
         help="partner lane for unpaired local-window anchors; 'legacy' reproduces the published runs",
     )
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id (ASCII letters/digits); omit to keep the published run_id",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -516,6 +524,7 @@ def main() -> None:
         args.seed,
         device,
         partner_lane=args.partner_lane,
+        run_tag=args.run_tag,
     )
     print(json.dumps(summary, indent=2))
 

@@ -18,6 +18,7 @@ from adarpro.models.multitask_oof import (
     bootstrap_delta,
     make_training_graphs,
     mode_is_graph_free,
+    mode_is_shifted,
     mode_uses_local_window,
     pair_context_table,
     partner_lane_run_suffix,
@@ -81,7 +82,7 @@ def run(
         raw,
         baseline,
         include_local=use_local,
-        shifted_local=mode.endswith("_shifted_local"),
+        shifted_local=mode_is_shifted(mode),
         partner_lane=partner_lane,
         include_graph=not graph_free,
     )

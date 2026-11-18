@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
+from adarpro.models.multitask_oof import run_tag_suffix
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
 
@@ -187,19 +188,51 @@ def available_paths(repository: Path, context: str) -> dict[str, Path]:
     return {model: path for model, path in candidates.items() if path.is_file()}
 
 
+def parse_predictions(specifications: list[str], repository: Path) -> dict[str, dict[str, Path]]:
+    """``CONTEXT:MODEL=path`` -> {context: {model: path}}; refuses unknown contexts/models and duplicates."""
+
+    table: dict[str, dict[str, Path]] = {}
+    for specification in specifications:
+        key, separator, raw_path = specification.partition("=")
+        context, colon, model = key.partition(":")
+        if not separator or not colon or not raw_path:
+            raise ValueError(f"invalid --prediction value (want CONTEXT:MODEL=path): {specification}")
+        if context not in CONTEXTS:
+            raise ValueError(f"unknown context in --prediction: {context}")
+        if model not in MODEL_LABELS or model == "development_reference":
+            raise ValueError(f"unknown model in --prediction: {model}")
+        if model in table.get(context, {}):
+            raise ValueError(f"duplicate --prediction for {context}:{model}")
+        path = Path(raw_path)
+        table.setdefault(context, {})[model] = path if path.is_absolute() else repository / path
+    return table
+
+
 def run(
     repository: Path,
     output_dir: Path,
     source_dir: Path,
     replicates: int,
     seed: int,
+    predictions: dict[str, dict[str, Path]] | None = None,
+    run_tag: str | None = None,
 ) -> dict:
+    """``predictions`` (optional) replaces the published input files: when given, each context uses exactly the
+    files listed for it (no fallback to the published paths). Omitted, the published paths are read as before."""
+
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     all_pairs = []
     all_summary = []
     all_contrasts = []
     input_hashes: dict[str, str] = {}
     for context_index, context in enumerate(CONTEXTS):
-        paths = available_paths(repository, context)
+        if predictions is None:
+            paths = available_paths(repository, context)
+        else:
+            paths = dict(predictions.get(context, {}))
+            missing = [str(path) for path in paths.values() if not path.is_file()]
+            if missing:
+                raise FileNotFoundError(f"missing --prediction files: {missing}")
         if "pair_first" not in paths:
             raise FileNotFoundError(f"missing pair-first OOF predictions for {context}")
         input_hashes.update(
@@ -264,13 +297,18 @@ def run(
         },
         "contrasts": contrasts.to_dict(orient="records"),
     }
+    if predictions is not None:
+        payload["inputs"] = {
+            context: {model: str(path) for model, path in sorted(models.items())}
+            for context, models in sorted(predictions.items())
+        }
     (output_dir / "summary.json").write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n"
     )
     register(
         repository,
         {
-            "run_id": "post_analysis_within_duplex_discrimination_v1",
+            "run_id": "post_analysis_within_duplex_discrimination_v1" + run_tag_suffix(run_tag),
             "experiment_type": "post_hoc_development_oof_within_pair_discrimination",
             "context": "all human endpoints; local models where retained",
             "input_hashes": input_hashes,
@@ -303,6 +341,16 @@ def main() -> None:
     )
     parser.add_argument("--bootstrap-replicates", type=int, default=5000)
     parser.add_argument("--seed", type=int, default=20260910)
+    parser.add_argument(
+        "--prediction",
+        action="append",
+        help="CONTEXT:MODEL=path/to/oof_predictions.parquet (repeat); replaces the published inputs. "
+        "MODEL is one of pair_first, focal, target_local, fixed_ensemble",
+    )
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id (ASCII letters/digits); omit to keep the published run_id",
+    )
     args = parser.parse_args()
     repository = args.repository.resolve()
     output_dir = (
@@ -323,6 +371,8 @@ def main() -> None:
                 source_dir,
                 args.bootstrap_replicates,
                 args.seed,
+                parse_predictions(args.prediction, repository) if args.prediction else None,
+                args.run_tag,
             ),
             indent=2,
         )
