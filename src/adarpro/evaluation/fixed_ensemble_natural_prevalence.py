@@ -10,7 +10,7 @@ import pandas as pd
 
 from adarpro.models.baseline_oof import metric_row
 from adarpro.models.fixed_checkpoint_ensemble import equal_logit_average_many
-from adarpro.models.multitask_oof import bootstrap_delta
+from adarpro.models.multitask_oof import bootstrap_delta, run_tag_suffix
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
 
@@ -25,7 +25,9 @@ def run_components(
     context: str,
     bootstrap_replicates: int,
     seed: int,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     if len(component_paths) < 2:
         raise ValueError("an ensemble requires at least two components")
     tables = {
@@ -112,6 +114,7 @@ def run_components(
                 "fixed_ensemble_natural_prevalence_"
                 + "_".join(tables)
                 + f"_{context}_seed{seed}"
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "fixed_ensemble_natural_prevalence_oof",
             "context": context,
@@ -175,6 +178,10 @@ def main() -> None:
     parser.add_argument("--context", default="MuscleSkeletal")
     parser.add_argument("--bootstrap-replicates", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=20260821)
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id (ASCII letters/digits); omit to keep the published run_id",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -198,6 +205,7 @@ def main() -> None:
             args.context,
             args.bootstrap_replicates,
             args.seed,
+            args.run_tag,
         )
     else:
         if args.left_predictions is None or args.right_predictions is None:

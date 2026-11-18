@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from adarpro.models.multitask_oof import run_tag_suffix
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
 
@@ -172,7 +173,9 @@ def run(
     output_dir: Path,
     bootstrap_replicates: int,
     seed: int,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     if "pair" not in prediction_paths or len(prediction_paths) < 2:
         raise ValueError("pair and at least one candidate prediction are required")
     tables = load_predictions(prediction_paths)
@@ -298,7 +301,7 @@ def run(
     register(
         repository,
         {
-            "run_id": f"target_local_interpretation_{context}_seed{seed}",
+            "run_id": f"target_local_interpretation_{context}_seed{seed}" + run_tag_suffix(run_tag),
             "experiment_type": "development_oof_descriptive_interpretation",
             "context": context,
             "input_hashes": {
@@ -345,6 +348,10 @@ def main() -> None:
     )
     parser.add_argument("--bootstrap-replicates", type=int, default=2000)
     parser.add_argument("--seed", type=int, default=20260821)
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id (ASCII letters/digits); omit to keep the published run_id",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -367,6 +374,7 @@ def main() -> None:
                 resolve(args.output_dir),
                 args.bootstrap_replicates,
                 args.seed,
+                args.run_tag,
             ),
             indent=2,
         )

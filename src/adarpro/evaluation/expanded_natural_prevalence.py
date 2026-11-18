@@ -24,6 +24,7 @@ from adarpro.models.multitask_oof import (
     partner_lane_run_suffix,
     predict_binary,
     run_dir_partner_lane,
+    run_tag_suffix,
 )
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
@@ -41,7 +42,9 @@ def run(
     bootstrap_replicates: int,
     seed: int,
     device: torch.device,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     raw = pd.read_parquet(raw_path)
     raw = (
         raw[
@@ -171,6 +174,7 @@ def run(
             "run_id": (
                 f"natural_prevalence_{mode}_{context}_seed{seed}"
                 + partner_lane_run_suffix(partner_lane, use_local)
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "expanded_supervision_natural_prevalence_oof",
             "context": context,
@@ -219,6 +223,10 @@ def main() -> None:
     parser.add_argument("--bootstrap-replicates", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=20260821)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument(
+        "--run-tag",
+        help="append _<tag> to the registry run_id (ASCII letters/digits); omit to keep the published run_id",
+    )
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -242,6 +250,7 @@ def main() -> None:
                 args.bootstrap_replicates,
                 args.seed,
                 device,
+                args.run_tag,
             ),
             indent=2,
         )

@@ -152,3 +152,24 @@ def test_bad_run_tags_are_refused_before_any_work(tmp_path):
                     "unified_target_local_interaction_aux_v1", tmp_path, 1, 2, 1, 1, torch.device("cpu"),
                     run_tag="v-2")
     assert not (tmp_path / "out").exists()
+
+
+def test_analysis_scripts_refuse_bad_run_tags_before_any_work(tmp_path):
+    # natural prevalence (graph rerun would otherwise clash with the published row), its ensemble, and the strata
+    from adarpro.evaluation.expanded_natural_prevalence import run as natural_run
+    from adarpro.evaluation.fixed_ensemble_natural_prevalence import (
+        run_components as natural_ensemble_run,
+    )
+    from adarpro.evaluation.target_local_interpretation import run as strata_run
+
+    absent = tmp_path / "absent.parquet"
+    with pytest.raises(ValueError, match="run tag"):
+        natural_run(tmp_path, absent, absent, tmp_path, tmp_path / "out", "MuscleSkeletal", "binary_pair_balanced",
+                    2, 10, 1, torch.device("cpu"), run_tag="v-2")
+    with pytest.raises(ValueError, match="run tag"):
+        natural_ensemble_run(tmp_path, {"a": absent, "b": absent}, absent, tmp_path / "out", "MuscleSkeletal", 10, 1,
+                             run_tag="v-2")
+    with pytest.raises(ValueError, match="run tag"):
+        strata_run(tmp_path, absent, absent, {"pair": absent, "local": absent}, tmp_path / "out", 10, 1,
+                   run_tag="v-2")
+    assert not (tmp_path / "out").exists()
