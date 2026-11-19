@@ -233,6 +233,8 @@ def run(
             loss = torch.nn.functional.binary_cross_entropy_with_logits(
                 binary_logit, batch.binary_label.view(-1)
             )
+            if not torch.isfinite(loss):  # fail loudly, as multitask_oof does, rather than keep a NaN model
+                raise RuntimeError("non-finite final-training loss")
             loss.backward()
             optimizer.step()
             losses.append(float(loss.detach().cpu()))
