@@ -155,6 +155,77 @@ def score_all_rows(checkpoint: Path, mode: str, examples: list, batch_size: int,
     return predict_binary(model, DataLoader(examples, batch_size=batch_size, shuffle=False), device)
 
 
+def average_probabilities(arrays: list[np.ndarray]) -> np.ndarray:
+    """Average several runs' probabilities in log-odds (equal weights); one run is returned unchanged."""
+
+    if len(arrays) == 1:
+        return np.asarray(arrays[0], dtype=np.float64)
+    return equal_logit_average_many(arrays)
+
+
+def score_run(
+    repository: Path,
+    canonical: pd.DataFrame,
+    graph_run_dir: Path,
+    cnn_run_dir: Path,
+    batch_size: int,
+    device: torch.device,
+    cache_path: Path | None = None,
+    examples: tuple | None = None,
+) -> tuple[pd.DataFrame, dict]:
+    """Every outer-k checkpoint of one run scores every canonical row (the gate scheme's inputs).
+
+    Returns a long table (example_id, outer_fold, graph_probability, cnn_probability), canonical order within each
+    outer fold, and the reproduction maxima against the saved out-of-fold scores. With ``cache_path`` the table is
+    read if present (its row identity checked) and written otherwise; scores are kept, never deleted.
+    """
+
+    ids = canonical["example_id"].to_numpy()
+    if cache_path is not None and cache_path.exists():
+        table = pd.read_parquet(cache_path)
+        for fold in range(5):
+            part = table[table["outer_fold"] == fold]
+            if not np.array_equal(part["example_id"].to_numpy(), ids):
+                raise RuntimeError(f"score cache {cache_path} does not match the canonical rows (fold {fold})")
+        meta = json.loads(cache_path.with_suffix(".json").read_text())
+        return table, meta["maximum_reproduction_difference"]
+    if examples is None:
+        graphs = build_graphs(canonical, upstream_modules(repository))
+        windows = canonical_window_examples(canonical, partner_lane=run_dir_partner_lane(cnn_run_dir, device))
+    else:
+        graphs, windows = examples
+    labels = canonical["label"].to_numpy()
+    parts, reproduction, hashes = [], {"graph": 0.0, "cnn": 0.0}, {}
+    for outer_fold in range(5):
+        part = pd.DataFrame({"example_id": ids, "outer_fold": outer_fold})
+        for name, mode, run_dir, examples_ in (("graph", GRAPH_MODE, graph_run_dir, graphs),
+                                               ("cnn", CNN_MODE, cnn_run_dir, windows)):
+            checkpoint = run_dir / f"outer_{outer_fold}" / "best.pth"
+            hashes[f"{name}_outer_{outer_fold}"] = sha256_file(checkpoint)
+            probability, predicted_labels = score_all_rows(checkpoint, mode, examples_, batch_size, device)
+            if not np.array_equal(predicted_labels, labels):
+                raise RuntimeError(f"{name} prediction order mismatch")
+            saved_outer = pd.read_parquet(run_dir / f"outer_{outer_fold}" / "outer_predictions.parquet")
+            outer_rows = canonical.index[canonical["development_fold"] == outer_fold].to_numpy()
+            if not np.array_equal(saved_outer["example_id"].to_numpy(), ids[outer_rows]):
+                raise RuntimeError(f"{name} saved outer row order mismatch")
+            reproduction[name] = max(reproduction[name], float(np.max(np.abs(
+                saved_outer["probability"].to_numpy() - probability[outer_rows]))))
+            part[f"{name}_probability"] = probability
+        parts.append(part)
+    if max(reproduction.values()) > 1e-5:
+        raise RuntimeError(f"checkpoints do not reproduce the saved out-of-fold scores: {reproduction}")
+    table = pd.concat(parts, ignore_index=True)
+    if cache_path is not None:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        table.to_parquet(cache_path, index=False)
+        cache_path.with_suffix(".json").write_text(json.dumps(
+            {"graph_run_dir": str(graph_run_dir), "cnn_run_dir": str(cnn_run_dir), "checkpoints": hashes,
+             "maximum_reproduction_difference": reproduction, "canonical_test_access": False},
+            indent=2, sort_keys=True) + "\n")
+    return table, reproduction
+
+
 def run(
     repository: Path,
     site_master_path: Path,

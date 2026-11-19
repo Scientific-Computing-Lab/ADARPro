@@ -30,6 +30,7 @@ from adarpro.models.multitask_oof import (
     mode_uses_local_window,
     partner_lane_run_suffix,
     predict_binary,
+    run_tag_suffix,
     saved_partner_lane,
 )
 from adarpro.quarantine import sha256_file
@@ -61,7 +62,9 @@ def run(
     batch_size: int,
     seed: int,
     device: torch.device,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     if len(components) < 2:
         raise ValueError("a frozen ensemble requires at least two components")
     names = [name for name, _, _ in components]
@@ -177,6 +180,7 @@ def run(
                     else ""
                 )
                 + partner_lane_run_suffix(partner_lane, bool(local_lanes))
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "frozen_ensemble_validation_only",
             "context": context,
@@ -216,6 +220,7 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument("--run-tag", help="append _<tag> to the registry run_id (ASCII letters/digits)")
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -243,6 +248,7 @@ def main() -> None:
                 args.batch_size,
                 args.seed,
                 device,
+                args.run_tag,
             ),
             indent=2,
         )
