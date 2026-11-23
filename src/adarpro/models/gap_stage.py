@@ -128,6 +128,13 @@ def stage_table(
 def fit_arm(table: pd.DataFrame, columns: list[str], outer_fold: int, seed: int) -> tuple[pd.DataFrame, dict]:
     """PNAS's gate fit for one arm, plus the chosen model's standardized weights (refitted identically and checked)."""
 
+    outer, selection, _ = fit_arm_model(table, columns, outer_fold, seed)
+    return outer, selection
+
+
+def fit_arm_model(table: pd.DataFrame, columns: list[str], outer_fold: int, seed: int) -> tuple[pd.DataFrame, dict, object]:
+    """``fit_arm`` that also returns the fitted pipeline (scaler + logistic), to apply the fold's stage elsewhere."""
+
     outer, selection = fit_gate(table, columns, outer_fold, seed)
     inner_fold = (outer_fold + 1) % 5
     train = table[~table["development_fold"].isin([outer_fold, inner_fold])]
@@ -144,7 +151,7 @@ def fit_arm(table: pd.DataFrame, columns: list[str], outer_fold: int, seed: int)
     selection.update({f"weight_{column}": float(weight) for column, weight in zip(columns, weights)})
     selection["intercept"] = float(model[-1].intercept_[0])
     selection["train_rows"] = len(train)
-    return outer, selection
+    return outer, selection, model
 
 
 def score_all_rows(checkpoint: Path, mode: str, examples: list, batch_size: int, device: torch.device) -> tuple:

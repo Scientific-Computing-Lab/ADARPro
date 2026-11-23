@@ -22,6 +22,7 @@ MODEL_LABELS = {
     "focal": "Focal representation",
     "target_local": "Target-centered local",
     "fixed_ensemble": "Fixed ensemble",
+    "gap_stage": "Gap stage",  # PNAS integration (D48): only ever supplied through --prediction
 }
 
 
@@ -270,7 +271,7 @@ def run(
         contrasts = [("pair_first", "development_reference")]
         contrasts.extend(
             (model, "pair_first")
-            for model in ("focal", "target_local", "fixed_ensemble")
+            for model in ("focal", "target_local", "fixed_ensemble", "gap_stage")
             if model in models
         )
         summary, contrast = bootstrap_summary(

@@ -31,6 +31,7 @@ from adarpro.models.multitask_oof import (
     partner_lane_run_suffix,
     predict_binary,
     run_dir_partner_lane,
+    run_tag_suffix,
 )
 from adarpro.quarantine import sha256_file
 from adarpro.registry import register
@@ -102,7 +103,9 @@ def run_components(
     batch_size: int,
     seed: int,
     device: torch.device,
+    run_tag: str | None = None,
 ) -> dict:
+    run_tag_suffix(run_tag)  # refuse a bad tag before any work
     if len(components) < 2:
         raise ValueError("an ensemble requires at least two components")
     names = [name for name, _, _ in components]
@@ -273,6 +276,7 @@ def run_components(
                 + "_".join(mode for _, mode, _ in components)
                 + f"_{context}_seed{seed}"
                 + partner_lane_run_suffix(partner_lane, bool(local_lanes))
+                + run_tag_suffix(run_tag)
             ),
             "experiment_type": "fixed_checkpoint_ensemble_grouped_oof",
             "context": context,
@@ -350,6 +354,7 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--seed", type=int, default=20260821)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument("--run-tag", help="append _<tag> to the registry run_id (with --component only)")
     args = parser.parse_args()
     root = args.repository.resolve()
 
@@ -376,8 +381,11 @@ def main() -> None:
             args.batch_size,
             args.seed,
             device,
+            args.run_tag,
         )
     else:
+        if args.run_tag:
+            parser.error("--run-tag is supported only with --component")
         required = {
             "--left-run-dir": args.left_run_dir,
             "--left-mode": args.left_mode,
