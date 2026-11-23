@@ -1,0 +1,82 @@
+{
+  "scope": "pre-registration of the second canonical-test session (PNAS integration steps 13-14); written before any test row is read",
+  "created_utc": "2026-11-23T14:45:37+00:00",
+  "authoritative_baseline": "Published/supplied-checkpoint AdarEdit canonical-test benchmark at upstream 5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5 (as provenance/model_selection_policy.json)",
+  "canonical_test_rule": "Second evaluation of the canonical test. The first, of PNAS's selected predictor on 2026-08-25, is recorded in provenance/test_quarantine.json. Every model below was chosen on development data only; the headline is named here, before the session, so the test ranks and never picks. All models are scored once, in a single session, under a successor quarantine policy (provenance/test_quarantine_v2.json) that continues PNAS's audit chain.",
+  "development_selection_result": {
+    "selected_family": "gap_stage_on_seed_averaged_graph_and_cnn_alone",
+    "networks": {
+      "graph": "binary_pair_balanced",
+      "cnn_alone": "binary_pair_balanced_cnn"
+    },
+    "seeds": 5,
+    "seed_values": [
+      20260821,
+      20265821,
+      20270821,
+      20275821,
+      20280821
+    ],
+    "cnn_fix": "the target/helix-partner window uses the opposite-base partner lane (partner_lane = opposite)",
+    "second_network": "graph + CNN alone, selected over graph + hybrid by a rule fixed before the runs (tie -> the simpler network, AUROC decides; 5 development runs x 5 endpoints)",
+    "gap_stage": "L2 logistic on (graph log-odds, CNN-alone log-odds, log1p genomic gap); PNAS's gate scheme; kept because, on 5 development runs, the gap beat both the no-gap and the shuffled-gap stage and the gap stage beat the equal average, all by rules fixed before the run",
+    "averaging": "each network averaged over its 5 seeds in log-odds, then one gap stage per endpoint",
+    "final_fitting_protocol": "PNAS's: each network trained on expanded high/low observations from the published train pairs, epoch and threshold selected on published validation, 1000 epochs; the stage fitted on published train canonical rows, its penalty and F1 threshold chosen on published validation",
+    "frozen_models": "models/final_v2/ (seed*/<endpoint>/<mode>/best.pth, gap_stage/<endpoint>/, equal_average/<endpoint>/)",
+    "decision_record": "pnas_integration DECISIONS.md D29/D33 (second network), D39/D40/D43 (gap stage), D44/D45 (final fitting, averaging), D6/D14 (test framing)",
+    "canonical_test_access": false
+  },
+  "evaluation_plan": {
+    "headline": "gap_stage",
+    "comparators": {
+      "equal_average": "the frozen equal log-odds average of the same ten final models (models/final_v2/equal_average/<endpoint>/, its validation threshold)",
+      "pnas_selected_predictor": "PNAS's selected predictor (graph + old hybrid, equal logits) as scored in its consumed evaluation (results/adarpro/final_locked_test/), checked against its published metrics before use",
+      "adaredit_reference": "the reproduced supplied-checkpoint AdarEdit baseline, scored and checked exactly as PNAS did (results/adarpro/baseline_reproduction.csv)"
+    },
+    "contrasts": [
+      [
+        "gap_stage",
+        "adaredit_reference"
+      ],
+      [
+        "gap_stage",
+        "pnas_selected_predictor"
+      ],
+      [
+        "gap_stage",
+        "equal_average"
+      ]
+    ],
+    "metrics": [
+      "auroc",
+      "auprc",
+      "f1",
+      "precision",
+      "recall",
+      "specificity",
+      "balanced_accuracy",
+      "mcc",
+      "brier"
+    ],
+    "intervals": "pair-clustered bootstrap (whole pairs with all their sites), 95% percentile interval",
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": "20260821 + the endpoint's index in (Artery, Brain, Liver, MuscleSkeletal, Combined), PNAS's seeds, so every contrast uses the same resamples as PNAS's own",
+    "thresholds": "frozen from validation; nothing is re-thresholded except PNAS's descriptive matched-recall analysis",
+    "endpoints": [
+      "Artery",
+      "Brain",
+      "Liver",
+      "MuscleSkeletal",
+      "Combined"
+    ],
+    "summary_across_endpoints": "mean of the five per-endpoint point differences, as PNAS's macro values",
+    "downstream": "PNAS's final_figures on the headline vs AdarEdit: error transitions (false-positive rescue, true-positive damage), matched recall with its pair bootstrap, ROC/PR curves, calibration (paper Fig. 4, Figs. S5-S6, Tables S1 and S9)"
+  },
+  "interpretation_rules": [
+    "A contrast is 'better' only where its whole 95% interval lies above zero (below zero for Brier), 'worse' only where it lies on the other side, and otherwise 'cannot be told apart on the test'; never 'equivalent'.",
+    "The headline stays the headline whatever the comparators show; no model, threshold, weight or stage is changed after the session.",
+    "Headline vs AdarEdit carries PNAS's test claims (AUROC, AUPRC, F1 per endpoint with intervals; Brier); where a number contradicts a sentence, the sentence takes the smallest change.",
+    "Headline vs PNAS's selected predictor and headline vs equal average are reported per endpoint as measured; the intervals condition on the fitted models and do not include retraining variability."
+  ],
+  "failure_rule": "If any check inside the session fails (row alignment, the AdarEdit or PNAS reproduction, the label-free gap lookup, the pair or BED-row disjointness), its outputs are not used and Eli is told; another attempt would be a further evaluation of the same test, run only on his explicit OK and recorded as such."
+}

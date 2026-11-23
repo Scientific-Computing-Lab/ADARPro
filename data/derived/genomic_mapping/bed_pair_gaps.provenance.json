@@ -1,0 +1,29 @@
+{
+  "bed": {
+    "path": "data/raw/alu_pairs/Pair_Alu_withStrand.bed",
+    "sha256": "e58935a092e8c84af0132566f038f7c4c354baed9b581e5fe8052d684101b2c3"
+  },
+  "canonical_test_access": false,
+  "development_check": {
+    "coordinate_mismatches": 0,
+    "development_pairs": 705,
+    "gap_mismatches": 0,
+    "sequence_mismatches": 0
+  },
+  "gap": "start2 - end1 and log1p(max(gap, 0)), the formula of genomic_context.pair_intrinsic_features",
+  "output": {
+    "path": "data/derived/genomic_mapping/bed_pair_gaps.parquet",
+    "sha256": "46a3f1489886cc45aa91197f3cbe474019c05c0e41b662ce9d139dff4cb2a66c"
+  },
+  "pair_mapping_sha256": "494ad478e2a58602269eb9b1613fe49fb80f782f1f74350d31351f45da973c36",
+  "pairs": 905,
+  "pairs_sharing_a_sequence": 4,
+  "reference_fasta": {
+    "bytes": 3273481150,
+    "path": "/private/dropbox/Genomes/Human/hg38/hg38.fa",
+    "sha256": "5be01555d98347fdb3714dc84c6f77c9d8bc774adcf32c6f7a8fa06f5baf5e51"
+  },
+  "scope": "genomic gap of every BED Alu pair, keyed by its rebuilt sequence; no label and no split is read",
+  "sequence": "reconstruct.reconstruct_bed_sequences, then parse_openai_json's normalization",
+  "site_master_sha256": "b90d788d7241b20c894639ef464b2cdbaaed21a701780db681ad04313e7c4c3d"
+}

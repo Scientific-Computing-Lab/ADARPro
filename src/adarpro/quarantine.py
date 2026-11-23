@@ -238,6 +238,91 @@ def consume_final_authorization(policy_path: Path, token: str) -> dict:
     return policy
 
 
+def audit_path_for(policy_path: Path) -> Path:
+    return policy_path.with_name("test_access_audit.jsonl")
+
+
+def verify_audit_chain(audit_path: Path) -> str | None:
+    """Recompute every record's hash and its link to the previous one; return the chain head."""
+
+    head = None
+    if not audit_path.is_file():
+        return head
+    for number, line in enumerate(audit_path.read_text().splitlines(), start=1):
+        record = json.loads(line)
+        stored = record.pop("record_sha256", None)
+        canonical = json.dumps(record, sort_keys=True, separators=(",", ":")).encode()
+        if stored != hashlib.sha256(canonical).hexdigest():
+            raise QuarantineViolation(f"audit record {number} does not match its hash")
+        if record.get("previous_sha256") != head:
+            raise QuarantineViolation(f"audit record {number} does not link to the previous record")
+        head = stored
+    return head
+
+
+def initialize_successor(repository: Path, policy_path: Path, predecessor_path: Path) -> dict:
+    """Open a new sealed state for a second final evaluation, after a consumed one, leaving the predecessor as it is.
+
+    The predecessor must be ``final_consumed``, its audit chain intact and its head the last record in the shared
+    audit log (so nothing has been logged since, and no other successor exists). The canonical test inventory is
+    re-hashed (sizes and hashes only, no row is parsed, as ``initialize`` does) and must equal the predecessor's. The
+    successor continues the predecessor's audit chain in the same log, so one linear chain records every evaluation,
+    and starts ``development_sealed``: ``freeze_final`` and ``consume_final_authorization`` then work on it unchanged.
+    """
+
+    repository = repository.resolve()
+    if policy_path.exists():
+        raise FileExistsError(f"quarantine already initialized: {policy_path}")
+    if policy_path.resolve().parent != predecessor_path.resolve().parent:
+        raise QuarantineViolation("a successor policy must sit beside its predecessor (they share the audit log)")
+    predecessor = load_policy(predecessor_path)
+    final = predecessor["final_locked_test"]
+    if predecessor["state"] != "final_consumed" or int(final["evaluations_consumed"]) != 1:
+        raise QuarantineViolation("a successor needs a predecessor whose one evaluation is consumed")
+    head = verify_audit_chain(audit_path_for(predecessor_path))
+    if head is None or head != predecessor.get("audit_chain_head"):
+        raise QuarantineViolation("the audit log has moved past the predecessor (another successor exists?)")
+    inventory = _artifact_inventory(repository)
+    if inventory != predecessor["test_artifacts"]:
+        raise QuarantineViolation("canonical test artifacts changed since the predecessor's evaluation")
+    evaluation_number = int(predecessor.get("evaluation_number", 1)) + 1
+    payload = {
+        "schema_version": SCHEMA_VERSION,
+        "created_utc": utc_now(),
+        "repository": predecessor.get("repository", "."),
+        "upstream_revision": predecessor["upstream_revision"],
+        "state": "development_sealed",
+        "development_splits": sorted(DEVELOPMENT_SPLITS),
+        "test_artifacts": inventory,
+        "published_reproduction": {"runs": 0, "last_result_sha256": None},
+        "final_locked_test": {
+            "freeze_manifest": None,
+            "authorization_sha256": None,
+            "evaluations_consumed": 0,
+            "consumed_utc": None,
+        },
+        "evaluation_number": evaluation_number,
+        "predecessor": {
+            "policy": predecessor_path.name,
+            "policy_sha256": sha256_file(predecessor_path),
+            "freeze_manifest": final["freeze_manifest"],
+            "consumed_utc": final["consumed_utc"],
+            "audit_chain_head": head,
+        },
+        "audit_chain_head": head,
+    }
+    _write_json_atomic(policy_path, payload)
+    _audit(
+        policy_path,
+        {
+            "event": "successor_policy_initialized",
+            "evaluation_number": evaluation_number,
+            "predecessor_policy_sha256": payload["predecessor"]["policy_sha256"],
+        },
+    )
+    return load_policy(policy_path)
+
+
 def _cli() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -251,6 +336,8 @@ def _cli() -> None:
     subparsers.add_parser("status")
     freeze = subparsers.add_parser("freeze-final")
     freeze.add_argument("manifest", type=Path)
+    successor = subparsers.add_parser("init-successor")
+    successor.add_argument("--predecessor", type=Path, default=Path("provenance/test_quarantine.json"))
     args = parser.parse_args()
     policy_path = (
         args.policy
@@ -262,6 +349,14 @@ def _cli() -> None:
         print(json.dumps(payload, indent=2, sort_keys=True))
     elif args.action == "status":
         print(json.dumps(load_policy(policy_path), indent=2, sort_keys=True))
+    elif args.action == "init-successor":
+        predecessor = (
+            args.predecessor
+            if args.predecessor.is_absolute()
+            else args.repository.resolve() / args.predecessor
+        )
+        payload = initialize_successor(args.repository, policy_path, predecessor)
+        print(json.dumps(payload, indent=2, sort_keys=True))
     elif args.action == "freeze-final":
         token = freeze_final(policy_path, args.manifest.resolve())
         print("Final pipeline frozen. Store this single-use token securely:")
