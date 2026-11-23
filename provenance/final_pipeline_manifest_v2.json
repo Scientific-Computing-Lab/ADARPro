@@ -1,0 +1,879 @@
+{
+  "benchmark": "published AdarEdit human binary task; immutable global pair split; published per-context test protocol",
+  "candidate_name": "adarpro_gap_stage_graph_cnn_alone_5seed",
+  "candidate_specification": {
+    "averaging": "each network averaged over its seeds in log-odds, then one stage",
+    "family": "gap_stage_on_seed_averaged_graph_and_cnn_alone",
+    "gap": "label-free lookup by pair sequence in data/derived/genomic_mapping/bed_pair_gaps.parquet",
+    "networks": {
+      "cnn_alone": "binary_pair_balanced_cnn",
+      "graph": "binary_pair_balanced"
+    },
+    "seeds": 5,
+    "stage": "frozen L2 logistic on (graph log-odds, CNN-alone log-odds, log1p genomic gap)"
+  },
+  "code_revision": "129189363b35888927c603e0b7147567b8692241",
+  "contexts": {
+    "Artery": {
+      "components": [
+        {
+          "checkpoint": "models/final_v2/seed20260821/Artery/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20260821",
+          "sha256": "1f0a69ea3900d9aa67145b8661eedf9119d524c111f617ade15f44f9dca4a1a7"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Artery/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20265821",
+          "sha256": "1a3c3b6ba68d267b7a80d15a7e935661b4379bf17ab8c843001a584c4d271f30"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Artery/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20270821",
+          "sha256": "2b47ceab0cc67b34bcdbfe691116fd2fcc04de7f7c59e9b798ddd3b023ab7825"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Artery/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20275821",
+          "sha256": "992e60bf3a8024f3aa558549568232025dde94541353086676915a3838220be7"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Artery/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20280821",
+          "sha256": "803595fb36bf246e1fb8e7bc9c7182aef5ae29ddddb1db5d8553bd0b7f0de415"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20260821/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20260821",
+          "sha256": "dcc57cb61c0668c904d1cc94b094045acbae29fc5e51a89c1ae6a49bf203f1e3"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20265821",
+          "sha256": "47f316113e91273e97e9250ef7e18dbc363cff860bcff6c2528caa051957e557"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20270821",
+          "sha256": "413f3434dcae4572450d40b37aa530f1d2e5cf2f4f1ff4c74d3f91e90d194008"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20275821",
+          "sha256": "bde9b3add12a1d1ae054d548ac07a79ceab7e42e78d80c7240fceb177fbf369f"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Artery/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20280821",
+          "sha256": "50dfc89921c743c771e9fd9c5f0778c8bdcbe5805c1081d1a4c3bda2a5f0a2c6"
+        }
+      ],
+      "equal_average": {
+        "threshold": 0.45000000000000007,
+        "validation_predictions": {
+          "bytes": 946738,
+          "path": "models/final_v2/equal_average/Artery/validation_predictions.parquet",
+          "sha256": "51c6a732e0da0246b6493c0cf503382440e3254d395770d1e483a91c86542225"
+        },
+        "validation_summary": {
+          "bytes": 3154,
+          "path": "models/final_v2/equal_average/Artery/summary.json",
+          "sha256": "3885f2dc3dd8f471bae8d6c7aef5582bb853771e50a3aa1f159dfb1fd8800f40"
+        },
+        "weights": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "networks": {
+        "cnn_alone": [
+          "cnn20260821",
+          "cnn20265821",
+          "cnn20270821",
+          "cnn20275821",
+          "cnn20280821"
+        ],
+        "graph": [
+          "graph20260821",
+          "graph20265821",
+          "graph20270821",
+          "graph20275821",
+          "graph20280821"
+        ]
+      },
+      "stage": {
+        "bytes": 2658,
+        "path": "models/final_v2/gap_stage/Artery/frozen_gap_stage.json",
+        "sha256": "e0a3e2a1a11afb1c171f0cee2b3b24f356d880d7f9a472d6ec3113c46de9f2c2"
+      },
+      "threshold": 0.475,
+      "validation_predictions": {
+        "bytes": 133031,
+        "path": "models/final_v2/gap_stage/Artery/validation_predictions.parquet",
+        "sha256": "50b466651a98d984b643aded712d61f9604ac141ccd20b141e45e8ca54d8969d"
+      },
+      "validation_summary": {
+        "bytes": 1472,
+        "path": "models/final_v2/gap_stage/Artery/summary.json",
+        "sha256": "25f71bcb151c37f41ad2f4a634b50ef9b1ec814b3f0535d6fcaaf59d0a965278"
+      }
+    },
+    "Brain": {
+      "components": [
+        {
+          "checkpoint": "models/final_v2/seed20260821/Brain/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20260821",
+          "sha256": "e62d997cf3e3dba6f53ad1d64caaf18f7cbaa02419d4c9debbc404b8e94a2426"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Brain/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20265821",
+          "sha256": "a9460b13611e54d6a3468e6f38b56326757aa35290906e35d23afea6a0fe93af"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Brain/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20270821",
+          "sha256": "347ddd4324a9e61a232e1525759036e1238fba54bf368b17924566f7ffbfd8ed"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Brain/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20275821",
+          "sha256": "b4c65b36310ae0ad0f05ec8ee3340e06643bc2dbc8753caf1e0dee5b68976e59"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Brain/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20280821",
+          "sha256": "eea0761990bc06a46c3167ccc1324912e548f32b3f59f4d9e94e8975e2df6236"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20260821/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20260821",
+          "sha256": "66329031c47c5e8ccc9dc1ea93b65644481b2ee6c4feebc2aae26fb4d03f2ef3"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20265821",
+          "sha256": "284488e221b4261eb163bfec4ccaa1473ea39f5e0fb6d2e50136c4b1e3781662"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20270821",
+          "sha256": "6204eae65fce96935b317a082465a9987ce474e15ca2f4e664a6e1efcd1a6152"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20275821",
+          "sha256": "f31d240df946aec1fef8ea9661b62338dbebbf2d46153d595c4999893469da63"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Brain/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20280821",
+          "sha256": "86f24843501924c2d0d9f17306a0ed43474aab12ae08367399e5b9fa40853f18"
+        }
+      ],
+      "equal_average": {
+        "threshold": 0.42500000000000004,
+        "validation_predictions": {
+          "bytes": 920573,
+          "path": "models/final_v2/equal_average/Brain/validation_predictions.parquet",
+          "sha256": "b9d1fa6cf8533f2417c478f3aee51de1ded0343e4d159c413a0152c53e8fb646"
+        },
+        "validation_summary": {
+          "bytes": 3143,
+          "path": "models/final_v2/equal_average/Brain/summary.json",
+          "sha256": "114cb4a9b27fe2fb607fe86261b8a0f338e9117681a4173d96015228eaadf906"
+        },
+        "weights": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "networks": {
+        "cnn_alone": [
+          "cnn20260821",
+          "cnn20265821",
+          "cnn20270821",
+          "cnn20275821",
+          "cnn20280821"
+        ],
+        "graph": [
+          "graph20260821",
+          "graph20265821",
+          "graph20270821",
+          "graph20275821",
+          "graph20280821"
+        ]
+      },
+      "stage": {
+        "bytes": 2660,
+        "path": "models/final_v2/gap_stage/Brain/frozen_gap_stage.json",
+        "sha256": "f7e4efcb8a36cedddb2f5ce438fe5bb29ec7082e582ad90fc5763677c0d1cf05"
+      },
+      "threshold": 0.42500000000000004,
+      "validation_predictions": {
+        "bytes": 129321,
+        "path": "models/final_v2/gap_stage/Brain/validation_predictions.parquet",
+        "sha256": "535cbfc2a83154419b1e61c6c9de3413bf48636f4314388a6da573fb77edf112"
+      },
+      "validation_summary": {
+        "bytes": 1483,
+        "path": "models/final_v2/gap_stage/Brain/summary.json",
+        "sha256": "9b8b56e477f4f77f23c69d60fdbb60d37ad8670d64c6930ebfb3bf3ce5d2779d"
+      }
+    },
+    "Combined": {
+      "components": [
+        {
+          "checkpoint": "models/final_v2/seed20260821/Combined/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20260821",
+          "sha256": "dba2360b5fc613bb9755104d146d49dd7dcfc22b84361168f7e5ddc17865f73f"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Combined/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20265821",
+          "sha256": "38c2c4ec1655023c6d66f68a7382eef290cd2c67624846dc701a07124c09b1a1"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Combined/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20270821",
+          "sha256": "03731b2596f4f984be3a40329c55c887174ba1f45cad6ac6a2826611fe6e0b0e"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Combined/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20275821",
+          "sha256": "36422b8ec5fb7045b05f21ef7ebcc87671899a38c369396abefc1d9f8fa1e046"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Combined/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20280821",
+          "sha256": "0a9457b498a0de4ba997195fa983bcec0fba1c3959f348ccd8c9cb586a78ff42"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20260821/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20260821",
+          "sha256": "3e64629b25088724e0521e3acb1c88f37dccc16b0cd0ce2333c6905e85c90354"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20265821",
+          "sha256": "6e33f2367e3f0ffbd1d9011f451c4bc6b520b52fb8c8e70dfea16a3a44ae9a79"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20270821",
+          "sha256": "f60595a418eda443a63849b4ab21ea84b79eed4e065d9b1c6b623e1eda5d0e4f"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20275821",
+          "sha256": "6dee6841e1414ae4142f63b55a8537903a774cff52fd63ffac3c12a9f2abc205"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Combined/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20280821",
+          "sha256": "7dbb27611a93d36995eb7231c3807b27bd64fff76bc65be937f2281415dad27a"
+        }
+      ],
+      "equal_average": {
+        "threshold": 0.35,
+        "validation_predictions": {
+          "bytes": 959503,
+          "path": "models/final_v2/equal_average/Combined/validation_predictions.parquet",
+          "sha256": "eb61979e7fbf152b1f66e45477ac911c245ae8bfb60f22061e8d8a8447b6b87f"
+        },
+        "validation_summary": {
+          "bytes": 3152,
+          "path": "models/final_v2/equal_average/Combined/summary.json",
+          "sha256": "795300c4f252aaf60cc737e717cd35ecc0bd4143193c206845915871a43f8397"
+        },
+        "weights": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "networks": {
+        "cnn_alone": [
+          "cnn20260821",
+          "cnn20265821",
+          "cnn20270821",
+          "cnn20275821",
+          "cnn20280821"
+        ],
+        "graph": [
+          "graph20260821",
+          "graph20265821",
+          "graph20270821",
+          "graph20275821",
+          "graph20280821"
+        ]
+      },
+      "stage": {
+        "bytes": 2681,
+        "path": "models/final_v2/gap_stage/Combined/frozen_gap_stage.json",
+        "sha256": "9571e2440ee1a5679709e8c47e1cfb6efaf91b6488ee5b71b67d240fa191d02a"
+      },
+      "threshold": 0.325,
+      "validation_predictions": {
+        "bytes": 130902,
+        "path": "models/final_v2/gap_stage/Combined/validation_predictions.parquet",
+        "sha256": "9614c77daec6055b46abe0c80015e8f3ad510d63b1972c625f42d5575bf6a668"
+      },
+      "validation_summary": {
+        "bytes": 1453,
+        "path": "models/final_v2/gap_stage/Combined/summary.json",
+        "sha256": "d1c0cfd7607ea092adc7f5e19300feb23cace89f8943c1e9ba952b79f3eafb24"
+      }
+    },
+    "Liver": {
+      "components": [
+        {
+          "checkpoint": "models/final_v2/seed20260821/Liver/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20260821",
+          "sha256": "0feb962a052c57cdc9e4c2aa90a7b2e42a874f2671462a831f90b49fde4bd436"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Liver/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20265821",
+          "sha256": "91908c4d82da46fa25dc703977d0aa2d35e109471e370b2ec79e7fec7f09435e"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Liver/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20270821",
+          "sha256": "98f67272587b7211e0fd4e5ac79e84ee70dfb54c84744c55b1e6b867a9d508da"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Liver/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20275821",
+          "sha256": "92d72e0e0f55e1ddc0c948889cfc998341633bde95804fb339ef0b1ce709fd24"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Liver/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20280821",
+          "sha256": "34a4466c9a847c634f63cba6ae6434b1bb46653261e548f590c05b9253c7cd48"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20260821/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20260821",
+          "sha256": "6ccc9eab138ba10586e54592ed2e119cf74148d8dddabda33dff7ee3831e68f5"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20265821",
+          "sha256": "fb4366119dcc1227e25afefe60d619d0f1c9fb86e534556859baa25fecf46b33"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20270821",
+          "sha256": "91bd02e70896f054df959ad775f9c0c1a000493c0835f0cc30a7a7e3986c675f"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20275821",
+          "sha256": "54134214c6da788585e46f249ad00d54bba4a7b00ab1275b7c78b54837664e42"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/Liver/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20280821",
+          "sha256": "4563258cbc10ba2cc8243db615e3622a57089b1050cb2406f74f94389296bbd9"
+        }
+      ],
+      "equal_average": {
+        "threshold": 0.55,
+        "validation_predictions": {
+          "bytes": 750101,
+          "path": "models/final_v2/equal_average/Liver/validation_predictions.parquet",
+          "sha256": "0ff033d240d6e265bc5f445de0f104a5e1f2f6dd6ec28cf4788a6b57cffdb22d"
+        },
+        "validation_summary": {
+          "bytes": 3128,
+          "path": "models/final_v2/equal_average/Liver/summary.json",
+          "sha256": "c7503cb292bc8d06e3bbf73a51cea8f9b81211cee283a93e10b5cf28d423894b"
+        },
+        "weights": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "networks": {
+        "cnn_alone": [
+          "cnn20260821",
+          "cnn20265821",
+          "cnn20270821",
+          "cnn20275821",
+          "cnn20280821"
+        ],
+        "graph": [
+          "graph20260821",
+          "graph20265821",
+          "graph20270821",
+          "graph20275821",
+          "graph20280821"
+        ]
+      },
+      "stage": {
+        "bytes": 2665,
+        "path": "models/final_v2/gap_stage/Liver/frozen_gap_stage.json",
+        "sha256": "e0abb78275a78397cf23022e6d5026e4e03672a606fa4a71c4522198acee01dd"
+      },
+      "threshold": 0.42500000000000004,
+      "validation_predictions": {
+        "bytes": 104860,
+        "path": "models/final_v2/gap_stage/Liver/validation_predictions.parquet",
+        "sha256": "40a5af3e2cb43272bb16d987900133ece72a6fb5c5bfae32b5fcb3eea9e22b21"
+      },
+      "validation_summary": {
+        "bytes": 1473,
+        "path": "models/final_v2/gap_stage/Liver/summary.json",
+        "sha256": "e1b26c03539d9ca44d8057ee610bc55e18fe503218da467fb0fc24bb3eb98c5c"
+      }
+    },
+    "MuscleSkeletal": {
+      "components": [
+        {
+          "checkpoint": "models/final_v2/seed20260821/MuscleSkeletal/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20260821",
+          "sha256": "2b2129040699c9e59788d09029af56af5fe562c240189ae22ad5cbaeda589986"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/MuscleSkeletal/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20265821",
+          "sha256": "d2969db58544b8fdf58ae3d45de21a5b66e9ffcf9b4b06b4c7ab8c9bc2243154"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/MuscleSkeletal/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20270821",
+          "sha256": "3ddf93abdfc6843f58ebb8e7ccfe8dec7c2fc07c1a9076b26f1a2393a5ddaa38"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/MuscleSkeletal/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20275821",
+          "sha256": "e1585387993d285d92345a255488b45f671fa2c5924b444c5c2a91f1e57650ef"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/MuscleSkeletal/binary_pair_balanced_cnn/best.pth",
+          "mode": "binary_pair_balanced_cnn",
+          "name": "cnn20280821",
+          "sha256": "da27bd5386ce6c747a670a4eb607cc6618eb7e927d2f89743bfd45146e101eb8"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20260821/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20260821",
+          "sha256": "8d9bdc9d6800acaa12e52208be59ccd3d5487caad642454cb55559ec6a231527"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20265821/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20265821",
+          "sha256": "f749c9b54b5edca0c935b0c15e3507c77765bc3768580f8b2f77e4c5be93c75b"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20270821/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20270821",
+          "sha256": "7be6239e0098551eb3928c7ff3c233c5f3650d6391cb74a95072feb4551e0eeb"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20275821/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20275821",
+          "sha256": "0bfb317b38d9e0bae429ff476cc55fc53082ff16cf7e6506a3b329f61c73c50c"
+        },
+        {
+          "checkpoint": "models/final_v2/seed20280821/MuscleSkeletal/binary_pair_balanced/best.pth",
+          "mode": "binary_pair_balanced",
+          "name": "graph20280821",
+          "sha256": "1f9a7277ddeef64801091302cce8c2145c05bf93642a7a237f5a8f743b91b644"
+        }
+      ],
+      "equal_average": {
+        "threshold": 0.325,
+        "validation_predictions": {
+          "bytes": 418917,
+          "path": "models/final_v2/equal_average/MuscleSkeletal/validation_predictions.parquet",
+          "sha256": "3a8c173ee2513f75bccb21b46a53f580d9dbf0b8f4120ebcc493751350a31405"
+        },
+        "validation_summary": {
+          "bytes": 3224,
+          "path": "models/final_v2/equal_average/MuscleSkeletal/summary.json",
+          "sha256": "0944a03f3e572f4ca77ebb6c3590770df038e6938fd9687dd8b81ffd2000cbf8"
+        },
+        "weights": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "networks": {
+        "cnn_alone": [
+          "cnn20260821",
+          "cnn20265821",
+          "cnn20270821",
+          "cnn20275821",
+          "cnn20280821"
+        ],
+        "graph": [
+          "graph20260821",
+          "graph20265821",
+          "graph20270821",
+          "graph20275821",
+          "graph20280821"
+        ]
+      },
+      "stage": {
+        "bytes": 2759,
+        "path": "models/final_v2/gap_stage/MuscleSkeletal/frozen_gap_stage.json",
+        "sha256": "05b6d6fc7c65a973365aaf134275355029884945237e2c6e93318b87853f0e6a"
+      },
+      "threshold": 0.42500000000000004,
+      "validation_predictions": {
+        "bytes": 50081,
+        "path": "models/final_v2/gap_stage/MuscleSkeletal/validation_predictions.parquet",
+        "sha256": "192d69bdfd5b8784c2f32d9204b86bd549eec104d935eab3778503bffcb0a8af"
+      },
+      "validation_summary": {
+        "bytes": 1473,
+        "path": "models/final_v2/gap_stage/MuscleSkeletal/summary.json",
+        "sha256": "08b2a95657ee7355ec1904c48c87e0a33ee29a85c2d056d30b2efc10af854b3a"
+      }
+    }
+  },
+  "created_utc": "2026-11-23T15:46:14.801981+00:00",
+  "development_protocol": {
+    "canonical_test_access_during_selection": false,
+    "checkpoint_selection": "maximum validation F1 over 1000 epochs",
+    "development_folds": "five global pair-disjoint folds",
+    "grouping_unit": "pair_id",
+    "selection_split": "published validation canonical rows",
+    "stage_fit": "published train canonical rows (in-sample final-model scores; gate scheme)",
+    "threshold_selection": "published validation only",
+    "training_split": "published train pairs; expanded raw high/low sites"
+  },
+  "evaluation": {
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": "20260821 + endpoint index in ['Artery', 'Brain', 'Liver', 'MuscleSkeletal', 'Combined']",
+    "comparators": [
+      "equal_average",
+      "pnas_selected_predictor",
+      "adaredit_reference"
+    ],
+    "contrasts": [
+      [
+        "gap_stage",
+        "adaredit_reference"
+      ],
+      [
+        "gap_stage",
+        "pnas_selected_predictor"
+      ],
+      [
+        "gap_stage",
+        "equal_average"
+      ]
+    ],
+    "device": "cpu",
+    "headline": "gap_stage",
+    "metrics": [
+      "auroc",
+      "auprc",
+      "f1",
+      "precision",
+      "recall",
+      "specificity",
+      "balanced_accuracy",
+      "mcc",
+      "brier"
+    ]
+  },
+  "frozen_inputs": {
+    "alu_pair_bed": {
+      "bytes": 44984,
+      "path": "data/raw/alu_pairs/Pair_Alu_withStrand.bed",
+      "sha256": "e58935a092e8c84af0132566f038f7c4c354baed9b581e5fe8052d684101b2c3"
+    },
+    "baseline_adapter": {
+      "bytes": 19591,
+      "path": "src/adarpro/models/baseline_oof.py",
+      "sha256": "81e0199065dbe6e84b4c4096b9469678f6dc151d430baca0103a2a722d86869e"
+    },
+    "conda_packages": {
+      "bytes": 135278,
+      "path": "provenance/conda_packages_2026-08-21.json",
+      "sha256": "a3beb173bd3de4b83cf638deb7f0a317ef70636d4edad328cab36dbc449e5335"
+    },
+    "ensemble_implementation": {
+      "bytes": 10448,
+      "path": "src/adarpro/models/final_ensemble.py",
+      "sha256": "e26d30da54747cfd3d9aa41e8ec01a8ca5c17134ce4373aedf61410604ffdb22"
+    },
+    "ensemble_math": {
+      "bytes": 16263,
+      "path": "src/adarpro/models/fixed_checkpoint_ensemble.py",
+      "sha256": "f17eee949c4bcf8999be783dd8dcfd785e3278de4634ac2abca07d6b36365104"
+    },
+    "environment_resolution": {
+      "bytes": 1268,
+      "path": "provenance/environment_resolution.md",
+      "sha256": "b630dc1bb63e54cdbd708b9ae2073c295459373f0c34db09c3b3a3db866dec2c"
+    },
+    "environment_yml": {
+      "bytes": 644,
+      "path": "environment.yml",
+      "sha256": "1cef5c9a53fc61843d83caafdff41b962b327f4e24650bc5206332d2c061aa91"
+    },
+    "expanded_development_sites": {
+      "bytes": 10091284,
+      "path": "data/derived/cross_tissue/development_raw_combined_sites.parquet",
+      "sha256": "965b3542f9f77c251521e0de714a56e62049a94f06aa5a6ebd7216c344798741"
+    },
+    "final_training_implementation": {
+      "bytes": 15833,
+      "path": "src/adarpro/models/final_training.py",
+      "sha256": "0b84586d166e089e8f055316117b1778c99c79e94e87961ca8f14eac03a6c48b"
+    },
+    "gap_stage_features": {
+      "bytes": 22515,
+      "path": "src/adarpro/models/gap_stage.py",
+      "sha256": "f8e9e8485ae76f2be720c75e2b777f40d911a21acaf2c3db365a1945929260c0"
+    },
+    "gap_stage_implementation": {
+      "bytes": 12667,
+      "path": "src/adarpro/models/final_gap_stage.py",
+      "sha256": "7e9a5979882488b0cc7f6611a7c8377183f4b0a0481b4a7ecab45838ebfca07b"
+    },
+    "global_pair_split": {
+      "bytes": 13859,
+      "path": "data_construction/split/global_pair_split.json",
+      "sha256": "2884808c05f2026938f19a54e3745f8334d178d8697f7fa84a91c804f19109e4"
+    },
+    "locked_evaluation_implementation": {
+      "bytes": 23061,
+      "path": "src/adarpro/evaluation/final_locked.py",
+      "sha256": "97c4652ad976da87b1c884c409a179a512e1d2ab437534810430590716636f0b"
+    },
+    "metric_implementation": {
+      "bytes": 21461,
+      "path": "src/adarpro/models/residual.py",
+      "sha256": "48b16b54468bf361a46f162170f6820f9d48f657e4d050ba31df4d679e4604bc"
+    },
+    "model_implementation": {
+      "bytes": 55958,
+      "path": "src/adarpro/models/multitask_oof.py",
+      "sha256": "b5a7d7df66dd17765529eb00922d861f6ecc7c7230dc57a324c7fcc011cdbbc1"
+    },
+    "model_selection_policy": {
+      "bytes": 5554,
+      "path": "provenance/model_selection_policy_v2.json",
+      "sha256": "510bd85dc2d939e1309d669e3c63ab4d0027237a125752856b4af18caa0b5bf4"
+    },
+    "pair_gap_implementation": {
+      "bytes": 9067,
+      "path": "src/adarpro/mapping/bed_pair_gaps.py",
+      "sha256": "cc6282585923dce766c3ea83423173a02f8cd3d160a239abe19b62dbd64995ee"
+    },
+    "pair_gaps": {
+      "bytes": 283038,
+      "path": "data/derived/genomic_mapping/bed_pair_gaps.parquet",
+      "sha256": "46a3f1489886cc45aa91197f3cbe474019c05c0e41b662ce9d139dff4cb2a66c"
+    },
+    "pair_gaps_provenance": {
+      "bytes": 1241,
+      "path": "data/derived/genomic_mapping/bed_pair_gaps.provenance.json",
+      "sha256": "39555b121c9620b0d00e20ebe765942131d2481d1c7e592865a23609154c9f69"
+    },
+    "pair_mapping": {
+      "bytes": 40636,
+      "path": "data/derived/genomic_mapping/pair_mapping.csv",
+      "sha256": "494ad478e2a58602269eb9b1613fe49fb80f782f1f74350d31351f45da973c36"
+    },
+    "pair_reconstruction": {
+      "bytes": 13089,
+      "path": "src/adarpro/mapping/reconstruct.py",
+      "sha256": "22181e46e75736eb172509f9dc61701d5e5411be3ee2d78f62e5e84f9e4a3e6f"
+    },
+    "pip_freeze": {
+      "bytes": 2203,
+      "path": "provenance/pip_freeze_2026-08-21.txt",
+      "sha256": "4dec6ea29fef3c47dbc23eb528cdc969fcd72940af782ae5292e1f6f3979c079"
+    },
+    "predecessor_manifest": {
+      "bytes": 10776,
+      "path": "provenance/final_pipeline_manifest.json",
+      "sha256": "dd04f9786d52f57653da31b12dc777d10aa4247dfccd2b2c59ddff64ad395a1c"
+    },
+    "predecessor_metrics": {
+      "bytes": 2603,
+      "path": "results/adarpro/final_locked_test/metrics.csv",
+      "sha256": "ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e"
+    },
+    "predecessor_model_selection_policy": {
+      "bytes": 3764,
+      "path": "provenance/model_selection_policy.json",
+      "sha256": "adc5216ade76e3e28f7848d05666866900f66cc56b4985b7740850fd8a4e7a79"
+    },
+    "predecessor_summary": {
+      "bytes": 359,
+      "path": "results/adarpro/final_locked_test/summary.json",
+      "sha256": "5532ae651c9523f8aa481cba1beb9dbbfdc2a8ac06683d8db5e26ed963729248"
+    },
+    "published_baseline_checkpoint_Artery": {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Artery/best.pth",
+      "sha256": "e06f0a07f1749e3fba4ace5287a7d6e33a688ef7bff09a40f55040fa8e6987a0"
+    },
+    "published_baseline_checkpoint_Brain": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Brain/best.pth",
+      "sha256": "0fadd0dc07c9b88c1e7696610cdd448e63af43a5e63386b44399139e7f08a1b2"
+    },
+    "published_baseline_checkpoint_Combined": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_Combined/best.pth",
+      "sha256": "aa6202b80f21d003413bb9fbfa94c09fea56fc319a0a5de8b564803e229f02cf"
+    },
+    "published_baseline_checkpoint_Liver": {
+      "bytes": 156174,
+      "path": "checkpoints/baseline_Liver/best.pth",
+      "sha256": "1c1c1f3773ed50162fbd7fbfc45219408febd72bfecc92992af247683d396729"
+    },
+    "published_baseline_checkpoint_MuscleSkeletal": {
+      "bytes": 156238,
+      "path": "checkpoints/baseline_MuscleSkeletal/best.pth",
+      "sha256": "aad0112a331cfea6965e28332d4569e25decdd281f16f959c2ac59d3c7cac0b5"
+    },
+    "published_baseline_metrics": {
+      "bytes": 3982,
+      "path": "results/adarpro/baseline_reproduction.csv",
+      "sha256": "e68e8002ce7a9a01f515008374e9e8bd7e2b16b473d649776829c6392a7c12d0"
+    },
+    "quarantine_implementation": {
+      "bytes": 14316,
+      "path": "src/adarpro/quarantine.py",
+      "sha256": "3206c763a5d5d391bcc0f5e0f16fb1c57d0cf27e62b58e62e03a659a7c20f2d3"
+    },
+    "second_session_implementation": {
+      "bytes": 42988,
+      "path": "src/adarpro/evaluation/final_locked_gap_stage.py",
+      "sha256": "8d266077e22781fb67de974bd524167ae86c7ea8f8731b57e09791cae3cc61c1"
+    },
+    "site_master": {
+      "bytes": 10315338,
+      "path": "data/derived/site_master.parquet",
+      "sha256": "b90d788d7241b20c894639ef464b2cdbaaed21a701780db681ad04313e7c4c3d"
+    },
+    "unified_development_decision": {
+      "bytes": 3783,
+      "path": "provenance/unified_development_decision.json",
+      "sha256": "9384f5baf5052655475527db5bc21a86cf94caf8c615fe46ffa9f30c78ea91e3"
+    },
+    "unified_model_selection_policy": {
+      "bytes": 4929,
+      "path": "provenance/unified_model_selection_policy.json",
+      "sha256": "af9c3973256609a45013a1e6b0486d5708840c7e5357bd0e41a39ffbc8cd4b1e"
+    },
+    "upstream_baseline_model": {
+      "bytes": 5561,
+      "path": "code/gnnadar_verb_compact.py",
+      "sha256": "aac8cebddd69729e79c14b85081066d2e926f318090fa0839251aa4fdd7c30ff"
+    },
+    "upstream_provenance": {
+      "bytes": 9169,
+      "path": "provenance/upstream.json",
+      "sha256": "e34301fc9bc130a51232c0a629db83e2c80b77e1f3e2834d34db4abee94a921b"
+    }
+  },
+  "predecessor": {
+    "candidate_name": "adarpro_pair_local_equal_logit_ensemble",
+    "manifest": "provenance/final_pipeline_manifest.json",
+    "manifest_sha256": "dd04f9786d52f57653da31b12dc777d10aa4247dfccd2b2c59ddff64ad395a1c",
+    "policy": "provenance/test_quarantine.json",
+    "policy_sha256": "b54c4a6cec18d14b47187b1ddbafcbdd963fe3f5ccef2074a367fe38a498d830",
+    "results": "results/adarpro/final_locked_test"
+  },
+  "schema_version": 2,
+  "selection_policy": "provenance/model_selection_policy_v2.json",
+  "selection_policy_sha256": "510bd85dc2d939e1309d669e3c63ab4d0027237a125752856b4af18caa0b5bf4",
+  "upstream_revision": "5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5"
+}
