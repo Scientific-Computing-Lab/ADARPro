@@ -30,10 +30,9 @@ main-paper page boundary (`poppler-utils` on Debian/Ubuntu).
 - `generated/` contains deterministic LaTeX tables.
 - `numerical_claim_ledger.csv` records each reported value, display rounding,
   epistemic status, authoritative artifact, selector, and manuscript use.
-- `claim_traceability.csv` maps principal numerical claims to campaign
-  artifacts and labels their epistemic status.
-- `EPISTEMIC_CLAIM_AUDIT.md` records the inferential boundary for every major
-  scientific claim, and `TERMINOLOGY_AUDIT.md` fixes paper-facing vocabulary.
+- `first_round_records/` keeps the first-round manuscript's claim map,
+  claim-boundary and terminology audits, and title options, for provenance
+  only; the build does not read them.
 - `reference_audit.csv` records DOI-level bibliographic verification.
 - `scripts/render_paper_figures.py` and `scripts/render_paper_tables.py`
   regenerate the publication outputs.

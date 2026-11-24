@@ -575,6 +575,27 @@ def add_locked_claims() -> None:
                 "one decimal after conversion to percent",
                 f"{macro_suffix}{which}",
             )
+    # U3 (WD51): the rescue rate is gross; the text also prints the net false-positive reduction,
+    # (rescued - new false positives) / baseline false positives, as an endpoint-free range.
+    net = ((transitions.loc[CONTEXTS, "fp_rescued"] - transitions.loc[CONTEXTS, "new_fp"])
+           / transitions.loc[CONTEXTS, "baseline_fp"]).astype(float)
+    if not (net > 0).all():
+        raise RuntimeError("net false-positive reduction is not positive in every endpoint; revise the text")
+    for which, context in (("Min", net.idxmin()), ("Max", net.idxmax())):
+        value = float(net.loc[context])
+        add(
+            f"locked_net_fp_reduction_{which.lower()}",
+            f"{which} over endpoints of canonical net false-positive reduction",
+            value,
+            f"{100 * value:.1f}",
+            "proportion",
+            "canonical held-out descriptive error transition",
+            transitions_path,
+            f"{which.lower()} over five endpoints of (fp_rescued - new_fp) / baseline_fp (attained in {context})",
+            "Results",
+            "one decimal after conversion to percent",
+            f"NetFPReduction{which}",
+        )
     exceeds = int((transitions.loc[CONTEXTS, "fp_rescue_rate"] > transitions.loc[CONTEXTS, "tp_damage_rate"]).sum())
     if exceeds != len(CONTEXTS):  # Fig. 6D title and caption, SI: rescue exceeds damage
         raise RuntimeError(f"FP rescue exceeds TP damage in {exceeds} of {len(CONTEXTS)} endpoints; revise the text")

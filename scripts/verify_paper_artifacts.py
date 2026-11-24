@@ -69,18 +69,8 @@ def verify_pnas_fields() -> None:
 
 
 def verify_claim_traceability() -> None:
-    with (PAPER / "claim_traceability.csv").open(
-        newline="", encoding="utf-8"
-    ) as handle:
-        rows = list(csv.DictReader(handle))
-    if len(rows) != 31 or len({row["claim_id"] for row in rows}) != 31:
-        raise AssertionError("claim traceability must contain 31 unique claims")
-    for row in rows:
-        for item in row["authoritative_artifact"].split("; "):
-            paths = list(ROOT.glob(item)) if "*" in item else [ROOT / item]
-            if not paths or any(not path.exists() for path in paths):
-                raise AssertionError(f"{row['claim_id']}: missing artifact {item}")
-
+    # The first-round claim map (paper/first_round_records/claim_traceability.csv) is provenance only;
+    # every number in the current paper is traced by the numerical claim ledger (U4, WD51).
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     with ledger_path.open(newline="", encoding="utf-8") as handle:
         ledger = list(csv.DictReader(handle))
