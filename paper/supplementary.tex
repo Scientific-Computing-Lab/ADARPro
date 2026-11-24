@@ -16,6 +16,12 @@
 \@ifundefined{PNAS@linecount}{\newcount\PNAS@linecount\PNAS@linecount\@ne}{}
 \makeatother
 
+% SI sections are lettered automatically (A, B, ...) so the main text can \ref them through xr.
+% The heading prints "A. Title" exactly like the former hand-typed \section*{A. Title}: number and
+% title share one run of text with an ordinary space (the class's numbered format would put a 0.5em gap).
+\renewcommand{\thesection}{\Alph{section}}
+\titleformat{\section}{\large\sffamily\bfseries}{}{0em}{\thesection.\ #1}[]
+
 \title{Evidence-guided search maps predictive information across scales of human RNA editing}
 \author{Author list pending}
 \correspondingauthor{Corresponding author and e-mail pending author confirmation.}
@@ -28,7 +34,7 @@
 
 This appendix documents the search over biological information scales and the evidence audit used to interpret it. The search separates intrinsic substrate properties, transcript and cellular realization, target-local selection, and statistical dependence among sites from one duplex. It includes branches that were selected, supported but not actionable, limited, unsupported in the tested formulation, deferred for unavailable matched data, or superseded by stronger lower-complexity evidence. Four evaluation regimes remain distinct: \emph{development OOF} denotes pair-disjoint cross-fitted comparisons used for discovery and selection; \emph{selection diagnostic} denotes published-validation quantities used for checkpoints or thresholds; \emph{canonical held-out} denotes the single evaluation after the final manifest was frozen; and \emph{secondary} denotes robustness or descriptive analyses that do not define the benchmark claim. These labels keep a negative result for an available measurement separate from a biological question that the benchmark could not validly test.
 
-\section*{A. Benchmark reproduction and leakage control}
+\section{Benchmark reproduction and leakage control}\label{si:benchmark}
 
 \subsection*{Immutable AdarEdit benchmark}
 
@@ -86,7 +92,7 @@ We report AUROC, AUPRC, F1, precision, recall, specificity, balanced accuracy, M
 
 \input{generated/table_s1_locked_metrics.tex}
 
-\section*{B. Baseline scope and transfer boundaries}
+\section{Baseline scope and transfer boundaries}\label{si:scope}
 
 Retained benchmark-characterization runs place the subsequent residual tests in context. The compact sequence--structure graph was evaluated within five human endpoints---four individual tissues and pooled Combined---and three nonhuman datasets. Within-context AUROC ranged from 0.869 to 0.933 for the human endpoints and from 0.823 to 0.865 for the nonhuman datasets. These values demonstrate substantial predictive information in sequence and predicted structure, but they are descriptive across datasets with different lineages, substrate classes, and data-generation procedures.
 
@@ -96,7 +102,7 @@ The accompanying within-context table compares the compact baseline with a Bio-a
 
 The upstream study also reported strong GTEx--RNAAtlas concordance for shared editing measurements, supporting label reproducibility across cohorts and processing pipelines \cite{Rosenwasser2026AdarEdit}. The selected predictor was not evaluated on RNAAtlas; this observation therefore does not test transportability to an independently generated human cohort.
 
-\section*{C. Search-space definition and evidence classes}
+\section{Search-space definition and evidence classes}\label{si:search-space}
 
 \subsection*{Question relative to earlier predictors}
 
@@ -110,7 +116,7 @@ The biological decomposition organizes an adaptive campaign, not one prospective
 
 A valid branch advanced only after comparison with its same-fold reference and relevant controls. Table~\ref{tab:evidencemap} gives quantitative effects; the estimands differ and are not ranked on one common scale. Table~\ref{tab:taxonomy} maps every retained direction to its scale, question, measurement or representation, comparator, evidence status, result, and disposition. Deferred donor-, cell-, regulator-, and in vivo structure measurements lacked benchmark-compatible outcomes and are not counted as negative evidence. The machine-readable record retains the historical priorities, sources, stopping criteria, and run-level artifacts.
 
-\section*{D. Biological-context tests}
+\section{Biological-context tests}\label{si:biological-context}
 
 \subsection*{RBP occupancy, binding potential, and abundance}
 
@@ -135,7 +141,7 @@ Native-gap/flank-aware RNAfold ensemble summaries were also screened against the
 \label{fig:s2}
 \end{figure}
 
-\section*{E. Substrate-level editing burden and propensity}
+\section{Substrate-level editing burden and propensity}\label{si:burden}
 
 Pair-level analyses used one row per development substrate. Outcomes were the high-editing fraction among eligible high/low sites, mean EditingIndex across all available sites including intermediates, and whether a pair contained any high-editing site. Predictors ranged from adenosine count and graph-derived sequence/structure summaries to genomic geometry and the combined 16-feature low-capacity model. All fitting remained inside pair folds.
 
@@ -147,7 +153,7 @@ Site-level translation was weaker. The outer-isolated burden gate adjusted a sit
 
 \input{generated/table_s3_substrate_realization.tex}
 
-\section*{F. Richer supervision and the statistical unit}
+\section{Richer supervision and the statistical unit}\label{si:supervision}
 
 The expanded training pool contains all eligible high- and low-editing observations in the training pairs. Both formulations allocate equal numbers of draws to the two classes (up to one draw for an odd epoch budget). The row-wise formulation samples sites uniformly within each class. The pair-first formulation instead samples uniformly among pairs containing that class, then uniformly among the eligible sites in the chosen pair. Pairs lacking a class are absent from that class's sampling pool; there is no fallback draw. Pair weighting is therefore uniform within class, not necessarily across all pairs. The canonical-row epoch budget was fixed.
 
@@ -158,7 +164,7 @@ The binary/ordinal/continuous model shared an encoder across canonical classific
 \input{generated/table_s4_supervision_decomposition.tex}
 \input{generated/table_s5_pair_balance.tex}
 
-\section*{G. Focal and target-local representation}
+\section{Focal and target-local representation}\label{si:target-local}
 
 Three stages tested whether retaining target-local information improves on whole-duplex mean pooling. First, an exploratory pooled-score target-contact screen added AUROC and AUPRC but little F1, localizing a ranking effect near the target (section A). Second, a fold-isolated focal-node graph model preserved the final target embedding alongside the global mean. It improved ranking relative to the pair model and an otherwise matched duplicate-global control, although its standalone F1 interval was insufficient for selection.
 
@@ -168,17 +174,17 @@ The local-augmented graph model exceeded the whole-duplex-only predictor in musc
 
 \input{generated/table_s6_target_controls.tex}
 
-\section*{H. Cross-tissue sharing}
+\section{Cross-tissue sharing}\label{si:cross-tissue}
 
 A four-output masked model shared a graph encoder across individual tissues while omitting unobserved labels from the loss. Relative to independently trained pair-first models, it yielded limited positive transfer, concentrated in the data-limited skeletal-muscle endpoint. Mean AUROC/AUPRC/F1 changes across the four individual tissue endpoints were \SharedMacroDeltaAUROCMedian{}/\SharedMacroDeltaAUPRCMedian{}/\SharedMacroDeltaFOneMedian{}, but the predeclared AUROC and F1 selection criteria were not both met and mean Brier increased by \SharedMacroDeltaBrierMedian{}. Sharing therefore supplied some predictive signal, but its gains were smaller than those from supervision and target alignment and came with worse probability error. Combined was excluded from this biological multitissue formulation.
 
-\section*{I. Foundation-model and substrate-wide experiments}
+\section{Foundation-model and substrate-wide experiments}\label{si:foundation}
 
 Frozen RiNALMo representations were evaluated at the target and substrate scales, including a larger frozen variant \cite{Penic2025}. Residual models and neural fusion used fold-fitted normalization and matched-dimensional controls. The 150M target view reproduced a small F1-only threshold effect, but neither variant improved AUROC/AUPRC or met the predeclared requirement to beat matched random features on both ranking and F1. The more specific next question is whether task-specific pretraining on inverted-Alu substrates would help. A corpus audit found \PretrainingCandidatePairs{} benchmark-excluded opposite-orientation Alu pairs in GENCODE transcript spans, but transcript connectivity, foldability, and sequence-redundancy filters were insufficiently resolved for a leakage-safe test, so that direction remains deferred.
 
 The substrate-wide decoder encoded a pair once and classified all candidate adenosines jointly. It was evaluated against a pair-first model on identical rows with a prespecified two-fold futility criterion. Decoder-minus-reference differences were \AllADeltaAUROCMedian{} AUROC and \AllADeltaFOneMedian{} F1, with wholly adverse intervals, and training stopped. A relative within-pair rank feature helped a weaker original encoder in a pooled-score screen, but its later outer-isolated test neither beat pair-first training nor the shuffled-rank control. The tested joint decoder therefore did not improve on pair-first stochastic learning.
 
-\section*{J. Natural-prevalence robustness}
+\section{Natural-prevalence robustness}\label{si:natural-prevalence}
 
 The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. Here ``natural prevalence'' means the undownsampled high/low pool, not population-wide prevalence across all RNA sites or intermediate editing levels. In both muscle and liver, the fixed ensemble improved ranking, AUPRC, F1, and false-positive count over its pair-first whole-duplex-only component (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support false-positive reduction in this secondary pool but do not replace the canonical task.
 
@@ -191,7 +197,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 
 \input{generated/table_s7_natural_prevalence.tex}
 
-\section*{K. Preregistered unified end-to-end experiment}
+\section{Preregistered unified end-to-end experiment}\label{si:unified}
 
 After the prediction-level ensemble was frozen but before test access, a separate protocol specified one connected model. A shared three-layer graph attention encoder produced whole-duplex and focal-node states; the aligned local CNN supplied the third view. The three projected representations and their pairwise elementwise interactions entered a 64-unit fusion layer, while a training-only substrate head carried fixed loss weight \UnifiedAuxWeight{}. The connected model had \UnifiedParameters{} trainable parameters versus \EnsembleParameters{} parameters across the two independent ensemble components. Training used pair-first class balance, \UnifiedEpochs{} epochs, Adam at learning rate $10^{-3}$ and weight decay $10^{-4}$, batch size \UnifiedBatchSize{}, and seed \UnifiedBaseSeed{}. The comparator prediction hash and staged decision rules were preregistered.
 
@@ -206,7 +212,7 @@ The unified model's AUROC and AUPRC were below the frozen ensemble in every oute
 
 \input{generated/table_s8_unified.tex}
 
-\section*{L. Final training and frozen canonical evaluation}
+\section{Final training and frozen canonical evaluation}\label{si:final-evaluation}
 
 For each endpoint, a pair-first whole-duplex-only graph model and an independently trained pair-first graph model augmented with the aligned target/helix-partner convolution were fitted on the published training pairs. Published validation data selected checkpoints and one ensemble threshold per endpoint. Ten checkpoints, histories, configurations, selected epochs, thresholds, inputs, code revision, and weights were written to \texttt{provenance/final\_pipeline\_manifest.json}, which retains the exact manifest SHA-256 and bound code revision. The canonical test was evaluated once after this freeze, and no subsequent model decision used test outcomes.
 
@@ -227,13 +233,13 @@ AUROC and AUPRC improved in every endpoint (Fig.~\ref{fig:s5}; Table~\ref{tab:lo
 
 \input{generated/table_s9_false_positives.tex}
 
-\section*{M. Search-space coverage and provenance}
+\section{Search-space coverage and provenance}\label{si:coverage}
 
 Table~\ref{tab:taxonomy} records search coverage and branch dispositions. Each run in \path{experiments/experiments.csv} records code revision, input hashes, folds, seed, features, hyperparameters, artifacts, metrics, and test access. OOF predictions, controls, ablations, and bootstrap tables remain in \path{experiments/runs/}; reports 00--29 preserve decisions and provenance. The numerical claim ledger maps manuscript values to authoritative artifacts and selectors.
 
 \input{generated/table_s10_experiment_taxonomy.tex}
 
-\section*{N. Post-hoc scale diagnostics}
+\section{Post-hoc scale diagnostics}\label{si:diagnostics}
 
 These analyses were specified after completion of the development campaign and use only retained pair-disjoint OOF predictions or matched observations from development pairs. They are descriptive tests of the multiscale interpretation, not model-selection criteria, and they do not use the canonical test.
 
@@ -263,7 +269,7 @@ Pair-first weighting preferentially reduced log loss for substrates with fewer e
 \label{fig:s8_diagnostics}
 \end{figure}
 
-\section*{O. Interpretation and decisive future measurements}
+\section{Interpretation and decisive future measurements}\label{si:interpretation}
 
 Substrate-level propensity and target-local information leave tissue-associated differences unresolved by the tested bulk features.
 
@@ -272,6 +278,10 @@ A future study could pair donor- or cell-resolved editing with transcript abunda
 \subsection*{Artwork credits}
 
 Generic RNA motifs in main Figures 1, 2, 4, 5, and 6 were cropped, recolored, and annotated from \emph{pri-miRNA} (designer @hakushijaco; editor Hiromasa Ono; DBCLS/TogoTV; \url{https://doi.org/10.7875/togopic.2024.065}; \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}). They depict no sequence-specific conformation. Cell membrane and nucleus artwork in main Figures 1 and 6 was adapted from Servier Medical Art (\url{https://smart.servier.com/}), obtained through Bioicons under \href{https://creativecommons.org/licenses/by/3.0/}{CC BY 3.0}, recolored, and combined with RNA motifs. These compartments do not represent measured localization. Original SVGs, source revisions, licenses, and adaptation code are retained in the repository; AI-assisted composition is disclosed in the main Methods.
+
+\section{What the search tried, and why each branch did or did not help}\label{si:why}
+
+\textbf{[Section to be written: per-branch hypothesis, result, and likely reason.]}
 
 \FloatBarrier
 \bibliography{references}
