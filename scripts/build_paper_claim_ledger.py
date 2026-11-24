@@ -134,6 +134,33 @@ def add_split_claims() -> None:
     )
 
 
+def add_reference_scope_claims() -> None:
+    """Within-context AUROC range of the supplied compact checkpoints (Fig. 3A; SI section B)."""
+    path = ROOT / "results/table1_within_context.csv"
+    table = pd.read_csv(path)
+    diagonal = table[(table.variant == "baseline") & (table.train_context == table.eval_context)]
+    for group, rows, expected in (
+        ("Human", diagonal[diagonal.train_context.isin(CONTEXTS)], 5),
+        ("Nonhuman", diagonal[~diagonal.train_context.isin(CONTEXTS)], 3),
+    ):
+        if len(rows) != expected:
+            raise SystemExit(f"within-context {group}: {len(rows)} rows, expected {expected}")
+        for which, value in (("Min", float(rows.auroc.min())), ("Max", float(rows.auroc.max()))):
+            add(
+                f"reference_within_context_{group.lower()}_auroc_{which.lower()}",
+                f"{which}imum within-context AUROC of the supplied compact checkpoint, {group.lower()} datasets",
+                value,
+                f"{value:.3f}",
+                "metric",
+                "canonical held-out (supplied checkpoint, within-context)",
+                path,
+                f"variant=baseline; train_context==eval_context; {group.lower()} contexts; {which.lower()}(auroc)",
+                "Results; SI baseline scope; Figure 3A",
+                "three decimals",
+                f"Reference{group}WithinAUROC{which}",
+            )
+
+
 def add_protocol_claims() -> None:
     """Register numerical design constants used in the manuscript and SI."""
     label_source = ROOT / "src/adarpro/models/final_training.py"
@@ -323,13 +350,13 @@ def add_protocol_claims() -> None:
             claim_id,
             quantity,
             value,
-            f"{int(value):,}",
+            f"{int(value)}" if unit == "seed" else f"{int(value):,}",
             unit,
             "preregistered model specification",
             unified_config_path if claim_id == "unified_batch_size" else decision_path,
             selector,
             "SI unified-model section",
-            "integer with thousands separator",
+            "integer (seed identifier)" if unit == "seed" else "integer with thousands separator",
             macro,
         )
 
@@ -1426,6 +1453,7 @@ def write_outputs() -> None:
 def main() -> None:
     add_split_claims()
     add_protocol_claims()
+    add_reference_scope_claims()
     add_locked_claims()
     add_test_contrast_claims()
     add_supervision_claims()

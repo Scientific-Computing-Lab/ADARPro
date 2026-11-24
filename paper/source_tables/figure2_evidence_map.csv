@@ -17,4 +17,4 @@ Substrate & cellular context,Biological context,Transcript / repeat annotations*
 Substrate & cellular context,Cellular state,Matched donor/cell multimodality,deferred,Matched data unavailable
 Substrate & cellular context,RNA state,Matched in vivo structure / isoforms,deferred,Matched data unavailable
 Integration,Integration,Whole-duplex + local logits,selected,Complementary predictions
-Integration,Integration,Unified end-to-end architecture,not supported,Below frozen ensemble
+Integration,Integration,Unified end-to-end architecture,not supported,Below two-model combination

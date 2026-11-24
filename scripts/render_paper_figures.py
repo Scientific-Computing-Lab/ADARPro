@@ -916,12 +916,12 @@ def figure1(output: Path, source: Path) -> None:
     c.plot([0.85, 0.85], [0.67, 0.270], color=COLORS["red"], lw=0.9)
     arrow(c, (0.85, 0.270), (0.67, 0.211), COLORS["red"])
     txt(c, 0.43, 0.199, "One final evaluation", 7.6, weight="bold", ha="center")
-    txt(c, 0.43, 0.130, "Frozen synthesis only", 6.8, ha="center")
+    txt(c, 0.43, 0.130, "Selected predictor and comparators", 6.8, ha="center")
     txt(
         c,
         0.02,
         0.040,
-        "No branch selection on the canonical test.",
+        "All choices fixed before the final test.",
         6.2,
         COLORS["gray"],
     )
@@ -1355,7 +1355,7 @@ def evidence_table() -> pd.DataFrame:
             "Integration",
             "Unified end-to-end architecture",
             "not supported",
-            "Below frozen ensemble",
+            "Below two-model combination",
         ),
     ]
     return pd.DataFrame(
@@ -1757,6 +1757,7 @@ def local_integration_table() -> pd.DataFrame:
         selected[["lower", "median", "upper"]] = -selected[
             ["upper", "median", "lower"]
         ].to_numpy()
+        selected[["candidate", "reference"]] = selected[["reference", "candidate"]].to_numpy()
         selected["context"] = context
         rows.append(selected)
     return pd.concat(rows, ignore_index=True)
@@ -2114,7 +2115,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_c.set_xticks(x, representations.representation, rotation=0, ha="center")
     ax_c.tick_params(axis="x", labelsize=6.4, pad=3)
     ax_c.set_ylim(0.64, 0.94)
-    ax_c.set_ylabel("Development OOF performance")
+    ax_c.set_ylabel("Muscle development OOF")
     ax_c.set_title(
         "Target-centered context adds signal",
         loc="left",
@@ -2532,7 +2533,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "Internal\nreference",
         "Pair-first",
         "Local\npredictor",
-        "Fixed\nensemble",
+        "Equal-weight\naverage",
     ]
     for axis, metric in zip(axes, ["auroc", "auprc", "f1"]):
         for j, context in enumerate(["MuscleSkeletal", "Liver"]):
@@ -2734,11 +2735,17 @@ def supplementary_figures(output: Path, source: Path) -> None:
         )
     axis.axvline(0, color=COLORS["ink"], lw=0.8)
     axis.set_yticks(
-        y, [x.upper() if x != "brier" else "Brier (increase)" for x in shown.metric]
+        y,
+        [
+            "Brier (increase)" if x == "brier" else {"auroc": "AUROC", "auprc": "AUPRC", "f1": "F1",
+                                                    "precision": "Precision", "recall": "Recall",
+                                                    "specificity": "Specificity"}.get(x, x.upper())
+            for x in shown.metric
+        ],
     )
-    axis.set_xlabel("Unified − frozen ensemble (percentage points)")
+    axis.set_xlabel("Unified − two-model combination (percentage points)")
     axis.set_title(
-        "Preregistered unified model did not surpass fixed prediction-level integration",
+        "Preregistered unified model did not surpass the two-model combination",
         loc="left",
         fontweight="bold",
     )
@@ -3071,6 +3078,12 @@ def supplementary_figures(output: Path, source: Path) -> None:
         ROOT
         / "experiments/runs/target_local_interpretation/MuscleSkeletal/geometry_strata.csv"
     )
+    copy_source(within, source, "within_duplex_discrimination.csv")
+    copy_source(
+        sources.read_csv(ROOT / "experiments/runs/post_analysis/within_duplex/within_duplex_contrasts.csv"),
+        source,
+        "within_duplex_contrasts.csv",
+    )
     copy_source(pair_size, source, "figureS8_pair_size_quintiles.csv")
     copy_source(strata, source, "figureS8_target_structure_strata.csv")
 
@@ -3151,7 +3164,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     clean_axis(ax_b, "both")
 
     model_colors = {"local": COLORS["blue"], "gap_stage": COLORS["purple"]}
-    strata_labels = {"local": "Local model", "gap_stage": "Selected predictor"}
+    strata_labels = {"local": "Local predictor", "gap_stage": "Selected predictor"}
     target = strata[strata.stratum.eq("target_paired")].copy()
     target["level"] = pd.Categorical(
         target["level"], categories=["unpaired", "paired"], ordered=True
@@ -3216,7 +3229,12 @@ def write_manifest(source: Path, output: Path) -> None:
     rows = []
     # Table sources have their own manifest and may be rebuilt after figures.
     # Track only this renderer's sources plus the manually curated coverage map.
-    figure_sources = [*source.glob("figure*.csv"), source / "search_space_coverage.csv"]
+    figure_sources = [
+        *source.glob("figure*.csv"),
+        source / "search_space_coverage.csv",
+        source / "within_duplex_discrimination.csv",
+        source / "within_duplex_contrasts.csv",
+    ]
     for path in sorted(figure_sources):
         if path.name == "figure_source_manifest.csv":
             continue

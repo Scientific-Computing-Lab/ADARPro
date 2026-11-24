@@ -41,9 +41,11 @@ Principal resources include:
 - Reformer RNA-binding models (Shen et al. 2025, *Patterns* 6(1):101150,
   doi:10.1016/j.patter.2024.101150). Code: https://github.com/xilinshen/Reformer
   (revision used: `6f051cfbf3493a27fe5a50689f2db85e949483ab`). Weights: Hugging
-  Face `sxl/Reformer` (per-base binding, used here; `model.bin` SHA-256
+  Face `XLS/Reformer` (public; per-base binding, used here; `model.bin` SHA-256
   `1a4e731f1a0d4a21d8e88df8e38820e316eae89f6c1853aa7cf99f63ff0e5c94`) and
-  `sxl/Reformer-BC`. The README also points to `huggingface.co/XLS/Reformer`.
+  `XLS/Reformer-BC` (not used here). The Reformer README's install section names
+  these `sxl/Reformer` and `sxl/Reformer-BC`, which are not publicly reachable;
+  the `XLS` copy holds the identical `model.bin` (same SHA-256).
   Training data: 225 eCLIP-seq experiments covering 155 RNA-binding proteins
   across 3 cell lines, doi:10.5281/zenodo.14021440. See "Reformer binding
   features" below.

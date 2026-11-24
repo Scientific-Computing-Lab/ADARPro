@@ -292,7 +292,7 @@ def evidence_map() -> None:
             ),
         ),
         "Selected",
-        "Complementary predictions; replicated in liver.",
+        "Complementary predictions; replicated in liver; the selected predictor combines the views in a second stage.",
         ensemble,
     )
 
@@ -343,7 +343,7 @@ def evidence_map() -> None:
         ),
         effect("f1", select(gate, "f1", model="expanded_plus_combined_engagement")),
         "Limited",
-        "AUPRC gain; F1 interval crosses 0; Brier worsens.",
+        "AUPRC gain; F1 and Brier intervals cross 0.",
         gate,
     )
     shared = (
@@ -356,7 +356,7 @@ def evidence_map() -> None:
         effect("auroc", select(shared, "auroc", context="macro")),
         effect("f1", select(shared, "f1", context="macro")),
         "Limited",
-        "Positive transfer below preset criteria; mean Brier worsens.",
+        "Positive transfer below preset criteria; mean Brier interval crosses 0.",
         shared,
     )
 
@@ -732,12 +732,18 @@ Context & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
     )
 
 
+METRIC_LABEL = {
+    "auroc": "AUROC", "auprc": "AUPRC", "f1": "F1", "precision": "Precision",
+    "recall": "Recall", "specificity": "Specificity", "brier": "Brier",
+}
+
+
 def unified() -> None:
     metrics = sources.read_csv(
         ROOT / "experiments/runs/unified/comparison_primary/MuscleSkeletal/metrics.csv"
     )
     names = {
-        "frozen_ensemble": "Frozen ensemble",
+        "frozen_ensemble": "Two-model combination",
         "unified": "Unified end-to-end",
         "local": "Local predictor",
         "development_reference": "Internal reference",
@@ -753,13 +759,13 @@ def unified() -> None:
     order = ["auroc", "auprc", "f1", "precision", "recall", "specificity", "brier"]
     lookup = {row.metric: row for _, row in ci.iterrows()}
     ci_rows = [
-        f"{metric.upper()} & {interval(lookup[metric])} \\\\" for metric in order
+        f"{METRIC_LABEL[metric]} & {interval(lookup[metric])} \\\\" for metric in order
     ]
     write(
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the preregistered skeletal-muscle development protocol, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before canonical-test access. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
+\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the preregistered skeletal-muscle development protocol, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
@@ -774,7 +780,7 @@ Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
 
 \begin{tabular}{lr}
 \toprule
-Metric & Unified $-$ ensemble, points [95\% CI] \\
+Metric & Unified $-$ combination, points [95\% CI] \\
 \midrule
 """
         + "\n".join(ci_rows)

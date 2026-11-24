@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" width="408.676547pt" height="213.218703pt" viewBox="0 0 408.676547 213.218703" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" width="406.663234pt" height="213.218703pt" viewBox="0 0 406.663234 213.218703" version="1.1">
  <metadata>
   <rdf:RDF>
    <ns2:Work>
@@ -19,7 +19,7 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 213.218703  L 408.676547 213.218703  L 408.676547 0  L 0 0  z " style="fill: #ffffff" />
+   <path d="M 0 213.218703  L 406.663234 213.218703  L 406.663234 0  L 0 0  z " style="fill: #ffffff" />
   </g>
   <g id="axes_1">
    <g id="patch_2">
@@ -121,7 +121,7 @@
      </g>
     </g>
     <g id="text_8">
-     <text style="font-size: 8.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle" x="231.774234" y="204.231359" transform="rotate(-0 231.774234 204.231359)">Unified − frozen ensemble (percentage points)</text>
+     <text style="font-size: 8.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle" x="231.774234" y="204.231359" transform="rotate(-0 231.774234 204.231359)">Unified − two-model combination (percentage points)</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -145,7 +145,7 @@
       </g>
      </g>
      <g id="text_10">
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="151.380938" transform="rotate(-0 57.085234 151.380938)">SPECIFICITY</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="151.424282" transform="rotate(-0 57.085234 151.424282)">Specificity</text>
      </g>
     </g>
     <g id="ytick_3">
@@ -155,7 +155,7 @@
       </g>
      </g>
      <g id="text_11">
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="127.076696" transform="rotate(-0 57.085234 127.076696)">RECALL</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="127.076696" transform="rotate(-0 57.085234 127.076696)">Recall</text>
      </g>
     </g>
     <g id="ytick_4">
@@ -165,7 +165,7 @@
       </g>
      </g>
      <g id="text_12">
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="102.772453" transform="rotate(-0 57.085234 102.772453)">PRECISION</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="57.085234" y="102.772453" transform="rotate(-0 57.085234 102.772453)">Precision</text>
      </g>
     </g>
     <g id="ytick_5">
@@ -347,7 +347,7 @@
     <path d="M 64.085234 180.315375  L 399.463234 180.315375  " style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square" />
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="64.085234" y="13.907375" transform="rotate(-0 64.085234 13.907375)">Preregistered unified model did not surpass fixed prediction-level integration</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="64.085234" y="13.907375" transform="rotate(-0 64.085234 13.907375)">Preregistered unified model did not surpass the two-model combination</text>
    </g>
   </g>
  </g>
