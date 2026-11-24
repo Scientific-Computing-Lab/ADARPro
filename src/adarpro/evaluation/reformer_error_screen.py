@@ -292,6 +292,74 @@ def import_features(source: Path, output: Path, provenance: dict) -> dict:
     return summary
 
 
+def import_loadings(source: Path, output: Path, features_summary: Path) -> dict:
+    """Copy the PCA loadings behind the PC1-PC5 features (models x PC1..PC5), with checks and a provenance summary.
+
+    The source must be the loadings file the feature table's summary records (same sha256), with orthonormal columns.
+    """
+    load = pd.read_csv(source, index_col=0)
+    if list(load.columns) != [f"PC{k}" for k in range(1, 6)] or not load.index.is_unique:
+        raise RuntimeError("expected one row per binding model and columns PC1..PC5")
+    gram = load.to_numpy(float).T @ load.to_numpy(float)
+    orth_err = float(np.abs(gram - np.eye(5)).max())
+    if orth_err > 1e-6:
+        raise RuntimeError(f"loadings are not orthonormal (max error {orth_err})")
+    recorded = json.loads(features_summary.read_text())["files"]["pca_loadings"]["sha256"]
+    source_sha = sha256_file(source)
+    if source_sha != recorded:
+        raise RuntimeError("loadings file differs from the one recorded in the feature summary")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, output)
+    summary = {
+        "canonical_test_access": False,
+        "scope": "PCA loadings of the 225 Reformer models' z-scored max25 over the feature table's 39,190 sites",
+        "models": int(len(load)),
+        "columns": list(load.columns),
+        "orientation": "each PC oriented so its loadings sum positive",
+        "orthonormal_max_error": orth_err,
+        "source": str(source),
+        "source_sha256": source_sha,
+        "output_sha256": sha256_file(output),
+        "matches_feature_summary_record": True,
+    }
+    output.with_suffix(".summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    return summary
+
+
+def describe_pcs(loadings: pd.DataFrame, features: pd.DataFrame, pcs: tuple[str, ...] = ("PC2", "PC3"),
+                 top: int = 6) -> dict:
+    """What the summary axes weigh: variance explained, and for ``pcs`` the share of squared loading by cell-type
+    label and on the dsRNA-binder panel models, against an even spread, with the heaviest models on each side.
+
+    Each model's max25 was z-scored before the PCA, so the total variance equals the number of models whose loadings
+    are not all zero (a constant model has zero loadings).
+    """
+    load = loadings.astype(float)
+    n_models = int((load.abs().sum(axis=1) > 0).sum())
+    var_explained = {k: float(features[k].var(ddof=0) / n_models) for k in load.columns}
+    cell = pd.Series([m.split("_", 1)[1] for m in load.index], index=load.index)
+    panel = pd.Series([m.split("_")[0] in PANEL for m in load.index], index=load.index)
+    out = {
+        "models": int(len(load)),
+        "models_by_cell_label": {c: int((cell == c).sum()) for c in sorted(cell.unique())},
+        "models_hepg2_or_k562": int(cell.isin(["HepG2", "K562"]).sum()),
+        "dsRNA_binder_models": int(panel.sum()),
+        "variance_explained": var_explained,
+    }
+    for pc in pcs:
+        w = load[pc]
+        sq = w ** 2
+        out[pc] = {
+            "weight_share_dsRNA_binder_models": float(sq[panel].sum()),
+            "even_share_dsRNA_binder_models": float(panel.mean()),
+            "weight_share_by_cell_label": {c: float(sq[cell == c].sum()) for c in sorted(cell.unique())},
+            "even_share_by_cell_label": {c: float((cell == c).mean()) for c in sorted(cell.unique())},
+            "heaviest_positive": [[m, float(w[m])] for m in w.sort_values(ascending=False).index[:top]],
+            "heaviest_negative": [[m, float(w[m])] for m in w.sort_values().index[:top]],
+        }
+    return out
+
+
 def build_frame(predictions_root: Path, model: str, features_path: Path, site_master_path: Path,
                 genomic_context_path: Path, endpoints: list[str] = TISSUES) -> tuple[pd.DataFrame, dict]:
     """Join a predictor's development OOF rows to the Reformer features and covariates, with checks."""
@@ -389,6 +457,17 @@ def main() -> None:
     imp.add_argument("--output", type=Path, default=Path("data/derived/features/reformer_context.parquet"))
     imp.add_argument("--provenance-json", type=Path, required=True, help="producer scripts, inputs and run record")
 
+    il = sub.add_parser("import-loadings", help="copy the PCA loadings behind the PC features into the repository")
+    il.add_argument("--source", type=Path, required=True)
+    il.add_argument("--output", type=Path, default=Path("data/derived/features/reformer_context_pca_loadings.csv"))
+    il.add_argument("--features-summary", type=Path,
+                    default=Path("data/derived/features/reformer_context.summary.json"))
+
+    dp = sub.add_parser("describe-pcs", help="what the PC features weigh (variance explained, weight shares)")
+    dp.add_argument("--loadings", type=Path, default=Path("data/derived/features/reformer_context_pca_loadings.csv"))
+    dp.add_argument("--features", type=Path, default=Path("data/derived/features/reformer_context.parquet"))
+    dp.add_argument("--output", type=Path, required=True)
+
     run = sub.add_parser("run", help="build the frame (and, unless --build-only, run the screen)")
     run.add_argument("--predictions-root", type=Path, required=True, help="folder with <endpoint>/oof_predictions.parquet")
     run.add_argument("--model", required=True, help="value of the 'model' column to screen, e.g. gap")
@@ -403,6 +482,18 @@ def main() -> None:
     if args.command == "import-features":
         summary = import_features(args.source, args.output, json.loads(args.provenance_json.read_text()))
         print(json.dumps({k: summary[k] for k in ["rows", "source_sha256", "output_sha256"]}, indent=2))
+        return
+    if args.command == "import-loadings":
+        summary = import_loadings(args.source, args.output, args.features_summary)
+        print(json.dumps({k: summary[k] for k in ["models", "orthonormal_max_error", "output_sha256"]}, indent=2))
+        return
+    if args.command == "describe-pcs":
+        loadings = pd.read_csv(args.loadings, index_col=0)
+        features = pd.read_parquet(args.features, columns=list(loadings.columns))
+        out = describe_pcs(loadings, features)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(out, indent=2) + "\n")
+        print(json.dumps(out, indent=2))
         return
 
     frame, qc = build_frame(args.predictions_root, args.model, args.features, args.site_master, args.genomic_context)

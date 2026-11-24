@@ -62,6 +62,49 @@ def test_screen_finds_planted_and_not_null():
     assert np.allclose(again["sweep"].to_numpy(float), out["sweep"].to_numpy(float), equal_nan=True)
 
 
+def synthetic_pca(seed=3, n_sites=500):
+    rng = np.random.default_rng(seed)
+    models = ["ILF3_HepG2", "DGCR8_K562", "AARS_K562", "SDAD1_HepG2", "UPF1_HepG2", "PUM2_K562", "NONO_adrenal_gland"]
+    X = rng.normal(size=(n_sites, len(models))) @ rng.normal(size=(len(models), len(models)))
+    Z = (X - X.mean(0)) / X.std(0)
+    U, S, Vt = np.linalg.svd(Z, full_matrices=False)
+    load = pd.DataFrame(Vt[:5].T, index=models, columns=[f"PC{k}" for k in range(1, 6)])
+    feats = pd.DataFrame(U[:, :5] * S[:5], columns=load.columns)
+    return load, feats, S
+
+
+def test_describe_pcs_matches_svd():
+    load, feats, S = synthetic_pca()
+    out = R.describe_pcs(load, feats, top=2)
+    expected = (S ** 2 / (S ** 2).sum())[:5]
+    assert np.allclose([out["variance_explained"][f"PC{k}"] for k in range(1, 6)], expected)
+    assert out["models_hepg2_or_k562"] == 6 and out["dsRNA_binder_models"] == 2
+    shares = out["PC2"]["weight_share_by_cell_label"]
+    assert np.isclose(sum(shares.values()), 1.0)          # unit-length loading vector
+    assert np.isclose(out["PC2"]["even_share_dsRNA_binder_models"], 2 / 7)
+    assert out["PC3"]["heaviest_positive"][0][1] >= out["PC3"]["heaviest_positive"][1][1]
+
+
+def test_import_loadings_checks(tmp_path):
+    load, _, _ = synthetic_pca()
+    src = tmp_path / "loadings.csv"
+    load.to_csv(src)
+    from adarpro.quarantine import sha256_file
+    good = tmp_path / "good.summary.json"
+    good.write_text('{"files": {"pca_loadings": {"sha256": "%s"}}}' % sha256_file(src))
+    summary = R.import_loadings(src, tmp_path / "out" / "l.csv", good)
+    assert summary["output_sha256"] == summary["source_sha256"] and summary["models"] == 7
+    bad = tmp_path / "bad.summary.json"
+    bad.write_text('{"files": {"pca_loadings": {"sha256": "0"}}}')
+    with pytest.raises(RuntimeError):
+        R.import_loadings(src, tmp_path / "out2" / "l.csv", bad)
+    skew = load.copy()
+    skew["PC1"] = skew["PC1"] * 2
+    skew.to_csv(tmp_path / "skew.csv")
+    with pytest.raises(RuntimeError):
+        R.import_loadings(tmp_path / "skew.csv", tmp_path / "out3" / "l.csv", good)
+
+
 def test_read_panel_rule():
     def panel(d, lo, hi, q):
         return pd.DataFrame({"feature": ["total_binding", "PC1", "x", "placebo_permPC1"],

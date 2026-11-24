@@ -1,0 +1,18 @@
+{
+  "canonical_test_access": false,
+  "scope": "PCA loadings of the 225 Reformer models' z-scored max25 over the feature table's 39,190 sites",
+  "models": 225,
+  "columns": [
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4",
+    "PC5"
+  ],
+  "orientation": "each PC oriented so its loadings sum positive",
+  "orthonormal_max_error": 2.1094237467877974e-15,
+  "source": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_pca_loadings.csv",
+  "source_sha256": "2508acb57c761531f7d2d0d7e67507bedddbfdc960965788a1872c4897734ce2",
+  "output_sha256": "2508acb57c761531f7d2d0d7e67507bedddbfdc960965788a1872c4897734ce2",
+  "matches_feature_summary_record": true
+}
