@@ -237,35 +237,7 @@ def add_protocol_claims() -> None:
     weights = {tuple(record["weights"]) for record in manifest["contexts"].values()}
     if weights != {(0.5, 0.5)}:
         raise AssertionError(f"unexpected final ensemble weights: {weights}")
-    component_fits = sum(
-        len(record["components"]) for record in manifest["contexts"].values()
-    )
-    add(
-        "ensemble_component_weight",
-        "Fixed weight assigned to each ensemble component",
-        0.5,
-        "0.5",
-        "weight",
-        "frozen model specification",
-        manifest_path,
-        "all contexts; weights=[0.5, 0.5]",
-        "Results; Methods; Figure 3; SI final-training section",
-        "one decimal",
-        "EnsembleComponentWeight",
-    )
-    add(
-        "final_component_fit_count",
-        "Number of final component fits",
-        component_fits,
-        str(component_fits),
-        "trained components",
-        "frozen model specification",
-        manifest_path,
-        "sum(len(context.components))",
-        "Results; SI final-training section",
-        "integer",
-        "NFinalComponentFits",
-    )
+    # EnsembleComponentWeight / NFinalComponentFits described the first-round manifest; removed (unused).
 
     unified_path = sources.path(
         ROOT
@@ -426,22 +398,7 @@ def add_protocol_claims() -> None:
         "NBootstrapReplicates",
     )
 
-    quarantine_path = ROOT / "provenance/test_quarantine.json"
-    quarantine = json.loads(quarantine_path.read_text(encoding="utf-8"))
-    evaluations = int(quarantine["final_locked_test"]["evaluations_consumed"])
-    add(
-        "canonical_evaluation_count",
-        "Canonical test evaluation count",
-        evaluations,
-        str(evaluations),
-        "evaluation",
-        "canonical held-out protocol",
-        quarantine_path,
-        "final_locked_test.evaluations_consumed",
-        "Abstract; Results; Methods; SI final-training section",
-        "integer",
-        "NCanonicalEvaluations",
-    )
+    # NCanonicalEvaluations read the first-round quarantine record; removed (unused).
 
 
 def add_locked_claims() -> None:
@@ -504,6 +461,19 @@ def add_locked_claims() -> None:
             "Abstract; Results; Discussion; README",
             "direct four-decimal formatting of unrounded context differences",
             f"MacroDelta{METRIC_MACRO[metric]}",
+        )
+        add(
+            f"locked_macro_delta_{metric}_points",
+            f"Macro canonical selected predictor minus AdarEdit {metric.upper()}, in percentage points",
+            100 * macro,
+            f"{100 * macro:.2f}",
+            "percentage points",
+            "canonical held-out",
+            path,
+            f"100 x unweighted mean of five context-specific {metric} differences",
+            "Results (test)",
+            "two decimals (percentage points)",
+            f"MacroDelta{METRIC_MACRO[metric]}Points",
         )
 
     transitions_pnas = ROOT / "figures/final/source_tables/final_error_transitions.csv"

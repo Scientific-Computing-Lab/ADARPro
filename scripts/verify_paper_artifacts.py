@@ -16,6 +16,26 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "paper"
+V3_METRICS = ROOT / "results/adarpro/final_locked_test_v3/metrics.csv"  # aggregate file only
+V3_MODELS = ("published_baseline_reproduced", "adarpro_gap_stage_graph_cnn_alone_5seed")
+
+
+def _v3_row(model: str, context: str = "Artery") -> pd.Series:
+    frame = pd.read_csv(V3_METRICS)
+    row = frame[(frame.model == model) & (frame.context == context)]
+    if len(row) != 1:
+        raise AssertionError(f"{V3_METRICS}: {context}/{model}: {len(row)} rows")
+    return row.iloc[0]
+
+
+def _v3_artery_f1() -> str:
+    return f"{_v3_row(V3_MODELS[1])['f1']:.4f}"
+
+
+def _v3_readme_artery_row() -> str:
+    base, cand = _v3_row(V3_MODELS[0]), _v3_row(V3_MODELS[1])
+    cells = [base.auroc, cand.auroc, base.auprc, cand.auprc, base.f1, cand.f1]
+    return "| Artery | " + " | ".join(f"{x:.4f}" for x in cells) + " |"
 
 
 def sha256(path: Path) -> str:
@@ -87,7 +107,7 @@ def verify_claim_traceability() -> None:
     generated = PAPER / "generated/quantitative_claims.tex"
     if (
         not generated.exists()
-        or "\\ArteryADARProFOne}{0.8869}" not in generated.read_text(encoding="utf-8")
+        or f"\\ArteryADARProFOne}}{{{_v3_artery_f1()}}}" not in generated.read_text(encoding="utf-8")
     ):
         raise AssertionError("generated quantitative macros are absent or stale")
 
@@ -117,7 +137,9 @@ def verify_quantitative_sources() -> None:
                 "historical image-model assets entered the active figure build"
             )
 
-    locked = pd.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
+    # Evaluation 3 (R9): the paper reports AdarEdit and the selected predictor from final_locked_test_v3.
+    locked = pd.read_csv(V3_METRICS)
+    locked = locked[locked.model.isin(V3_MODELS)]
     source = pd.read_csv(PAPER / "source_tables/figure4_locked_metrics.csv")
     columns = [
         "context",
@@ -135,8 +157,8 @@ def verify_quantitative_sources() -> None:
     pd.testing.assert_frame_equal(left, right, check_exact=True)
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    if "| Artery | 0.9238 | 0.9477 | 0.9262 | 0.9485 | 0.8671 | 0.8869 |" not in readme:
-        raise AssertionError("README canonical table is not synchronized")
+    if _v3_readme_artery_row() not in readme:
+        raise AssertionError("README canonical table is not synchronized with evaluation 3")
 
 
 def verify_svg_figures() -> None:

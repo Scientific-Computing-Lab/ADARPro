@@ -605,16 +605,25 @@
    </g>
    <g id="text_73">
     
-    <g style="fill: #7562a8" transform="translate(67.253544 250.784134)">
+    <g style="fill: #7562a8" transform="translate(49.696544 250.485634)">
      <text>
-      <tspan x="0" y="-6.417188" style="font-style: italic; font-size: 8.4px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
-      <tspan x="15.380066" y="-6.417188" style="font-style: italic; font-size: 8.4px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
-      <tspan x="4.199989" y="-5.179238" style="font-size: 5.88px; font-family: 'Nimbus Sans'; fill: #7562a8">1</tspan>
-      <tspan x="19.580055" y="-5.179238" style="font-size: 5.88px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
-      <tspan x="9" y="4.827012" style="font-size: 8.4px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
-      <tspan x="9.075031" y="-6.417188" style="font-size: 8.4px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
+      <tspan x="0" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">σ</tspan>
+      <tspan x="6.829849" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
+      <tspan x="15.117418" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
+      <tspan x="26.046436" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
+      <tspan x="34.334005" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
+      <tspan x="45.263023" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
+      <tspan x="53.550592" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">s</tspan>
+      <tspan x="4.399994" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">(</tspan>
+      <tspan x="21.785083" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
+      <tspan x="41.00167" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
+      <tspan x="57.199014" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #7562a8">)</tspan>
+      <tspan x="12.098175" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #7562a8">1</tspan>
+      <tspan x="18.76584" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #7562a8">1</tspan>
+      <tspan x="31.314762" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
+      <tspan x="37.982427" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
+      <tspan x="50.531349" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #7562a8">3</tspan>
      </text>
-     <rect x="0" y="-3.179238" width="23.055659" height="0.75" />
     </g>
    </g>
    <g id="text_74">

@@ -1622,10 +1622,10 @@ def figure2(output: Path, source: Path) -> None:
             ax_a.text(
                 0.072,
                 center_y + 0.011,
-                r"$\frac{z_1+z_2}{2}$",
+                r"$\sigma(w_1z_1{+}w_2z_2{+}w_3s)$",  # the selected second stage (Fig. 5E), not the equal average
                 ha="center",
                 va="center",
-                fontsize=12,
+                fontsize=7.3,
                 color=COLORS["purple"],
             )
         else:
