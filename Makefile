@@ -33,8 +33,9 @@ paper-tables:
 	$(PYTHON) scripts/render_paper_tables.py
 
 paper: paper-figures paper-claims paper-tables
-	cd paper && SOURCE_DATE_EPOCH=1789041600 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+	# The SI compiles first: main.tex reads supplementary.aux through xr for its SI pointers.
 	cd paper && SOURCE_DATE_EPOCH=1789041600 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
+	cd paper && SOURCE_DATE_EPOCH=1789041600 FORCE_SOURCE_DATE=1 TEXINPUTS=template//: BSTINPUTS=template//: BIBINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
 paper-check: paper
 	$(PYTHON) scripts/verify_paper_references.py

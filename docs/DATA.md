@@ -37,10 +37,58 @@ Principal resources include:
 - RiNALMo micro/mega checkpoints, provider identities and hashes in
   `provenance/rinalmo_micro.json` and `provenance/rinalmo_mega.json`;
 - k100 Umap mappability track, identity in
-  `data/derived/genomic_mapping/umap100.provenance.json`.
+  `data/derived/genomic_mapping/umap100.provenance.json`;
+- Reformer RNA-binding models (Shen et al. 2025, *Patterns* 6(1):101150,
+  doi:10.1016/j.patter.2024.101150). Code: https://github.com/xilinshen/Reformer
+  (revision used: `6f051cfbf3493a27fe5a50689f2db85e949483ab`). Weights: Hugging
+  Face `sxl/Reformer` (per-base binding, used here; `model.bin` SHA-256
+  `1a4e731f1a0d4a21d8e88df8e38820e316eae89f6c1853aa7cf99f63ff0e5c94`) and
+  `sxl/Reformer-BC`. The README also points to `huggingface.co/XLS/Reformer`.
+  Training data: 225 eCLIP-seq experiments covering 155 RNA-binding proteins
+  across 3 cell lines, doi:10.5281/zenodo.14021440. See "Reformer binding
+  features" below.
 
 Place acquired files beneath `data/external/` following those provenance
 records. `data/external/README.md` is the only tracked file in that cache.
+
+## Reformer binding features
+
+The SI Reformer screen reads two retained files. Each has a `.summary.json` with
+its source, SHA-256 and the producing scripts' paths and SHA-256.
+
+- `data/derived/features/reformer_context.parquet`: one row per canonical
+  train/valid site of the four tissues (39,190 sites; key `crop_uid` =
+  `pair_local_key`). 38 outcome-independent features.
+- `data/derived/features/reformer_context_pca_loadings.csv`: the loadings
+  behind PC1–PC5 (225 models × 5).
+
+No test-set site is included.
+
+To regenerate the features:
+
+1. **Window.** For each site, take hg38 [pos−256, pos+256) around the edited A,
+   reverse-complemented on the minus strand. The A sits at index 255 (+) or
+   256 (−). There is one window per site.
+2. **Scores.** Score every window with all 225 per-base Reformer models
+   (`sxl/Reformer`).
+3. **Per-model values.** `focal` is the score at the A; `max25` is the maximum
+   within ±25 nt of it.
+4. **Panel features.** Keep `focal` and `max25` for the 16 dsRNA-binder models
+   (ILF3, STAU2, DGCR8, DROSHA, SND1, TROVE2, DHX30, DDX21, DDX24).
+5. **Aggregates.** `total_binding` is the mean `max25` over all 225 models.
+   `PC1`–`PC5` come from an SVD of the z-scored 225-model `max25` matrix, each
+   PC oriented so its loadings sum positive.
+
+The scoring scripts and the cluster job identities are recorded in
+`reformer_context.summary.json`. The scripts were run outside this repository
+and are not ported into it.
+
+`python -m adarpro.evaluation.reformer_error_screen` checks the retained
+copies:
+
+- `import-features` and `import-loadings` check identities and shapes;
+- `describe-pcs` re-derives the PC summary;
+- `run` reproduces the screen in `experiments/runs/r8_reformer/`.
 
 ## Large rebuildable matrices
 
