@@ -1,0 +1,90 @@
+{
+  "audit_chain_head": "6d836796d1b83a4c77f675e6224d09b3dcacb9bf1932cd3ff2c952a51b33d8d7",
+  "created_utc": "2026-11-24T07:32:20.549091+00:00",
+  "development_splits": [
+    "train",
+    "valid"
+  ],
+  "evaluation_number": 3,
+  "final_locked_test": {
+    "authorization_sha256": null,
+    "consumed_utc": "2026-11-24T07:33:03.187314+00:00",
+    "evaluations_consumed": 1,
+    "freeze_manifest": {
+      "frozen_utc": "2026-11-24T07:32:46.305727+00:00",
+      "path": "/private8/Projects/Eli_S/ADARPro_pnas/provenance/final_pipeline_manifest_v3.json",
+      "sha256": "568c8b9b397c75680be362f7912df0337ed535cd97f9b19d59a8525249ef628f"
+    }
+  },
+  "predecessor": {
+    "audit_chain_head": "f4acef367cece58426bd3216af91f3f9c2850174e7f3036c21d6fdc266cb6592",
+    "consumed_utc": "2026-11-23T15:46:51.993659+00:00",
+    "freeze_manifest": {
+      "frozen_utc": "2026-11-23T15:46:25.907115+00:00",
+      "path": "/private8/Projects/Eli_S/ADARPro_pnas/provenance/final_pipeline_manifest_v2.json",
+      "sha256": "101b0ac68d69cd5985e332e253f9d52366f84aebe970c642eaa3f196a5afd83c"
+    },
+    "policy": "test_quarantine_v2.json",
+    "policy_sha256": "311d48b6dda5df37bb0ee59859e013f7007f0ae281a33a953dec0c4acfb702ca"
+  },
+  "published_reproduction": {
+    "last_result_sha256": null,
+    "runs": 0
+  },
+  "repository": ".",
+  "schema_version": 1,
+  "state": "final_consumed",
+  "test_artifacts": [
+    {
+      "bytes": 7145724,
+      "path": "data/human/Artery/test.jsonl",
+      "sha256": "27621a48125df0328acde6308c3f078bca2f1fb835142a23dd4c169941d3d0bf"
+    },
+    {
+      "bytes": 184026,
+      "path": "data/human/Artery/test.metadata.csv",
+      "sha256": "9d185f12a35e71cb4f4baa37032bc885583d9439d98c2fb3eddaf8e60d410e2e"
+    },
+    {
+      "bytes": 6809262,
+      "path": "data/human/Brain/test.jsonl",
+      "sha256": "c2e95092d91c929f85c52fee55b587ed6572c2db4ffc470d23f180baeefe2a5b"
+    },
+    {
+      "bytes": 175343,
+      "path": "data/human/Brain/test.metadata.csv",
+      "sha256": "411f948abde90061428e402be6ed46ed98cf5737a1c3f58ab4609804d15a25ac"
+    },
+    {
+      "bytes": 6202612,
+      "path": "data/human/Liver/test.jsonl",
+      "sha256": "d261e04803d5fadb06ea3ec6cbae8c225ab630e5bc8c33272d18ae0ff11362af"
+    },
+    {
+      "bytes": 159501,
+      "path": "data/human/Liver/test.metadata.csv",
+      "sha256": "7714ebcd82ac8a88808cee7cb86e1c95b77f42415d3754c6752d8a413eb5c75c"
+    },
+    {
+      "bytes": 2130242,
+      "path": "data/human/MuscleSkeletal/test.jsonl",
+      "sha256": "10c0e1462e0c7b992e1a7ece1cc51f84a6ca2fafa28322ddf62b2016e6de8933"
+    },
+    {
+      "bytes": 54774,
+      "path": "data/human/MuscleSkeletal/test.metadata.csv",
+      "sha256": "f673447a998593f71f17d30fc33e79f763bd736112fc44e67af25fdc9fdacac1"
+    },
+    {
+      "bytes": 7267843,
+      "path": "data/human/Combined/test.jsonl",
+      "sha256": "8228d28c4b92afe4d014d0fa9549a586ebc8acf4677b2bc5b29002df6bdb1dbf"
+    },
+    {
+      "bytes": 186776,
+      "path": "data/human/Combined/test.metadata.csv",
+      "sha256": "89b3ff16afaf6df6f80f0074996db7136bdd39264f859a690231518b2264f4f8"
+    }
+  ],
+  "upstream_revision": "5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5"
+}
