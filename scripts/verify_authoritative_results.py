@@ -34,6 +34,15 @@ EXPECTED_MANIFEST_HASH = (
 EXPECTED_METRICS_HASH = (
     "ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e"
 )
+# Evaluation 3 (the integration's selected predictor), pinned like the first.
+FINAL_V3 = ROOT / "results/adarpro/final_locked_test_v3"
+V3_CANDIDATE = "adarpro_gap_stage_graph_cnn_alone_5seed"
+EXPECTED_V3_MANIFEST_HASH = (
+    "568c8b9b397c75680be362f7912df0337ed535cd97f9b19d59a8525249ef628f"
+)
+EXPECTED_V3_METRICS_HASH = (
+    "cb4d84c072380fd1c1c9c87c46d23def2a9d4eaf7cfde624d00f4706b658bfa0"
+)
 # Three development-only diagnostics were appended in revision 9fb11dc.
 # Keep their identities and evidence regime explicit rather than relaxing the
 # original frozen-campaign count to an open-ended minimum.
@@ -218,12 +227,47 @@ def verify_registry() -> None:
         )
 
 
+def verify_evaluation3() -> None:
+    """Evaluation 3: identities recorded at the session, and the selected predictor beats AdarEdit everywhere."""
+    manifest = ROOT / "provenance/final_pipeline_manifest_v3.json"
+    if sha256(manifest) != EXPECTED_V3_MANIFEST_HASH:
+        raise AssertionError("evaluation 3 manifest hash mismatch")
+    if sha256(FINAL_V3 / "metrics.csv") != EXPECTED_V3_METRICS_HASH:
+        raise AssertionError("evaluation 3 metrics hash mismatch")
+    summary = json.loads((FINAL_V3 / "summary.json").read_text())
+    if (
+        summary["metrics_sha256"] != EXPECTED_V3_METRICS_HASH
+        or summary["manifest_sha256"] != EXPECTED_V3_MANIFEST_HASH
+        or summary["evaluation_number"] != 3
+    ):
+        raise AssertionError("evaluation 3 summary identity mismatch")
+    quarantine = json.loads((ROOT / "provenance/test_quarantine_v3.json").read_text())
+    final = quarantine["final_locked_test"]
+    if (
+        quarantine["state"] != "final_consumed"
+        or quarantine["evaluation_number"] != 3
+        or final["evaluations_consumed"] != 1
+        or final["freeze_manifest"]["sha256"] != EXPECTED_V3_MANIFEST_HASH
+    ):
+        raise AssertionError("evaluation 3 quarantine state mismatch")
+    metrics = pd.read_csv(FINAL_V3 / "metrics.csv").set_index(["model", "context"])
+    for context in EXPECTED:
+        base, cand = metrics.loc[(BASELINE, context)], metrics.loc[(V3_CANDIDATE, context)]
+        for metric in ("auroc", "auprc", "f1"):
+            if not cand[metric] > base[metric]:
+                raise AssertionError(f"evaluation 3 {context}: {metric} does not exceed AdarEdit")
+
+
 def main() -> None:
     verify_metrics()
     verify_intervals_and_false_positives()
     verify_freeze()
+    verify_evaluation3()
     verify_registry()
-    print("PASS: authoritative results, freeze, quarantine, and registry verified")
+    print(
+        "PASS: authoritative results (first evaluation and evaluation 3), freeze, quarantine, "
+        "and registry verified"
+    )
 
 
 if __name__ == "__main__":
