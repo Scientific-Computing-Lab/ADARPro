@@ -1,0 +1,12 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "unified",
+    "frozen_ensemble",
+    "local"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "Muscle canonical development OOF; unified model (with the fix) versus the selected fixed ensemble (step 6: frozen_ensemble = graph + CNN alone development OOF, local = CNN alone; step-4 run, seed 20260821)"
+}

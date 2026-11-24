@@ -1,0 +1,30 @@
+{
+  "best_epoch": 861,
+  "canonical_test_access": false,
+  "checkpoint": "models/final_v2/seed20275821/Brain/binary_pair_balanced/best.pth",
+  "checkpoint_sha256": "f31d240df946aec1fef8ea9661b62338dbebbf2d46153d595c4999893469da63",
+  "context": "Brain",
+  "mode": "binary_pair_balanced",
+  "run_tag": "v2",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.55,
+  "train_pairs": 495,
+  "train_raw_rows": 39075,
+  "validation_metrics": {
+    "auprc": 0.9282025249728252,
+    "auroc": 0.937358295590146,
+    "balanced_accuracy": 0.8700648649776784,
+    "f1": 0.8756041719664207,
+    "fn": 166,
+    "fp": 323,
+    "mcc": 0.7428483625639758,
+    "n": 3766,
+    "precision": 0.8419765166340509,
+    "recall": 0.9120296767355591,
+    "specificity": 0.8281000532197977,
+    "tn": 1556,
+    "tp": 1721
+  },
+  "validation_pairs": 118,
+  "validation_rows": 3766
+}

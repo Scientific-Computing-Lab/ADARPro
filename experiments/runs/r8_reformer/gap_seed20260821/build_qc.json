@@ -1,0 +1,87 @@
+{
+  "model": "gap",
+  "endpoints": [
+    "Artery",
+    "Brain",
+    "Liver",
+    "MuscleSkeletal"
+  ],
+  "rows": 60037,
+  "rows_per_endpoint": {
+    "Artery": 19170,
+    "Brain": 19391,
+    "Liver": 15509,
+    "MuscleSkeletal": 5967
+  },
+  "pairs": 659,
+  "unique_sites": 39190,
+  "prediction_threshold_mismatches": 0,
+  "rows_without_reformer_features": 0,
+  "rows_with_missing_composition": 0,
+  "target_in_first_arm": 29661,
+  "err4_counts": {
+    "TP": 26377,
+    "TN": 26415,
+    "FP": 4177,
+    "FN": 3068
+  },
+  "confident_counts": {
+    "FN": 868,
+    "TP": 16814,
+    "FP": 550,
+    "TN": 20204
+  },
+  "confident_pairs": {
+    "FN": 302,
+    "TP": 604,
+    "FP": 253,
+    "TN": 655
+  },
+  "feature_columns": [
+    "DDX21_K562__max25",
+    "DDX21_K562__focal",
+    "DDX24_K562__max25",
+    "DDX24_K562__focal",
+    "DGCR8_HepG2__max25",
+    "DGCR8_HepG2__focal",
+    "DGCR8_K562__max25",
+    "DGCR8_K562__focal",
+    "DGCR8_adrenal_gland__max25",
+    "DGCR8_adrenal_gland__focal",
+    "DHX30_HepG2__max25",
+    "DHX30_HepG2__focal",
+    "DHX30_K562__max25",
+    "DHX30_K562__focal",
+    "DROSHA_HepG2__max25",
+    "DROSHA_HepG2__focal",
+    "DROSHA_K562__max25",
+    "DROSHA_K562__focal",
+    "ILF3_HepG2__max25",
+    "ILF3_HepG2__focal",
+    "ILF3_K562__max25",
+    "ILF3_K562__focal",
+    "SND1_HepG2__max25",
+    "SND1_HepG2__focal",
+    "SND1_K562__max25",
+    "SND1_K562__focal",
+    "STAU2_HepG2__max25",
+    "STAU2_HepG2__focal",
+    "TROVE2_HepG2__max25",
+    "TROVE2_HepG2__focal",
+    "TROVE2_K562__max25",
+    "TROVE2_K562__focal",
+    "total_binding",
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4",
+    "PC5"
+  ],
+  "inputs": {
+    "predictions_root": "experiments/runs/step9/seed20260821/gap_stage",
+    "features": "data/derived/features/reformer_context.parquet",
+    "features_sha256": "5222c57fec0e559ba4930ccae957b6edb87474f47c397b615c51b63300e7d56c",
+    "site_master": "data/derived/site_master.parquet",
+    "genomic_context": "data/derived/features/genomic_context.parquet"
+  }
+}

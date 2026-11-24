@@ -1,0 +1,11 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "expanded_site",
+    "expanded_pair"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "MuscleSkeletal sampling ablation in our campaign (step 11b, D48): expanded_site = row-wise graph, expanded_pair = our pair-first graph"
+}

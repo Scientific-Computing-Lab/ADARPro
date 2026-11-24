@@ -1,0 +1,50 @@
+{
+  "canonical_test_access": false,
+  "context": "Brain",
+  "equal_average_threshold": 0.42500000000000004,
+  "frozen_stage_sha256": "f7e4efcb8a36cedddb2f5ce438fe5bb29ec7082e582ad90fc5763677c0d1cf05",
+  "maximum_validation_reproduction_difference": 1.1920928955078125e-07,
+  "scope": "frozen final gap stage; validation metrics are descriptive (that split chose its settings)",
+  "seeds": 5,
+  "selection": {
+    "C": 10.0,
+    "threshold": 0.42500000000000004,
+    "train_rows": 15625,
+    "validation_f1": 0.9085638998682477,
+    "validation_rows": 3766
+  },
+  "validation_metrics": {
+    "equal_average": {
+      "auprc": 0.9516667172091837,
+      "auroc": 0.9581097862098393,
+      "balanced_accuracy": 0.8955923177348842,
+      "brier": 0.0771541707983586,
+      "f1": 0.8983708301008534,
+      "fn": 150,
+      "fp": 243,
+      "mcc": 0.7922347034659559,
+      "n": 3766,
+      "precision": 0.8772727272727273,
+      "recall": 0.9205087440381559,
+      "specificity": 0.8706758914316126,
+      "tn": 1636,
+      "tp": 1737
+    },
+    "gap_stage": {
+      "auprc": 0.9637777693788179,
+      "auroc": 0.9659224073962828,
+      "balanced_accuracy": 0.907847536983811,
+      "brier": 0.07080509584718167,
+      "f1": 0.9085638998682477,
+      "fn": 163,
+      "fp": 184,
+      "mcc": 0.815765134334315,
+      "n": 3766,
+      "precision": 0.9035639412997903,
+      "recall": 0.913619501854796,
+      "specificity": 0.902075572112826,
+      "tn": 1695,
+      "tp": 1724
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "best_epoch": 695,
+  "canonical_test_access": false,
+  "checkpoint": "models/final_v2/seed20280821/MuscleSkeletal/binary_pair_balanced/best.pth",
+  "checkpoint_sha256": "1f9a7277ddeef64801091302cce8c2145c05bf93642a7a237f5a8f743b91b644",
+  "context": "MuscleSkeletal",
+  "mode": "binary_pair_balanced",
+  "run_tag": "v2",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.42500000000000004,
+  "train_pairs": 474,
+  "train_raw_rows": 43383,
+  "validation_metrics": {
+    "auprc": 0.9179302047038953,
+    "auroc": 0.9150565982972135,
+    "balanced_accuracy": 0.8477263931888546,
+    "f1": 0.8626334519572953,
+    "fn": 74,
+    "fp": 119,
+    "mcc": 0.6999236958676411,
+    "n": 1288,
+    "precision": 0.8358620689655173,
+    "recall": 0.8911764705882353,
+    "specificity": 0.8042763157894737,
+    "tn": 489,
+    "tp": 606
+  },
+  "validation_pairs": 120,
+  "validation_rows": 1288
+}

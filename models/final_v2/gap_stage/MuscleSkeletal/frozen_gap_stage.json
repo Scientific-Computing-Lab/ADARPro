@@ -1,0 +1,47 @@
+{
+  "C": 0.01,
+  "averaging": "each network averaged over its seeds in log-odds, then one stage (D45)",
+  "canonical_test_access": false,
+  "columns": [
+    "graph_logit",
+    "cnn_logit",
+    "gap"
+  ],
+  "context": "MuscleSkeletal",
+  "final_models": {
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20260821/MuscleSkeletal/binary_pair_balanced": "8d9bdc9d6800acaa12e52208be59ccd3d5487caad642454cb55559ec6a231527",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20260821/MuscleSkeletal/binary_pair_balanced_cnn": "2b2129040699c9e59788d09029af56af5fe562c240189ae22ad5cbaeda589986",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20265821/MuscleSkeletal/binary_pair_balanced": "f749c9b54b5edca0c935b0c15e3507c77765bc3768580f8b2f77e4c5be93c75b",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20265821/MuscleSkeletal/binary_pair_balanced_cnn": "d2969db58544b8fdf58ae3d45de21a5b66e9ffcf9b4b06b4c7ab8c9bc2243154",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20270821/MuscleSkeletal/binary_pair_balanced": "7be6239e0098551eb3928c7ff3c233c5f3650d6391cb74a95072feb4551e0eeb",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20270821/MuscleSkeletal/binary_pair_balanced_cnn": "3ddf93abdfc6843f58ebb8e7ccfe8dec7c2fc07c1a9076b26f1a2393a5ddaa38",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20275821/MuscleSkeletal/binary_pair_balanced": "0bfb317b38d9e0bae429ff476cc55fc53082ff16cf7e6506a3b329f61c73c50c",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20275821/MuscleSkeletal/binary_pair_balanced_cnn": "e1585387993d285d92345a255488b45f671fa2c5924b444c5c2a91f1e57650ef",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20280821/MuscleSkeletal/binary_pair_balanced": "1f9a7277ddeef64801091302cce8c2145c05bf93642a7a237f5a8f743b91b644",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20280821/MuscleSkeletal/binary_pair_balanced_cnn": "da27bd5386ce6c747a670a4eb607cc6618eb7e927d2f89743bfd45146e101eb8"
+  },
+  "fit_split": "published train canonical rows (in-sample final-model scores; gate scheme)",
+  "gap": "log1p(start2 - end1), adarpro.features.genomic_context.pair_intrinsic_features",
+  "intercept": -0.3783279121339232,
+  "scaler_mean": [
+    -0.21044209276495088,
+    -0.7144688819894235,
+    5.801342472958094
+  ],
+  "scaler_scale": [
+    3.377229649281733,
+    4.089604879926685,
+    1.3476031599347578
+  ],
+  "seed": 42,
+  "selection_split": "published validation canonical rows",
+  "threshold": 0.42500000000000004,
+  "train_rows": 4679,
+  "validation_f1": 0.8868913857677903,
+  "validation_rows": 1288,
+  "weights": [
+    1.3861928889108899,
+    1.55545227296669,
+    -0.2864064465662277
+  ]
+}

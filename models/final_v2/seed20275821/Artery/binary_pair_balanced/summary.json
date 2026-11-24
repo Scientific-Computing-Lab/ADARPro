@@ -1,0 +1,30 @@
+{
+  "best_epoch": 852,
+  "canonical_test_access": false,
+  "checkpoint": "models/final_v2/seed20275821/Artery/binary_pair_balanced/best.pth",
+  "checkpoint_sha256": "bde9b3add12a1d1ae054d548ac07a79ceab7e42e78d80c7240fceb177fbf369f",
+  "context": "Artery",
+  "mode": "binary_pair_balanced",
+  "run_tag": "v2",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.5,
+  "train_pairs": 487,
+  "train_raw_rows": 38935,
+  "validation_metrics": {
+    "auprc": 0.9147804057880661,
+    "auroc": 0.9283478001435803,
+    "balanced_accuracy": 0.8567099849626865,
+    "f1": 0.8603491271820449,
+    "fn": 170,
+    "fp": 390,
+    "mcc": 0.7162378089769922,
+    "n": 3876,
+    "precision": 0.8156028368794326,
+    "recall": 0.9102902374670184,
+    "specificity": 0.8031297324583544,
+    "tn": 1591,
+    "tp": 1725
+  },
+  "validation_pairs": 121,
+  "validation_rows": 3876
+}

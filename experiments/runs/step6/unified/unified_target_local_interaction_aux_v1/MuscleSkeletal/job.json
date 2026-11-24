@@ -1,0 +1,9 @@
+{
+  "job_id": "38305539",
+  "host": "hpc8l4-01",
+  "card": "NVIDIA L4",
+  "clone_head": "c87165795e7323ab1043aa0d4c4b2a73c171c229",
+  "python_wall_seconds": 18180,
+  "seed": 20260821,
+  "torch": "2.7.0+cu126"
+}

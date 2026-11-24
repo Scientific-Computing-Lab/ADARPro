@@ -1,0 +1,50 @@
+{
+  "canonical_test_access": false,
+  "context": "Artery",
+  "equal_average_threshold": 0.45000000000000007,
+  "frozen_stage_sha256": "e0a3e2a1a11afb1c171f0cee2b3b24f356d880d7f9a472d6ec3113c46de9f2c2",
+  "maximum_validation_reproduction_difference": 3.725290298461914e-09,
+  "scope": "frozen final gap stage; validation metrics are descriptive (that split chose its settings)",
+  "seeds": 5,
+  "selection": {
+    "C": 0.1,
+    "threshold": 0.475,
+    "train_rows": 15294,
+    "validation_f1": 0.8971715569653714,
+    "validation_rows": 3876
+  },
+  "validation_metrics": {
+    "equal_average": {
+      "auprc": 0.9395623361286431,
+      "auroc": 0.9483462284845876,
+      "balanced_accuracy": 0.8819497628526409,
+      "brier": 0.08722583524791123,
+      "f1": 0.8823529411764706,
+      "fn": 170,
+      "fp": 290,
+      "mcc": 0.7643149834905124,
+      "n": 3876,
+      "precision": 0.8560794044665012,
+      "recall": 0.9102902374670184,
+      "specificity": 0.8536092882382635,
+      "tn": 1691,
+      "tp": 1725
+    },
+    "gap_stage": {
+      "auprc": 0.9556719382081743,
+      "auroc": 0.9587133174125166,
+      "balanced_accuracy": 0.8995492801668623,
+      "brier": 0.07800718906433693,
+      "f1": 0.8971715569653714,
+      "fn": 198,
+      "fp": 191,
+      "mcc": 0.7991678572870009,
+      "n": 3876,
+      "precision": 0.8988347457627118,
+      "recall": 0.895514511873351,
+      "specificity": 0.9035840484603735,
+      "tn": 1790,
+      "tp": 1697
+    }
+  }
+}

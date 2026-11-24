@@ -1,0 +1,12 @@
+{
+  "job_id": "38344020",
+  "array_task": "3",
+  "host": "dsicsgpu05",
+  "card": "NVIDIA GeForce GTX 1080 Ti",
+  "clone_head": "ba2d7bcadbc4b4b1ca7808260154eedcfd5d82b3",
+  "python_wall_seconds": 9247,
+  "seed": 20275821,
+  "mode": "binary_pair_balanced",
+  "context": "Artery",
+  "torch": "2.7.0+cu126"
+}

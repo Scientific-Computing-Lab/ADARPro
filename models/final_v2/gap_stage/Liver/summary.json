@@ -1,0 +1,50 @@
+{
+  "canonical_test_access": false,
+  "context": "Liver",
+  "equal_average_threshold": 0.55,
+  "frozen_stage_sha256": "e0abb78275a78397cf23022e6d5026e4e03672a606fa4a71c4522198acee01dd",
+  "maximum_validation_reproduction_difference": 1.1920928955078125e-07,
+  "scope": "frozen final gap stage; validation metrics are descriptive (that split chose its settings)",
+  "seeds": 5,
+  "selection": {
+    "C": 0.01,
+    "threshold": 0.42500000000000004,
+    "train_rows": 12485,
+    "validation_f1": 0.8912028725314183,
+    "validation_rows": 3024
+  },
+  "validation_metrics": {
+    "equal_average": {
+      "auprc": 0.9442201624447956,
+      "auroc": 0.9525440571945536,
+      "balanced_accuracy": 0.8924224976060185,
+      "brier": 0.08425447324443479,
+      "f1": 0.8830324909747292,
+      "fn": 155,
+      "fp": 169,
+      "mcc": 0.7842304889509873,
+      "n": 3024,
+      "precision": 0.8785919540229885,
+      "recall": 0.8875181422351234,
+      "specificity": 0.8973268529769137,
+      "tn": 1477,
+      "tp": 1223
+    },
+    "gap_stage": {
+      "auprc": 0.9533305161218653,
+      "auroc": 0.9577424799002552,
+      "balanced_accuracy": 0.8998650023719375,
+      "brier": 0.07777053093585218,
+      "f1": 0.8912028725314183,
+      "fn": 137,
+      "fp": 166,
+      "mcc": 0.7985109132046776,
+      "n": 3024,
+      "precision": 0.8820184790334044,
+      "recall": 0.9005805515239478,
+      "specificity": 0.8991494532199271,
+      "tn": 1480,
+      "tp": 1241
+    }
+  }
+}

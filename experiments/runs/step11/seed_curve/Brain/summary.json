@@ -1,0 +1,81 @@
+{
+  "anchor_step9": {
+    "seed20260821_equal_average": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20260821_predictor": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20265821_equal_average": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20265821_predictor": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20270821_equal_average": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20270821_predictor": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20275821_equal_average": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20275821_predictor": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20280821_equal_average": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    },
+    "seed20280821_predictor": {
+      "max_abs_probability_difference": 0.0,
+      "predictions_identical": true
+    }
+  },
+  "averaging": "each network's scores averaged over the subset's runs in log-odds, then one gap stage (D45)",
+  "bootstrap_replicates": 1000,
+  "canonical_test_access": false,
+  "context": "Brain",
+  "maximum_reproduction_difference": {
+    "20260821": {
+      "cnn": 5.960464477539063e-08,
+      "graph": 3.725290298461914e-08
+    },
+    "20265821": {
+      "cnn": 1.4901161193847656e-08,
+      "graph": 7.450580596923828e-09
+    },
+    "20270821": {
+      "cnn": 3.725290298461914e-09,
+      "graph": 7.450580596923828e-09
+    },
+    "20275821": {
+      "cnn": 1.4901161193847656e-08,
+      "graph": 9.313225746154785e-09
+    },
+    "20280821": {
+      "cnn": 1.4901161193847656e-08,
+      "graph": 2.9802322387695312e-08
+    }
+  },
+  "pairs": 612,
+  "rows": 19391,
+  "runs": [
+    20260821,
+    20265821,
+    20270821,
+    20275821,
+    20280821
+  ],
+  "scope": "seed-averaging curve of the gap-stage predictor; development rows only",
+  "subsets": 31
+}

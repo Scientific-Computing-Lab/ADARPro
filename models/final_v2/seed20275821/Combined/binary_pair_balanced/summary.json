@@ -1,0 +1,30 @@
+{
+  "best_epoch": 595,
+  "canonical_test_access": false,
+  "checkpoint": "models/final_v2/seed20275821/Combined/binary_pair_balanced/best.pth",
+  "checkpoint_sha256": "6dee6841e1414ae4142f63b55a8537903a774cff52fd63ffac3c12a9f2abc205",
+  "context": "Combined",
+  "mode": "binary_pair_balanced",
+  "run_tag": "v2",
+  "scope": "published train/validation only; test remains sealed",
+  "threshold": 0.375,
+  "train_pairs": 566,
+  "train_raw_rows": 49789,
+  "validation_metrics": {
+    "auprc": 0.9393005846918936,
+    "auroc": 0.9448867681082042,
+    "balanced_accuracy": 0.8799832321142552,
+    "f1": 0.8826700898587934,
+    "fn": 154,
+    "fp": 303,
+    "mcc": 0.7615774477325471,
+    "n": 3793,
+    "precision": 0.8501483679525222,
+    "recall": 0.9177789642285105,
+    "specificity": 0.8421875,
+    "tn": 1617,
+    "tp": 1719
+  },
+  "validation_pairs": 139,
+  "validation_rows": 3793
+}

@@ -1,0 +1,23 @@
+{
+  "fn": {
+    "features": 38,
+    "significant": 0,
+    "largest_abs_d": 0.19945883715590115,
+    "largest_feature": "DGCR8_adrenal_gland__focal",
+    "intervals_reaching_small_effect": 11,
+    "aggregate_intervals_inside_small_effect": true,
+    "placebo_d": -0.031825561031288266,
+    "reading": "no usable signal"
+  },
+  "fp": {
+    "features": 38,
+    "significant": 4,
+    "largest_abs_d": 0.24785295579955613,
+    "largest_feature": "PC3",
+    "intervals_reaching_small_effect": 31,
+    "aggregate_intervals_inside_small_effect": false,
+    "placebo_d": -0.0007200504564989099,
+    "reading": "signal"
+  },
+  "sweep_max_abs_d": 0.043562457868079135
+}

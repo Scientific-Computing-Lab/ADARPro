@@ -1,0 +1,13 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "pair_balanced",
+    "local",
+    "pair_local_ensemble",
+    "gap_stage"
+  ],
+  "canonical_test_access": false,
+  "pairs": 612,
+  "rows": 19391,
+  "scope": "Brain canonical development OOF, run 20260821 (step 11b, D48): pair_balanced = our graph, local = CNN alone, pair_local_ensemble = graph + CNN alone, gap_stage = the flagship (step 9)"
+}

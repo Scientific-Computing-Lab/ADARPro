@@ -1,0 +1,50 @@
+{
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "equal_average_threshold": 0.325,
+  "frozen_stage_sha256": "05b6d6fc7c65a973365aaf134275355029884945237e2c6e93318b87853f0e6a",
+  "maximum_validation_reproduction_difference": 1.4901161193847656e-08,
+  "scope": "frozen final gap stage; validation metrics are descriptive (that split chose its settings)",
+  "seeds": 5,
+  "selection": {
+    "C": 0.01,
+    "threshold": 0.42500000000000004,
+    "train_rows": 4679,
+    "validation_f1": 0.8868913857677903,
+    "validation_rows": 1288
+  },
+  "validation_metrics": {
+    "equal_average": {
+      "auprc": 0.9489488386032546,
+      "auroc": 0.9419335332817338,
+      "balanced_accuracy": 0.8785410216718266,
+      "brier": 0.0974902508994713,
+      "f1": 0.8874364560639071,
+      "fn": 69,
+      "fp": 86,
+      "mcc": 0.7584711429182432,
+      "n": 1288,
+      "precision": 0.8766140602582496,
+      "recall": 0.8985294117647059,
+      "specificity": 0.8585526315789473,
+      "tn": 522,
+      "tp": 611
+    },
+    "gap_stage": {
+      "auprc": 0.9551560910882684,
+      "auroc": 0.9474143769349845,
+      "balanced_accuracy": 0.8834849071207431,
+      "brier": 0.09498481816245974,
+      "f1": 0.8868913857677903,
+      "fn": 88,
+      "fp": 63,
+      "mcc": 0.7658822644415967,
+      "n": 1288,
+      "precision": 0.9038167938931297,
+      "recall": 0.8705882352941177,
+      "specificity": 0.8963815789473685,
+      "tn": 545,
+      "tp": 592
+    }
+  }
+}

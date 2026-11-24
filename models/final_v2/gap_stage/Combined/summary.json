@@ -1,0 +1,50 @@
+{
+  "canonical_test_access": false,
+  "context": "Combined",
+  "equal_average_threshold": 0.35,
+  "frozen_stage_sha256": "9571e2440ee1a5679709e8c47e1cfb6efaf91b6488ee5b71b67d240fa191d02a",
+  "maximum_validation_reproduction_difference": 1.1920928955078125e-07,
+  "scope": "frozen final gap stage; validation metrics are descriptive (that split chose its settings)",
+  "seeds": 5,
+  "selection": {
+    "C": 10.0,
+    "threshold": 0.325,
+    "train_rows": 15305,
+    "validation_f1": 0.9104751903386715,
+    "validation_rows": 3793
+  },
+  "validation_metrics": {
+    "equal_average": {
+      "auprc": 0.9554365321345837,
+      "auroc": 0.9587927122263749,
+      "balanced_accuracy": 0.9012534203150027,
+      "brier": 0.07667754722160826,
+      "f1": 0.9027921406411582,
+      "fn": 127,
+      "fp": 249,
+      "mcc": 0.8035297344654031,
+      "n": 3793,
+      "precision": 0.8751879699248121,
+      "recall": 0.9321943406300054,
+      "specificity": 0.8703125,
+      "tn": 1671,
+      "tp": 1746
+    },
+    "gap_stage": {
+      "auprc": 0.9649093252853849,
+      "auroc": 0.9658299408257698,
+      "balanced_accuracy": 0.9102895866702261,
+      "brier": 0.07067417275738247,
+      "f1": 0.9104751903386715,
+      "fn": 139,
+      "fp": 202,
+      "mcc": 0.8206942012776172,
+      "n": 3793,
+      "precision": 0.8956611570247934,
+      "recall": 0.9257875066737854,
+      "specificity": 0.8947916666666667,
+      "tn": 1718,
+      "tp": 1734
+    }
+  }
+}

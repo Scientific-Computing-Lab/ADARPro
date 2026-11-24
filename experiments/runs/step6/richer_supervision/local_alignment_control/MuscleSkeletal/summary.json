@@ -1,0 +1,14 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "aligned_local",
+    "shifted_local",
+    "pair_balanced",
+    "aligned_ensemble",
+    "shifted_ensemble"
+  ],
+  "canonical_test_access": false,
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "Muscle canonical development OOF; target-aligned versus 96-nt-shifted local CNN (step 6, D35: aligned_local = CNN alone, shifted_local = shifted CNN alone, pair_balanced = graph, aligned_ensemble = graph + CNN alone, shifted_ensemble = graph + shifted CNN alone; step-4 run, seed 20260821)"
+}

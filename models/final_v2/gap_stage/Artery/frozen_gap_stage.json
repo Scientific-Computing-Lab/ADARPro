@@ -1,0 +1,47 @@
+{
+  "C": 0.1,
+  "averaging": "each network averaged over its seeds in log-odds, then one stage (D45)",
+  "canonical_test_access": false,
+  "columns": [
+    "graph_logit",
+    "cnn_logit",
+    "gap"
+  ],
+  "context": "Artery",
+  "final_models": {
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20260821/Artery/binary_pair_balanced": "dcc57cb61c0668c904d1cc94b094045acbae29fc5e51a89c1ae6a49bf203f1e3",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20260821/Artery/binary_pair_balanced_cnn": "1f0a69ea3900d9aa67145b8661eedf9119d524c111f617ade15f44f9dca4a1a7",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20265821/Artery/binary_pair_balanced": "47f316113e91273e97e9250ef7e18dbc363cff860bcff6c2528caa051957e557",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20265821/Artery/binary_pair_balanced_cnn": "1a3c3b6ba68d267b7a80d15a7e935661b4379bf17ab8c843001a584c4d271f30",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20270821/Artery/binary_pair_balanced": "413f3434dcae4572450d40b37aa530f1d2e5cf2f4f1ff4c74d3f91e90d194008",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20270821/Artery/binary_pair_balanced_cnn": "2b47ceab0cc67b34bcdbfe691116fd2fcc04de7f7c59e9b798ddd3b023ab7825",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20275821/Artery/binary_pair_balanced": "bde9b3add12a1d1ae054d548ac07a79ceab7e42e78d80c7240fceb177fbf369f",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20275821/Artery/binary_pair_balanced_cnn": "992e60bf3a8024f3aa558549568232025dde94541353086676915a3838220be7",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20280821/Artery/binary_pair_balanced": "50dfc89921c743c771e9fd9c5f0778c8bdcbe5805c1081d1a4c3bda2a5f0a2c6",
+    "/private8/Projects/Eli_S/ADARPro_pnas/models/final_v2/seed20280821/Artery/binary_pair_balanced_cnn": "803595fb36bf246e1fb8e7bc9c7182aef5ae29ddddb1db5d8553bd0b7f0de415"
+  },
+  "fit_split": "published train canonical rows (in-sample final-model scores; gate scheme)",
+  "gap": "log1p(start2 - end1), adarpro.features.genomic_context.pair_intrinsic_features",
+  "intercept": -0.6844365380606864,
+  "scaler_mean": [
+    -0.34994513133496485,
+    -0.4358223476657314,
+    5.842358584692937
+  ],
+  "scaler_scale": [
+    3.428282470785677,
+    4.023843729682524,
+    1.3539044810815621
+  ],
+  "seed": 42,
+  "selection_split": "published validation canonical rows",
+  "threshold": 0.475,
+  "train_rows": 15294,
+  "validation_f1": 0.8971715569653714,
+  "validation_rows": 3876,
+  "weights": [
+    1.9756049407560812,
+    2.9357507290072764,
+    -0.778480692517794
+  ]
+}

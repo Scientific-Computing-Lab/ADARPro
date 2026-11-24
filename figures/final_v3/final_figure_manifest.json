@@ -1,0 +1,21 @@
+{
+  "candidate": "adarpro_gap_stage_graph_cnn_alone_5seed",
+  "canonical_test_access": true,
+  "figures": [
+    "final_calibration.png",
+    "final_fp_rescue_tp_damage.png",
+    "final_metric_improvement.png",
+    "final_pr_curves.png",
+    "final_roc_curves.png"
+  ],
+  "input_hashes": {
+    "metrics": "cb4d84c072380fd1c1c9c87c46d23def2a9d4eaf7cfde624d00f4706b658bfa0",
+    "predictions_Artery": "e60319984588ab33b244d267d4644e4d1b341d53a6e06be4648573697993b1bc",
+    "predictions_Brain": "aa45db2b9310177adf16fff208a414c9a4f0ffc5eb9a7af0781033567f21c132",
+    "predictions_Combined": "0658bdd0c11dc3f7969f0932b4946cf907e5f90eb6244477facc3754a978a2e6",
+    "predictions_Liver": "c1d5727046f36251cb3faa1f715bb4ce3c1432e65c670cccd323e1f7dcb2df06",
+    "predictions_MuscleSkeletal": "9328f7f7b95869f17a9f2894a14b4b463b4fd627938a220d0171afd33340e199",
+    "summary": "17b2690800e9479889153c84703c89eeeb4ad0fa77e1ef2ac7d8ffb01f9f33e3"
+  },
+  "scope": "descriptive figures after single consumed canonical-test evaluation"
+}

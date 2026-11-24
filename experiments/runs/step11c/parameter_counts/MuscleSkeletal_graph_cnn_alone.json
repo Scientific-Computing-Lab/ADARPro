@@ -1,0 +1,46 @@
+{
+  "canonical_test_access": false,
+  "components": {
+    "cnn_alone": {
+      "best_checkpoint_sha256_by_outer_fold": {
+        "0": "0957cb76457a67817811f67282291e6ea5bd2b97878951af30cd9ac4a87b47d2",
+        "1": "38f6380d942990d39b953976fc8e2d4bd62dca4399dc9dfb57bc77a4b85c4f96",
+        "2": "c7cd001443d5de0dc189db47890ed42da41afcfe72968778a7820b272627cc01",
+        "3": "e706964289856106cd200cd068c60938a906bec62ab844216de4d1f9c3a2261a",
+        "4": "d72830e845fbf4fcdde14fa05b774bcbea196016cccc123b6520e56480bbf2f2"
+      },
+      "mode": "binary_pair_balanced_cnn",
+      "parameters": 7429,
+      "per_fold": {
+        "0": 7429,
+        "1": 7429,
+        "2": 7429,
+        "3": 7429,
+        "4": 7429
+      },
+      "run_dir": "experiments/runs/step4/binary_pair_balanced_cnn/MuscleSkeletal"
+    },
+    "graph": {
+      "best_checkpoint_sha256_by_outer_fold": {
+        "0": "a747100469ee2aa66c3173e18b286bd67bc70b45a37a0b0f776f4b36c78006da",
+        "1": "37fc81a924502924bd23b83180bb82cf600e3d3f3adfa52f1e39ed9b5a8062fe",
+        "2": "f950b6fd317f9a56668d0e361bb5aa2e685293ce735ce556651474ff6e52a304",
+        "3": "34b529bc089b094b6697e8e24e6e4217a69378d3db2eb17da5e3ca3fd3b1eed3",
+        "4": "becdc5999059022ab9f32886ef0e796cf947225a54aa61815ad043e6bff58762"
+      },
+      "mode": "binary_pair_balanced",
+      "parameters": 36357,
+      "per_fold": {
+        "0": 36357,
+        "1": 36357,
+        "2": 36357,
+        "3": 36357,
+        "4": 36357
+      },
+      "run_dir": "experiments/runs/step4/binary_pair_balanced/MuscleSkeletal"
+    }
+  },
+  "counting": "adarpro.models.unified.parameter_count (requires_grad parameters) on strictly loaded best.pth",
+  "scope": "trainable parameter counts of completed grouped-OOF fold checkpoints",
+  "total_parameters": 43786
+}
