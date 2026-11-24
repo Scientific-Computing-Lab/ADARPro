@@ -1370,6 +1370,48 @@ def add_seed_averaging_claims() -> None:
             "two decimals (percentage points)", f"SeedAvgAUROC{which}")
 
 
+def add_reformer_claims() -> None:
+    """Reformer RBP error screen on the selected predictor's development OOF predictions (R8, COMPUTE D57-D64).
+    Numbers printed in SI P.3; guards keep the paragraph's wording true."""
+    import json
+    run = ROOT / "experiments/runs/r8_reformer/gap_seed20260821"
+    pcs = json.loads((run / "pc_summary.json").read_text())
+    reading = json.loads((run / "reading.json").read_text())
+    fp = pd.read_csv(run / "fp_effects.csv")
+    if reading["fn"]["significant"] != 0:
+        raise RuntimeError("Reformer: a miss feature is significant; SI P.3 says none is")
+    for pc in ("PC2", "PC3"):
+        if not pcs[pc]["weight_share_dsRNA_binder_models"] < 1.5 * pcs[pc]["even_share_dsRNA_binder_models"]:
+            raise RuntimeError(f"Reformer: {pc} is weighted toward dsRNA binders; SI P.3 says neither is")
+    if not reading["sweep_max_abs_d"] < 0.2:
+        raise RuntimeError("Reformer: aggregate binding separates false positives at some confidence cut")
+    status = "development OOF, four tissues pooled (R8)"
+    use = "SI P.3 (RBPs, Reformer screen)"
+    add("reformer_models", "Reformer RNA-binding models scored", pcs["models"], str(pcs["models"]), "models", status,
+        run / "pc_summary.json", "models", use, "integer", "ReformerModels")
+    add("reformer_models_hepg2_k562", "Reformer models trained in HepG2 or K562", pcs["models_hepg2_or_k562"],
+        str(pcs["models_hepg2_or_k562"]), "models", status, run / "pc_summary.json", "models_hepg2_or_k562", use,
+        "integer", "ReformerModelsCellLines")
+    value = float(reading["fn"]["largest_abs_d"])
+    add("reformer_fn_largest_abs_d", "Largest |d| over Reformer features, confident misses vs correct edited calls",
+        value, f"{value:.2f}", "Cohen's d (composition-adjusted)", status, run / "reading.json", "fn.largest_abs_d", use,
+        "two decimals", "ReformerMissLargestD")
+    for pc, word in (("PC2", "Two"), ("PC3", "Three")):
+        row = fp[fp.feature == pc]
+        if len(row) != 1:
+            raise RuntimeError(f"Reformer fp_effects: {pc}: {len(row)} rows")
+        d = float(row.iloc[0]["d_compCtrl"])
+        if not d < 0:
+            raise RuntimeError(f"Reformer: false positives not lower on {pc}")
+        add(f"reformer_fp_{pc.lower()}_d", f"Confident false positives vs correct rejections on Reformer {pc}", d,
+            f"$-${abs(d):.2f}", "Cohen's d (composition-adjusted)", status, run / "fp_effects.csv",
+            f"feature == {pc}; d_compCtrl", use, "two decimals", f"ReformerFalsePos{word}D")
+        share = 100 * float(pcs["variance_explained"][pc])
+        add(f"reformer_{pc.lower()}_variance", f"Share of variance of the 225 z-scored Reformer models on {pc}", share,
+            f"{share:.0f}", "percent", status, run / "pc_summary.json", f"variance_explained.{pc}", use, "integer percent",
+            f"Reformer{word}Variance")
+
+
 def write_outputs() -> None:
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1403,6 +1445,7 @@ def main() -> None:
     add_post_analysis_claims()
     add_gap_stage_claims()
     add_seed_averaging_claims()
+    add_reformer_claims()
     write_outputs()
 
 
