@@ -1140,6 +1140,72 @@ def add_post_analysis_claims() -> None:
                 )
 
 
+def add_gap_stage_claims() -> None:
+    """Gap stage vs its controls (step 11b, D51): development OOF, one run (seed 20260821), 2,000 pair replicates.
+    Also the sign of the frozen final second stage's spacing weight in every endpoint (models/final_v2)."""
+    references = (("no_gap_stage", "NoGap"), ("shuffled_gap_stage", "Shuffled"), ("equal_average", "EqualAverage"))
+    medians: dict[tuple[str, str], list[float]] = {}
+    for context in CONTEXTS:
+        path = ROOT / f"experiments/runs/step11b/gap_controls/{context}/pair_bootstrap_ci.csv"
+        frame = pd.read_csv(path)
+        for reference, tag in references:
+            for metric in ("auroc", "auprc", "f1", "brier"):
+                row = frame[(frame.candidate == "gap_stage") & (frame.reference == reference) & (frame.metric == metric)]
+                if len(row) != 1:
+                    raise RuntimeError(f"{path}: expected one gap_stage/{reference}/{metric} row, got {len(row)}")
+                row = row.iloc[0]
+                for stat in ("median", "lower", "upper"):
+                    value = 100 * float(row[stat])
+                    add(
+                        f"gap_stage_vs_{reference}_{context}_{metric}_{stat}",
+                        f"{context} gap stage minus {reference}, {metric} ({stat})",
+                        value,
+                        f"{value:.2f}",
+                        "percentage points",
+                        "development OOF pair-clustered bootstrap (one run)",
+                        path,
+                        f"candidate=gap_stage; reference={reference}; metric={metric}; {stat}",
+                        "Results (genomic organization); SI gap-control table",
+                        "two decimals (percentage points)",
+                    )
+                medians.setdefault((tag, metric), []).append(100 * float(row["median"]))
+    for tag in ("NoGap", "Shuffled"):
+        values = medians[(tag, "auroc")]
+        for which, value in (("Min", min(values)), ("Max", max(values))):
+            add(
+                f"gap_stage_vs_{tag.lower()}_auroc_{which.lower()}",
+                f"{which} over endpoints of the gap stage minus {tag} AUROC median",
+                value,
+                f"{value:.2f}",
+                "percentage points",
+                "development OOF pair-clustered bootstrap (one run)",
+                ROOT / "experiments/runs/step11b/gap_controls",
+                f"{which.lower()} over the five endpoints of median(gap_stage - {tag}) AUROC",
+                "Results (genomic organization)",
+                "two decimals (percentage points)",
+                f"GapStageVs{tag}AUROC{which}",
+            )
+    negative = 0
+    for context in CONTEXTS:
+        spec_path = ROOT / f"models/final_v2/gap_stage/{context}/frozen_gap_stage.json"
+        spec = json.loads(spec_path.read_text(encoding="utf-8"))
+        negative += spec["weights"][spec["columns"].index("gap")] < 0
+    if negative != len(CONTEXTS):  # the text says "negative in every endpoint"
+        raise RuntimeError(f"spacing weight negative in {negative} of {len(CONTEXTS)} endpoints; revise the text")
+    add(
+        "gap_stage_negative_weight_endpoints",
+        "Endpoints whose frozen second-stage spacing weight is negative",
+        negative,
+        str(negative),
+        "endpoints",
+        "frozen final model",
+        ROOT / "models/final_v2/gap_stage",
+        "weights[columns.index('gap')] < 0 in frozen_gap_stage.json",
+        "Results (genomic organization)",
+        "integer",
+    )
+
+
 def write_outputs() -> None:
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1170,6 +1236,7 @@ def main() -> None:
     add_limited_branch_claims()
     add_synthesis_table_claims()
     add_post_analysis_claims()
+    add_gap_stage_claims()
     write_outputs()
 
 

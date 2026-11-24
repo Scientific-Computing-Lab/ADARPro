@@ -153,6 +153,8 @@ Site-level translation was weaker. The outer-isolated burden gate adjusted a sit
 
 \input{generated/table_s3_substrate_realization.tex}
 
+\input{generated/table_s11_gap_controls.tex}
+
 \section{Richer supervision and the statistical unit}\label{si:supervision}
 
 The expanded training pool contains all eligible high- and low-editing observations in the training pairs. Both formulations allocate equal numbers of draws to the two classes (up to one draw for an odd epoch budget). The row-wise formulation samples sites uniformly within each class. The pair-first formulation instead samples uniformly among pairs containing that class, then uniformly among the eligible sites in the chosen pair. Pairs lacking a class are absent from that class's sampling pool; there is no fallback draw. Pair weighting is therefore uniform within class, not necessarily across all pairs. The canonical-row epoch budget was fixed.

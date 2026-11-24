@@ -476,7 +476,7 @@ def evidence_map() -> None:
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
-\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section A). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
+\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section~\ref{si:benchmark}). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule
@@ -832,6 +832,42 @@ Total & 128 \\
     )
 
 
+def gap_controls() -> None:
+    labels = {
+        "no_gap_stage": "Same stage without spacing",
+        "shuffled_gap_stage": "Same stage, shuffled spacing",
+        "equal_average": "Equal average, no second stage",
+    }
+    rows = []
+    for context in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
+        frame = pd.read_csv(ROOT / f"experiments/runs/step11b/gap_controls/{context}/pair_bootstrap_ci.csv")
+        for reference, label in labels.items():
+            cells = []
+            for metric in ("auroc", "auprc", "f1", "brier"):
+                row = frame[(frame.candidate == "gap_stage") & (frame.reference == reference) & (frame.metric == metric)]
+                if len(row) != 1:
+                    raise RuntimeError(f"{context}: gap_stage/{reference}/{metric}")
+                cells.append(interval(row.iloc[0]))
+            rows.append(f"{context_label(context)} & {label} & " + " & ".join(cells) + r" \\")
+    write(
+        "table_s11_gap_controls.tex",
+        r"""\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{The measured genomic spacing improves site prediction beyond matched second-stage controls.} The selected predictor's second stage combines the two networks' scores with the logarithm of the spacing between the Alu arms. Each row gives the selected predictor minus a comparator: the same second stage without spacing, the same stage given shuffled spacing, or the equal average of the two networks without a second stage. Values are percentage-point medians with 95\% pair-clustered intervals (2,000 replicates) on development out-of-fold predictions from one training run; for Brier score, negative values are improvements.}\label{tab:gapcontrols}
+\begin{tabular}{llrrrr}
+\toprule
+Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}
+\end{table}""",
+    )
+
+
 def manifest() -> None:
     entries = []
     for path in sorted(OUTPUT.glob("table_*.tex")):
@@ -851,8 +887,9 @@ def main() -> None:
     natural_prevalence()
     unified()
     experiment_taxonomy()
+    gap_controls()
     manifest()
-    print("PASS: rendered 10 SI tables from authoritative artifacts")
+    print("PASS: rendered 11 SI tables from authoritative artifacts")
 
 
 if __name__ == "__main__":
