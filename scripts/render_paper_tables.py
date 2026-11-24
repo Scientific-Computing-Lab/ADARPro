@@ -304,9 +304,33 @@ def evidence_map() -> None:
         "Geometry + graph summaries vs graph summaries",
         rf"$\Delta R^2$ {min_effect:+.2f} to {max_effect:+.2f} points (4 tissues)",
         "All four pair-clustered 95% intervals exclude 0",
-        "Supported, not yet actionable",
+        "Supported (pair level)",
         "Burden is predictable; consistent with variation in realization/engagement.",
         "paper/source_tables/figure2_pair_engagement.csv",
+    )
+    gap_dir = ROOT / "experiments/runs/step11b/gap_controls"
+    gap_med = {"no_gap_stage": [], "shuffled_gap_stage": []}
+    excludes = {m: 0 for m in ("auroc", "auprc", "f1", "brier")}
+    for context in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
+        frame = pd.read_csv(gap_dir / context / "pair_bootstrap_ci.csv")
+        for reference in gap_med:
+            for metric in excludes:
+                row = frame[(frame.candidate == "gap_stage") & (frame.reference == reference) & (frame.metric == metric)].iloc[0]
+                if metric == "auroc":
+                    gap_med[reference].append(100 * row["median"])
+                if reference == "shuffled_gap_stage" and (row["lower"] > 0 or row["upper"] < 0):
+                    excludes[metric] += 1
+    add(
+        "Genomic spacing in the second stage",
+        "Substrate propensity",
+        "Same second stage without spacing; shuffled spacing",
+        rf"AUROC {min(gap_med['no_gap_stage']):+.2f} to {max(gap_med['no_gap_stage']):+.2f} / "
+        rf"{min(gap_med['shuffled_gap_stage']):+.2f} to {max(gap_med['shuffled_gap_stage']):+.2f} points (5 endpoints)",
+        f"vs shuffled: AUROC, AUPRC, Brier intervals exclude 0 in {excludes['auroc']}, {excludes['auprc']}, "
+        f"{excludes['brier']} of 5; F1 in {excludes['f1']} of 5",
+        "Selected",
+        "The measured spacing improves site ranking.",
+        "experiments/runs/step11b/gap_controls",
     )
     gate = "experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv"
     add(
@@ -476,7 +500,7 @@ def evidence_map() -> None:
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
-\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section~\ref{si:benchmark}). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
+\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information and, as measured spacing in the second stage, site-level ranking, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section~\ref{si:benchmark}). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule

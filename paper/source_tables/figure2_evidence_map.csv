@@ -8,7 +8,8 @@ Target representation,Representation,Frozen RNA-language embeddings,not supporte
 Target representation,Representation,Substrate-wide all-A decoder,not supported,Stopped for futility
 Target representation,Capacity,Supplied Bio-aware variant,limited,Features/capacity confounded
 Target representation,Capacity,Graph Transformer / GATv2 expansion,not pursued,Not tested after local gains
-Substrate & cellular context,Substrate propensity,Pair geometry / editing burden,"supported, not yet actionable",Substrate propensity detectable
+Substrate & cellular context,Substrate propensity,Pair geometry / editing burden,supported,Substrate propensity detectable
+Substrate & cellular context,Substrate propensity,"Genomic spacing, second stage",selected,Beats shuffled spacing
 Substrate & cellular context,Substrate propensity,Hierarchical engagement gate,limited,Ranking gain; unstable F1
 Substrate & cellular context,Biological context,Bulk H3K36me3 overlap*,limited,Metric-specific screen effects
 Substrate & cellular context,Biological context,RBP binding × bulk expression*,not supported,No consistent screen gain

@@ -1290,8 +1290,15 @@ def evidence_table() -> pd.DataFrame:
             "Substrate & cellular context",
             "Substrate propensity",
             "Pair geometry / editing burden",
-            "supported, not yet actionable",
+            "supported",
             "Substrate propensity detectable",
+        ),
+        (
+            "Substrate & cellular context",
+            "Substrate propensity",
+            "Genomic spacing, second stage",
+            "selected",
+            "Beats shuffled spacing",
         ),
         (
             "Substrate & cellular context",
@@ -1430,7 +1437,7 @@ def figure2(output: Path, source: Path) -> None:
     gap, engagement = substrate_realization_tables(source)
     status_colors = {
         "selected": COLORS["green"],
-        "supported, not yet actionable": COLORS["teal"],
+        "supported": COLORS["teal"],
         "limited": COLORS["amber"],
         "not supported": COLORS["red"],
         "deferred": COLORS["purple"],
@@ -1438,7 +1445,7 @@ def figure2(output: Path, source: Path) -> None:
     }
     status_markers = {
         "selected": "o",
-        "supported, not yet actionable": "D",
+        "supported": "D",
         "limited": "^",
         "not supported": "X",
         "deferred": "s",
@@ -1542,7 +1549,7 @@ def figure2(output: Path, source: Path) -> None:
             ax_a.text(xpos[0], y, row["hypothesis"], fontsize=6.55, va="center")
             marker_size = {
                 "selected": 25,
-                "supported, not yet actionable": 25,
+                "supported": 25,
                 "limited": 29,
                 "not supported": 30,
                 "deferred": 25,
@@ -1558,11 +1565,7 @@ def figure2(output: Path, source: Path) -> None:
                 linewidth=0.4,
                 zorder=3,
             )
-            display_status = (
-                "Supported†"
-                if row["status"] == "supported, not yet actionable"
-                else row["status"].capitalize()
-            )
+            display_status = row["status"].capitalize()
             ax_a.text(
                 xpos[1],
                 y,
