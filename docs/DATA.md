@@ -72,7 +72,7 @@ To regenerate the features:
    reverse-complemented on the minus strand. The A sits at index 255 (+) or
    256 (−). There is one window per site.
 2. **Scores.** Score every window with all 225 per-base Reformer models
-   (`sxl/Reformer`).
+   (`XLS/Reformer`; the same `model.bin` as `sxl/Reformer`).
 3. **Per-model values.** `focal` is the score at the A; `max25` is the maximum
    within ±25 nt of it.
 4. **Panel features.** Keep `focal` and `max25` for the 16 dsRNA-binder models
