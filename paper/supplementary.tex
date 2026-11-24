@@ -188,12 +188,12 @@ The substrate-wide decoder encoded a pair once and classified all candidate aden
 
 \section{Natural-prevalence robustness}\label{si:natural-prevalence}
 
-The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. Here ``natural prevalence'' means the undownsampled high/low pool, not population-wide prevalence across all RNA sites or intermediate editing levels. In both muscle and liver, the fixed ensemble improved ranking, AUPRC, F1, and false-positive count over its pair-first whole-duplex-only component (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support false-positive reduction in this secondary pool but do not replace the canonical task.
+The canonical benchmark is balanced for direct comparison, so its precision is not a deployment-prevalence estimate. The secondary natural-prevalence evaluation retained every eligible high/low observation from unchanged development pairs. Here ``natural prevalence'' means the undownsampled high/low pool, not population-wide prevalence across all RNA sites or intermediate editing levels. In both muscle and liver, the selected predictor improved ranking, AUPRC, F1, and false-positive count over the pair-first whole-duplex-only model (Fig.~\ref{fig:s3}; Table~\ref{tab:natural}). These results support false-positive reduction in this secondary pool but do not replace the canonical task.
 
 \begin{figure}[H]
 \centering
 \includesvg[width=\textwidth]{figures/figureS3_natural_prevalence.svg}
-\caption{\textbf{The gains persist when all eligible high/low sites are retained.} In muscle and liver, the fixed ensemble improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex-only model. The internal reference and local predictor show the contributions along this comparison. All models use the same development pairs without class downsampling. This secondary evaluation tests the undownsampled high/low pool, not population-wide editing prevalence or an independent cohort.}
+\caption{\textbf{The gains persist when all eligible high/low sites are retained.} In muscle and liver, the selected predictor improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex-only model. The internal reference, local predictor, and equal-weight average show the contributions along this comparison. All models use the same development pairs without class downsampling. This secondary evaluation tests the undownsampled high/low pool, not population-wide editing prevalence or an independent cohort.}
 \label{fig:s3}
 \end{figure}
 
