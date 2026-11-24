@@ -7,8 +7,9 @@ PNAS integration, steps 13-14. The headline model and every comparison are named
   on the log-odds averages of five graph and five CNN-alone final models plus the pair's log1p genomic gap;
 * comparators, on the same rows in the same session: the frozen equal log-odds average of the same ten models
   (``equal_average``); PNAS's selected predictor, read from its consumed evaluation
-  (``results/adarpro/final_locked_test/``, ``pnas_selected_predictor``); and the reproduced supplied-checkpoint
-  AdarEdit baseline (``adaredit_reference``), exactly as PNAS scored it.
+  (``results/adarpro/final_locked_test/``, ``pnas_selected_predictor``); and the supplied-checkpoint AdarEdit
+  baseline (``adaredit_reference``), taken from the same saved session, so its numbers are exactly the published
+  ones (amendment 1, after evaluation 2 stopped with no metric computed); our CPU rescoring of AdarEdit is a check.
 
 ``final_locked`` is reused for the canonical loader, the AdarEdit baseline and its published-aggregate check, the
 component scoring, the frozen-input check and the pair-clustered bootstrap (PNAS's seeds). ``final_locked`` itself is
@@ -19,7 +20,8 @@ Subcommands:
   build-manifest  bind every input by hash while the successor policy is development_sealed
   dry-run         the session's scoring path on the published VALIDATION rows; it must reproduce step 11's frozen
                   validation predictions; no test file is opened and nothing is registered
-  run             preflight, consume the one-use authorization, score the canonical test once
+  run             preflight, consume the one-use authorization, then two passes: every check on every endpoint
+                  first, and only then metrics, intervals and files
 """
 
 from __future__ import annotations
@@ -79,6 +81,7 @@ BASELINE_MODEL_NAME = "published_baseline_reproduced"  # PNAS's row name in metr
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 20260821  # + the endpoint's index in CONTEXTS, as PNAS
 SELECTION_POLICY = "provenance/model_selection_policy_v2.json"
+SELECTION_POLICY_AMENDMENT = "provenance/model_selection_policy_v2_amendment1.json"
 PAIR_GAPS = "data/derived/genomic_mapping/bed_pair_gaps.parquet"
 PREDECESSOR = {
     "policy": "provenance/test_quarantine.json",
@@ -86,11 +89,15 @@ PREDECESSOR = {
     "results": "results/adarpro/final_locked_test",
 }
 FINAL_ROOT = "models/final_v2"
-REPRODUCTION_TOLERANCE = 1e-5  # PNAS's reload rule; a flip at the threshold counts only within this distance
-PNAS_METRIC_TOLERANCE = 1e-9
+REPRODUCTION_TOLERANCE = 1e-5  # same-device reload rule; a flip at the threshold counts only within this distance
+CROSS_DEVICE_TOLERANCE = 1e-3  # our CPU AdarEdit scores vs PNAS's saved session (amendment 1)
+PNAS_METRIC_TOLERANCE = 1e-6  # score-based metrics; count-based metrics must match exactly (amendment 1)
+SCORE_METRICS = ("auroc", "auprc", "brier")
+COUNT_METRICS = ("f1", "precision", "recall", "specificity", "balanced_accuracy", "mcc", "tp", "fp", "tn", "fn")
 FROZEN_INPUT_PATHS_V2 = {
     **FROZEN_INPUT_PATHS,
     "model_selection_policy": SELECTION_POLICY,
+    "model_selection_policy_amendment": SELECTION_POLICY_AMENDMENT,
     "predecessor_model_selection_policy": FROZEN_INPUT_PATHS["model_selection_policy"],
     "predecessor_manifest": PREDECESSOR["manifest"],
     "predecessor_metrics": f"{PREDECESSOR['results']}/metrics.csv",
@@ -187,6 +194,10 @@ def build_specification(repository: Path) -> dict:
     contrasts = [list(pair) for pair in CONTRASTS]
     if plan["contrasts"] != contrasts or int(plan["bootstrap_replicates"]) != BOOTSTRAP_REPLICATES:
         raise RuntimeError("the selection policy's evaluation plan differs from this implementation")
+    amendment = json.loads((repository / SELECTION_POLICY_AMENDMENT).read_text())
+    if amendment["amends"]["sha256"] != sha256_file(selection_path) or amendment.get(
+            "adaredit_reference_source") != "pnas_saved_session":
+        raise RuntimeError("the amendment does not amend this selection policy as implemented")
     inventory = {name: file_record(repository, path) for name, path in FROZEN_INPUT_PATHS_V2.items()}
     return {
         "schema_version": MANIFEST_SCHEMA,
@@ -229,6 +240,8 @@ def build_specification(repository: Path) -> dict:
             "bootstrap_replicates": BOOTSTRAP_REPLICATES,
             "bootstrap_seed": f"{BOOTSTRAP_SEED} + endpoint index in {list(CONTEXTS)}",
             "device": "cpu",
+            "adaredit_reference": "PNAS's saved session (per-row AdarEdit scores); our CPU rescoring is a check",
+            "amendment": SELECTION_POLICY_AMENDMENT,
         },
         "frozen_inputs": inventory,
         "contexts": {context: context_specification(repository, context) for context in CONTEXTS},
@@ -294,8 +307,14 @@ def build_manifest(repository: Path, policy_path: Path, output: Path) -> dict:
     if output.exists():
         raise RuntimeError(f"refusing to overwrite a final manifest: {output}")
     manifest = build_specification(repository)
-    if manifest["predecessor"]["policy_sha256"] != policy["predecessor"]["policy_sha256"]:
-        raise RuntimeError("the successor policy records another predecessor")
+    quarantine_predecessor = policy_path.parent / policy["predecessor"]["policy"]
+    if sha256_file(quarantine_predecessor) != policy["predecessor"]["policy_sha256"]:
+        raise RuntimeError("the successor's predecessor policy changed")
+    manifest["quarantine_predecessor"] = {
+        "policy": str(quarantine_predecessor.relative_to(repository)),
+        "policy_sha256": policy["predecessor"]["policy_sha256"],
+        "evaluation_number": int(policy["evaluation_number"]),
+    }
     manifest["created_utc"] = datetime.now(timezone.utc).isoformat()
     manifest["code_revision"] = git_revision(repository)
     validate_manifest_v2(manifest)
@@ -378,17 +397,17 @@ def score_context(repository: Path, context: str, specification: dict, table: pd
     return out
 
 
-def compare_probabilities(mine: pd.Series, saved: pd.Series, threshold: float) -> dict:
+def compare_probabilities(mine, saved, threshold: float, tolerance: float = REPRODUCTION_TOLERANCE) -> dict:
     """Max |difference| and prediction flips at the frozen threshold; a flip counts as boundary when both values lie
-    within the tolerance of the threshold."""
+    within the tolerance of the threshold. Compared by position."""
 
+    mine, saved = pd.Series(np.asarray(mine, dtype=float)), pd.Series(np.asarray(saved, dtype=float))
     difference = (mine - saved).abs()
     flips = (mine >= threshold) != (saved >= threshold)
-    boundary = flips & ((mine - threshold).abs() <= REPRODUCTION_TOLERANCE) & (
-        (saved - threshold).abs() <= REPRODUCTION_TOLERANCE)
+    boundary = flips & ((mine - threshold).abs() <= tolerance) & ((saved - threshold).abs() <= tolerance)
     return {"rows": len(mine), "max_abs_difference": float(difference.max()), "flips": int(flips.sum()),
-            "boundary_flips": int(boundary.sum()),
-            "passes": bool(difference.max() <= REPRODUCTION_TOLERANCE and flips.sum() == boundary.sum())}
+            "boundary_flips": int(boundary.sum()), "tolerance": tolerance,
+            "passes": bool(difference.max() <= tolerance and flips.sum() == boundary.sum())}
 
 
 def contrast_frame(table: pd.DataFrame, candidate: str, reference: str) -> pd.DataFrame:
@@ -518,32 +537,57 @@ def dry_run(repository: Path, output_dir: Path, batch_size: int, replicates: int
     return summary
 
 
-def pnas_predictions(repository: Path, context: str, table: pd.DataFrame, published: pd.DataFrame,
-                     candidate_name: str) -> tuple[pd.DataFrame, dict]:
-    """PNAS's selected predictor on the same canonical rows, from its consumed evaluation; checked against the rows
-    and against PNAS's published aggregate before use."""
+def pnas_session(repository: Path, context: str, scored: pd.DataFrame, published_pnas: pd.DataFrame,
+                 published_baseline: pd.DataFrame, candidate_name: str) -> tuple[pd.DataFrame, dict]:
+    """PNAS's consumed session on the same canonical rows: its selected predictor, and its AdarEdit scores, which are
+    the AdarEdit reference (amendment 1), so AdarEdit's numbers are exactly the published ones. Checks, in order: the
+    same rows; PNAS's AdarEdit calls follow the checkpoint threshold and reproduce the published baseline (PNAS's own
+    check); our CPU rescoring of AdarEdit agrees per row within the cross-device tolerance, with differing calls
+    only at the threshold; PNAS's predictor reproduces its published metrics. Returns the columns to attach."""
 
     path = repository / PREDECESSOR["results"] / f"{context}_predictions.parquet"
     saved = pd.read_parquet(path)
     for column in ("row_index", "pair_id", "label"):
-        if not np.array_equal(saved[column].to_numpy(), table[column].to_numpy()):
+        if len(saved) != len(scored) or not np.array_equal(saved[column].to_numpy(), scored[column].to_numpy()):
             raise RuntimeError(f"{context}: PNAS's predictions are not on the same rows ({column})")
-    baseline_difference = float(np.max(np.abs(saved["baseline_probability"].to_numpy()
-                                              - table["baseline_probability"].to_numpy())))
-    if baseline_difference > REPRODUCTION_TOLERANCE:
-        raise RuntimeError(f"{context}: the AdarEdit baseline differs from PNAS's session by {baseline_difference}")
-    row = published[(published["context"] == context) & (published["model"] == candidate_name)]
+    threshold = float(scored["baseline_threshold"].iloc[0])
+    saved_calls = saved["baseline_prediction"].to_numpy().astype(int)
+    if not np.array_equal(saved_calls, (saved["baseline_probability"].to_numpy() >= threshold).astype(int)):
+        raise RuntimeError(f"{context}: PNAS's saved AdarEdit calls do not follow the checkpoint threshold")
+    assert_published_baseline(context, metrics(saved["label"], saved["baseline_probability"], saved_calls),
+                              published_baseline)
+    cross = compare_probabilities(scored["baseline_probability"], saved["baseline_probability"], threshold,
+                                  CROSS_DEVICE_TOLERANCE)
+    if not cross["passes"]:
+        raise RuntimeError(f"{context}: our CPU AdarEdit scores disagree with PNAS's session: {cross}")
+    row = published_pnas[(published_pnas["context"] == context) & (published_pnas["model"] == candidate_name)]
     if len(row) != 1:
         raise RuntimeError(f"{context}: PNAS's published aggregate is missing")
     observed = metrics(saved["label"], saved["probability"], saved["prediction"])
-    worst = max(abs(float(observed[m]) - float(row.iloc[0][m])) for m in (*BOOTSTRAP_METRICS, "tp", "fp", "tn", "fn"))
-    if worst > PNAS_METRIC_TOLERANCE:
-        raise RuntimeError(f"{context}: PNAS's predictions do not reproduce its published metrics ({worst})")
-    columns = pd.DataFrame({"pnas_probability": saved["probability"].to_numpy(),
-                            "pnas_prediction": saved["prediction"].to_numpy().astype(int),
-                            "pnas_threshold": float(row.iloc[0]["threshold"])}, index=table.index)
-    return columns, {"sha256": sha256_file(path), "baseline_max_difference": baseline_difference,
-                     "published_metric_max_difference": worst}
+    score_worst = max(abs(float(observed[m]) - float(row.iloc[0][m])) for m in SCORE_METRICS)
+    count_worst = max(abs(float(observed[m]) - float(row.iloc[0][m])) for m in COUNT_METRICS)
+    if score_worst > PNAS_METRIC_TOLERANCE or count_worst > 1e-12:
+        raise RuntimeError(f"{context}: PNAS's predictions do not reproduce its published metrics "
+                           f"(scores {score_worst}, counts {count_worst})")
+    cpu = metrics(scored["label"], scored["baseline_probability"], scored["baseline_prediction"])
+    published_row = published_baseline[(published_baseline["context"] == context)
+                                       & (published_baseline["variant"] == "baseline")].iloc[0]
+    columns = pd.DataFrame({
+        "pnas_probability": saved["probability"].to_numpy(),
+        "pnas_prediction": saved["prediction"].to_numpy().astype(int),
+        "pnas_threshold": float(row.iloc[0]["threshold"]),
+        "baseline_probability": saved["baseline_probability"].to_numpy(),
+        "baseline_prediction": saved_calls,
+        "baseline_cpu_probability": scored["baseline_probability"].to_numpy(),
+        "baseline_cpu_prediction": scored["baseline_prediction"].to_numpy().astype(int),
+    }, index=scored.index)
+    return columns, {
+        "sha256": sha256_file(path),
+        "adaredit_cpu_vs_saved": cross,
+        "adaredit_cpu_aggregate_max_difference": max(abs(float(cpu[m]) - float(published_row[m]))
+                                                     for m in ("auroc", "auprc", "f1", "precision", "recall")),
+        "pnas_published_metric_max_difference": {"scores": score_worst, "counts": count_worst},
+    }
 
 
 def preflight(repository: Path, policy_path: Path, manifest_path: Path, output_dir: Path) -> dict:
@@ -561,10 +605,13 @@ def preflight(repository: Path, policy_path: Path, manifest_path: Path, output_d
         raise RuntimeError("working revision differs from the frozen manifest")
     if output_dir.exists() and any(output_dir.iterdir()):
         raise RuntimeError("refusing to overwrite an existing final-test result")
-    if manifest["predecessor"]["policy_sha256"] != policy["predecessor"]["policy_sha256"]:
-        raise RuntimeError("manifest and successor policy record different predecessors")
+    record = manifest.get("quarantine_predecessor") or {}
+    if record.get("policy_sha256") != policy["predecessor"]["policy_sha256"]:
+        raise RuntimeError("manifest and successor policy record different quarantine predecessors")
+    if sha256_file(repository / record["policy"]) != record["policy_sha256"]:
+        raise RuntimeError("the quarantine predecessor policy changed")
     if sha256_file(repository / manifest["predecessor"]["policy"]) != manifest["predecessor"]["policy_sha256"]:
-        raise RuntimeError("the predecessor policy changed")
+        raise RuntimeError("PNAS's evaluation policy changed")
     verify_artifact_inventory(policy, repository)
     verify_frozen_inputs(manifest, repository)
     for context, specification in manifest["contexts"].items():
@@ -583,58 +630,71 @@ def preflight(repository: Path, policy_path: Path, manifest_path: Path, output_d
     return manifest
 
 
-def run(repository: Path, policy_path: Path, manifest_path: Path, authorization: str, output_dir: Path,
-        batch_size: int, device: torch.device) -> pd.DataFrame:
-    manifest = preflight(repository, policy_path, manifest_path, output_dir)
-    consume_final_authorization(policy_path, authorization)
+def session_inputs(repository: Path) -> dict:
+    return {
+        "baseline_module": upstream_modules(repository),
+        "published_baseline": pd.read_csv(repository / "results/adarpro/baseline_reproduction.csv"),
+        "published_pnas": pd.read_csv(repository / PREDECESSOR["results"] / "metrics.csv"),
+        "gaps": pd.read_parquet(repository / PAIR_GAPS),
+        "mapping": pd.read_csv(repository / "data/derived/genomic_mapping/pair_mapping.csv"),
+    }
+
+
+def prepare_context(repository: Path, context: str, manifest: dict, inputs: dict, device: torch.device,
+                    batch_size: int) -> tuple[pd.DataFrame, dict]:
+    """Pass 1 for one endpoint: score every model and run every check. No metric of any candidate is computed."""
+
+    table = load_canonical_table(repository, context, inputs["baseline_module"])
+    scored = score_context(repository, context, manifest["contexts"][context], table, inputs["gaps"], device,
+                           batch_size)
+    mapping = inputs["mapping"]
+    if set(scored["pair_id"]) & set(mapping["pair_id"]) or set(scored["gap_bed_row"]) & set(mapping["bed_row"]):
+        raise RuntimeError(f"{context}: canonical pairs overlap development pairs or their BED rows")
+    columns, check = pnas_session(repository, context, scored, inputs["published_pnas"], inputs["published_baseline"],
+                                  manifest["predecessor"]["candidate_name"])
+    scored = pd.concat([scored.drop(columns=["baseline_probability", "baseline_prediction"]), columns], axis=1)
+    check.update({"rows": len(scored), "pairs": int(scored["pair_id"].nunique()),
+                  "rows_on_a_shared_sequence_pair": int((scored["gap_sequence_copies"] > 1).sum())})
+    return scored, check
+
+
+def write_outputs(repository: Path, manifest: dict, manifest_path: Path, policy_path: Path,
+                  prepared: dict[str, tuple[pd.DataFrame, dict]], output_dir: Path) -> pd.DataFrame:
+    """Pass 2, reached only when every endpoint passed every check: predictions, metrics, intervals, registry."""
+
     (output_dir / "contrasts").mkdir(parents=True, exist_ok=True)
-    baseline_module = upstream_modules(repository)
-    published_baseline = pd.read_csv(repository / "results/adarpro/baseline_reproduction.csv")
-    published_pnas = pd.read_csv(repository / PREDECESSOR["results"] / "metrics.csv")
-    gaps = pd.read_parquet(repository / PAIR_GAPS)
-    mapping = pd.read_csv(repository / "data/derived/genomic_mapping/pair_mapping.csv")
-    metric_rows, contrast_rows, checks = [], [], {}
     replicates = int(manifest["evaluation"]["bootstrap_replicates"])
-    for context in CONTEXTS:
-        specification = manifest["contexts"][context]
-        table = load_canonical_table(repository, context, baseline_module)
-        scored = score_context(repository, context, specification, table, gaps, device, batch_size)
-        assert_published_baseline(context, metrics(scored["label"], scored["baseline_probability"],
-                                                   scored["baseline_prediction"]), published_baseline)
-        if set(scored["pair_id"]) & set(mapping["pair_id"]) or set(scored["gap_bed_row"]) & set(mapping["bed_row"]):
-            raise RuntimeError(f"{context}: canonical pairs overlap development pairs or their BED rows")
-        pnas_columns, pnas_check = pnas_predictions(repository, context, scored, published_pnas,
-                                                    manifest["predecessor"]["candidate_name"])
-        scored = pd.concat([scored, pnas_columns], axis=1)
+    evaluation_number = int(load_policy(policy_path)["evaluation_number"])
+    metric_rows, contrast_rows = [], []
+    for context, (scored, _) in prepared.items():
         scored.to_parquet(output_dir / f"{context}_predictions.parquet", index=False)
-        metric_rows.extend(model_rows(context, scored, manifest["candidate_name"], [REFERENCE, HEADLINE,
-                                                                                 EQUAL_AVERAGE, PNAS]))
+        metric_rows.extend(model_rows(context, scored, manifest["candidate_name"],
+                                      [REFERENCE, HEADLINE, EQUAL_AVERAGE, PNAS]))
         contrast_rows.append(contrast_outputs(context, scored, CONTRASTS, replicates, output_dir))
-        checks[context] = {"pnas_predictions": pnas_check, "rows": len(scored),
-                           "pairs": int(scored["pair_id"].nunique()),
-                           "pairs_sharing_a_sequence": int((scored["gap_sequence_copies"] > 1).sum())}
     metric_table = pd.DataFrame(metric_rows)
     metrics_path = output_dir / "metrics.csv"
     metric_table.to_csv(metrics_path, index=False)
     pd.concat(contrast_rows, ignore_index=True).to_csv(output_dir / "contrasts_pair_bootstrap_ci.csv", index=False)
     summary = {
-        "scope": "single consumed canonical-test evaluation (second session; the first is PNAS's, recorded in "
-                 f"{manifest['predecessor']['policy']})",
+        "scope": f"consumed canonical-test evaluation {evaluation_number}; evaluation 1 is PNAS's "
+                 f"({manifest['predecessor']['policy']}); the record of every evaluation is the audit log",
+        "evaluation_number": evaluation_number,
         "candidate": manifest["candidate_name"],
         "manifest_sha256": sha256_file(manifest_path),
         "policy": str(policy_path.relative_to(repository)) if policy_path.is_relative_to(repository) else str(
             policy_path),
         "bootstrap_replicates": replicates,
         "contrasts": manifest["evaluation"]["contrasts"],
+        "adaredit_reference": manifest["evaluation"]["adaredit_reference"],
         "metrics_sha256": sha256_file(metrics_path),
-        "checks": checks,
+        "checks": {context: check for context, (_, check) in prepared.items()},
         "canonical_test_access": True,
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
     register(
         repository,
         {
-            "run_id": f"final_locked_test_v2_{manifest['candidate_name']}",
+            "run_id": f"final_locked_test_v{evaluation_number}_{manifest['candidate_name']}",
             "experiment_type": "single_consumed_canonical_test_evaluation",
             "context": "all five canonical contexts",
             "input_hashes": {"frozen_manifest": sha256_file(manifest_path)},
@@ -650,23 +710,33 @@ def run(repository: Path, policy_path: Path, manifest_path: Path, authorization:
     return metric_table
 
 
+def run(repository: Path, policy_path: Path, manifest_path: Path, authorization: str, output_dir: Path,
+        batch_size: int, device: torch.device) -> pd.DataFrame:
+    manifest = preflight(repository, policy_path, manifest_path, output_dir)
+    consume_final_authorization(policy_path, authorization)
+    inputs = session_inputs(repository)
+    # Pass 1: every endpoint is scored and checked before any metric exists, so a failed check never follows a number.
+    prepared = {context: prepare_context(repository, context, manifest, inputs, device, batch_size)
+                for context in CONTEXTS}
+    return write_outputs(repository, manifest, manifest_path, policy_path, prepared, output_dir)
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--repository", type=Path, default=Path.cwd())
     sub = parser.add_subparsers(dest="action", required=True)
     build = sub.add_parser("build-manifest")
-    build.add_argument("--policy", type=Path, default=Path("provenance/test_quarantine_v2.json"))
-    build.add_argument("--output", type=Path, default=Path("provenance/final_pipeline_manifest_v2.json"))
+    build.add_argument("--policy", type=Path, default=Path("provenance/test_quarantine_v3.json"))
+    build.add_argument("--output", type=Path, default=Path("provenance/final_pipeline_manifest_v3.json"))
     dry = sub.add_parser("dry-run")
     dry.add_argument("--output-dir", type=Path, required=True)
     dry.add_argument("--bootstrap-replicates", type=int, default=BOOTSTRAP_REPLICATES)
     session = sub.add_parser("run")
-    session.add_argument("--policy", type=Path, default=Path("provenance/test_quarantine_v2.json"))
-    session.add_argument("--manifest", type=Path, default=Path("provenance/final_pipeline_manifest_v2.json"))
+    session.add_argument("--policy", type=Path, default=Path("provenance/test_quarantine_v3.json"))
+    session.add_argument("--manifest", type=Path, default=Path("provenance/final_pipeline_manifest_v3.json"))
     token = session.add_mutually_exclusive_group(required=True)
     token.add_argument("--authorization")
     token.add_argument("--authorization-file", type=Path)
-    session.add_argument("--output-dir", type=Path, default=Path("results/adarpro/final_locked_test_v2"))
+    session.add_argument("--output-dir", type=Path, default=Path("results/adarpro/final_locked_test_v3"))
     for subparser in (dry, session):
         subparser.add_argument("--batch-size", type=int, default=256)
         subparser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")

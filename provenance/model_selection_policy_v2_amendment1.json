@@ -1,0 +1,24 @@
+{
+  "scope": "amendment 1 to provenance/model_selection_policy_v2.json, made after evaluation 2 stopped and before evaluation 3; it changes how the AdarEdit reference is sourced and checked, and nothing else",
+  "created_utc": "2026-11-24T07:08:33+00:00",
+  "amends": {
+    "path": "provenance/model_selection_policy_v2.json",
+    "sha256": "510bd85dc2d939e1309d669e3c63ab4d0027237a125752856b4af18caa0b5bf4"
+  },
+  "made_after": {
+    "evaluation": 2,
+    "policy": "provenance/test_quarantine_v2.json",
+    "consumed_utc": "2026-11-23T15:46:51.993659+00:00",
+    "what_happened": "the session stopped on Artery at its cross-check of our CPU AdarEdit scores against the AdarEdit column of PNAS's saved session (a same-device tolerance applied to a CPU-vs-GPU comparison); rows, pairs and labels matched and PNAS's published-baseline check passed",
+    "outcome_seen": "none: no metric of any model was computed or written, the registry was unchanged"
+  },
+  "adaredit_reference_source": "pnas_saved_session",
+  "changes": [
+    "The AdarEdit reference is the per-row AdarEdit scores and calls of PNAS's saved session (results/adarpro/final_locked_test/), so AdarEdit's numbers are exactly the published ones. They must follow the checkpoint threshold and reproduce the published baseline (PNAS's own check). Our CPU rescoring of the same checkpoints is kept as a check: per row within 1e-3, with differing calls allowed only where both scores lie within 1e-3 of the threshold.",
+    "Every check on every endpoint runs before any metric is computed or any file written (two passes).",
+    "PNAS's saved predictor must reproduce its published metrics within 1e-6 on score-based metrics (AUROC, AUPRC, Brier) and exactly on count-based ones.",
+    "Outputs of evaluation 3: results/adarpro/final_locked_test_v3/ and figures/final_v3/."
+  ],
+  "unchanged": "headline, comparators, contrasts, metrics, intervals, replicates, seeds, thresholds, reading rule, failure rule, downstream analyses",
+  "decision_record": "pnas_integration DECISIONS.md D55 (Eli: 'A ok to look at the test')"
+}

@@ -130,32 +130,97 @@ def test_development_loader_matches_pnas_canonical_loader(tmp_path):
 
 
 def _pnas_repository(tmp_path, table):
+    """PNAS's saved session for Liver, and the two published aggregates it must reproduce."""
     folder = tmp_path / session.PREDECESSOR["results"]
     folder.mkdir(parents=True)
-    saved = table[["row_index", "pair_id", "label", "baseline_probability"]].copy()
+    saved = table[["row_index", "pair_id", "label", "baseline_probability", "baseline_prediction"]].copy()
     saved["probability"], saved["prediction"] = table["pnas_probability"], table["pnas_prediction"]
     saved.to_parquet(folder / "Liver_predictions.parquet", index=False)
-    published = pd.DataFrame([{"context": "Liver", "model": "pnas", "threshold": 0.5,
-                               **metrics(saved["label"], saved["probability"], saved["prediction"])}])
-    return published
+    published_pnas = pd.DataFrame([{"context": "Liver", "model": "pnas", "threshold": 0.5,
+                                    **metrics(saved["label"], saved["probability"], saved["prediction"])}])
+    published_baseline = pd.DataFrame([{"context": "Liver", "variant": "baseline",
+                                        **metrics(saved["label"], saved["baseline_probability"],
+                                                  saved["baseline_prediction"])}])
+    return published_pnas, published_baseline
 
 
-def test_pnas_predictions_are_checked_against_rows_and_published_metrics(tmp_path):
+def _session_table():
     table = _scored()
     table["row_index"] = np.arange(len(table))
-    published = _pnas_repository(tmp_path, table)
-    columns, check = session.pnas_predictions(tmp_path, "Liver", table, published, "pnas")
+    return table
+
+
+def test_pnas_session_supplies_the_saved_adaredit_scores_and_keeps_ours_as_a_check(tmp_path):
+    table = _session_table()
+    published_pnas, published_baseline = _pnas_repository(tmp_path, table)
+    assert ((table["baseline_probability"] - 0.5).abs() > 1e-3).all()  # fixture: no score at the threshold
+    mine = table.copy()
+    mine["baseline_probability"] = mine["baseline_probability"] + 5e-4  # cross-device noise within 1e-3
+    mine["baseline_prediction"] = (mine["baseline_probability"] >= 0.5).astype(int)
+    columns, check = session.pnas_session(tmp_path, "Liver", mine, published_pnas, published_baseline, "pnas")
+    assert np.array_equal(columns["baseline_probability"], table["baseline_probability"])  # the saved scores
+    assert np.array_equal(columns["baseline_cpu_probability"], mine["baseline_probability"])  # ours, kept
     assert np.array_equal(columns["pnas_probability"], table["pnas_probability"])
-    assert check["published_metric_max_difference"] == 0
+    assert check["adaredit_cpu_vs_saved"]["passes"]
+    assert check["pnas_published_metric_max_difference"] == {"scores": 0.0, "counts": 0.0}
+
+
+def test_pnas_session_refuses_misaligned_rows_and_large_disagreement(tmp_path):
+    table = _session_table()
+    published_pnas, published_baseline = _pnas_repository(tmp_path, table)
     shifted = table.copy()
     shifted["pair_id"] = shifted["pair_id"] + 1
     with pytest.raises(RuntimeError, match="same rows"):
-        session.pnas_predictions(tmp_path, "Liver", shifted, published, "pnas")
-    wrong = published.copy()
-    wrong["auroc"] = wrong["auroc"] - 0.01
-    with pytest.raises(RuntimeError, match="published metrics"):
-        session.pnas_predictions(tmp_path, "Liver", table, wrong, "pnas")
+        session.pnas_session(tmp_path, "Liver", shifted, published_pnas, published_baseline, "pnas")
     moved = table.copy()
     moved["baseline_probability"] = moved["baseline_probability"] + 0.01
-    with pytest.raises(RuntimeError, match="AdarEdit baseline differs"):
-        session.pnas_predictions(tmp_path, "Liver", moved, published, "pnas")
+    with pytest.raises(RuntimeError, match="CPU AdarEdit scores disagree"):
+        session.pnas_session(tmp_path, "Liver", moved, published_pnas, published_baseline, "pnas")
+
+
+def test_pnas_session_refuses_a_call_flip_away_from_the_threshold(tmp_path):
+    table = _session_table()
+    published_pnas, published_baseline = _pnas_repository(tmp_path, table)
+    flipped = table.copy()
+    row = int(np.argmax((flipped["baseline_probability"] - 0.5).abs().to_numpy()))
+    flipped.loc[row, "baseline_prediction"] = 1 - flipped.loc[row, "baseline_prediction"]
+    flipped.loc[row, "baseline_probability"] = 1.0 - flipped.loc[row, "baseline_probability"]
+    with pytest.raises(RuntimeError, match="CPU AdarEdit scores disagree"):
+        session.pnas_session(tmp_path, "Liver", flipped, published_pnas, published_baseline, "pnas")
+
+
+def test_pnas_session_refuses_unreproduced_published_metrics(tmp_path):
+    table = _session_table()
+    published_pnas, published_baseline = _pnas_repository(tmp_path, table)
+    wrong = published_pnas.copy()
+    wrong["auroc"] = wrong["auroc"] - 1e-5
+    with pytest.raises(RuntimeError, match="published metrics"):
+        session.pnas_session(tmp_path, "Liver", table, wrong, published_baseline, "pnas")
+    counts = published_pnas.copy()
+    counts["tp"] = counts["tp"] + 1
+    with pytest.raises(RuntimeError, match="published metrics"):
+        session.pnas_session(tmp_path, "Liver", table, counts, published_baseline, "pnas")
+    baseline = published_baseline.copy()
+    baseline["f1"] = baseline["f1"] - 0.01
+    with pytest.raises(RuntimeError, match="published baseline mismatch"):
+        session.pnas_session(tmp_path, "Liver", table, published_pnas, baseline, "pnas")
+
+
+def test_no_output_is_written_when_a_later_endpoint_fails_a_check(tmp_path, monkeypatch):
+    written, prepared = [], []
+    monkeypatch.setattr(session, "preflight", lambda *a: {"contexts": {}})
+    monkeypatch.setattr(session, "consume_final_authorization", lambda *a: None)
+    monkeypatch.setattr(session, "session_inputs", lambda *a: {})
+
+    def prepare(repository, context, *rest):
+        if context == CONTEXTS[-1]:
+            raise RuntimeError("check failed on the last endpoint")
+        prepared.append(context)
+        return pd.DataFrame(), {}
+
+    monkeypatch.setattr(session, "prepare_context", prepare)
+    monkeypatch.setattr(session, "write_outputs", lambda *a: written.append(a))
+    output = tmp_path / "out"
+    with pytest.raises(RuntimeError, match="last endpoint"):
+        session.run(tmp_path, tmp_path / "p.json", tmp_path / "m.json", "token", output, 8, None)
+    assert prepared == list(CONTEXTS[:-1]) and written == [] and not output.exists()
