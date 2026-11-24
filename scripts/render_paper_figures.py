@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import Normalize
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch
+import paper_sources as sources
 from paper_licensed_art import embed_licensed_art
 from paper_vector_diagrams import draw_motif
 
@@ -1235,7 +1236,7 @@ def evidence_table() -> pd.DataFrame:
             "Supervision",
             "Continuous + ordinal auxiliary labels",
             "limited",
-            "Small ranking gain",
+            "No clear ranking gain",
         ),
         (
             "Learning & supervision",
@@ -1345,7 +1346,7 @@ def evidence_table() -> pd.DataFrame:
         (
             "Integration",
             "Integration",
-            "Fixed whole-duplex + local-augmented logits",
+            "Whole-duplex + local logits",
             "selected",
             "Complementary predictions",
         ),
@@ -1730,7 +1731,7 @@ def figure2(output: Path, source: Path) -> None:
 def pair_balance_table() -> pd.DataFrame:
     rows = []
     for context in CONTEXTS:
-        frame = pd.read_csv(
+        frame = sources.read_csv(  # candidate=pair_balanced; reference=development_reference
             ROOT
             / f"experiments/runs/richer_supervision/binary_pair_balanced/{context}/pair_bootstrap_ci.csv"
         )
@@ -1743,7 +1744,7 @@ def pair_balance_table() -> pd.DataFrame:
 def local_integration_table() -> pd.DataFrame:
     rows = []
     for context in ["MuscleSkeletal", "Liver"]:
-        path = (
+        path = sources.path(
             ROOT
             / f"experiments/runs/richer_supervision/pair_local_ensemble_comparison/{context}/pair_bootstrap_ci.csv"
         )
@@ -1761,12 +1762,42 @@ def local_integration_table() -> pd.DataFrame:
     return pd.concat(rows, ignore_index=True)
 
 
-def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
-    """Parallel representations, explicit processing, and a fixed logit mean."""
+GAP_STAGE_COLUMNS = ["graph_logit", "cnn_logit", "gap"]  # whole-duplex graph, local predictor, log(1 + spacing)
+
+
+def final_predictor_specification() -> dict:
+    """The selected predictor as frozen in models/final_v2/gap_stage/<endpoint>/frozen_gap_stage.json (D45): the
+    second stage's input columns and the number of seeds averaged per component, identical in every endpoint."""
+    per_endpoint = {}
+    for context in CONTEXTS:
+        path = ROOT / f"models/final_v2/gap_stage/{context}/frozen_gap_stage.json"
+        spec = json.loads(path.read_text(encoding="utf-8"))
+        if spec["columns"] != GAP_STAGE_COLUMNS:
+            raise RuntimeError(f"{path}: second-stage columns {spec['columns']} != {GAP_STAGE_COLUMNS}")
+        models = [Path(m) for m in spec["final_models"]]
+        graph = {m.parents[1].name for m in models if m.name == "binary_pair_balanced"}
+        local = {m.parents[1].name for m in models if m.name == "binary_pair_balanced_cnn"}
+        if len(graph) + len(local) != len(models):
+            raise RuntimeError(f"{path}: unexpected component in final_models")
+        per_endpoint[context] = (len(graph), len(local))
+    if len(set(per_endpoint.values())) != 1:
+        raise RuntimeError(f"seed counts differ between endpoints: {per_endpoint}")
+    graph_seeds, local_seeds = next(iter(per_endpoint.values()))
+    return {
+        "columns": GAP_STAGE_COLUMNS,
+        "graph_seeds": graph_seeds,
+        "local_seeds": local_seeds,
+        "endpoints": len(per_endpoint),
+        "source": "models/final_v2/gap_stage/{" + ",".join(CONTEXTS) + "}/frozen_gap_stage.json",
+    }
+
+
+def architecture_panel(axis: plt.Axes, spec: dict) -> None:
+    """Two independently trained components, each averaged over seeds, and a logistic second stage with spacing."""
     axis.set_axis_off()
     axis.set(xlim=(0, 1), ylim=(0, 1))
     axis.set_title(
-        "Two independently trained views; one fixed prediction",
+        "Two independently trained views, combined with genomic spacing",
         loc="left",
         fontweight="bold",
     )
@@ -1793,8 +1824,9 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     for x, label in [
         (0.105, "LEARNING"),
         (0.33, "REPRESENTATION"),
-        (0.565, "COMPUTATION"),
-        (0.755, "LOGIT"),
+        (0.545, "COMPUTATION"),
+        (0.700, "SEED MEAN"),
+        (0.850, "SECOND STAGE"),
     ]:
         text(x, 0.925, label, 6.1, COLORS["gray"], fontweight="bold")
     text(0.105, 0.70, "Pair-first", 7.5, COLORS["green"], fontweight="bold")
@@ -1806,7 +1838,8 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
     axis.plot([0.180, 0.217], [0.525, 0.525], color=COLORS["green"], lw=1)
     axis.scatter([junction[0]], [junction[1]], s=12, color=COLORS["green"], zorder=4)
 
-    for y, color, title, motif, computation, detail, logit in [
+    stage_left, stage_right, stage_bottom, stage_top = 0.778, 0.922, 0.385, 0.645
+    for y, color, title, motif, computation, detail, logit, seeds in [
         (
             0.71,
             COLORS["blue"],
@@ -1815,19 +1848,21 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
             "Graph message passing",
             "whole-duplex pooling",
             r"$z_1$",
+            spec["graph_seeds"],
         ),
         (
             0.34,
             COLORS["purple"],
             "Target aligned",
             "target_local_editorial",
-            "Graph + local convolution",
-            "joint representation",
+            "Local convolution",
+            "target/partner windows",
             r"$z_2$",
+            spec["local_seeds"],
         ),
     ]:
         axis.plot(
-            [0.260, 0.795], [y - 0.135, y - 0.135], color=color, lw=0.55, alpha=0.28
+            [0.260, 0.640], [y - 0.135, y - 0.135], color=color, lw=0.55, alpha=0.28
         )
         text(0.33, y + 0.117, title, 7.1, color, fontweight="bold")
         add_asset(axis, motif, (0.257, y - 0.107, 0.15, 0.165))
@@ -1835,46 +1870,52 @@ def architecture_panel(axis: plt.Axes, weights: list[float]) -> None:
         # enlargement; the branch must not terminate in its surrounding space.
         local_view = motif == "target_local_editorial"
         arrow(junction, (0.291 if local_view else 0.25, y - 0.02), color)
-        arrow((0.381 if local_view else 0.415, y - 0.02), (0.460, y - 0.02), color)
+        arrow((0.381 if local_view else 0.415, y - 0.02), (0.450, y - 0.02), color)
         # Text names the operations; braces define scope, without decorative nodes.
-        text(0.565, y + 0.022, computation, 6.7, color)
-        text(0.565, y - 0.074, detail, 6.25, COLORS["gray"])
+        text(0.545, y + 0.022, computation, 6.7, color)
+        text(0.545, y - 0.074, detail, 6.25, COLORS["gray"])
         axis.plot(
-            [0.465, 0.465, 0.669, 0.669],
+            [0.455, 0.455, 0.635, 0.635],
             [y + 0.065, y - 0.115, y - 0.115, y + 0.065],
             color=color,
             lw=0.65,
         )
-        arrow((0.678, y - 0.02), (0.730, y - 0.02), color)
-        text(0.760, y - 0.02, logit, 10, color)
-    # Identical branch geometry lands on an arithmetic sum, not an opaque learner.
-    for y, color in [(0.690, COLORS["blue"]), (0.320, COLORS["purple"])]:
-        arrow((0.79, y), (0.870, 0.505 + (0.047 if y > 0.5 else -0.047)), color)
-    text(0.855, 0.739, r"$\times\,0.5$", 6.8, COLORS["blue"])
-    text(0.855, 0.277, r"$\times\,0.5$", 6.8, COLORS["purple"])
-    text(0.887, 0.505, "+", 15)
-    arrow((0.910, 0.505), (0.955, 0.505), COLORS["navy"])
-    text(0.975, 0.505, r"$z$", 10, COLORS["navy"])
-    text(0.874, 0.13, rf"$z={weights[0]:.1f}z_1+{weights[1]:.1f}z_2$", 7.3)
-    text(0.874, 0.87, "FIXED MEAN", 6.1, COLORS["gray"], fontweight="bold")
+        arrow((0.643, y - 0.02), (0.678, y - 0.02), color)
+        text(0.700, y - 0.02, logit, 10, color)
+        text(0.700, y - 0.115, f"{seeds} seeds,\naveraged", 5.9, COLORS["gray"], linespacing=1.1)
+        # each seed-averaged logit enters the second stage
+        arrow((0.722, y - 0.02), (stage_left, 0.585 if y > 0.5 else 0.445), color)
+    # The second stage: a logistic model on the two averaged logits and the log spacing.
+    axis.plot(
+        [stage_left, stage_right, stage_right, stage_left, stage_left],
+        [stage_bottom, stage_bottom, stage_top, stage_top, stage_bottom],
+        color=COLORS["navy"],
+        lw=0.8,
+    )
+    text(0.850, 0.555, "Logistic", 7.2, COLORS["navy"], fontweight="bold")
+    text(0.850, 0.465, f"{len(spec['columns'])} standardized\ninputs, L2 penalty", 5.9, COLORS["gray"],
+         linespacing=1.1)
+    text(0.850, 0.835, "Genomic spacing", 6.7, COLORS["amber"], fontweight="bold")
+    text(0.850, 0.770, r"$s=\log(1+\mathrm{spacing})$", 6.6, COLORS["amber"])
+    arrow((0.850, 0.735), (0.850, stage_top), COLORS["amber"])
+    arrow((stage_right, 0.515), (0.948, 0.515), COLORS["navy"])
+    text(0.968, 0.535, r"$p$", 10, COLORS["navy"])
+    text(0.968, 0.455, "probability", 5.9, COLORS["gray"])
+    text(0.850, 0.165, r"$p=\sigma(w_1z_1+w_2z_2+w_3s+b)$", 7.3)
     axis.plot([0, 1], [0.07, 0.07], color="#D3DCE0", lw=0.65)
     text(
         0.5,
         0.007,
-        "Independent training · no weight search, stacker, or post-test fitting",
+        "Components trained independently · second stage fitted on training rows; "
+        "penalty and threshold chosen on validation rows",
         6.6,
         COLORS["gray"],
     )
 
 
 def figure3(output: Path, source: Path) -> None:
-    manifest = json.loads(
-        (ROOT / "provenance/final_pipeline_manifest.json").read_text(encoding="utf-8")
-    )
-    weights = manifest["candidate_specification"]["weights"]
-    if len(weights) != 2 or not np.isclose(sum(weights), 1.0):
-        raise RuntimeError(f"Unexpected final ensemble weights: {weights}")
-    control_path = (
+    final_spec = final_predictor_specification()
+    control_path = sources.path(
         ROOT / "experiments/runs/richer_supervision/local_alignment_control/"
         "MuscleSkeletal/summary.json"
     )
@@ -1886,13 +1927,13 @@ def figure3(output: Path, source: Path) -> None:
 
     pair = pair_balance_table()
     integration = local_integration_table()
-    supervision = pd.read_csv(
+    supervision = sources.read_csv(
         ROOT / "experiments/runs/richer_supervision/pair_balance_comparison/metrics.csv"
     )
-    focal_metrics = pd.read_csv(
+    focal_metrics = sources.read_csv(
         ROOT / "experiments/runs/richer_supervision/pooling_comparison/metrics.csv"
     )
-    alignment_metrics = pd.read_csv(
+    alignment_metrics = sources.read_csv(
         ROOT
         / "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/metrics.csv"
     )
@@ -1905,14 +1946,24 @@ def figure3(output: Path, source: Path) -> None:
         pd.DataFrame(
             [
                 {
-                    "quantity": "pair_model_logit_weight",
-                    "value": weights[0],
-                    "source": "provenance/final_pipeline_manifest.json",
+                    "quantity": "second_stage_inputs",
+                    "value": "; ".join(final_spec["columns"]),
+                    "source": f"{final_spec['source']}: columns",
                 },
                 {
-                    "quantity": "local_augmented_graph_logit_weight",
-                    "value": weights[1],
-                    "source": "provenance/final_pipeline_manifest.json",
+                    "quantity": "whole_duplex_graph_seeds_averaged",
+                    "value": final_spec["graph_seeds"],
+                    "source": f"{final_spec['source']}: final_models (binary_pair_balanced)",
+                },
+                {
+                    "quantity": "local_predictor_seeds_averaged",
+                    "value": final_spec["local_seeds"],
+                    "source": f"{final_spec['source']}: final_models (binary_pair_balanced_cnn)",
+                },
+                {
+                    "quantity": "second_stage_endpoints",
+                    "value": final_spec["endpoints"],
+                    "source": final_spec["source"],
                 },
                 {
                     "quantity": "shifted_control_offset_nt",
@@ -2037,8 +2088,8 @@ def figure3(output: Path, source: Path) -> None:
     for label, frame, model in [
         ("Whole-duplex\nonly", alignment_metrics, "pair_balanced"),
         ("Focal-node\ngraph", focal_metrics, "focal"),
-        ("Graph +\naligned local", alignment_metrics, "aligned_local"),
-        (f"Graph + shifted\n+{shift_nt} nt", alignment_metrics, "shifted_local"),
+        ("Aligned\nlocal", alignment_metrics, "aligned_local"),
+        (f"Shifted\n+{shift_nt} nt", alignment_metrics, "shifted_local"),
     ]:
         row = frame[frame.model == model].iloc[0]
         representation_rows.append(
@@ -2073,7 +2124,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_c.legend(
         frameon=False,
         ncol=3,
-        loc="upper left",
+        loc="lower left",
         fontsize=6.1,
         columnspacing=0.8,
         handletextpad=0.3,
@@ -2108,7 +2159,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_d.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_d.set_yticks(range(3), metrics)
     ax_d.set_xlabel(
-        "Fixed ensemble − whole-duplex-only predictor\n(points; 95% pair-clustered CI)"
+        "Equal-weight average − whole-duplex-only predictor\n(points; 95% pair-clustered CI)"
     )
     ax_d.set_title(
         "Independently optimized views are complementary",
@@ -2140,16 +2191,22 @@ def figure3(output: Path, source: Path) -> None:
         frameon=False,
         ncol=1,
         fontsize=6.2,
-        loc="upper right",
+        loc="lower left",
         borderaxespad=0.35,
         labelspacing=0.25,
         handletextpad=0.25,
     )
-    ax_d.set_xlim(0, 4.25)
+    # x range from the plotted intervals with a 6% margin; the zero line stays in view (at the left edge when every
+    # interval is positive)
+    plotted = integration[integration.metric.isin(["auroc", "auprc", "f1"])]
+    low = min(0.0, 100 * float(plotted["lower"].min()))
+    high = max(0.0, 100 * float(plotted["upper"].max()))
+    margin = 0.06 * (high - low)
+    ax_d.set_xlim(low - (margin if low < 0 else 0.0), high + margin)
     clean_axis(ax_d)
 
     panel_label(ax_e, "E")
-    architecture_panel(ax_e, weights)
+    architecture_panel(ax_e, final_spec)
     figure.subplots_adjust(left=0.09, right=0.98, top=0.97, bottom=0.06)
     save(figure, output, "figure3_organizing_principles")
 
@@ -2454,7 +2511,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     # S1: internal development scores make the evaluation regime explicit.
     frames = []
     for context in ["MuscleSkeletal", "Liver"]:
-        frame = pd.read_csv(
+        frame = sources.read_csv(
             ROOT
             / f"experiments/runs/richer_supervision/pair_local_ensemble_comparison/{context}/metrics.csv"
         )
@@ -2467,7 +2524,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     labels = [
         "Internal\nreference",
         "Pair-first",
-        "Local-aug.\ngraph",
+        "Local\npredictor",
         "Fixed\nensemble",
     ]
     for axis, metric in zip(axes, ["auroc", "auprc", "f1"]):
@@ -2590,7 +2647,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     # S3: natural-prevalence robustness.
     natural_frames = []
     for context in ["MuscleSkeletal", "Liver"]:
-        frame = pd.read_csv(
+        frame = sources.read_csv(  # PNAS's four models and the selected predictor (gap_stage)
             ROOT
             / f"experiments/runs/richer_supervision/natural_prevalence/pair_local_comparison/{context}/metrics.csv"
         )
@@ -2604,11 +2661,18 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "pair_balanced",
         "local",
         "pair_local_ensemble",
+        "gap_stage",
     ]
-    model_labels = ["Internal ref.", "Pair-first", "Local-aug. graph", "Ensemble"]
+    model_labels = [
+        "Internal ref.",
+        "Pair-first",
+        "Local predictor",
+        "Equal-weight average",
+        "Selected predictor",
+    ]
     for axis, context in zip(axes, ["MuscleSkeletal", "Liver"]):
         subset = natural[natural.context == context].set_index("model").loc[model_order]
-        x = np.arange(4)
+        x = np.arange(len(model_order))
         axis.bar(
             x - 0.17, subset.auprc, width=0.34, color=COLORS["teal"], label="AUPRC"
         )
@@ -2622,7 +2686,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     save(figure, output, "figureS3_natural_prevalence")
 
     # S4: preregistered unified comparison.
-    unified = pd.read_csv(
+    unified = sources.read_csv(
         ROOT
         / "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
     )
@@ -2989,14 +3053,14 @@ def supplementary_figures(output: Path, source: Path) -> None:
     save(figure, output, "figureS7_tissue_context_and_pair_stability")
 
     # S8: post-hoc diagnostics of the selected statistical and local principles.
-    within = pd.read_csv(
+    within = sources.read_csv(
         ROOT / "experiments/runs/post_analysis/within_duplex/within_duplex_summary.csv"
     )
-    pair_size = pd.read_csv(
+    pair_size = sources.read_csv(
         ROOT
         / "experiments/runs/richer_supervision/pair_balance_diagnostic/raw_site_count_quintiles.csv"
     )
-    strata = pd.read_csv(
+    strata = sources.read_csv(
         ROOT
         / "experiments/runs/target_local_interpretation/MuscleSkeletal/geometry_strata.csv"
     )
@@ -3010,14 +3074,14 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "pair_first",
         "focal",
         "target_local",
-        "fixed_ensemble",
+        "gap_stage",  # the selected predictor (D48); the equal-weight average is in the source file
     ]
     model_labels = [
         "Internal\nreference",
         "Pair-first",
         "Focal",
         "Target-\ncentered",
-        "Fixed\nensemble",
+        "Selected\npredictor",
     ]
     x = np.arange(len(models))
     for context, color, marker in [
@@ -3069,6 +3133,8 @@ def supplementary_figures(output: Path, source: Path) -> None:
             fontsize=6.5,
             color=COLORS["green"],
         )
+    gains = pair_size.pair_gain_vs_site_balanced
+    ax_b.set_ylim(min(0.0, float(gains.min())) - 0.016, max(0.0, float(gains.max())) + 0.014)
     ax_b.set_xlabel("Median eligible sites per pair")
     ax_b.set_ylabel("Log-loss gain from pair-first\n(>0 favors pair-first)")
     ax_b.set_title(
@@ -3077,35 +3143,40 @@ def supplementary_figures(output: Path, source: Path) -> None:
     panel_label(ax_b, "B")
     clean_axis(ax_b, "both")
 
-    model_colors = {"local": COLORS["blue"], "ensemble": COLORS["purple"]}
+    model_colors = {"local": COLORS["blue"], "gap_stage": COLORS["purple"]}
+    strata_labels = {"local": "Local model", "gap_stage": "Selected predictor"}
     target = strata[strata.stratum.eq("target_paired")].copy()
     target["level"] = pd.Categorical(
         target["level"], categories=["unpaired", "paired"], ordered=True
     )
     target = target.sort_values(["level", "candidate"])
     levels = ["Unpaired", "Paired"]
-    for index, candidate in enumerate(["local", "ensemble"]):
+    for index, candidate in enumerate(["local", "gap_stage"]):
         values = target[target.candidate.eq(candidate)].sort_values("level")
+        if len(values) != 2:
+            raise RuntimeError(f"target_paired strata for {candidate}: {len(values)} rows, expected 2")
         ax_c.scatter(
             np.arange(2) + (index - 0.5) * 0.12,
             values.mean_brier_difference,
             s=28,
             color=model_colors[candidate],
-            label="Local model" if candidate == "local" else "Fixed ensemble",
+            label=strata_labels[candidate],
         )
     ax_c.axhline(0, color=COLORS["ink"], lw=0.7)
     ax_c.set_xticks(range(2), levels)
     ax_c.set_ylabel("Candidate − pair-first Brier")
     ax_c.set_title("Gains in both pairing strata", loc="left", fontweight="bold")
-    ax_c.legend(frameon=False, loc="lower left")
+    ax_c.legend(frameon=False, loc="center")
     panel_label(ax_c, "C")
     clean_axis(ax_c, "y")
 
     stem = strata[strata.stratum.eq("stem_extent")].copy()
     order = ["0", "1-5", "6-10", "11-20", ">20"]
     stem["level"] = pd.Categorical(stem["level"], categories=order, ordered=True)
-    for index, candidate in enumerate(["local", "ensemble"]):
+    for index, candidate in enumerate(["local", "gap_stage"]):
         values = stem[stem.candidate.eq(candidate)].sort_values("level")
+        if len(values) != len(order):
+            raise RuntimeError(f"stem_extent strata for {candidate}: {len(values)} rows, expected {len(order)}")
         ax_d.plot(
             np.arange(len(order)) + (index - 0.5) * 0.08,
             values.mean_brier_difference,
@@ -3113,7 +3184,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
             ms=4,
             lw=1.0,
             color=model_colors[candidate],
-            label="Local model" if candidate == "local" else "Fixed ensemble",
+            label=strata_labels[candidate],
         )
     ax_d.axhline(0, color=COLORS["ink"], lw=0.7)
     ax_d.set_xticks(range(len(order)), order)

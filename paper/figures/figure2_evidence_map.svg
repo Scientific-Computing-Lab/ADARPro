@@ -332,7 +332,7 @@
     <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="74.454947" transform="rotate(-0 330.394344 74.454947)">Limited</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="74.555943" transform="rotate(-0 402.970344 74.555943)">Small ranking gain</text>
+    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="74.518834" transform="rotate(-0 402.970344 74.518834)">No clear ranking gain</text>
    </g>
    <g id="text_16">
     <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="83.915344" transform="rotate(-0 124.006344 83.915344)">Shared four-tissue training</text>
@@ -566,7 +566,7 @@
     <text style="font-weight: 700; font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #7562a8" x="124.006344" y="241.321756" transform="rotate(-0 124.006344 241.321756)">INTEGRATION</text>
    </g>
    <g id="text_64">
-    <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="250.552239" transform="rotate(-0 124.006344 250.552239)">Fixed whole-duplex + local-augmented logits</text>
+    <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="250.552239" transform="rotate(-0 124.006344 250.552239)">Whole-duplex + local logits</text>
    </g>
    <g id="PathCollection_20">
     <g clip-path="url(#p6dae58ae3d)">

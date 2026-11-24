@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 import pandas as pd
+import paper_sources as sources
 from scipy.stats import spearmanr
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -265,7 +266,7 @@ def add_protocol_claims() -> None:
         "NFinalComponentFits",
     )
 
-    unified_path = (
+    unified_path = sources.path(
         ROOT
         / "experiments/runs/unified/unified_target_local_interaction_aux_v1/MuscleSkeletal/summary.json"
     )
@@ -359,13 +360,13 @@ def add_protocol_claims() -> None:
             macro,
         )
 
+    # PNAS read this from its report's prose; step 11c counts graph + CNN alone from the step-4 checkpoints
     report_path = ROOT / "reports/20_unified_end_to_end_result.md"
-    report_text = report_path.read_text(encoding="utf-8")
-    ensemble_parameters = int(
-        re.search(r"([0-9,]+) parameters\nacross the ensemble", report_text)
-        .group(1)
-        .replace(",", "")
-    )
+    counts_path = sources.path(report_path)
+    counts = sources.read_json(report_path)
+    ensemble_parameters = int(counts["total_parameters"])
+    if ensemble_parameters != sum(int(part["parameters"]) for part in counts["components"].values()):
+        raise AssertionError(f"{counts_path}: total_parameters is not the sum of its components")
     add(
         "ensemble_parameter_count",
         "Total parameter count across frozen ensemble components",
@@ -373,8 +374,8 @@ def add_protocol_claims() -> None:
         f"{ensemble_parameters:,}",
         "parameters",
         "preregistered comparator specification",
-        report_path,
-        "architecture paragraph: parameters across the ensemble",
+        counts_path,
+        "total_parameters (= components.graph + components.cnn_alone)",
         "Results; SI unified-model section",
         "integer with thousands separator",
         "EnsembleParameters",
@@ -402,7 +403,7 @@ def add_protocol_claims() -> None:
         "PretrainingCandidatePairs",
     )
 
-    comparison_path = (
+    comparison_path = sources.path(
         ROOT
         / "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/summary.json"
     )
@@ -538,10 +539,10 @@ def add_locked_claims() -> None:
 
 
 def add_supervision_claims() -> None:
-    metrics_path = (
+    metrics_path = sources.path(
         ROOT / "experiments/runs/richer_supervision/pair_balance_comparison/metrics.csv"
     )
-    ci_path = (
+    ci_path = sources.path(
         ROOT
         / "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
     )
@@ -608,11 +609,12 @@ def add_supervision_claims() -> None:
                 )
 
     for context in CONTEXTS:
-        path = (
+        pnas_path = (
             ROOT
             / f"experiments/runs/richer_supervision/binary_pair_balanced/{context}/pair_bootstrap_ci.csv"
         )
-        frame = pd.read_csv(path)
+        path = sources.path(pnas_path)
+        frame = sources.read_csv(pnas_path)  # candidate=pair_balanced; reference=development_reference
         for metric in ("auroc", "auprc", "f1"):
             row = frame[frame.metric == metric].iloc[0]
             for part in ("lower", "median", "upper"):
@@ -625,7 +627,7 @@ def add_supervision_claims() -> None:
                     "percentage points",
                     "development OOF pair-clustered bootstrap",
                     path,
-                    f"metric={metric}; column={part}",
+                    f"candidate=pair_balanced; reference=development_reference; metric={metric}; column={part}",
                     "Results; Figure 3; Table S5",
                     "two decimals after multiplication by 100",
                     f"{CONTEXT_MACRO[context]}PairFirst{METRIC_MACRO[metric]}{part.title()}",
@@ -689,7 +691,7 @@ def add_substrate_claims() -> None:
 
 
 def add_local_and_unified_claims() -> None:
-    align_metrics_path = (
+    align_metrics_path = sources.path(
         ROOT
         / "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/metrics.csv"
     )
@@ -714,7 +716,7 @@ def add_local_and_unified_claims() -> None:
                 "direct four-decimal formatting",
                 f"Muscle{macro_name}{METRIC_MACRO[metric]}",
             )
-    alignment_ci_path = (
+    alignment_ci_path = sources.path(
         ROOT
         / "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv"
     )
@@ -742,7 +744,7 @@ def add_local_and_unified_claims() -> None:
             )
 
     for context in ("MuscleSkeletal", "Liver"):
-        path = (
+        path = sources.path(
             ROOT
             / f"experiments/runs/richer_supervision/pair_local_ensemble_comparison/{context}/pair_bootstrap_ci.csv"
         )
@@ -769,7 +771,7 @@ def add_local_and_unified_claims() -> None:
                     f"{CONTEXT_MACRO[context]}EnsembleDelta{METRIC_MACRO[metric]}{part}",
                 )
 
-    unified_metrics_path = (
+    unified_metrics_path = sources.path(
         ROOT / "experiments/runs/unified/comparison_primary/MuscleSkeletal/metrics.csv"
     )
     unified_metrics = pd.read_csv(unified_metrics_path).set_index("model")
@@ -793,7 +795,7 @@ def add_local_and_unified_claims() -> None:
                 f"{macro_name}{METRIC_MACRO[metric]}",
             )
 
-    unified_ci_path = (
+    unified_ci_path = sources.path(
         ROOT
         / "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
     )
@@ -822,7 +824,7 @@ def add_local_and_unified_claims() -> None:
 
 
 def add_limited_branch_claims() -> None:
-    multitask_path = (
+    multitask_path = sources.path(
         ROOT
         / "experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv"
     )
@@ -934,8 +936,10 @@ def add_synthesis_table_claims() -> None:
         ),
         (
             "focal_node",
-            ROOT
-            / "experiments/runs/richer_supervision/pooling_comparison/pair_bootstrap_ci.csv",
+            sources.path(
+                ROOT
+                / "experiments/runs/richer_supervision/pooling_comparison/pair_bootstrap_ci.csv"
+            ),
             {"candidate": "focal", "reference": "pair"},
             "development OOF pair-clustered bootstrap",
         ),
@@ -1106,18 +1110,22 @@ def add_post_analysis_claims() -> None:
                 f"{stem}{bound}",
             )
 
-    within_path = (
+    within_path = sources.path(
         ROOT / "experiments/runs/post_analysis/within_duplex/within_duplex_contrasts.csv"
     )
     within = pd.read_csv(within_path)
     for context in ("Liver", "MuscleSkeletal"):
-        for candidate, stem in (
-            ("target_local", "WithinLocal"),
-            ("fixed_ensemble", "WithinEnsemble"),
+        # The *WithinEnsemble* macros are the selected predictor's (D48): the gap_stage rows. Their claim ids keep
+        # PNAS's "fixed_ensemble" (PNAS's selected predictor) so the ledger's ids stay those of
+        # step11b/claim_sources.csv; the selector names the row actually read.
+        for candidate, claim_tag, label, stem in (
+            ("target_local", "target_local", "target_local", "WithinLocal"),
+            ("gap_stage", "fixed_ensemble", "selected predictor (gap_stage)", "WithinEnsemble"),
         ):
-            row = within[
-                within.context.eq(context) & within.candidate.eq(candidate)
-            ].iloc[0]
+            row = within[within.context.eq(context) & within.candidate.eq(candidate)]
+            if len(row) != 1:
+                raise RuntimeError(f"{within_path}: expected one {context}/{candidate} row, got {len(row)}")
+            row = row.iloc[0]
             context_stem = CONTEXT_MACRO[context]
             for column, suffix in (
                 ("lower", "Lower"),
@@ -1126,8 +1134,8 @@ def add_post_analysis_claims() -> None:
             ):
                 value = float(row[column])
                 add(
-                    f"within_pair_{context}_{candidate}_{column}",
-                    f"{context} {candidate} minus pair-first mean within-pair AUROC {column}",
+                    f"within_pair_{context}_{claim_tag}_{column}",
+                    f"{context} {label} minus pair-first mean within-pair AUROC {column}",
                     value,
                     f"{100 * value:+.2f}",
                     "AUROC percentage points",
@@ -1206,6 +1214,34 @@ def add_gap_stage_claims() -> None:
     )
 
 
+def add_seed_averaging_claims() -> None:
+    """Five-seed vs single-seed selected predictor (step 11 seed curve, development OOF; D5)."""
+    medians = []
+    for context in CONTEXTS:
+        path = ROOT / f"experiments/runs/step11/seed_curve/{context}/d_avg.csv"
+        frame = pd.read_csv(path)
+        for metric in ("auroc", "auprc", "f1"):
+            row = frame[(frame.model == "predictor") & (frame.metric == metric)]
+            if len(row) != 1:
+                raise RuntimeError(f"{path}: predictor/{metric}")
+            row = row.iloc[0]
+            if not row["lower"] > 0:  # the text says every interval is above zero
+                raise RuntimeError(f"{context} {metric}: seed-averaging interval reaches zero; revise the text")
+            for stat in ("median", "lower", "upper"):
+                value = 100 * float(row[stat])
+                add(f"seed_avg_{context}_{metric}_{stat}", f"{context} five-seed minus single-seed predictor, {metric} ({stat})",
+                    value, f"{value:.2f}", "percentage points", "development OOF pair-clustered bootstrap", path,
+                    f"model=predictor; metric={metric}; {stat}", "Results (seed averaging); SI seed-averaging table",
+                    "two decimals (percentage points)")
+            if metric == "auroc":
+                medians.append(100 * float(row["median"]))
+    for which, value in (("Min", min(medians)), ("Max", max(medians))):
+        add(f"seed_avg_auroc_{which.lower()}", f"{which} over endpoints of the five-seed AUROC gain", value, f"{value:.2f}",
+            "percentage points", "development OOF pair-clustered bootstrap", ROOT / "experiments/runs/step11/seed_curve",
+            f"{which.lower()} over five endpoints of median AUROC gain", "Results (seed averaging)",
+            "two decimals (percentage points)", f"SeedAvgAUROC{which}")
+
+
 def write_outputs() -> None:
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1237,6 +1273,7 @@ def main() -> None:
     add_synthesis_table_claims()
     add_post_analysis_claims()
     add_gap_stage_claims()
+    add_seed_averaging_claims()
     write_outputs()
 
 

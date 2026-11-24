@@ -7,6 +7,7 @@ import hashlib
 from pathlib import Path
 
 import pandas as pd
+import paper_sources as sources
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "paper" / "source_tables"
@@ -112,7 +113,7 @@ def evidence_map() -> None:
             }
         )
 
-    supervision = "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
+    supervision = sources.relpath("experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv")
     add(
         "Additional valid high/low labels",
         "Supervision",
@@ -167,7 +168,7 @@ def evidence_map() -> None:
         "Correcting substrate weight adds a second gain.",
         supervision,
     )
-    multitask = "experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv"
+    multitask = sources.relpath("experiments/runs/richer_supervision/pair_balanced_multitask_comparison/pair_bootstrap_ci.csv")
     add(
         "Continuous + ordinal auxiliary labels",
         "Supervision",
@@ -193,11 +194,11 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "Ranking/Brier gain; negligible F1; adverse natural-prevalence integration.",
+        "No clear gain over binary training; added to graph + focal, small ranking gain, no F1 change, worse Brier.",
         multitask,
     )
 
-    focal = (
+    focal = sources.relpath(
         "experiments/runs/richer_supervision/pooling_comparison/pair_bootstrap_ci.csv"
     )
     add(
@@ -228,7 +229,7 @@ def evidence_map() -> None:
         "Ranking and Brier gains localize the target effect.",
         geometry,
     )
-    local = "experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv"
+    local = sources.relpath("experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv")
     add(
         "Aligned target/helix-partner representation",
         "Representation",
@@ -244,7 +245,7 @@ def evidence_map() -> None:
             select(local, "f1", candidate="aligned_local", reference="pair_balanced"),
         ),
         "Selected",
-        "Target-aligned fusion improves all three metrics.",
+        "The target-aligned local predictor improves all three metrics.",
         local,
     )
     add(
@@ -265,7 +266,7 @@ def evidence_map() -> None:
         "Matched capacity without target alignment is strongly adverse.",
         local,
     )
-    ensemble = "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv"
+    ensemble = sources.relpath("experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/pair_bootstrap_ci.csv")
     add(
         "Fixed equal-logit integration",
         "Integration",
@@ -455,11 +456,11 @@ def evidence_map() -> None:
         "Prespecified two-fold futility criterion met.",
         all_a,
     )
-    unified = "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
+    unified = sources.relpath("experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv")
     add(
         "Unified end-to-end architecture",
         "Integration",
-        "Immutable fixed ensemble",
+        "Equal-weight two-model combination",
         effect(
             "auroc",
             select(unified, "auroc", candidate="unified", reference="frozen_ensemble"),
@@ -524,7 +525,7 @@ def supervision_decomposition() -> None:
     metrics = pd.read_csv(SOURCE / "figure3_supervision_decomposition.csv").set_index(
         "model"
     )
-    ci = pd.read_csv(
+    ci = sources.read_csv(
         ROOT
         / "experiments/runs/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"
     )
@@ -612,7 +613,7 @@ def target_controls() -> None:
     for label, frame, model in [
         ("Whole-duplex pair model", alignment, "pair_balanced"),
         ("Explicit focal node", focal, "focal"),
-        ("Graph + aligned target/helix-partner", alignment, "aligned_local"),
+        ("Aligned target/helix-partner local predictor", alignment, "aligned_local"),
         ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
     ]:
         row = frame[frame.model == model].iloc[0]
@@ -623,7 +624,7 @@ def target_controls() -> None:
         "table_s6_target_controls.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned graph-plus-local model improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
+\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned local predictor improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
 \begin{tabular}{lrrrr}
 \toprule
 Representation & AUROC & AUPRC & F1 & Brier \\
@@ -701,8 +702,9 @@ def natural_prevalence() -> None:
     names = {
         "development_reference": "Internal reference",
         "pair_balanced": "Pair-first whole-duplex",
-        "local": "Local-augmented graph",
-        "pair_local_ensemble": "Fixed ensemble",
+        "local": "Local predictor",
+        "pair_local_ensemble": "Equal-weight average",
+        "gap_stage": "Selected predictor",
     }
     rows = []
     for _, row in df.iterrows():
@@ -715,7 +717,7 @@ def natural_prevalence() -> None:
         "table_s7_natural_prevalence.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the fixed ensemble improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
+\caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the selected predictor improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \toprule
@@ -731,13 +733,13 @@ Context & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
 
 
 def unified() -> None:
-    metrics = pd.read_csv(
+    metrics = sources.read_csv(
         ROOT / "experiments/runs/unified/comparison_primary/MuscleSkeletal/metrics.csv"
     )
     names = {
         "frozen_ensemble": "Frozen ensemble",
         "unified": "Unified end-to-end",
-        "local": "Local-augmented graph",
+        "local": "Local predictor",
         "development_reference": "Internal reference",
     }
     metric_rows = []
@@ -757,7 +759,7 @@ def unified() -> None:
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The joint model loses ranking and probability accuracy without a clear F1 gain.} In the preregistered skeletal-muscle development comparison, the unified architecture has lower AUROC and AUPRC and higher Brier error than the fixed ensemble. Its higher recall does not compensate on the selection criteria, and the branch stopped before canonical-test access. Pair-clustered intervals give unified-minus-ensemble differences; positive Brier differences are adverse.}\label{tab:unified}
+\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the preregistered skeletal-muscle development protocol, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before canonical-test access. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
@@ -892,6 +894,36 @@ Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
     )
 
 
+def seed_averaging() -> None:
+    rows = []
+    for context in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
+        frame = pd.read_csv(ROOT / f"experiments/runs/step11/seed_curve/{context}/d_avg.csv")
+        cells = []
+        for metric in ("auroc", "auprc", "f1"):
+            row = frame[(frame.model == "predictor") & (frame.metric == metric)]
+            if len(row) != 1:
+                raise RuntimeError(f"{context}: predictor/{metric}")
+            cells.append(interval(row.iloc[0]))
+        rows.append(f"{context_label(context)} & " + " & ".join(cells) + r" \\")
+    write(
+        "table_s12_seed_averaging.tex",
+        r"""\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals.}\label{tab:seedavg}
+\begin{tabular}{lrrr}
+\toprule
+Endpoint & AUROC & AUPRC & F1 \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}
+\end{table}""",
+    )
+
+
 def manifest() -> None:
     entries = []
     for path in sorted(OUTPUT.glob("table_*.tex")):
@@ -912,8 +944,9 @@ def main() -> None:
     unified()
     experiment_taxonomy()
     gap_controls()
+    seed_averaging()
     manifest()
-    print("PASS: rendered 11 SI tables from authoritative artifacts")
+    print("PASS: rendered 12 SI tables from authoritative artifacts")
 
 
 if __name__ == "__main__":

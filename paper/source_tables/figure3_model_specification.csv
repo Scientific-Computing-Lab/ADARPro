@@ -1,4 +1,6 @@
 quantity,value,source
-pair_model_logit_weight,0.5,provenance/final_pipeline_manifest.json
-local_augmented_graph_logit_weight,0.5,provenance/final_pipeline_manifest.json
-shifted_control_offset_nt,96.0,experiments/runs/richer_supervision/local_alignment_control/MuscleSkeletal/summary.json
+second_stage_inputs,graph_logit; cnn_logit; gap,"models/final_v2/gap_stage/{Artery,Brain,Liver,MuscleSkeletal,Combined}/frozen_gap_stage.json: columns"
+whole_duplex_graph_seeds_averaged,5,"models/final_v2/gap_stage/{Artery,Brain,Liver,MuscleSkeletal,Combined}/frozen_gap_stage.json: final_models (binary_pair_balanced)"
+local_predictor_seeds_averaged,5,"models/final_v2/gap_stage/{Artery,Brain,Liver,MuscleSkeletal,Combined}/frozen_gap_stage.json: final_models (binary_pair_balanced_cnn)"
+second_stage_endpoints,5,"models/final_v2/gap_stage/{Artery,Brain,Liver,MuscleSkeletal,Combined}/frozen_gap_stage.json"
+shifted_control_offset_nt,96,experiments/runs/step6/richer_supervision/local_alignment_control/MuscleSkeletal/summary.json

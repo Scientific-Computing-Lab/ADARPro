@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals.}\label{tab:seedavg}
+\begin{tabular}{lrrr}
+\toprule
+Endpoint & AUROC & AUPRC & F1 \\
+\midrule
+Artery & +0.39 [+0.33, +0.44] & +0.44 [+0.31, +0.59] & +0.59 [+0.41, +0.76] \\
+Brain & +0.32 [+0.26, +0.39] & +0.33 [+0.23, +0.44] & +0.55 [+0.38, +0.73] \\
+Liver & +0.41 [+0.28, +0.52] & +0.49 [+0.20, +0.69] & +0.79 [+0.58, +0.99] \\
+Skeletal muscle & +0.80 [+0.54, +1.08] & +0.93 [+0.59, +1.27] & +0.53 [+0.11, +0.97] \\
+Combined & +0.32 [+0.27, +0.36] & +0.36 [+0.28, +0.44] & +0.49 [+0.33, +0.67] \\
+\bottomrule
+\end{tabular}
+\end{table}

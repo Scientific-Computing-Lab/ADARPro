@@ -1,19 +1,21 @@
 \begin{table}[H]
 \centering
-\caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the fixed ensemble improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
+\caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the selected predictor improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \toprule
 Context & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
 \midrule
 Skeletal muscle & Internal reference & 54289 & 0.8478 & 0.2711 & 0.2328 & 0.1351 & 0.8415 & 15804 \\
-Skeletal muscle & Pair-first whole-duplex & 54289 & 0.8900 & 0.3659 & 0.2868 & 0.1714 & 0.8773 & 12441 \\
-Skeletal muscle & Local-augmented graph & 54289 & 0.9072 & 0.4166 & 0.3125 & 0.1900 & 0.8800 & 11007 \\
-Skeletal muscle & Fixed ensemble & 54289 & 0.9165 & 0.4540 & 0.3621 & 0.2306 & 0.8422 & 8245 \\
+Skeletal muscle & Pair-first whole-duplex & 54289 & 0.8859 & 0.3479 & 0.2830 & 0.1700 & 0.8449 & 12104 \\
+Skeletal muscle & Local predictor & 54289 & 0.9184 & 0.5078 & 0.3345 & 0.2065 & 0.8800 & 9921 \\
+Skeletal muscle & Equal-weight average & 54289 & 0.9254 & 0.5292 & 0.3591 & 0.2263 & 0.8691 & 8719 \\
+Skeletal muscle & Selected predictor & 54289 & 0.9272 & 0.5518 & 0.3601 & 0.2266 & 0.8763 & 8774 \\
 Liver & Internal reference & 38096 & 0.8915 & 0.6732 & 0.6246 & 0.4906 & 0.8592 & 6690 \\
-Liver & Pair-first whole-duplex & 38096 & 0.9094 & 0.7128 & 0.6418 & 0.5056 & 0.8785 & 6442 \\
-Liver & Local-augmented graph & 38096 & 0.9200 & 0.7432 & 0.6602 & 0.5265 & 0.8851 & 5969 \\
-Liver & Fixed ensemble & 38096 & 0.9290 & 0.7687 & 0.6684 & 0.5306 & 0.9028 & 5988 \\
+Liver & Pair-first whole-duplex & 38096 & 0.9066 & 0.7082 & 0.6384 & 0.5018 & 0.8773 & 6533 \\
+Liver & Local predictor & 38096 & 0.9326 & 0.7893 & 0.6870 & 0.5610 & 0.8859 & 5198 \\
+Liver & Equal-weight average & 38096 & 0.9374 & 0.8033 & 0.7039 & 0.5854 & 0.8825 & 4687 \\
+Liver & Selected predictor & 38096 & 0.9473 & 0.8421 & 0.7163 & 0.5956 & 0.8983 & 4573 \\
 \bottomrule
 \end{tabular}}
 \end{table}
