@@ -1,0 +1,86 @@
+{
+  "candidates": [
+    "local",
+    "ensemble",
+    "gap_stage"
+  ],
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "canonical train+valid grouped OOF descriptive interpretation",
+  "transitions": [
+    {
+      "candidate": "local",
+      "fn_recovered": 254,
+      "fp_rescue_rate": 0.4778393351800554,
+      "fp_rescued": 345,
+      "new_fp": 225,
+      "reference": "pair",
+      "reference_fp": 722,
+      "reference_tp": 2479,
+      "tp_damage_rate": 0.0609116579265833,
+      "tp_damaged": 151
+    },
+    {
+      "candidate": "ensemble",
+      "fn_recovered": 164,
+      "fp_rescue_rate": 0.3878116343490305,
+      "fp_rescued": 280,
+      "new_fp": 96,
+      "reference": "pair",
+      "reference_fp": 722,
+      "reference_tp": 2479,
+      "tp_damage_rate": 0.03751512706736587,
+      "tp_damaged": 93
+    },
+    {
+      "candidate": "gap_stage",
+      "fn_recovered": 186,
+      "fp_rescue_rate": 0.40304709141274236,
+      "fp_rescued": 291,
+      "new_fp": 111,
+      "reference": "pair",
+      "reference_fp": 722,
+      "reference_tp": 2479,
+      "tp_damage_rate": 0.03791851553045583,
+      "tp_damaged": 94
+    },
+    {
+      "candidate": "local",
+      "fn_recovered": 287,
+      "fp_rescue_rate": 0.5753715498938429,
+      "fp_rescued": 542,
+      "new_fp": 202,
+      "reference": "development_reference",
+      "reference_fp": 942,
+      "reference_tp": 2469,
+      "tp_damage_rate": 0.07047387606318348,
+      "tp_damaged": 174
+    },
+    {
+      "candidate": "ensemble",
+      "fn_recovered": 235,
+      "fp_rescue_rate": 0.554140127388535,
+      "fp_rescued": 522,
+      "new_fp": 118,
+      "reference": "development_reference",
+      "reference_fp": 942,
+      "reference_tp": 2469,
+      "tp_damage_rate": 0.06237343053867963,
+      "tp_damaged": 154
+    },
+    {
+      "candidate": "gap_stage",
+      "fn_recovered": 259,
+      "fp_rescue_rate": 0.5615711252653928,
+      "fp_rescued": 529,
+      "new_fp": 129,
+      "reference": "development_reference",
+      "reference_fp": 942,
+      "reference_tp": 2469,
+      "tp_damage_rate": 0.06358849736735521,
+      "tp_damaged": 157
+    }
+  ]
+}

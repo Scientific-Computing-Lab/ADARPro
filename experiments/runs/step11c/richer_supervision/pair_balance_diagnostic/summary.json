@@ -1,0 +1,45 @@
+{
+  "canonical_test_access": false,
+  "context": "MuscleSkeletal",
+  "correlations": [
+    {
+      "covariate": "raw_site_count",
+      "outcome": "pair_gain_vs_development_reference",
+      "p_value": 0.08274057651440002,
+      "spearman": 0.07179444376443202
+    },
+    {
+      "covariate": "canonical_site_count",
+      "outcome": "pair_gain_vs_development_reference",
+      "p_value": 0.002871504857524201,
+      "spearman": -0.12305063313893312
+    },
+    {
+      "covariate": "raw_high_fraction",
+      "outcome": "pair_gain_vs_development_reference",
+      "p_value": 1.4300977690831058e-08,
+      "spearman": -0.2317130369669835
+    },
+    {
+      "covariate": "raw_site_count",
+      "outcome": "pair_gain_vs_site_balanced",
+      "p_value": 0.15146347611065603,
+      "spearman": -0.05937903566396324
+    },
+    {
+      "covariate": "canonical_site_count",
+      "outcome": "pair_gain_vs_site_balanced",
+      "p_value": 0.18455711508551756,
+      "spearman": -0.05493471140581056
+    },
+    {
+      "covariate": "raw_high_fraction",
+      "outcome": "pair_gain_vs_site_balanced",
+      "p_value": 0.8978020051914205,
+      "spearman": -0.005321620891398018
+    }
+  ],
+  "pairs": 585,
+  "rows": 5967,
+  "scope": "descriptive grouped-development diagnostic only"
+}
