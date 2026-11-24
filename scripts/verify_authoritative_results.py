@@ -48,6 +48,24 @@ POST_HOC_DEVELOPMENT_RUNS = {
         "post_hoc_matched_site_pair_propensity_stability"
     ),
 }
+# The 2026-11 integration (branch Eli/updates-and-improvements) appended 273 runs,
+# including the evaluation recorded in provenance/test_quarantine_v3.json. Keep
+# the count exact and name every row with canonical-test access, as above.
+INTEGRATION_RUN_COUNT = 273
+CANONICAL_TEST_ACCESS_RUNS = {
+    "final_locked_test_adarpro_pair_local_equal_logit_ensemble": (
+        "single_consumed_canonical_test_evaluation"
+    ),
+    "final_figures_adarpro_pair_local_equal_logit_ensemble": (
+        "post_lock_descriptive_figures"
+    ),
+    "final_locked_test_v3_adarpro_gap_stage_graph_cnn_alone_5seed": (
+        "single_consumed_canonical_test_evaluation"
+    ),
+    "final_figures_adarpro_gap_stage_graph_cnn_alone_5seed": (
+        "post_lock_descriptive_figures"
+    ),
+}
 
 
 def sha256(path: Path) -> str:
@@ -163,7 +181,7 @@ def verify_registry() -> None:
     with path.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
     ids = [row["run_id"] for row in rows]
-    expected_count = 128 + len(POST_HOC_DEVELOPMENT_RUNS)
+    expected_count = 128 + len(POST_HOC_DEVELOPMENT_RUNS) + INTEGRATION_RUN_COUNT
     if len(ids) != expected_count or len(ids) != len(set(ids)):
         raise AssertionError(
             f"experiment registry must contain {expected_count} unique runs"
@@ -177,13 +195,27 @@ def verify_registry() -> None:
             or row["canonical_test_access"].lower() != "false"
         ):
             raise AssertionError(f"post-hoc development identity mismatch: {run_id}")
-    final_rows = [
-        row
+    test_access = {
+        row["run_id"]: row["experiment_type"]
+        for row in rows
+        if row["canonical_test_access"].lower() == "true"
+    }
+    if test_access != CANONICAL_TEST_ACCESS_RUNS:
+        raise AssertionError("canonical-test access differs from the named runs")
+    final_ids = {
+        row["run_id"]
         for row in rows
         if row["experiment_type"] == "single_consumed_canonical_test_evaluation"
-    ]
-    if len(final_rows) != 1 or final_rows[0]["canonical_test_access"].lower() != "true":
-        raise AssertionError("registry must contain exactly one canonical-test evaluation")
+    }
+    named = {
+        run_id
+        for run_id, kind in CANONICAL_TEST_ACCESS_RUNS.items()
+        if kind == "single_consumed_canonical_test_evaluation"
+    }
+    if final_ids != named:
+        raise AssertionError(
+            "registry must contain exactly the two named canonical-test evaluations"
+        )
 
 
 def main() -> None:
