@@ -2214,20 +2214,21 @@ def figure3(output: Path, source: Path) -> None:
 def final_tables(
     source: Path,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    metrics = pd.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
+    # Test set (R9): evaluation 3 through paper_sources; AdarEdit and the selected predictor (gap stage) only.
+    metrics = sources.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
     rows = []
     for context in CONTEXTS:
-        ci = pd.read_csv(
+        ci = sources.read_csv(
             ROOT / f"results/adarpro/final_locked_test/{context}_pair_bootstrap_ci.csv"
         )
         ci["context"] = context
         rows.append(ci)
     confidence = pd.concat(rows, ignore_index=True)
-    transitions = pd.read_csv(
+    transitions = sources.read_csv(
         ROOT / "figures/final/source_tables/final_error_transitions.csv"
     )
-    matched = pd.read_csv(ROOT / "figures/final/source_tables/final_matched_recall.csv")
-    matched_ci = pd.read_csv(
+    matched = sources.read_csv(ROOT / "figures/final/source_tables/final_matched_recall.csv")
+    matched_ci = sources.read_csv(
         ROOT / "figures/final/source_tables/final_matched_recall_pair_bootstrap_ci.csv"
     )
     copy_source(metrics, source, "figure4_locked_metrics.csv")
@@ -2299,12 +2300,12 @@ def figure4(output: Path, source: Path) -> None:
 
     panel_label(ax_b, "B")
     base = (
-        metrics[metrics.model == "published_baseline_reproduced"]
+        metrics[metrics.model == sources.TEST_BASELINE]
         .set_index("context")
         .loc[CONTEXTS]
     )
     cand = (
-        metrics[metrics.model == "adarpro_pair_local_equal_logit_ensemble"]
+        metrics[metrics.model == sources.TEST_CANDIDATE]
         .set_index("context")
         .loc[CONTEXTS]
     )
@@ -2328,7 +2329,8 @@ def figure4(output: Path, source: Path) -> None:
     )
     ax_b.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_b.invert_yaxis()
-    ax_b.set_xlim(0.80, 0.905)
+    f1_values = np.concatenate([base.f1.to_numpy(), cand.f1.to_numpy()])  # limits follow the data (R9)
+    ax_b.set_xlim(np.floor(100 * f1_values.min() - 1.0) / 100, f1_values.max() + 0.008)
     ax_b.set_xlabel("F1")
     ax_b.set_title("Absolute held-out F1", loc="left", fontweight="bold")
     ax_b.set_ylim(4.3, -0.85)
@@ -2358,7 +2360,11 @@ def figure4(output: Path, source: Path) -> None:
     ax_c.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_c.invert_yaxis()
-    ax_c.set_xticks([0.00, 0.01, 0.02, 0.03])
+    brier_high = float((-brier["lower"]).max())  # right end of the widest reduction interval (R9: data-driven)
+    step = 0.02 if brier_high > 0.04 else 0.01
+    top = (np.floor(brier_high / step) + 1) * step
+    ax_c.set_xticks(np.arange(0.0, top + step / 2, step))
+    ax_c.set_xlim(-0.1 * step, top)
     ax_c.set_xlabel("Brier-score reduction (95% pair-clustered CI)")
     ax_c.set_title("Probability error decreases", loc="left", fontweight="bold")
     ax_c.set_ylim(4.3, -0.85)
@@ -2392,7 +2398,8 @@ def figure4(output: Path, source: Path) -> None:
         borderaxespad=0.4,
     )
     clean_axis(ax_d)
-    ax_d.set_xlim(0, 56)
+    d_high = 100 * float(max(transitions.fp_rescue_rate.max(), transitions.tp_damage_rate.max()))
+    ax_d.set_xlim(0, 10 * np.ceil(d_high / 10) + 20)  # room for the lower-right legend beside the bottom bars
 
     panel_label(ax_e, "E")
     ax_e.set_axis_off()
@@ -2740,7 +2747,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     save(figure, output, "figureS4_unified_negative_result")
 
     # S5: canonical ROC and PR curves from saved curve source table.
-    curves = pd.read_csv(ROOT / "figures/final/source_tables/final_roc_pr_curves.csv")
+    curves = sources.read_csv(ROOT / "figures/final/source_tables/final_roc_pr_curves.csv")
     copy_source(curves, source, "figureS5_locked_roc_pr_curves.csv")
     figure, axes = plt.subplots(2, 5, figsize=(7.0, 3.1), sharex="row", sharey="row")
     for column, context in enumerate(CONTEXTS):
@@ -2748,8 +2755,8 @@ def supplementary_figures(output: Path, source: Path) -> None:
             axis = axes[row_index, column]
             subset = curves[(curves.context == context) & (curves.curve == curve)]
             for model, color, style in [
-                ("Published AdarEdit", COLORS["gray"], "--"),
-                ("adarpro_pair_local_equal_logit_ensemble", COLORS["green"], "-"),
+                (sources.TEST_CURVE_BASELINE, COLORS["gray"], "--"),
+                (sources.TEST_CANDIDATE, COLORS["green"], "-"),
             ]:
                 values = subset[subset.model == model]
                 axis.plot(values.x, values.y, color=color, linestyle=style, lw=1.1)
@@ -2786,7 +2793,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     save(figure, output, "figureS5_locked_curves")
 
     # S6: final calibration.
-    calibration = pd.read_csv(
+    calibration = sources.read_csv(
         ROOT / "figures/final/source_tables/final_calibration.csv"
     )
     copy_source(calibration, source, "figureS6_locked_calibration.csv")
@@ -2794,8 +2801,8 @@ def supplementary_figures(output: Path, source: Path) -> None:
     for axis, context in zip(axes, CONTEXTS):
         subset = calibration[calibration.context == context]
         for model, color, style in [
-            ("Published AdarEdit", COLORS["gray"], "--"),
-            ("adarpro_pair_local_equal_logit_ensemble", COLORS["green"], "-"),
+            (sources.TEST_CURVE_BASELINE, COLORS["gray"], "--"),
+            (sources.TEST_CANDIDATE, COLORS["green"], "-"),
         ]:
             values = subset[subset.model == model]
             axis.plot(

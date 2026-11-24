@@ -24,13 +24,14 @@ CONTEXT_MACRO = {
     "MuscleSkeletal": "Muscle",
     "Combined": "Combined",
 }
+# Test set (R9): the selected predictor is the gap stage (evaluation 3); AdarEdit is unchanged.
 MODEL_MACRO = {
-    "published_baseline_reproduced": "AdarEdit",
-    "adarpro_pair_local_equal_logit_ensemble": "ADARPro",
+    sources.TEST_BASELINE: "AdarEdit",
+    sources.TEST_CANDIDATE: "ADARPro",
 }
 MODEL_DISPLAY = {
-    "published_baseline_reproduced": "AdarEdit",
-    "adarpro_pair_local_equal_logit_ensemble": "selected predictor",
+    sources.TEST_BASELINE: "AdarEdit",
+    sources.TEST_CANDIDATE: "selected predictor",
 }
 METRIC_MACRO = {
     "auroc": "AUROC",
@@ -403,11 +404,14 @@ def add_protocol_claims() -> None:
         "PretrainingCandidatePairs",
     )
 
-    comparison_path = sources.path(
-        ROOT
-        / "experiments/runs/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/summary.json"
-    )
+    # The text uses this count for the final (test) comparison (main.tex Methods, SI): read it from the test
+    # session's summary (evaluation 3), not from a development run, and check every test interval used it.
+    comparison_path = sources.path(ROOT / "results/adarpro/final_locked_test/summary.json")
     comparison = json.loads(comparison_path.read_text(encoding="utf-8"))
+    contrast_replicates = set(pd.read_csv(ROOT / sources.TEST_CONTRASTS)["replicates"].astype(int))
+    if contrast_replicates != {int(comparison["bootstrap_replicates"])}:
+        raise RuntimeError(f"test contrasts use {contrast_replicates} replicates, summary says "
+                           f"{comparison['bootstrap_replicates']}")
     add(
         "bootstrap_replicates",
         "Pair-clustered bootstrap replicate count",
@@ -441,8 +445,12 @@ def add_protocol_claims() -> None:
 
 
 def add_locked_claims() -> None:
-    path = ROOT / "results/adarpro/final_locked_test/metrics.csv"
-    frame = pd.read_csv(path)
+    """Test-set claims (R9: evaluation 3 via paper_sources; the selected predictor is the gap stage)."""
+    pnas_metrics = ROOT / "results/adarpro/final_locked_test/metrics.csv"
+    path = sources.path(pnas_metrics)
+    frame = sources.read_csv(pnas_metrics)  # AdarEdit and the gap stage only
+    if sorted(frame.model.unique()) != sorted(MODEL_MACRO) or len(frame) != 2 * len(CONTEXTS):
+        raise RuntimeError(f"{path}: expected AdarEdit and the selected predictor in every endpoint")
     metrics = ["auroc", "auprc", "f1", "precision", "recall", "specificity", "brier"]
     for _, row in frame.iterrows():
         context = row["context"]
@@ -465,8 +473,8 @@ def add_locked_claims() -> None:
             )
     pivot = frame.pivot(index="context", columns="model", values=metrics)
     for metric in metrics:
-        candidate = pivot[metric]["adarpro_pair_local_equal_logit_ensemble"]
-        baseline = pivot[metric]["published_baseline_reproduced"]
+        candidate = pivot[metric][sources.TEST_CANDIDATE]
+        baseline = pivot[metric][sources.TEST_BASELINE]
         delta = candidate - baseline
         for context in CONTEXTS:
             value = float(delta.loc[context])
@@ -498,10 +506,22 @@ def add_locked_claims() -> None:
             f"MacroDelta{METRIC_MACRO[metric]}",
         )
 
-    transitions_path = ROOT / "figures/final/source_tables/final_error_transitions.csv"
-    transitions = pd.read_csv(transitions_path).set_index("context")
-    matched_path = ROOT / "figures/final/source_tables/final_matched_recall.csv"
-    matched = pd.read_csv(matched_path).set_index("context")
+    transitions_pnas = ROOT / "figures/final/source_tables/final_error_transitions.csv"
+    transitions_path = sources.path(transitions_pnas)
+    transitions = sources.read_csv(transitions_pnas).set_index("context")
+    matched_pnas = ROOT / "figures/final/source_tables/final_matched_recall.csv"
+    matched_path = sources.path(matched_pnas)
+    matched = sources.read_csv(matched_pnas).set_index("context")
+    # the transitions must be the selected predictor's against AdarEdit (counts reconcile with metrics.csv)
+    by_model = frame.set_index(["context", "model"])
+    for context in CONTEXTS:
+        base, cand = by_model.loc[(context, sources.TEST_BASELINE)], by_model.loc[(context, sources.TEST_CANDIDATE)]
+        row = transitions.loc[context]
+        if not (row.baseline_fp == base.fp and row.baseline_tp == base.tp
+                and row.baseline_fp - row.fp_rescued + row.new_fp == cand.fp
+                and row.baseline_tp - row.tp_damaged + row.fn_recovered == cand.tp
+                and matched.loc[context, "baseline_fp"] == base.fp):
+            raise RuntimeError(f"{transitions_path}: {context} does not reconcile with {path}")
     for context in CONTEXTS:
         for column, macro_suffix, unit, digits in (
             ("fp_rescue_rate", "FPRescueRate", "proportion", 1),
@@ -535,6 +555,114 @@ def add_locked_claims() -> None:
             "Results; Figure 4; Table S9",
             "integer",
             f"{CONTEXT_MACRO[context]}MatchedRecallFPAvoided",
+        )
+    # The text prints rescue and damage as ranges; with evaluation 3 the extremes are not Combined and Liver, so the
+    # ranges get endpoint-free min/max macros (the per-endpoint macros above stay).
+    for column, macro_suffix in (("fp_rescue_rate", "FPRescueRate"), ("tp_damage_rate", "TPDamageRate")):
+        values = transitions.loc[CONTEXTS, column].astype(float)
+        for which, context in (("Min", values.idxmin()), ("Max", values.idxmax())):
+            value = float(values.loc[context])
+            add(
+                f"locked_{column}_{which.lower()}",
+                f"{which} over endpoints of canonical {column}",
+                value,
+                f"{100 * value:.1f}",
+                "proportion",
+                "canonical held-out descriptive error transition",
+                transitions_path,
+                f"{which.lower()} over the five endpoints of {column} (attained in {context})",
+                "Results; Figure 4",
+                "one decimal after conversion to percent",
+                f"{macro_suffix}{which}",
+            )
+    exceeds = int((transitions.loc[CONTEXTS, "fp_rescue_rate"] > transitions.loc[CONTEXTS, "tp_damage_rate"]).sum())
+    if exceeds != len(CONTEXTS):  # Fig. 6D title and caption, SI: rescue exceeds damage
+        raise RuntimeError(f"FP rescue exceeds TP damage in {exceeds} of {len(CONTEXTS)} endpoints; revise the text")
+    add(
+        "locked_rescue_exceeds_damage_endpoints",
+        "Endpoints whose FP rescue rate exceeds their TP damage rate",
+        exceeds,
+        str(exceeds),
+        "endpoints",
+        "canonical held-out descriptive error transition",
+        transitions_path,
+        "count over five endpoints of fp_rescue_rate > tp_damage_rate",
+        "Results; Figure 4; SI final-evaluation section",
+        "integer",
+    )
+
+
+def add_test_contrast_claims() -> None:
+    """Evaluation 3: the selected predictor (gap stage) minus PNAS's selected predictor and minus the equal average,
+    per endpoint, in percentage points (R9). Claims only, plus summary macros, for wording the text may add."""
+    path = ROOT / sources.TEST_CONTRASTS
+    frame = pd.read_csv(path)
+    metrics_path = sources.path(ROOT / "results/adarpro/final_locked_test/metrics.csv")
+    all_models = pd.read_csv(metrics_path).set_index(["context", "model"])  # all four models, for the anchors
+    pnas = pd.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv").set_index(["context", "model"])
+    shown = ("auroc", "auprc", "f1", "brier")
+    model_of = {
+        "adaredit_reference": sources.TEST_BASELINE,
+        "pnas_selected_predictor": "pnas_selected_predictor",
+        "equal_average": "equal_average",
+    }
+    for context in CONTEXTS:  # anchors: v3's PNAS predictor is PNAS's published one; estimates are metric differences
+        for metric in shown:
+            published = pnas.loc[(context, sources.PNAS_TEST_CANDIDATE), metric]
+            if abs(all_models.loc[(context, "pnas_selected_predictor"), metric] - published) > 1e-12:
+                raise RuntimeError(f"{metrics_path}: {context} pnas_selected_predictor {metric} is not PNAS's value")
+            for reference, model in model_of.items():
+                row = frame[(frame.context == context) & (frame.candidate == "gap_stage")
+                            & (frame.reference == reference) & (frame.metric == metric)]
+                if len(row) != 1:
+                    raise RuntimeError(f"{path}: {context} gap_stage vs {reference} {metric}: {len(row)} rows")
+                difference = (all_models.loc[(context, sources.TEST_CANDIDATE), metric]
+                              - all_models.loc[(context, model), metric])
+                if abs(float(row.iloc[0]["estimate"]) - difference) > 1e-12:
+                    raise RuntimeError(f"{path}: {context} vs {reference} {metric} estimate is not the metric difference")
+    labels = {"pnas_selected_predictor": ("PNAS", "PNAS's selected predictor"),
+              "equal_average": ("Equal", "the equal average")}
+    estimates: dict[tuple[str, str], list[float]] = {}
+    for reference, (tag, label) in labels.items():
+        for context in CONTEXTS:
+            for metric in shown:
+                row = frame[(frame.context == context) & (frame.candidate == "gap_stage")
+                            & (frame.reference == reference) & (frame.metric == metric)].iloc[0]
+                for stat in ("estimate", "lower", "upper"):
+                    value = 100 * float(row[stat])
+                    add(
+                        f"test_gap_stage_vs_{reference}_{context}_{metric}_{stat}",
+                        f"Canonical {context} selected predictor minus {label} {metric.upper()} ({stat})",
+                        value,
+                        f"{value:.2f}",
+                        "percentage points",
+                        "canonical held-out pair-clustered bootstrap (evaluation 3)",
+                        path,
+                        f"context={context}; candidate=gap_stage; reference={reference}; metric={metric}; column={stat}",
+                        "available for Results (test); no macro",
+                        "two decimals (percentage points)",
+                    )
+                estimates.setdefault((tag, metric), []).append(100 * float(row["estimate"]))
+    for tag, metric, which in (
+        ("PNAS", "auroc", "Mean"), ("PNAS", "auroc", "Min"), ("PNAS", "auroc", "Max"),
+        ("PNAS", "auprc", "Mean"), ("PNAS", "f1", "Mean"), ("Equal", "auroc", "Min"), ("Equal", "auroc", "Max"),
+    ):
+        values = estimates[(tag, metric)]
+        value = {"Mean": sum(values) / len(values), "Min": min(values), "Max": max(values)}[which]
+        reference = next(r for r, (t, _) in labels.items() if t == tag)
+        add(
+            f"test_gap_stage_vs_{reference}_{metric}_{which.lower()}",
+            f"{which} over endpoints of the selected predictor minus {labels[reference][1]} {metric.upper()}",
+            value,
+            f"{value:.2f}",
+            "percentage points",
+            "canonical held-out (evaluation 3)",
+            path,
+            f"{which.lower()} over the five endpoints of estimate (point difference); "
+            f"candidate=gap_stage; reference={reference}; metric={metric}",
+            "available for Results (test), Abstract",
+            "two decimals (percentage points) of the unrounded values",
+            f"TestVs{tag}{METRIC_MACRO[metric]}{which}",
         )
 
 
@@ -1266,6 +1394,7 @@ def main() -> None:
     add_split_claims()
     add_protocol_claims()
     add_locked_claims()
+    add_test_contrast_claims()
     add_supervision_claims()
     add_substrate_claims()
     add_local_and_unified_claims()

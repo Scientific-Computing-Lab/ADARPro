@@ -18,8 +18,18 @@ no filter is needed. Two need one:
     models; the rows are restricted to those five (WRITING shows the selected predictor in Fig. S3 and Table S7,
     D48), so any further role COMPUTE adds there does not reach the paper unannounced.
 
-Test-set files (results/adarpro/final_locked_test*, figures/final*) and PNAS side branches that were never re-run are
-not in the map: the scripts read them directly.
+Test-set files (R9; D56): PNAS's locked test (`results/adarpro/final_locked_test/`, `figures/final/source_tables/`)
+-> evaluation 3 (`results/adarpro/final_locked_test_v3/`, `figures/final_v3/source_tables/`), aggregate files only
+(never the per-row `*_predictions.parquet` / `*_pair_bootstrap.parquet`). The v3 files keep PNAS's names and columns;
+"the selected predictor" is now `TEST_CANDIDATE` (the gap stage), AdarEdit stays `TEST_BASELINE`. Two need a row
+filter:
+  * v3 `metrics.csv` holds four models (AdarEdit, the gap stage, PNAS's predictor, the equal average); the rows are
+    restricted to AdarEdit and the gap stage, the two PNAS's file held, so Table S1 / Fig. 6 keep their two rows;
+  * the curve and calibration tables are restricted to the same two models (they hold only those two today).
+`TEST_CONTRASTS` (gap stage vs AdarEdit / PNAS's predictor / equal average) has no PNAS counterpart. PNAS's
+`final_locked_test/README.md` has none either (no script reads it).
+
+PNAS side branches that were never re-run are not in the map: the scripts read them directly.
 """
 from __future__ import annotations
 
@@ -103,6 +113,26 @@ SIBLINGS.update({
 })
 for _pnas, _new in SIBLINGS.items():
     SOURCES[_pnas] = (_new, {})
+
+# Test set (R9): PNAS's locked evaluation -> evaluation 3. Aggregate files only.
+TEST = "results/adarpro/final_locked_test"
+TEST_V3 = "results/adarpro/final_locked_test_v3"
+TEST_FIGURES = "figures/final/source_tables"
+TEST_FIGURES_V3 = "figures/final_v3/source_tables"
+TEST_BASELINE = "published_baseline_reproduced"  # AdarEdit, as in PNAS's file
+TEST_CANDIDATE = "adarpro_gap_stage_graph_cnn_alone_5seed"  # the selected predictor (was PNAS's equal-logit ensemble)
+PNAS_TEST_CANDIDATE = "adarpro_pair_local_equal_logit_ensemble"  # PNAS's selected predictor (v3: pnas_selected_predictor)
+TEST_CURVE_BASELINE = "Published AdarEdit"  # AdarEdit's label in the curve and calibration tables
+TEST_CONTRASTS = f"{TEST_V3}/contrasts_pair_bootstrap_ci.csv"  # no PNAS counterpart
+SOURCES[f"{TEST}/metrics.csv"] = (f"{TEST_V3}/metrics.csv", {"model": (TEST_BASELINE, TEST_CANDIDATE)})
+SOURCES[f"{TEST}/summary.json"] = (f"{TEST_V3}/summary.json", {})
+for _endpoint in ENDPOINTS:  # gap stage minus AdarEdit (PNAS: PNAS's predictor minus AdarEdit); same columns
+    SOURCES[f"{TEST}/{_endpoint}_pair_bootstrap_ci.csv"] = (f"{TEST_V3}/{_endpoint}_pair_bootstrap_ci.csv", {})
+for _name in ("final_error_transitions.csv", "final_matched_recall.csv", "final_matched_recall_pair_bootstrap_ci.csv"):
+    SOURCES[f"{TEST_FIGURES}/{_name}"] = (f"{TEST_FIGURES_V3}/{_name}", {})
+for _name in ("final_roc_pr_curves.csv", "final_calibration.csv"):
+    SOURCES[f"{TEST_FIGURES}/{_name}"] = (
+        f"{TEST_FIGURES_V3}/{_name}", {"model": (TEST_CURVE_BASELINE, TEST_CANDIDATE)})
 
 
 def _key(pnas: str | Path) -> str:

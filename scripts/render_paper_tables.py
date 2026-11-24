@@ -33,10 +33,10 @@ def write(name: str, content: str) -> None:
 
 
 def locked_metrics() -> None:
-    df = pd.read_csv(SOURCE / "figure4_locked_metrics.csv")
+    df = pd.read_csv(SOURCE / "figure4_locked_metrics.csv")  # written by render_paper_figures from evaluation 3 (R9)
     model_names = {
-        "published_baseline_reproduced": "AdarEdit",
-        "adarpro_pair_local_equal_logit_ensemble": "Selected predictor",
+        sources.TEST_BASELINE: "AdarEdit",
+        sources.TEST_CANDIDATE: "Selected predictor",
     }
     lines = []
     for _, row in df.iterrows():
@@ -924,6 +924,49 @@ Endpoint & AUROC & AUPRC & F1 \\
     )
 
 
+def test_contrasts() -> None:
+    """Selected predictor minus each comparator on the canonical test (evaluation 3, R9): point difference with 95%
+    pair-clustered interval, in percentage points. Aggregate contrasts file only."""
+    labels = {
+        "adaredit_reference": "Reproduced AdarEdit",
+        "pnas_selected_predictor": "First-round predictor",
+        "equal_average": "Equal average, no second stage",
+    }
+    frame = pd.read_csv(ROOT / sources.TEST_CONTRASTS)
+    if set(frame.replicates) != {2000}:
+        raise RuntimeError(f"{sources.TEST_CONTRASTS}: replicates {sorted(set(frame.replicates))}, caption says 2,000")
+    rows = []
+    for context in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
+        for reference, label in labels.items():
+            cells = []
+            for metric in ("auroc", "auprc", "f1", "brier"):
+                row = frame[(frame.context == context) & (frame.candidate == "gap_stage")
+                            & (frame.reference == reference) & (frame.metric == metric)]
+                if len(row) != 1:
+                    raise RuntimeError(f"{context}: gap_stage/{reference}/{metric}: {len(row)} rows")
+                r = row.iloc[0]
+                cells.append(f"{100 * r['estimate']:+.2f} [{100 * r['lower']:+.2f}, {100 * r['upper']:+.2f}]")
+            rows.append(f"{context_label(context)} & {label} & " + " & ".join(cells) + r" \\")
+    write(
+        "table_s13_test_contrasts.tex",
+        r"""\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{On the canonical test, the selected predictor improves on reproduced AdarEdit and on the first-round predictor in every endpoint.} Each row gives the selected predictor minus a comparator: reproduced supplied-checkpoint AdarEdit, the first-round predictor, or the equal average of the same two components without a second stage. Values are percentage-point differences with 95\% pair-clustered intervals (2,000 replicates); for Brier score, negative values are improvements. The five endpoints share test pairs and are one test scored five ways.}\label{tab:testcontrasts}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}}
+\end{table}""",
+    )
+
+
 def manifest() -> None:
     entries = []
     for path in sorted(OUTPUT.glob("table_*.tex")):
@@ -945,8 +988,9 @@ def main() -> None:
     experiment_taxonomy()
     gap_controls()
     seed_averaging()
+    test_contrasts()
     manifest()
-    print("PASS: rendered 12 SI tables from authoritative artifacts")
+    print("PASS: rendered 13 SI tables from authoritative artifacts")
 
 
 if __name__ == "__main__":
