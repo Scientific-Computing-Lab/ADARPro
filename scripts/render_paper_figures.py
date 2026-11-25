@@ -13,6 +13,7 @@ from pathlib import Path
 
 import cairosvg
 import matplotlib.pyplot as plt
+import matplotlib.text as mtext
 import numpy as np
 import pandas as pd
 from matplotlib.colors import Normalize
@@ -212,8 +213,50 @@ def _verify_vector_only(svg_path: Path) -> None:
         raise RuntimeError(f"Embedded raster content in {svg_path}")
 
 
+# PNAS: "Numbers, letters, and symbols should be no smaller than 6 points". Main figures print at these widths
+# (main.tex \includesvg width as a fraction of \textwidth = 512 TeX pt); bbox_inches="tight" pads each side.
+MAIN_FIGURE_PRINT_FRACTION = {
+    "figure0_search_space": 1.0,
+    "figure1_systematic_dissection": 1.0,
+    "figure2_sequence_scope": 1.0,
+    "figure2_evidence_map": 0.98,
+    "figure3_organizing_principles": 1.0,
+    "figure4_locked_validation": 1.0,
+}
+TEXTWIDTH_IN = 512.0 / 72.27
+MIN_PRINTED_PT = 6.05
+
+
+def enforce_printed_font_floor(figure: plt.Figure, stem: str) -> None:
+    """Raise every visible text of a main figure so that it prints at no less than MIN_PRINTED_PT."""
+    fraction = MAIN_FIGURE_PRINT_FRACTION.get(stem)
+    if fraction is None:
+        return
+    def floor_in_figure_units() -> float:
+        renderer = figure.canvas.get_renderer()
+        svg_width_in = figure.get_tightbbox(renderer).width + 2 * float(plt.rcParams["savefig.pad_inches"])
+        return MIN_PRINTED_PT * svg_width_in / (TEXTWIDTH_IN * fraction)
+
+    def visible_texts() -> list[mtext.Text]:
+        return [text for text in figure.findobj(mtext.Text) if text.get_visible() and text.get_text().strip()]
+
+    # Enlarging text can widen the tight box (lowering the print scale), so raise with 1% headroom and repeat.
+    for _ in range(5):
+        floor = floor_in_figure_units()
+        small = [text for text in visible_texts() if text.get_fontsize() < floor]
+        if not small:
+            break
+        for text in small:
+            text.set_fontsize(1.01 * floor)
+    # Hard check: every visible text prints at 6 pt or more (MIN_PRINTED_PT keeps a small margin above it).
+    smallest = min(text.get_fontsize() for text in visible_texts())
+    if smallest * MIN_PRINTED_PT / floor_in_figure_units() < 6.0:
+        raise RuntimeError(f"{stem}: smallest text would print below 6 pt")
+
+
 def save(figure: plt.Figure, output: Path, stem: str) -> None:
     output.mkdir(parents=True, exist_ok=True)
+    enforce_printed_font_floor(figure, stem)
     svg_path = output / f"{stem}.svg"
     figure.savefig(
         svg_path,
@@ -758,7 +801,7 @@ def figure_search_space(output: Path, source: Path) -> None:
         color=COLORS["navy"],
     )
     ax_c.text(
-        0.205,
+        0.222,
         0.120,
         "The selected principles improved AUROC, AUPRC, F1, and Brier score in all five held-out endpoints.",
         ha="left",
@@ -767,7 +810,7 @@ def figure_search_space(output: Path, source: Path) -> None:
         color=COLORS["ink"],
     )
     ax_c.text(
-        0.205,
+        0.222,
         0.063,
         "unseen benchmark pairs · external-cohort transport remains untested",
         ha="left",
@@ -1630,7 +1673,7 @@ def figure2(output: Path, source: Path) -> None:
             ax_a.text(
                 0.072,
                 center_y + 0.011,
-                r"$\sigma(w_1z_1{+}w_2z_2{+}w_3s{+}b)$",  # the selected second stage (Fig. 5E), not the equal average
+                "σ(w1z1+w2z2+w3s+b)",  # the selected second stage (Fig. 5E), not the equal average
                 ha="center",
                 va="center",
                 fontsize=6.3,
@@ -1683,7 +1726,7 @@ def figure2(output: Path, source: Path) -> None:
             color=color,
             label=f"{CONTEXT_LABELS[context]}  ρ={rho:.2f}".replace("-", "−"),
         )
-    ax_b.set_xlabel("Mean log$_{10}$(inter-arm gap + 1) within octile")
+    ax_b.set_xlabel("Mean log10(inter-arm gap + 1) within octile")
     ax_b.set_ylabel("Mean edited-site fraction")
     ax_b.set_title(
         "Geometry tracks\nsubstrate-level editing burden",
@@ -1856,7 +1899,7 @@ def architecture_panel(axis: plt.Axes, spec: dict) -> None:
             "whole_duplex_graph_view",
             "Graph message passing",
             "whole-duplex pooling",
-            r"$z_1$",
+            "z1",
             spec["graph_seeds"],
         ),
         (
@@ -1866,7 +1909,7 @@ def architecture_panel(axis: plt.Axes, spec: dict) -> None:
             "target_local_editorial",
             "Local convolution",
             "target/partner windows",
-            r"$z_2$",
+            "z2",
             spec["local_seeds"],
         ),
     ]:
@@ -1910,7 +1953,7 @@ def architecture_panel(axis: plt.Axes, spec: dict) -> None:
     arrow((stage_right, 0.515), (0.948, 0.515), COLORS["navy"])
     text(0.968, 0.535, r"$p$", 10, COLORS["navy"])
     text(0.968, 0.455, "probability", 5.9, COLORS["gray"])
-    text(0.850, 0.165, r"$p=\sigma(w_1z_1+w_2z_2+w_3s+b)$", 7.3)
+    text(0.850, 0.165, "p = σ(w1z1 + w2z2 + w3s + b)", 7.3)
     axis.plot([0, 1], [0.07, 0.07], color="#D3DCE0", lw=0.65)
     text(
         0.5,

@@ -264,7 +264,7 @@
      <path d="M 64.013541 108.788029  L 64.013541 107.98707  L 97.535707 107.98707  L 97.535707 108.788029  " clip-path="url(#pbaae340701)" style="fill: none; stroke: #2a9d67; stroke-width: 0.75; stroke-linecap: square" />
     </g>
     <g id="text_3">
-     <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="80.846715" y="107.994061" transform="rotate(-0 80.846715 107.994061)">A</text>
+     <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="80.846715" y="107.971026" transform="rotate(-0 80.846715 107.971026)">A</text>
     </g>
    </g>
    <g id="axes_4">
@@ -312,7 +312,7 @@
     </g>
    </g>
    <g id="text_11">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="65.173992" transform="rotate(-0 330.394344 65.173992)">Selected</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="65.226553" transform="rotate(-0 330.394344 65.226553)">Selected</text>
    </g>
    <g id="text_12">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="65.237879" transform="rotate(-0 402.970344 65.237879)">More labels; correct pair weight</text>
@@ -329,7 +329,7 @@
     </g>
    </g>
    <g id="text_14">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="74.454947" transform="rotate(-0 330.394344 74.454947)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="74.507509" transform="rotate(-0 330.394344 74.507509)">Limited</text>
    </g>
    <g id="text_15">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="74.518834" transform="rotate(-0 402.970344 74.518834)">No clear ranking gain</text>
@@ -343,7 +343,7 @@
     </g>
    </g>
    <g id="text_17">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="83.735903" transform="rotate(-0 330.394344 83.735903)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="83.788464" transform="rotate(-0 330.394344 83.788464)">Limited</text>
    </g>
    <g id="text_18">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="83.809067" transform="rotate(-0 402.970344 83.809067)">Transfer below preset criteria</text>
@@ -360,7 +360,7 @@
     </g>
    </g>
    <g id="text_21">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="102.170677" transform="rotate(-0 330.394344 102.170677)">Selected</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="102.223238" transform="rotate(-0 330.394344 102.223238)">Selected</text>
    </g>
    <g id="text_22">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="102.234563" transform="rotate(-0 402.970344 102.234563)">Passes shifted-window control</text>
@@ -374,7 +374,7 @@
     </g>
    </g>
    <g id="text_24">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="111.451632" transform="rotate(-0 330.394344 111.451632)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="111.504193" transform="rotate(-0 330.394344 111.504193)">Limited</text>
    </g>
    <g id="text_25">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="111.515519" transform="rotate(-0 402.970344 111.515519)">Target-position signal</text>
@@ -391,7 +391,7 @@
     </g>
    </g>
    <g id="text_27">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="120.732587" transform="rotate(-0 330.394344 120.732587)">Not supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="120.785148" transform="rotate(-0 330.394344 120.785148)">Not supported</text>
    </g>
    <g id="text_28">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="120.805751" transform="rotate(-0 402.970344 120.805751)">F1 effect; no ranking gain</text>
@@ -405,7 +405,7 @@
     </g>
    </g>
    <g id="text_30">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="130.013542" transform="rotate(-0 330.394344 130.013542)">Not supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="130.066104" transform="rotate(-0 330.394344 130.066104)">Not supported</text>
    </g>
    <g id="text_31">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="130.114539" transform="rotate(-0 402.970344 130.114539)">Stopped for futility</text>
@@ -419,7 +419,7 @@
     </g>
    </g>
    <g id="text_33">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="139.294498" transform="rotate(-0 330.394344 139.294498)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="139.347059" transform="rotate(-0 330.394344 139.347059)">Limited</text>
    </g>
    <g id="text_34">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="139.367662" transform="rotate(-0 402.970344 139.367662)">Features/capacity confounded</text>
@@ -436,7 +436,7 @@
     </g>
    </g>
    <g id="text_36">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #68737d" x="330.394344" y="148.575453" transform="rotate(-0 330.394344 148.575453)">Not pursued</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #68737d" x="330.394344" y="148.628014" transform="rotate(-0 330.394344 148.628014)">Not pursued</text>
    </g>
    <g id="text_37">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="148.648617" transform="rotate(-0 402.970344 148.648617)">Not tested after local gains</text>
@@ -456,7 +456,7 @@
     </g>
    </g>
    <g id="text_40">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #138d90" x="330.394344" y="167.045852" transform="rotate(-0 330.394344 167.045852)">Supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #138d90" x="330.394344" y="167.099635" transform="rotate(-0 330.394344 167.099635)">Supported</text>
    </g>
    <g id="text_41">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="167.111223" transform="rotate(-0 402.970344 167.111223)">Substrate propensity detectable</text>
@@ -470,7 +470,7 @@
     </g>
    </g>
    <g id="text_43">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="176.291182" transform="rotate(-0 330.394344 176.291182)">Selected</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="176.343744" transform="rotate(-0 330.394344 176.343744)">Selected</text>
    </g>
    <g id="text_44">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="176.364346" transform="rotate(-0 402.970344 176.364346)">Beats shuffled spacing</text>
@@ -484,7 +484,7 @@
     </g>
    </g>
    <g id="text_46">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="185.572137" transform="rotate(-0 330.394344 185.572137)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="185.624699" transform="rotate(-0 330.394344 185.624699)">Limited</text>
    </g>
    <g id="text_47">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="185.636024" transform="rotate(-0 402.970344 185.636024)">Ranking gain; unstable F1</text>
@@ -498,7 +498,7 @@
     </g>
    </g>
    <g id="text_49">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="194.853093" transform="rotate(-0 330.394344 194.853093)">Limited</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="330.394344" y="194.905654" transform="rotate(-0 330.394344 194.905654)">Limited</text>
    </g>
    <g id="text_50">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="194.926257" transform="rotate(-0 402.970344 194.926257)">Metric-specific screen effects</text>
@@ -512,7 +512,7 @@
     </g>
    </g>
    <g id="text_52">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="204.134048" transform="rotate(-0 330.394344 204.134048)">Not supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="204.186609" transform="rotate(-0 330.394344 204.186609)">Not supported</text>
    </g>
    <g id="text_53">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="204.197935" transform="rotate(-0 402.970344 204.197935)">No consistent gain</text>
@@ -526,7 +526,7 @@
     </g>
    </g>
    <g id="text_55">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="213.415003" transform="rotate(-0 330.394344 213.415003)">Not supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="213.467564" transform="rotate(-0 330.394344 213.467564)">Not supported</text>
    </g>
    <g id="text_56">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="213.47889" transform="rotate(-0 402.970344 213.47889)">No stable screen gain</text>
@@ -543,7 +543,7 @@
     </g>
    </g>
    <g id="text_58">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #7562a8" x="330.394344" y="222.695958" transform="rotate(-0 330.394344 222.695958)">Deferred</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #7562a8" x="330.394344" y="222.74852" transform="rotate(-0 330.394344 222.74852)">Deferred</text>
    </g>
    <g id="text_59">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="222.759845" transform="rotate(-0 402.970344 222.759845)">Matched data unavailable</text>
@@ -557,7 +557,7 @@
     </g>
    </g>
    <g id="text_61">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #7562a8" x="330.394344" y="231.976914" transform="rotate(-0 330.394344 231.976914)">Deferred</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #7562a8" x="330.394344" y="232.029475" transform="rotate(-0 330.394344 232.029475)">Deferred</text>
    </g>
    <g id="text_62">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="232.0408" transform="rotate(-0 402.970344 232.0408)">Matched data unavailable</text>
@@ -574,7 +574,7 @@
     </g>
    </g>
    <g id="text_65">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="250.411688" transform="rotate(-0 330.394344 250.411688)">Selected</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="330.394344" y="250.464249" transform="rotate(-0 330.394344 250.464249)">Selected</text>
    </g>
    <g id="text_66">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="250.512684" transform="rotate(-0 402.970344 250.512684)">Complementary predictions</text>
@@ -588,48 +588,26 @@
     </g>
    </g>
    <g id="text_68">
-    <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="259.692643" transform="rotate(-0 330.394344 259.692643)">Not supported</text>
+    <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="259.745204" transform="rotate(-0 330.394344 259.745204)">Not supported</text>
    </g>
    <g id="text_69">
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="259.75653" transform="rotate(-0 402.970344 259.75653)">Below two-model combination</text>
    </g>
    <g id="text_70">
-    <text style="font-weight: 700; font-size: 5.15px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="79.553544" y="82.478582" transform="rotate(-0 79.553544 82.478582)">LEARNING</text>
+    <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="79.553544" y="82.248477" transform="rotate(-0 79.553544 82.248477)">LEARNING</text>
    </g>
    <g id="text_71">
-    <text style="font-weight: 700; font-size: 5.15px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2166ac" x="79.553544" y="147.318133" transform="rotate(-0 79.553544 147.318133)">TARGET-LOCAL</text>
+    <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2166ac" x="79.553544" y="147.088027" transform="rotate(-0 79.553544 147.088027)">TARGET-LOCAL</text>
    </g>
    <g id="text_72">
-    <text style="font-weight: 700; font-size: 5.15px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #d99000" transform="translate(62.385938 226.030116)">SUBSTRATE /</text>
-    <text style="font-weight: 700; font-size: 5.15px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #d99000" transform="translate(67.250274 230.719593)">CONTEXT</text>
+    <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #d99000" transform="translate(58.866808 224.83873)">SUBSTRATE /</text>
+    <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #d99000" transform="translate(64.728268 230.489488)">CONTEXT</text>
    </g>
    <g id="text_73">
-    
-    <g style="fill: #7562a8" transform="translate(50.195544 250.230634)">
-     <text>
-      <tspan x="0" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">σ</tspan>
-      <tspan x="5.89386" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
-      <tspan x="13.045682" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
-      <tspan x="22.476968" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
-      <tspan x="29.62879" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
-      <tspan x="39.060076" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">w</tspan>
-      <tspan x="46.211898" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">s</tspan>
-      <tspan x="53.037703" y="-0.03125" style="font-style: italic; font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">b</tspan>
-      <tspan x="3.797012" y="-0.03125" style="font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">(</tspan>
-      <tspan x="18.7996" y="-0.03125" style="font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
-      <tspan x="35.382708" y="-0.03125" style="font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
-      <tspan x="49.360335" y="-0.03125" style="font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">+</tspan>
-      <tspan x="56.538756" y="-0.03125" style="font-size: 6.3px; font-family: 'Nimbus Sans'; fill: #7562a8">)</tspan>
-      <tspan x="10.440201" y="0.897213" style="font-size: 4.41px; font-family: 'Nimbus Sans'; fill: #7562a8">1</tspan>
-      <tspan x="16.194119" y="0.897213" style="font-size: 4.41px; font-family: 'Nimbus Sans'; fill: #7562a8">1</tspan>
-      <tspan x="27.023309" y="0.897213" style="font-size: 4.41px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
-      <tspan x="32.777227" y="0.897213" style="font-size: 4.41px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
-      <tspan x="43.606417" y="0.897213" style="font-size: 4.41px; font-family: 'Nimbus Sans'; fill: #7562a8">3</tspan>
-     </text>
-    </g>
+    <text style="font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="79.553544" y="250.234079" transform="rotate(-0 79.553544 250.234079)">σ(w1z1+w2z2+w3s+b)</text>
    </g>
    <g id="text_74">
-    <text style="font-weight: 700; font-size: 5.05px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="79.553544" y="259.982756" transform="rotate(-0 79.553544 259.982756)">INTEGRATION</text>
+    <text style="font-weight: 700; font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="79.553544" y="259.730854" transform="rotate(-0 79.553544 259.730854)">INTEGRATION</text>
    </g>
    <g id="text_75">
     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #68737d" x="495.958344" y="276.132684" transform="rotate(-0 495.958344 276.132684)">*Pooled-score exploratory screens. Comparators and intervals: Table S2.</text>
@@ -712,54 +690,7 @@
      </g>
     </g>
     <g id="text_82">
-     
-     <g transform="translate(66.408039 509.859582)">
-      <text>
-       <tspan x="0" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">M</tspan>
-       <tspan x="6.82019" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">e</tspan>
-       <tspan x="11.372437" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">a</tspan>
-       <tspan x="15.924683" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">n</tspan>
-       <tspan x="20.476929" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="22.753052" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">l</tspan>
-       <tspan x="24.570663" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">o</tspan>
-       <tspan x="29.12291" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">g</tspan>
-       <tspan x="40.320207" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">(</tspan>
-       <tspan x="43.046632" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">i</tspan>
-       <tspan x="44.864244" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">n</tspan>
-       <tspan x="49.41649" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">t</tspan>
-       <tspan x="51.692613" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">e</tspan>
-       <tspan x="56.244859" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">r</tspan>
-       <tspan x="58.971284" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">-</tspan>
-       <tspan x="61.697709" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">a</tspan>
-       <tspan x="66.249956" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">r</tspan>
-       <tspan x="68.976381" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">m</tspan>
-       <tspan x="75.796571" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="78.072694" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">g</tspan>
-       <tspan x="82.62494" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">a</tspan>
-       <tspan x="87.177186" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">p</tspan>
-       <tspan x="91.729433" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="94.005556" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">+</tspan>
-       <tspan x="98.78705" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="101.063173" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">1</tspan>
-       <tspan x="105.615419" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">)</tspan>
-       <tspan x="108.341844" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="110.617967" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">w</tspan>
-       <tspan x="116.529344" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">i</tspan>
-       <tspan x="118.346956" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">t</tspan>
-       <tspan x="120.623079" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">h</tspan>
-       <tspan x="125.175325" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">i</tspan>
-       <tspan x="126.992937" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">n</tspan>
-       <tspan x="131.545183" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'"> </tspan>
-       <tspan x="133.821306" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">o</tspan>
-       <tspan x="138.373552" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">c</tspan>
-       <tspan x="142.467302" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">t</tspan>
-       <tspan x="144.743425" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">i</tspan>
-       <tspan x="146.561037" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">l</tspan>
-       <tspan x="148.378648" y="-0.71875" style="font-size: 8.2px; font-family: 'Nimbus Sans'">e</tspan>
-       <tspan x="33.74565" y="0.489725" style="font-size: 5.74px; font-family: 'Nimbus Sans'">1</tspan>
-       <tspan x="36.932222" y="0.489725" style="font-size: 5.74px; font-family: 'Nimbus Sans'">0</tspan>
-      </text>
-     </g>
+     <text style="font-size: 8.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle" x="142.996039" y="509.851894" transform="rotate(-0 142.996039 509.851894)">Mean log10(inter-arm gap + 1) within octile</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -953,40 +884,40 @@
    </g>
    <g id="legend_1">
     <g id="line2d_49">
-     <path d="M 52.384344 405.10323  L 58.484344 405.10323  L 64.584344 405.10323  " style="fill: none; stroke: #2166ac; stroke-width: 1.1; stroke-linecap: square" />
+     <path d="M 52.384344 404.979484  L 58.484344 404.979484  L 64.584344 404.979484  " style="fill: none; stroke: #2166ac; stroke-width: 1.1; stroke-linecap: square" />
      <g>
-      <use xlink:href="#m14c8fd5f98" x="58.484344" y="405.10323" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m14c8fd5f98" x="58.484344" y="404.979484" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="text_94">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="407.23823" transform="rotate(-0 69.464344 407.23823)">Artery  ρ=−0.48</text>
+     <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="407.114484" transform="rotate(-0 69.464344 407.114484)">Artery  ρ=−0.48</text>
     </g>
     <g id="line2d_50">
-     <path d="M 52.384344 413.930121  L 58.484344 413.930121  L 64.584344 413.930121  " style="fill: none; stroke: #7562a8; stroke-width: 1.1; stroke-linecap: square" />
+     <path d="M 52.384344 413.906458  L 58.484344 413.906458  L 64.584344 413.906458  " style="fill: none; stroke: #7562a8; stroke-width: 1.1; stroke-linecap: square" />
      <g>
-      <use xlink:href="#m579bc50ea3" x="58.484344" y="413.930121" style="fill: #7562a8; stroke: #7562a8" />
+      <use xlink:href="#m579bc50ea3" x="58.484344" y="413.906458" style="fill: #7562a8; stroke: #7562a8" />
      </g>
     </g>
     <g id="text_95">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="416.065121" transform="rotate(-0 69.464344 416.065121)">Brain  ρ=−0.43</text>
+     <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="416.041458" transform="rotate(-0 69.464344 416.041458)">Brain  ρ=−0.43</text>
     </g>
     <g id="line2d_51">
-     <path d="M 52.384344 422.757011  L 58.484344 422.757011  L 64.584344 422.757011  " style="fill: none; stroke: #138d90; stroke-width: 1.1; stroke-linecap: square" />
+     <path d="M 52.384344 422.833432  L 58.484344 422.833432  L 64.584344 422.833432  " style="fill: none; stroke: #138d90; stroke-width: 1.1; stroke-linecap: square" />
      <g>
-      <use xlink:href="#md675c1ac55" x="58.484344" y="422.757011" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#md675c1ac55" x="58.484344" y="422.833432" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="text_96">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="424.892011" transform="rotate(-0 69.464344 424.892011)">Liver  ρ=−0.47</text>
+     <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="424.968432" transform="rotate(-0 69.464344 424.968432)">Liver  ρ=−0.47</text>
     </g>
     <g id="line2d_52">
-     <path d="M 52.384344 431.656339  L 58.484344 431.656339  L 64.584344 431.656339  " style="fill: none; stroke: #d99000; stroke-width: 1.1; stroke-linecap: square" />
+     <path d="M 52.384344 431.834099  L 58.484344 431.834099  L 64.584344 431.834099  " style="fill: none; stroke: #d99000; stroke-width: 1.1; stroke-linecap: square" />
      <g>
-      <use xlink:href="#mb41c530e18" x="58.484344" y="431.656339" style="fill: #d99000; stroke: #d99000" />
+      <use xlink:href="#mb41c530e18" x="58.484344" y="431.834099" style="fill: #d99000; stroke: #d99000" />
      </g>
     </g>
     <g id="text_97">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="433.791339" transform="rotate(-0 69.464344 433.791339)">Skeletal muscle  ρ=−0.33</text>
+     <text style="font-size: 6.205681px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="69.464344" y="433.969099" transform="rotate(-0 69.464344 433.969099)">Skeletal muscle  ρ=−0.33</text>
     </g>
    </g>
   </g>

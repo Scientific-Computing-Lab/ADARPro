@@ -218,19 +218,19 @@
     <text style="font-weight: 700; font-size: 11px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="33.275576" y="15.219687" transform="rotate(-0 33.275576 15.219687)">A</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2166ac" x="200.167602" y="39.943699" transform="rotate(-0 200.167602 39.943699)">AUROC</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2166ac" x="200.167602" y="39.995992" transform="rotate(-0 200.167602 39.995992)">AUROC</text>
    </g>
    <g id="text_15">
-    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #138d90" x="200.167602" y="52.651516" transform="rotate(-0 200.167602 52.651516)">AUPRC</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #138d90" x="200.167602" y="52.703809" transform="rotate(-0 200.167602 52.703809)">AUPRC</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="200.167602" y="101.859144" transform="rotate(-0 200.167602 101.859144)">F1</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="200.167602" y="101.911437" transform="rotate(-0 200.167602 101.911437)">F1</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="87.99956" y="135.502735" transform="rotate(-0 87.99956 135.502735)">+ valid labels</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="87.99956" y="135.436335" transform="rotate(-0 87.99956 135.436335)">+ valid labels</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="158.104586" y="135.502735" transform="rotate(-0 158.104586 135.502735)">+ pair-aware weighting</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="158.104586" y="135.436335" transform="rotate(-0 158.104586 135.436335)">+ pair-aware weighting</text>
    </g>
    <g id="text_19">
     <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="45.936544" y="16.588885" transform="rotate(-0 45.936544 16.588885)">Label expansion and pair weighting both help</text>
@@ -516,70 +516,70 @@
    </g>
    <g id="legend_1">
     <g id="LineCollection_4">
-     <path d="M 455.987763 29.899072  L 462.187763 29.899072  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
+     <path d="M 454.887706 30.121168  L 461.087706 30.121168  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
     </g>
     <g id="line2d_52">
      <g>
-      <use xlink:href="#m743a8be18d" x="455.987763" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m743a8be18d" x="454.887706" y="30.121168" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_53">
      <g>
-      <use xlink:href="#m743a8be18d" x="462.187763" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m743a8be18d" x="461.087706" y="30.121168" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_54" />
     <g id="line2d_55">
      <g>
-      <use xlink:href="#mfb3d94e609" x="459.087762" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#mfb3d94e609" x="457.987706" y="30.121168" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="text_35">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="32.069072" transform="rotate(-0 467.147762 32.069072)">AUROC</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="466.047706" y="32.291168" transform="rotate(-0 466.047706 32.291168)">AUROC</text>
     </g>
     <g id="LineCollection_5">
-     <path d="M 455.987763 38.870666  L 462.187763 38.870666  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
+     <path d="M 454.887706 39.381259  L 461.087706 39.381259  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
     </g>
     <g id="line2d_56">
      <g>
-      <use xlink:href="#m7babdfb2cc" x="455.987763" y="38.870666" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m7babdfb2cc" x="454.887706" y="39.381259" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_57">
      <g>
-      <use xlink:href="#m7babdfb2cc" x="462.187763" y="38.870666" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m7babdfb2cc" x="461.087706" y="39.381259" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_58" />
     <g id="line2d_59">
      <g>
-      <use xlink:href="#md8d29ab07d" x="459.087762" y="38.870666" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#md8d29ab07d" x="457.987706" y="39.381259" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="text_36">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="41.040666" transform="rotate(-0 467.147762 41.040666)">AUPRC</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="466.047706" y="41.551259" transform="rotate(-0 466.047706 41.551259)">AUPRC</text>
     </g>
     <g id="LineCollection_6">
-     <path d="M 455.987763 47.84226  L 462.187763 47.84226  " style="fill: none; stroke: #2a9d67; stroke-width: 1.5" />
+     <path d="M 454.887706 48.641349  L 461.087706 48.641349  " style="fill: none; stroke: #2a9d67; stroke-width: 1.5" />
     </g>
     <g id="line2d_60">
      <g>
-      <use xlink:href="#m7f724fef2e" x="455.987763" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#m7f724fef2e" x="454.887706" y="48.641349" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="line2d_61">
      <g>
-      <use xlink:href="#m7f724fef2e" x="462.187763" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#m7f724fef2e" x="461.087706" y="48.641349" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="line2d_62" />
     <g id="line2d_63">
      <g>
-      <use xlink:href="#maea9429637" x="459.087762" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#maea9429637" x="457.987706" y="48.641349" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="text_37">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="50.01226" transform="rotate(-0 467.147762 50.01226)">F1</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="466.047706" y="50.811349" transform="rotate(-0 466.047706 50.811349)">F1</text>
     </g>
    </g>
   </g>
@@ -595,8 +595,8 @@
       </g>
      </g>
      <g id="text_38">
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(45.937324 358.147934)">Whole-duplex</text>
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(59.629324 365.142134)">only</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(45.617533 358.224218)">Whole-duplex</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(59.533381 365.332764)">only</text>
      </g>
     </g>
     <g id="xtick_12">
@@ -606,8 +606,8 @@
       </g>
      </g>
      <g id="text_39">
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(96.742293 358.147934)">Focal-node</text>
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(104.565793 365.142134)">graph</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(96.48063 358.224218)">Focal-node</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(104.432035 365.332764)">graph</text>
      </g>
     </g>
     <g id="xtick_13">
@@ -617,8 +617,8 @@
       </g>
      </g>
      <g id="text_40">
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(149.325262 358.147934)">Aligned</text>
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(153.417762 365.142134)">local</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(149.150796 358.224218)">Aligned</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(153.310203 365.332764)">local</text>
      </g>
     </g>
     <g id="xtick_14">
@@ -628,8 +628,8 @@
       </g>
      </g>
      <g id="text_41">
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(197.285231 358.147934)">Shifted</text>
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(200.130231 365.142134)">96 nt</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(197.122381 358.224218)">Shifted</text>
+      <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(200.013893 365.332764)">96 nt</text>
      </g>
     </g>
    </g>
@@ -764,27 +764,27 @@
    <g id="legend_2">
     <g id="PathCollection_4">
      <g>
-      <use xlink:href="#m39967845e5" x="57.526544" y="338.561075" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m39967845e5" x="57.526544" y="338.472877" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="text_51">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="65.456544" y="340.162325" transform="rotate(-0 65.456544 340.162325)">AUROC</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="65.456544" y="340.074127" transform="rotate(-0 65.456544 340.074127)">AUROC</text>
     </g>
     <g id="PathCollection_5">
      <g>
-      <use xlink:href="#macfcee91ca" x="98.464216" y="338.561075" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#macfcee91ca" x="99.925381" y="338.472877" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="text_52">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="106.394216" y="340.162325" transform="rotate(-0 106.394216 340.162325)">AUPRC</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="107.855381" y="340.074127" transform="rotate(-0 107.855381 340.074127)">AUPRC</text>
     </g>
     <g id="PathCollection_6">
      <g>
-      <use xlink:href="#m290d32ed23" x="138.725169" y="338.561075" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#m290d32ed23" x="141.602611" y="338.472877" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="text_53">
-     <text style="font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="146.655169" y="340.162325" transform="rotate(-0 146.655169 340.162325)">F1</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="149.532611" y="340.074127" transform="rotate(-0 149.532611 340.074127)">F1</text>
     </g>
    </g>
   </g>
@@ -1073,28 +1073,28 @@
    </g>
    <g id="legend_3">
     <g id="line2d_116">
-     <path d="M 318.275576 331.388934  L 324.475576 331.388934  L 330.675576 331.388934  " style="fill: none" />
+     <path d="M 318.275576 331.034037  L 324.475576 331.034037  L 330.675576 331.034037  " style="fill: none" />
      <defs>
       <path id="m9c94674b1b" d="M 0 3  C 0.795609 3 1.55874 2.683901 2.12132 2.12132  C 2.683901 1.55874 3 0.795609 3 0  C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132  C 1.55874 -2.683901 0.795609 -3 0 -3  C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132  C -2.683901 -1.55874 -3 -0.795609 -3 0  C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132  C -1.55874 2.683901 -0.795609 3 0 3  z " style="stroke: #68737d" />
      </defs>
      <g>
-      <use xlink:href="#m9c94674b1b" x="324.475576" y="331.388934" style="fill: #68737d; stroke: #68737d" />
+      <use xlink:href="#m9c94674b1b" x="324.475576" y="331.034037" style="fill: #68737d; stroke: #68737d" />
      </g>
     </g>
     <g id="text_67">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="332.225576" y="333.558934" transform="rotate(-0 332.225576 333.558934)">Skeletal muscle</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="332.225576" y="333.204037" transform="rotate(-0 332.225576 333.204037)">Skeletal muscle</text>
     </g>
     <g id="line2d_117">
-     <path d="M 318.275576 338.810528  L 324.475576 338.810528  L 330.675576 338.810528  " style="fill: none" />
+     <path d="M 318.275576 338.744127  L 324.475576 338.744127  L 330.675576 338.744127  " style="fill: none" />
      <defs>
       <path id="m60132a5b8c" d="M 0 3  C 0.795609 3 1.55874 2.683901 2.12132 2.12132  C 2.683901 1.55874 3 0.795609 3 0  C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132  C 1.55874 -2.683901 0.795609 -3 0 -3  C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132  C -2.683901 -1.55874 -3 -0.795609 -3 0  C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132  C -1.55874 2.683901 -0.795609 3 0 3  z " style="stroke: #68737d" />
      </defs>
      <g>
-      <use xlink:href="#m60132a5b8c" x="324.475576" y="338.810528" style="fill: #ffffff; stroke: #68737d" />
+      <use xlink:href="#m60132a5b8c" x="324.475576" y="338.744127" style="fill: #ffffff; stroke: #68737d" />
      </g>
     </g>
     <g id="text_68">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="332.225576" y="340.980528" transform="rotate(-0 332.225576 340.980528)">Liver</text>
+     <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="332.225576" y="340.914127" transform="rotate(-0 332.225576 340.914127)">Liver</text>
     </g>
    </g>
   </g>
@@ -1433,26 +1433,26 @@
      <path d="M 182.206064 504.960757  L 182.206064 504.314767  L 208.354357 504.314767  L 208.354357 504.960757  " clip-path="url(#pd417a2b9ee)" style="fill: none; stroke: #2a9d67; stroke-width: 0.75; stroke-linecap: square" />
     </g>
     <g id="text_71">
-     <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="195.336443" y="504.063153" transform="rotate(-0 195.336443 504.063153)">A</text>
+     <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="195.336443" y="503.974955" transform="rotate(-0 195.336443 503.974955)">A</text>
     </g>
    </g>
    <g id="text_72">
     <text style="font-weight: 700; font-size: 11px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="14.537344" y="415.18016" transform="rotate(-0 14.537344 415.18016)">E</text>
    </g>
    <g id="text_73">
-    <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="93.035344" y="434.144491" transform="rotate(-0 93.035344 434.144491)">LEARNING</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="93.035344" y="434.247894" transform="rotate(-0 93.035344 434.247894)">LEARNING</text>
    </g>
    <g id="text_74">
-    <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="193.961344" y="434.144491" transform="rotate(-0 193.961344 434.144491)">REPRESENTATION</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="193.961344" y="434.247894" transform="rotate(-0 193.961344 434.247894)">REPRESENTATION</text>
    </g>
    <g id="text_75">
-    <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="434.144491" transform="rotate(-0 290.401744 434.144491)">COMPUTATION</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="434.247894" transform="rotate(-0 290.401744 434.247894)">COMPUTATION</text>
    </g>
    <g id="text_76">
-    <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="359.928544" y="434.144491" transform="rotate(-0 359.928544 434.144491)">SEED MEAN</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="359.928544" y="434.247894" transform="rotate(-0 359.928544 434.247894)">SEED MEAN</text>
    </g>
    <g id="text_77">
-    <text style="font-weight: 700; font-size: 6.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="427.212544" y="434.144491" transform="rotate(-0 427.212544 434.144491)">SECOND STAGE</text>
+    <text style="font-weight: 700; font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="427.212544" y="434.247894" transform="rotate(-0 427.212544 434.247894)">SECOND STAGE</text>
    </g>
    <g id="text_78">
     <text style="font-weight: 700; font-size: 7.5px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2a9d67" x="93.035344" y="463.865421" transform="rotate(-0 93.035344 463.865421)">Pair-first</text>
@@ -1461,8 +1461,8 @@
     <text style="font-size: 6.5px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="93.035344" y="511.895966" transform="rotate(-0 93.035344 511.895966)">all valid high/low sites</text>
    </g>
    <g id="text_80">
-    <text style="font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(67.651266 520.800179)">equal pair weights</text>
-    <text style="font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(69.228727 527.685094)">within each class</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(66.826757 520.740656)">equal pair weights</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(68.455456 527.849203)">within each class</text>
    </g>
    <g id="text_81">
     <text style="font-weight: 700; font-size: 7.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2166ac" x="193.961344" y="447.189327" transform="rotate(-0 193.961344 447.189327)">Whole duplex</text>
@@ -1471,20 +1471,14 @@
     <text style="font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2166ac" x="290.401744" y="459.52467" transform="rotate(-0 290.401744 459.52467)">Graph message passing</text>
    </g>
    <g id="text_83">
-    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="471.898176" transform="rotate(-0 290.401744 471.898176)">whole-duplex pooling</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="471.963247" transform="rotate(-0 290.401744 471.963247)">whole-duplex pooling</text>
    </g>
    <g id="text_84">
-    
-    <g style="fill: #2166ac" transform="translate(355.328544 465.809317)">
-     <text>
-      <tspan x="0" y="-0.484375" style="font-style: italic; font-size: 10px; font-family: 'Nimbus Sans'; fill: #2166ac">z</tspan>
-      <tspan x="4.999985" y="0.989375" style="font-size: 7px; font-family: 'Nimbus Sans'; fill: #2166ac">1</tspan>
-     </text>
-    </g>
+    <text style="font-size: 10px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #2166ac" x="359.928544" y="465.809317" transform="rotate(-0 359.928544 465.809317)">z1</text>
    </g>
    <g id="text_85">
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(348.778466 474.15054)">5 seeds,</text>
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(347.631192 480.168171)">averaged</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(347.635805 473.996708)">5 seeds,</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(346.370959 480.631027)">averaged</text>
    </g>
    <g id="text_86">
     <text style="font-weight: 700; font-size: 7.1px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="193.961344" y="495.475419" transform="rotate(-0 193.961344 495.475419)">Target aligned</text>
@@ -1493,27 +1487,21 @@
     <text style="font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="290.401744" y="507.770981" transform="rotate(-0 290.401744 507.770981)">Local convolution</text>
    </g>
    <g id="text_88">
-    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="520.184268" transform="rotate(-0 290.401744 520.184268)">target/partner windows</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="290.401744" y="520.249338" transform="rotate(-0 290.401744 520.249338)">target/partner windows</text>
    </g>
    <g id="text_89">
-    
-    <g style="fill: #7562a8" transform="translate(355.328544 514.095409)">
-     <text>
-      <tspan x="0" y="-0.484375" style="font-style: italic; font-size: 10px; font-family: 'Nimbus Sans'; fill: #7562a8">z</tspan>
-      <tspan x="4.999985" y="0.989375" style="font-size: 7px; font-family: 'Nimbus Sans'; fill: #7562a8">2</tspan>
-     </text>
-    </g>
+    <text style="font-size: 10px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #7562a8" x="359.928544" y="514.095409" transform="rotate(-0 359.928544 514.095409)">z2</text>
    </g>
    <g id="text_90">
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(348.778466 522.436632)">5 seeds,</text>
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(347.631192 528.454263)">averaged</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(347.635805 522.2828)">5 seeds,</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(346.370959 528.917119)">averaged</text>
    </g>
    <g id="text_91">
     <text style="font-weight: 700; font-size: 7.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #143642" x="427.212544" y="482.711685" transform="rotate(-0 427.212544 482.711685)">Logistic</text>
    </g>
    <g id="text_92">
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(407.865153 491.115924)">3 standardized</text>
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(404.09238 497.133555)">inputs, L2 penalty</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(405.882431 490.962092)">3 standardized</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; fill: #68737d" transform="translate(401.723023 497.59641)">inputs, L2 penalty</text>
    </g>
    <g id="text_93">
     <text style="font-weight: 700; font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #d99000" x="427.212544" y="446.082866" transform="rotate(-0 427.212544 446.082866)">Genomic spacing</text>
@@ -1550,34 +1538,10 @@
     </g>
    </g>
    <g id="text_96">
-    <text style="font-size: 5.9px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="480.142624" y="495.429769" transform="rotate(-0 480.142624 495.429769)">probability</text>
+    <text style="font-size: 6.504632px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="480.142624" y="495.584281" transform="rotate(-0 480.142624 495.584281)">probability</text>
    </g>
    <g id="text_97">
-    
-    <g style="fill: #172126" transform="translate(384.179044 533.629398)">
-     <text>
-      <tspan x="0" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">p</tspan>
-      <tspan x="10.749716" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">σ</tspan>
-      <tspan x="17.579565" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">w</tspan>
-      <tspan x="25.867134" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">z</tspan>
-      <tspan x="39.227463" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">w</tspan>
-      <tspan x="47.515032" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">z</tspan>
-      <tspan x="60.875361" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">w</tspan>
-      <tspan x="69.16293" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">s</tspan>
-      <tspan x="79.504016" y="-0.34375" style="font-style: italic; font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">b</tspan>
-      <tspan x="5.272708" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">=</tspan>
-      <tspan x="15.14971" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">(</tspan>
-      <tspan x="33.750455" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">+</tspan>
-      <tspan x="55.398353" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">+</tspan>
-      <tspan x="74.027008" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">+</tspan>
-      <tspan x="83.561068" y="-0.34375" style="font-size: 7.3px; font-family: 'Nimbus Sans'; fill: #172126">)</tspan>
-      <tspan x="22.847891" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #172126">1</tspan>
-      <tspan x="29.515557" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #172126">1</tspan>
-      <tspan x="44.495789" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #172126">2</tspan>
-      <tspan x="51.163454" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #172126">2</tspan>
-      <tspan x="66.143687" y="0.732087" style="font-size: 5.11px; font-family: 'Nimbus Sans'; fill: #172126">3</tspan>
-     </text>
-    </g>
+    <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="427.212544" y="533.63339" transform="rotate(-0 427.212544 533.63339)">p = σ(w1z1 + w2z2 + w3s + b)</text>
    </g>
    <g id="text_98">
     <text style="font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="270.216544" y="554.113161" transform="rotate(-0 270.216544 554.113161)">Components trained independently · second stage fitted on training rows; penalty and threshold chosen on validation rows</text>
