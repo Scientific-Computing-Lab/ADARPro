@@ -9,6 +9,7 @@
 - `unified_development_decision.json`: hash-addressed development result and
   final ensemble-versus-unified decision.
 - `final_pipeline_manifest.json`: immutable input/checkpoint/threshold manifest
-  used for the one consumed canonical-test evaluation.
+  used for the first-round canonical-test evaluation (the second-round manifest
+  is `final_pipeline_manifest_v3.json`).
 - External resources receive one JSON record containing URL/accession,
   retrieval date, version, genome build, checksum, license, and preprocessing.

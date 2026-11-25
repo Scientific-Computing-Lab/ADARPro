@@ -1429,6 +1429,30 @@ def add_reformer_claims() -> None:
         add(f"reformer_{pc.lower()}_variance", f"Share of variance of the 225 z-scored Reformer models on {pc}", share,
             f"{share:.0f}", "percent", status, run / "pc_summary.json", f"variance_explained.{pc}", use, "integer percent",
             f"Reformer{word}Variance")
+    # Fable item 18: SI P.3 states the screen's small-effect rule and the largest individual-model effect.
+    screen = ROOT / "src/adarpro/evaluation/reformer_error_screen.py"
+    found = re.search(r"^SMALL_EFFECT = ([0-9.]+)$", screen.read_text(encoding="utf-8"), flags=re.M)
+    if not found:
+        raise RuntimeError("Reformer: SMALL_EFFECT not found in the screen's code")
+    small = float(found.group(1))
+    add("reformer_small_effect", "Smallest |d| the Reformer reading rule counts as an effect", small, f"{small:.1f}",
+        "Cohen's d", status, screen, "SMALL_EFFECT", use, "one decimal", "ReformerSmallEffect")
+    real = fp[fp.visibility != "placebo"]
+    significant = real[(real.q_compCtrl < 0.05) & (real.lo_compCtrl * real.hi_compCtrl > 0)]
+    both = set(significant[significant.d_compCtrl.abs() >= small].feature)
+    if both != {"PC2", "PC3"}:
+        raise RuntimeError(f"Reformer: significant features of at least a small effect are {sorted(both)}; SI P.3 names PC2, PC3")
+    single = real[real.feature.str.contains("__")]
+    if single.empty or set(single.feature.str.split("__").str[-1]) - {"focal", "max25"}:
+        raise RuntimeError("Reformer fp_effects: unexpected individual-model feature names")
+    largest = float(single.d_compCtrl.abs().max())
+    if not largest < small:
+        raise RuntimeError("Reformer: an individual binder model reaches a small effect; SI P.3 says none does")
+    add("reformer_fp_largest_single_model_abs_d",
+        "Largest |d| over individual Reformer binder models, confident false positives vs correct rejections", largest,
+        f"{largest:.2f}", "Cohen's d (composition-adjusted)", status, run / "fp_effects.csv",
+        "max |d_compCtrl| over individual-model features (name contains '__'; PCs, total_binding, placebo excluded)", use,
+        "two decimals", "ReformerFalsePosLargestBinderD")
 
 
 def write_outputs() -> None:

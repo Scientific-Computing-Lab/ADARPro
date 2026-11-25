@@ -615,6 +615,8 @@ def target_controls() -> None:
         ("Explicit focal node", focal, "focal"),
         ("Aligned target/helix-partner local predictor", alignment, "aligned_local"),
         ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
+        ("Whole-duplex model averaged with aligned local predictor", alignment, "aligned_ensemble"),
+        ("Whole-duplex model averaged with shifted local predictor", alignment, "shifted_ensemble"),
     ]:
         row = frame[frame.model == model].iloc[0]
         rows.append(
@@ -624,7 +626,7 @@ def target_controls() -> None:
         "table_s6_target_controls.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned local predictor improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
+\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned local predictor improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. The last two rows average the whole-duplex pair model's logits in equal weight with the aligned or the shifted local predictor. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
 \begin{tabular}{lrrrr}
 \toprule
 Representation & AUROC & AUPRC & F1 & Brier \\

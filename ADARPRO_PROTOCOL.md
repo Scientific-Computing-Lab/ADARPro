@@ -17,6 +17,13 @@ There are only two permitted test-access modes:
    evaluation may consume the single-use authorization. Any later test-error
    work is descriptive and cannot reopen model development.
 
+   Addendum (2026-11-25): a second-round predictor was later developed with all
+   choices made on development data and checkpoints chosen on validation, and
+   was evaluated under a successor quarantine policy
+   (`provenance/test_quarantine_v3.json`; plan in
+   `provenance/model_selection_policy_v2.json`). Its choices were fixed and its
+   manifest frozen before that evaluation.
+
 All ADARpro development loaders call the quarantine guard. The guard rejects
 paths or split names containing the canonical test partition and records
 authorized access in an append-only hash-chained audit log.
