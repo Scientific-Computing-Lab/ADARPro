@@ -1,0 +1,13 @@
+{
+  "bootstrap_replicates": 2000,
+  "candidates": [
+    "gap_stage",
+    "no_gap_stage",
+    "shuffled_gap_stage",
+    "equal_average"
+  ],
+  "canonical_test_access": false,
+  "pairs": 607,
+  "rows": 19170,
+  "scope": "Artery canonical development OOF, run 20275821 (Fable item 12): the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone; same module and settings as step 11b gap_controls (run 20260821)"
+}
