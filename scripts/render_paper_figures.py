@@ -915,7 +915,7 @@ def figure1(output: Path, source: Path) -> None:
     arrow(c, (0.39, 0.33), (0.39, 0.244), COLORS["navy"])
     c.plot([0.85, 0.85], [0.67, 0.270], color=COLORS["red"], lw=0.9)
     arrow(c, (0.85, 0.270), (0.67, 0.211), COLORS["red"])
-    txt(c, 0.43, 0.199, "One final evaluation", 7.6, weight="bold", ha="center")
+    txt(c, 0.43, 0.199, "Final evaluation", 7.6, weight="bold", ha="center")
     txt(c, 0.43, 0.130, "Selected predictor and comparators", 6.8, ha="center")
     txt(
         c,

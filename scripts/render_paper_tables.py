@@ -54,7 +54,7 @@ def locked_metrics() -> None:
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l@{\hspace{2\tabcolsep}\hspace{0.6em}}lrrrrrrr}
 \toprule
-Context & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
+Endpoint & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
 \midrule
 """
         + "\n".join(lines)
@@ -595,7 +595,7 @@ def substrate_realization() -> None:
 \caption{\textbf{Genomic geometry improves prediction of the edited-site fraction in all four tissues.} Larger inter-arm gaps correlate with lower burden (Spearman $\rho$). Burden is the high-editing fraction among eligible high/low sites within a pair. Adding geometry to graph-derived summaries improves pair-level $R^2$; $\Delta R^2$ is relative to graph summaries alone, with a 95\% pair-clustered bootstrap interval. ``Any high'' asks whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes measure editing burden, not molecular realization or ADAR engagement.}\label{tab:substraterealization}
 \begin{tabular}{lrrrrr}
 \toprule
-Context & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
+Tissue & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
 \midrule
 """
         + "\n".join(rows)
@@ -611,7 +611,7 @@ def target_controls() -> None:
     focal = pd.read_csv(SOURCE / "figure3_focal_metrics.csv")
     rows = []
     for label, frame, model in [
-        ("Whole-duplex pair model", alignment, "pair_balanced"),
+        ("Pair-first whole-duplex model", alignment, "pair_balanced"),
         ("Explicit focal node", focal, "focal"),
         ("Aligned target/helix-partner local predictor", alignment, "aligned_local"),
         ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
@@ -626,7 +626,7 @@ def target_controls() -> None:
         "table_s6_target_controls.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves on whole-duplex pooling, and the aligned local predictor improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. The last two rows average the whole-duplex pair model's logits in equal weight with the aligned or the shifted local predictor. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
+\caption{\textbf{The aligned local window adds signal; shifting it loses the gain despite matched model capacity.} Explicit target retention improves ranking over whole-duplex pooling, and the aligned local predictor improves further. Moving the local window while preserving the architecture reduces ranking and F1 and increases Brier error. This control tests target-centered neighborhood information, not partner identity alone. The last two rows average the pair-first whole-duplex model's logits in equal weight with the aligned or the shifted local predictor. All values use the same canonical muscle development rows and out-of-fold predictions.}\label{tab:targetcontrols}
 \begin{tabular}{lrrrr}
 \toprule
 Representation & AUROC & AUPRC & F1 & Brier \\
@@ -657,7 +657,7 @@ def pair_balance() -> None:
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
-Context & $\Delta$AUROC [95\% CI] & $\Delta$AUPRC [95\% CI] & $\Delta$F1 [95\% CI] \\
+Endpoint & $\Delta$AUROC [95\% CI] & $\Delta$AUPRC [95\% CI] & $\Delta$F1 [95\% CI] \\
 \midrule
 """
         + "\n".join(rows)
@@ -688,7 +688,7 @@ def false_positive_table() -> None:
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
-Context & Baseline FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
+Endpoint & Baseline FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
 \midrule
 """
         + "\n".join(rows)
@@ -723,7 +723,7 @@ def natural_prevalence() -> None:
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \toprule
-Context & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
+Tissue & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
 \midrule
 """
         + "\n".join(rows)
