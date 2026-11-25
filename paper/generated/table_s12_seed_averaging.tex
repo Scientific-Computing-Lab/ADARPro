@@ -1,7 +1,7 @@
 \begin{table}[H]
 \centering
 \footnotesize
-\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals.}\label{tab:seedavg}
+\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals (\SeedAvgBootstrapReplicates{} replicates).}\label{tab:seedavg}
 \begin{tabular}{lrrr}
 \toprule
 Endpoint & AUROC & AUPRC & F1 \\

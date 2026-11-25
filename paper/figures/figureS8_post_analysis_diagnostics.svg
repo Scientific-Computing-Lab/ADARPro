@@ -57,7 +57,8 @@
       </g>
      </g>
      <g id="text_3">
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle" x="140.706881" y="173.630027" transform="rotate(-0 140.706881 173.630027)">Focal</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(131.783202 173.630027)">Focal</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(132.590194 181.607787)">node</text>
      </g>
     </g>
     <g id="xtick_4">
@@ -67,8 +68,8 @@
       </g>
      </g>
      <g id="text_4">
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(170.815844 173.630027)">Target-</text>
-      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(168.377758 181.607787)">centered</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(173.85561 173.630027)">Local</text>
+      <text style="font-size: 7.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(168.38118 181.607787)">predictor</text>
      </g>
     </g>
     <g id="xtick_5">
@@ -474,7 +475,7 @@
     <text style="font-weight: 700; font-size: 11px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end" x="289.93747" y="31.734989" transform="rotate(-0 289.93747 31.734989)">B</text>
    </g>
    <g id="text_33">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="302.83394" y="33.024" transform="rotate(-0 302.83394 33.024)">Pair-first learning redistributes gain</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="302.83394" y="33.024" transform="rotate(-0 302.83394 33.024)">Pair-first gain by pair size</text>
    </g>
   </g>
   <g id="axes_3">
@@ -796,14 +797,14 @@
    <g id="line2d_83">
     <path d="M 314.492323 336.729642  L 355.542968 308.417765  L 396.593613 284.618171  L 437.644258 312.798009  L 478.694903 310.369953  " clip-path="url(#pdd6bd9e13d)" style="fill: none; stroke: #7562a8; stroke-linecap: square" />
     <defs>
-     <path id="m99d425b2b0" d="M -2 2  L 2 2  L 2 -2  L -2 -2  z " style="stroke: #7562a8; stroke-linejoin: miter" />
+     <path id="ma4706bec9d" d="M 0 2  C 0.530406 2 1.03916 1.789267 1.414214 1.414214  C 1.789267 1.03916 2 0.530406 2 0  C 2 -0.530406 1.789267 -1.03916 1.414214 -1.414214  C 1.03916 -1.789267 0.530406 -2 0 -2  C -0.530406 -2 -1.03916 -1.789267 -1.414214 -1.414214  C -1.789267 -1.03916 -2 -0.530406 -2 0  C -2 0.530406 -1.789267 1.03916 -1.414214 1.414214  C -1.03916 1.789267 -0.530406 2 0 2  z " style="stroke: #7562a8" />
     </defs>
     <g clip-path="url(#pdd6bd9e13d)">
-     <use xlink:href="#m99d425b2b0" x="314.492323" y="336.729642" style="fill: #7562a8; stroke: #7562a8; stroke-linejoin: miter" />
-     <use xlink:href="#m99d425b2b0" x="355.542968" y="308.417765" style="fill: #7562a8; stroke: #7562a8; stroke-linejoin: miter" />
-     <use xlink:href="#m99d425b2b0" x="396.593613" y="284.618171" style="fill: #7562a8; stroke: #7562a8; stroke-linejoin: miter" />
-     <use xlink:href="#m99d425b2b0" x="437.644258" y="312.798009" style="fill: #7562a8; stroke: #7562a8; stroke-linejoin: miter" />
-     <use xlink:href="#m99d425b2b0" x="478.694903" y="310.369953" style="fill: #7562a8; stroke: #7562a8; stroke-linejoin: miter" />
+     <use xlink:href="#ma4706bec9d" x="314.492323" y="336.729642" style="fill: #7562a8; stroke: #7562a8" />
+     <use xlink:href="#ma4706bec9d" x="355.542968" y="308.417765" style="fill: #7562a8; stroke: #7562a8" />
+     <use xlink:href="#ma4706bec9d" x="396.593613" y="284.618171" style="fill: #7562a8; stroke: #7562a8" />
+     <use xlink:href="#ma4706bec9d" x="437.644258" y="312.798009" style="fill: #7562a8; stroke: #7562a8" />
+     <use xlink:href="#ma4706bec9d" x="478.694903" y="310.369953" style="fill: #7562a8; stroke: #7562a8" />
     </g>
    </g>
    <g id="line2d_84">

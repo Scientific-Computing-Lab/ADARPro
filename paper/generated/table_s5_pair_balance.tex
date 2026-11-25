@@ -1,7 +1,6 @@
 \begin{table}[H]
 \centering
 \caption{\textbf{Expanded pair-first learning improves ranking and classification across all five endpoints.} The combined change in label coverage and within-class pair weighting outperforms the same-fold internal AdarEdit reference; every interval is positive. Values are percentage-point median differences with 95\% pair-clustered bootstrap intervals. Combined is pooled, and these development comparisons do not isolate weighting from label recovery outside muscle.}\label{tab:pairbalance}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 Endpoint & $\Delta$AUROC [95\% CI] & $\Delta$AUPRC [95\% CI] & $\Delta$F1 [95\% CI] \\
@@ -12,5 +11,5 @@ Liver & +1.65 [+1.00, +2.30] & +1.86 [+0.93, +2.78] & +1.37 [+0.70, +2.06] \\
 Skeletal muscle & +3.97 [+2.92, +5.06] & +4.39 [+2.89, +6.00] & +3.00 [+1.83, +4.10] \\
 Combined & +1.51 [+1.11, +1.94] & +1.87 [+1.38, +2.42] & +1.65 [+1.15, +2.15] \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}

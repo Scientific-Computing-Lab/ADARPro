@@ -4,16 +4,16 @@ Learning & supervision,Supervision,Continuous + ordinal auxiliary labels,limited
 Learning & supervision,Cross-tissue,Shared four-tissue training,limited,Transfer below preset criteria
 Target representation,Target selectivity,Target/partner-aligned local view,selected,Passes shifted-window control
 Target representation,Target selectivity,Focal node / contact geometry*,limited,Target-position signal
-Target representation,Representation,Frozen RNA-language embeddings,not supported,F1-only; no ranking gain
+Target representation,Representation,Frozen RNA-language embeddings,not supported,F1 effect; no ranking gain
 Target representation,Representation,Substrate-wide all-A decoder,not supported,Stopped for futility
 Target representation,Capacity,Supplied Bio-aware variant,limited,Features/capacity confounded
 Target representation,Capacity,Graph Transformer / GATv2 expansion,not pursued,Not tested after local gains
 Substrate & cellular context,Substrate propensity,Pair geometry / editing burden,supported,Substrate propensity detectable
 Substrate & cellular context,Substrate propensity,"Genomic spacing, second stage",selected,Beats shuffled spacing
-Substrate & cellular context,Substrate propensity,Hierarchical engagement gate,limited,Ranking gain; unstable F1
+Substrate & cellular context,Substrate propensity,Cross-fitted burden gate,limited,Ranking gain; unstable F1
 Substrate & cellular context,Biological context,Bulk H3K36me3 overlap*,limited,Metric-specific screen effects
 Substrate & cellular context,Biological context,RBP binding*; abundance in matched sites,not supported,No consistent gain
-Substrate & cellular context,Biological context,Transcript / repeat annotations*,not supported,No site-level gain
+Substrate & cellular context,Biological context,Transcript / repeat annotations*,not supported,No stable screen gain
 Substrate & cellular context,Cellular state,Matched donor/cell multimodality,deferred,Matched data unavailable
 Substrate & cellular context,RNA state,Matched in vivo structure / isoforms,deferred,Matched data unavailable
 Integration,Integration,Whole-duplex + local logits,selected,Complementary predictions

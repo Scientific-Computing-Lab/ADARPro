@@ -1,5 +1,7 @@
 # ADARpro final scientific report
 
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
+
 Status: complete. The development campaign, ensemble-versus-unified selection,
 hash-complete freeze and single canonical-test evaluation are complete.
 

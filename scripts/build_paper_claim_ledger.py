@@ -113,7 +113,7 @@ def add_split_claims() -> None:
             "benchmark definition",
             path,
             "nunique(pair_id)",
-            "Abstract; Results; Methods; Figure 1",
+            "Results; Methods; Figure 2",
             "integer",
             f"N{split}Pairs",
         )
@@ -128,7 +128,7 @@ def add_split_claims() -> None:
         "benchmark definition",
         path,
         "sum of unique pair counts in fixed train/validation/test metadata",
-        "Abstract; Results; Methods; Figure 1",
+        "Results; Methods; Figure 2",
         "integer",
         "NSubstrates",
     )
@@ -254,7 +254,7 @@ def add_protocol_claims() -> None:
             "model specification",
             local_path,
             "LOCAL_RADIUS" if "width" in claim_id else "LOCAL_CONTROL_SHIFT",
-            "Abstract; Results; Methods; SI target-local section",
+            "Results; Methods; SI target-local section",
             "integer",
             macro,
         )
@@ -370,7 +370,7 @@ def add_protocol_claims() -> None:
         raise AssertionError(f"{counts_path}: total_parameters is not the sum of its components")
     add(
         "ensemble_parameter_count",
-        "Total parameter count across frozen ensemble components",
+        "Total parameter count across the two-model combination's components",
         ensemble_parameters,
         f"{ensemble_parameters:,}",
         "parameters",
@@ -403,6 +403,41 @@ def add_protocol_claims() -> None:
         "integer with thousands separator",
         "PretrainingCandidatePairs",
     )
+
+    # SI statistics paragraph: the F1-threshold grid and the second-stage penalty grid are code constants. Both
+    # threshold-choosing modules must define the same grid; the gates import CS from residual.py.
+    residual_path = ROOT / "src/adarpro/models/residual.py"
+    grid_pattern = r"^THRESHOLDS = np\.linspace\(([0-9.]+), ([0-9.]+), (\d+)\)$"
+    grids = set()
+    for grid_path in (residual_path, ROOT / "src/adarpro/models/baseline_oof.py"):
+        found = re.findall(grid_pattern, grid_path.read_text(encoding="utf-8"), re.MULTILINE)
+        if len(found) != 1:
+            raise RuntimeError(f"{grid_path}: expected one THRESHOLDS = np.linspace(...) line, found {len(found)}")
+        grids.add(found[0])
+    if len(grids) != 1:
+        raise RuntimeError(f"threshold grids differ between residual.py and baseline_oof.py: {sorted(grids)}")
+    grid_low, grid_high, grid_points = next(iter(grids))
+    for claim_id, quantity, value, display, unit, macro in (
+        ("threshold_grid_points", "F1-threshold search grid size", int(grid_points), str(int(grid_points)),
+         "count", "ThresholdGridPoints"),
+        ("threshold_grid_low", "F1-threshold search grid lowest value", float(grid_low), f"{float(grid_low):g}",
+         "probability", "ThresholdGridLow"),
+        ("threshold_grid_high", "F1-threshold search grid highest value", float(grid_high), f"{float(grid_high):g}",
+         "probability", "ThresholdGridHigh"),
+    ):
+        add(claim_id, quantity, value, display, unit, "development protocol", residual_path,
+            "THRESHOLDS = np.linspace(low, high, points); identical in baseline_oof.py", "SI statistics paragraph",
+            "as in code", macro)
+    penalties = re.findall(r"^CS = \(([^)]*)\)$", residual_path.read_text(encoding="utf-8"), re.MULTILINE)
+    if len(penalties) != 1:
+        raise RuntimeError(f"{residual_path}: expected one CS = (...) line, found {len(penalties)}")
+    penalty_values = [float(part) for part in penalties[0].split(",") if part.strip()]
+    if len(penalty_values) < 3:  # the SI sentence lists the grid as 'a, b, ..., and z'
+        raise RuntimeError(f"{residual_path}: penalty grid has {len(penalty_values)} values; revise the SI sentence")
+    shown = [f"{value:g}" for value in penalty_values]
+    add("second_stage_penalty_grid", "Second-stage inverse regularization strengths (C)", penalties[0].strip(),
+        ", ".join(shown[:-1]) + ", and " + shown[-1], "inverse regularization strength", "development protocol",
+        residual_path, "CS = (...)", "SI statistics paragraph", "as in code", "PenaltyGrid")
 
     # The text uses this count for the final (test) comparison (main.tex Methods, SI): read it from the test
     # session's summary (evaluation 3), not from a development run, and check every test interval used it.
@@ -452,7 +487,7 @@ def add_locked_claims() -> None:
                 "canonical held-out",
                 path,
                 f"context={context}; model={model}; column={metric}",
-                "Results; Figure 4; Table S1; README",
+                "Results; Figure 6; Table S1; README",
                 "direct four-decimal formatting of frozen value",
                 f"{CONTEXT_MACRO[context]}{MODEL_MACRO[model]}{METRIC_MACRO[metric]}",
             )
@@ -472,7 +507,7 @@ def add_locked_claims() -> None:
                 "canonical held-out",
                 path,
                 f"context={context}; candidate minus baseline; column={metric}",
-                "Results; Figure 4",
+                "Results; Figure 6",
                 "direct four-decimal formatting of frozen difference",
                 f"{CONTEXT_MACRO[context]}Delta{METRIC_MACRO[metric]}",
             )
@@ -486,7 +521,7 @@ def add_locked_claims() -> None:
             "canonical held-out",
             path,
             f"unweighted mean of five context-specific {metric} differences",
-            "Abstract; Results; Discussion; README",
+            "Results; Discussion; README",
             "direct four-decimal formatting of unrounded context differences",
             f"MacroDelta{METRIC_MACRO[metric]}",
         )
@@ -536,7 +571,7 @@ def add_locked_claims() -> None:
                 "canonical held-out descriptive error transition",
                 transitions_path,
                 f"context={context}; column={column}",
-                "Results; Figure 4; Table S9",
+                "Results; Figure 6; Table S12",
                 "one decimal after conversion to percent",
                 f"{CONTEXT_MACRO[context]}{macro_suffix}",
             )
@@ -550,7 +585,7 @@ def add_locked_claims() -> None:
             "canonical held-out descriptive operating-point analysis",
             matched_path,
             f"context={context}; column=false_positives_avoided",
-            "Results; Figure 4; Table S9",
+            "Results; Figure 6; Table S12",
             "integer",
             f"{CONTEXT_MACRO[context]}MatchedRecallFPAvoided",
         )
@@ -569,7 +604,7 @@ def add_locked_claims() -> None:
                 "canonical held-out descriptive error transition",
                 transitions_path,
                 f"{which.lower()} over the five endpoints of {column} (attained in {context})",
-                "Results; Figure 4",
+                "Results; Figure 6",
                 "one decimal after conversion to percent",
                 f"{macro_suffix}{which}",
             )
@@ -606,7 +641,7 @@ def add_locked_claims() -> None:
         "canonical held-out descriptive error transition",
         transitions_path,
         "count over five endpoints of fp_rescue_rate > tp_damage_rate",
-        "Results; Figure 4; SI final-evaluation section",
+        "Results; Figure 6; SI final-evaluation section",
         "integer",
     )
 
@@ -639,8 +674,8 @@ def add_test_contrast_claims() -> None:
                               - all_models.loc[(context, model), metric])
                 if abs(float(row.iloc[0]["estimate"]) - difference) > 1e-12:
                     raise RuntimeError(f"{path}: {context} vs {reference} {metric} estimate is not the metric difference")
-    labels = {"pnas_selected_predictor": ("PNAS", "PNAS's selected predictor"),
-              "equal_average": ("Equal", "the equal average")}
+    labels = {"pnas_selected_predictor": ("PNAS", "the first-round predictor"),
+              "equal_average": ("Equal", "the equal-weight average")}
     estimates: dict[tuple[str, str], list[float]] = {}
     for reference, (tag, label) in labels.items():
         for context in CONTEXTS:
@@ -679,7 +714,7 @@ def add_test_contrast_claims() -> None:
             path,
             f"{which.lower()} over the five endpoints of estimate (point difference); "
             f"candidate=gap_stage; reference={reference}; metric={metric}",
-            "available for Results (test), Abstract",
+            "available for Results (test)",
             "two decimals (percentage points) of the unrounded values",
             f"TestVs{tag}{METRIC_MACRO[metric]}{which}",
         )
@@ -712,7 +747,7 @@ def add_supervision_claims() -> None:
                 "development OOF",
                 metrics_path,
                 f"model={model}; column={metric}",
-                "Results; Figure 3; SI supervision section",
+                "Results; Figure 5; SI supervision section",
                 "direct four-decimal formatting",
                 f"Muscle{macro_name}{METRIC_MACRO[metric]}",
             )
@@ -750,7 +785,7 @@ def add_supervision_claims() -> None:
                     "development OOF pair-clustered bootstrap",
                     ci_path,
                     f"candidate={source_candidate}; reference={source_reference}; metric={metric}; transformed={invert}",
-                    "Results; Figure 3; Table S4",
+                    "Results; Figure 5; Table S5",
                     "two decimals after multiplication by 100",
                     f"Muscle{label}{METRIC_MACRO[metric]}{part}",
                 )
@@ -775,7 +810,7 @@ def add_supervision_claims() -> None:
                     "development OOF pair-clustered bootstrap",
                     path,
                     f"candidate=pair_balanced; reference=development_reference; metric={metric}; column={part}",
-                    "Results; Figure 3; Table S5",
+                    "Results; Figure 5; Table S6",
                     "two decimals after multiplication by 100",
                     f"{CONTEXT_MACRO[context]}PairFirst{METRIC_MACRO[metric]}{part.title()}",
                 )
@@ -803,7 +838,7 @@ def add_substrate_claims() -> None:
             "development descriptive observation",
             pred_path,
             "model=training_mean; one row per pair; spearmanr(genomic_gap, edited_fraction)",
-            "Results; Figure 2; SI substrate-realization section",
+            "Results; Figure 4; SI substrate-realization section",
             "three decimals",
             f"{CONTEXT_MACRO[context]}GapRho",
         )
@@ -831,7 +866,7 @@ def add_substrate_claims() -> None:
                     "development pair-level OOF",
                     metrics_path,
                     f"model={model}; column={metric}",
-                    "Results; Figure 2; Table S3",
+                    "Results; Figure 4; Table S3",
                     "three decimals",
                     f"{CONTEXT_MACRO[context]}Engagement{macro_name}{metric_macro}",
                 )
@@ -859,7 +894,7 @@ def add_local_and_unified_claims() -> None:
                 "development OOF",
                 align_metrics_path,
                 f"model={model}; column={metric}",
-                "Results; Figure 3; SI target-local section",
+                "Results; Figure 5; SI target-local section",
                 "direct four-decimal formatting",
                 f"Muscle{macro_name}{METRIC_MACRO[metric]}",
             )
@@ -885,7 +920,7 @@ def add_local_and_unified_claims() -> None:
                 "development OOF pair-clustered bootstrap",
                 alignment_ci_path,
                 f"candidate=aligned_local; reference=shifted_local; metric={metric}; column={part}",
-                "Results; Figure 3",
+                "Results; Figure 5",
                 "direct four-decimal formatting",
                 f"AlignedMinusShifted{METRIC_MACRO[metric]}{part.title()}",
             )
@@ -906,14 +941,14 @@ def add_local_and_unified_claims() -> None:
             for part, value in (("Lower", low), ("Median", med), ("Upper", high)):
                 add(
                     f"ensemble_{context}_{metric}_{part.lower()}",
-                    f"{context} fixed ensemble minus pair model {metric} {part.lower()}",
+                    f"{context} equal-weight average minus pair-first whole-duplex model {metric} {part.lower()}",
                     value,
                     f"{value:.4f}",
                     "metric difference",
                     "development OOF pair-clustered bootstrap",
                     path,
                     f"candidate=pair_balanced; reference=pair_local_ensemble; metric={metric}; sign inverted",
-                    "Results; Figure 3",
+                    "Results; Figure 5",
                     "direct four-decimal formatting",
                     f"{CONTEXT_MACRO[context]}EnsembleDelta{METRIC_MACRO[metric]}{part}",
                 )
@@ -937,7 +972,7 @@ def add_local_and_unified_claims() -> None:
                 "development OOF under preregistered decision rules",
                 unified_metrics_path,
                 f"model={model}; column={metric}",
-                "Results; Figure S; Table S",
+                "Table S9",
                 "direct four-decimal formatting",
                 f"{macro_name}{METRIC_MACRO[metric]}",
             )
@@ -957,14 +992,14 @@ def add_local_and_unified_claims() -> None:
             value = float(row[part])
             add(
                 f"unified_delta_{metric}_{part}",
-                f"Unified minus frozen ensemble {metric} {part}",
+                f"Unified minus two-model combination {metric} {part}",
                 value,
                 f"{value:.4f}",
                 "metric difference",
                 "development OOF pair-clustered bootstrap under preregistered decision rules",
                 unified_ci_path,
                 f"candidate=unified; reference=frozen_ensemble; metric={metric}; column={part}",
-                "Results; Figure S4; Table S8",
+                "Results; Figure S4; Table S9",
                 "direct four-decimal formatting",
                 f"UnifiedDelta{METRIC_MACRO[metric]}{part.title()}",
             )
@@ -1162,7 +1197,7 @@ def add_synthesis_table_claims() -> None:
                 "development pair-level OOF pair-clustered bootstrap",
                 path,
                 f"model=combined_16; reference=graph_intrinsic; metric=r2; column={part}",
-                "Figure 2; Table S2; Table S3",
+                "Figure 4; Table S2; Table S3",
                 "two decimals after multiplication by 100",
             )
 
@@ -1230,6 +1265,44 @@ def add_post_analysis_claims() -> None:
             "one decimal after multiplication by 100",
             macro,
         )
+    # Fig. S7A caption names the marked thresholds: they must equal the module constant, the figure's
+    # marker loop and the thresholds summarized in variation_summary.csv.
+    range_module = ROOT / "src/adarpro/evaluation/tissue_context_variation.py"
+    found = re.search(
+        r"^RANGE_THRESHOLDS = \(([^)]*)\)$", range_module.read_text(encoding="utf-8"), flags=re.M
+    )
+    if not found:
+        raise RuntimeError(f"{range_module}: RANGE_THRESHOLDS not found")
+    constants = [float(part) for part in found.group(1).split(",") if part.strip()]
+    if not constants or not all(value.is_integer() for value in constants):
+        raise RuntimeError(f"{range_module}: RANGE_THRESHOLDS are not whole EditingIndex points")
+    thresholds = [int(value) for value in constants]
+    drawn = re.findall(
+        r"for threshold in \(([^)]*)\):",
+        (ROOT / "scripts/render_paper_figures.py").read_text(encoding="utf-8"),
+    )
+    if len(drawn) != 1 or [int(part) for part in drawn[0].split(",")] != thresholds:
+        raise RuntimeError("Fig. S7A marker thresholds differ from RANGE_THRESHOLDS")
+    summarized = sorted(
+        int(metric.rsplit("_", 1)[1])
+        for metric in all_four.index
+        if metric.startswith("fraction_range_ge_")
+    )
+    if summarized != thresholds:
+        raise RuntimeError(f"{variation_path}: summarized thresholds {summarized} differ from {thresholds}")
+    add(
+        "range_thresholds_marked",
+        "EditingIndex range thresholds marked in Fig. S7A",
+        ", ".join(str(value) for value in thresholds),
+        ", ".join(str(value) for value in thresholds[:-1]) + f", and {thresholds[-1]}",
+        "EditingIndex percentage points",
+        "post-hoc descriptive development analysis",
+        range_module,
+        "RANGE_THRESHOLDS",
+        "SI Figure S7 caption",
+        "integers",
+        "RangeThresholdList",
+    )
 
     stability_path = (
         ROOT
@@ -1418,6 +1491,94 @@ def add_seed_averaging_claims() -> None:
             "percentage points", "development OOF pair-clustered bootstrap", ROOT / "experiments/runs/step11/seed_curve",
             f"{which.lower()} over five endpoints of median AUROC gain", "Results (seed averaging)",
             "two decimals (percentage points)", f"SeedAvgAUROC{which}")
+    replicates = set()
+    for context in CONTEXTS:
+        summary_path = ROOT / f"experiments/runs/step11/seed_curve/{context}/summary.json"
+        replicates.add(int(json.loads(summary_path.read_text(encoding="utf-8"))["bootstrap_replicates"]))
+    if len(replicates) != 1:  # the SI seed-averaging caption states one replicate count for all five endpoints
+        raise RuntimeError(f"seed-averaging curves use different bootstrap replicate counts: {sorted(replicates)}")
+    (replicate_count,) = replicates
+    add("seed_avg_bootstrap_replicates", "Pair-clustered bootstrap replicates of the seed-averaging curves",
+        replicate_count, f"{replicate_count:,}", "replicates", "statistical protocol",
+        ROOT / "experiments/runs/step11/seed_curve", "bootstrap_replicates in <endpoint>/summary.json, same in all five",
+        "SI seed-averaging table caption", "integer with thousands separator", "SeedAvgBootstrapReplicates")
+
+
+def add_final_training_claims() -> None:
+    """Training settings of the selected predictor's networks (SI section L).
+    Epochs and batch size come from the config.json of every network the frozen v3 manifest lists
+    (5 endpoints x 2 networks x 5 seeds, all under models/final_v2); the optimizer settings are not
+    written to those configs, so they come from create_model(), which final_training.py calls."""
+    import math
+
+    manifest_path = ROOT / "provenance/final_pipeline_manifest_v3.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    config_paths = sorted(
+        {
+            ROOT / Path(component["checkpoint"]).parent / "config.json"
+            for context in manifest["contexts"].values()
+            for component in context["components"]
+        }
+    )
+    if len(config_paths) != 50:
+        raise RuntimeError(f"{manifest_path}: expected 50 network configs, found {len(config_paths)}")
+    settings: set[tuple[int, int]] = set()
+    modes: dict[str, int] = {}
+    for path in config_paths:
+        if not relative(path).startswith("models/final_v2/"):
+            raise RuntimeError(f"{path}: not a models/final_v2 network")
+        config = json.loads(path.read_text(encoding="utf-8"))
+        if config["canonical_test_access"] is not False:
+            raise RuntimeError(f"{path}: canonical_test_access is not false")
+        settings.add((int(config["epochs"]), int(config["batch_size"])))
+        modes[config["mode"]] = modes.get(config["mode"], 0) + 1
+    if len(settings) != 1:  # SI L prints one value for every network
+        raise RuntimeError(f"the 50 network configs disagree on epochs/batch size: {sorted(settings)}")
+    if modes != {"binary_pair_balanced": 25, "binary_pair_balanced_cnn": 25}:
+        raise RuntimeError(f"unexpected network modes in the v3 manifest: {modes}")
+    ((epochs, batch_size),) = settings
+
+    code_path = ROOT / "src/adarpro/models/multitask_oof.py"
+    body = re.search(
+        r"^def create_model\(.*?(?=^def )", code_path.read_text(encoding="utf-8"), flags=re.M | re.S
+    )
+    if not body:
+        raise RuntimeError(f"{code_path}: create_model() not found")
+    calls = re.findall(
+        r"torch\.optim\.Adam\(model\.parameters\(\), lr=([0-9.eE+-]+), weight_decay=([0-9.eE+-]+)\)",
+        body.group(0),
+    )
+    if body.group(0).count("torch.optim.") != 2 or len(calls) != 2 or len(set(calls)) != 1:
+        raise RuntimeError(f"{code_path}: create_model() no longer builds one Adam setting for both networks")
+    training_path = ROOT / "src/adarpro/models/final_training.py"
+    if "model, optimizer = create_model(device, mode)" not in training_path.read_text(encoding="utf-8"):
+        raise RuntimeError(f"{training_path}: the optimizer no longer comes from multitask_oof.create_model()")
+    learning_rate, weight_decay = (float(value) for value in calls[0])
+
+    def power_of_ten(value: float, what: str) -> str:
+        exponent = round(math.log10(value))
+        if not math.isclose(value, 10.0**exponent, rel_tol=1e-12):
+            raise RuntimeError(f"{what} {value} is not a power of ten; change its display rule")
+        return f"$10^{{{exponent}}}$"
+
+    status = "model specification (selected predictor)"
+    use = "SI section L (selected predictor)"
+    add("final_network_epochs", "Training epochs of each selected-predictor network", epochs, f"{epochs:,}",
+        "epochs", status, ROOT / "models/final_v2",
+        "config.json epochs; all 50 networks of provenance/final_pipeline_manifest_v3.json agree", use,
+        "integer with thousands separator", "FinalNetworkEpochs")
+    add("final_network_batch_size", "Training batch size of each selected-predictor network", batch_size,
+        f"{batch_size:,}", "observations", status, ROOT / "models/final_v2",
+        "config.json batch_size; all 50 networks of provenance/final_pipeline_manifest_v3.json agree", use,
+        "integer with thousands separator", "FinalNetworkBatchSize")
+    add("final_network_learning_rate", "Adam learning rate of each selected-predictor network", learning_rate,
+        power_of_ten(learning_rate, "learning rate"), "learning rate", status, code_path,
+        "create_model(): torch.optim.Adam lr (same in both branches)", use, "power of ten",
+        "FinalNetworkLearningRate")
+    add("final_network_weight_decay", "Adam weight decay of each selected-predictor network", weight_decay,
+        power_of_ten(weight_decay, "weight decay"), "weight decay", status, code_path,
+        "create_model(): torch.optim.Adam weight_decay (same in both branches)", use, "power of ten",
+        "FinalNetworkWeightDecay")
 
 
 def add_reformer_claims() -> None:
@@ -1496,7 +1657,6 @@ def write_outputs() -> None:
     macro_path = PAPER / "generated/quantitative_claims.tex"
     lines = [
         "% Generated by scripts/build_paper_claim_ledger.py; do not edit by hand.",
-        r"\providecommand{\PaperRoundingPolicy}{Four decimals for absolute metrics; two percentage points for development effects; three decimals for correlations and pair-level metrics.}",
     ]
     lines.extend(
         rf"\providecommand{{\{name}}}{{{value}}}"
@@ -1520,6 +1680,7 @@ def main() -> None:
     add_post_analysis_claims()
     add_gap_stage_claims()
     add_seed_averaging_claims()
+    add_final_training_claims()
     add_reformer_claims()
     write_outputs()
 

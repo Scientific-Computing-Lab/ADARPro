@@ -5,8 +5,9 @@
 The repository retains the canonical human AdarEdit JSONL/metadata benchmark,
 global pair split, supplied checkpoints, small raw Alu-pair input, authoritative
 site master and compact derived feature tables, OOF predictions and summaries,
-frozen ADARPro checkpoints, locked-test predictions/bootstrap tables, and every
-table needed for the paper.
+frozen ADARPro checkpoints, the first-round predictor's locked-test predictions
+and bootstrap tables, the selected predictor's aggregate locked-test tables, and
+every table needed for the paper.
 
 The canonical binary task defines edited sites as EditingIndex ≥15% and
 nonedited sites as EditingIndex <1%; 1–15% observations are excluded from the
@@ -18,7 +19,8 @@ skeletal muscle. `Combined` is a pooled GTEx endpoint.
 
 Downloaded references and provider model files remain external because of
 size, redistribution terms, or both. Their exact cached hashes are listed in
-`provenance/source_workspace_inventory.csv`; resource-specific provenance is
+`provenance/source_workspace_inventory.csv` or in the record named with each
+entry below; resource-specific provenance is
 retained in JSON/CSV files under `provenance/` and `data/derived/**/provenance`.
 
 Principal resources include:
@@ -68,7 +70,8 @@ records. `data/external/README.md` is the only tracked file in that cache.
 ## Reformer binding features
 
 The SI Reformer screen reads two retained files. Each has a `.summary.json` with
-its source, SHA-256 and the producing scripts' paths and SHA-256.
+its source's file name and SHA-256; the feature table's summary also lists the
+producing scripts' file names and SHA-256.
 
 - `data/derived/features/reformer_context.parquet`: one row per canonical
   train/valid site of the four tissues (39,190 sites; key `crop_uid` =
@@ -147,5 +150,6 @@ available from the pinned upstream revision documented in `docs/UPSTREAM.md`.
 the preserved workspace: path, artifact class, epistemic status, byte size,
 source SHA-256, release SHA-256, inclusion status, reason, symlink flag, and
 duplicate information. `provenance/excluded_artifacts.csv` is its exact
-excluded subset. This is the authoritative answer to what was and was not
-published in Git.
+excluded subset. It records what was and was not published in Git as of
+2026-08-25; for files added or changed after that date,
+`provenance/release_manifest.sha256` is the record.

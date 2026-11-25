@@ -1,10 +1,9 @@
 \begin{table}[H]
 \centering
-\caption{\textbf{False-positive reduction persists at matched recall.} At frozen validation-selected thresholds, rescue and damage percentages use baseline false positives and true positives, respectively; ``New FP'' counts new false positives. The final column matches published-baseline recall exactly. This rethresholding is post-test descriptive, not model selection.}\label{tab:falsepositives}
-\resizebox{\textwidth}{!}{%
+\caption{\textbf{False-positive reduction persists at matched recall.} At frozen validation-selected thresholds, rescue and damage percentages use AdarEdit's false positives and true positives, respectively; ``New FP'' counts new false positives. The final column matches AdarEdit's recall exactly. This rethresholding is post-test descriptive, not model selection.}\label{tab:falsepositives}
 \begin{tabular}{lrrrrr}
 \toprule
-Endpoint & Baseline FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
+Endpoint & AdarEdit FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
 \midrule
 Artery & 460 & 246 (53.5\%) & 46 & 104 (4.5\%) & 194 \\
 Brain & 425 & 204 (48.0\%) & 36 & 67 (3.1\%) & 188 \\
@@ -12,5 +11,5 @@ Liver & 399 & 220 (55.1\%) & 51 & 73 (3.6\%) & 235 \\
 Skeletal muscle & 188 & 106 (56.4\%) & 16 & 30 (4.6\%) & 105 \\
 Combined & 459 & 225 (49.0\%) & 65 & 55 (2.4\%) & 223 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}

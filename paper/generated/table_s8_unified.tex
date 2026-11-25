@@ -1,7 +1,6 @@
 \begin{table}[H]
 \centering
-\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the skeletal-muscle development comparison, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
-\resizebox{\textwidth}{!}{%
+\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the skeletal-muscle development comparison, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Unified-minus-combination differences are bootstrap medians with pair-clustered intervals; positive Brier differences are adverse.}\label{tab:unified}
 \begin{tabular}{lrrrrrrr}
 \toprule
 Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
@@ -11,19 +10,19 @@ Unified end-to-end & 0.9062 & 0.9022 & 0.8372 & 0.8037 & 0.8736 & 0.7936 & 0.130
 Two-model combination & 0.9231 & 0.9174 & 0.8469 & 0.8258 & 0.8691 & 0.8226 & 0.1118 \\
 Local predictor & 0.9154 & 0.9100 & 0.8441 & 0.8109 & 0.8800 & 0.8015 & 0.1217 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \vspace{6pt}
 
 \begin{tabular}{lr}
 \toprule
 Metric & Unified $-$ combination, points [95\% CI] \\
 \midrule
-AUROC & -1.68 [-2.20, -1.15] \\
-AUPRC & -1.52 [-2.26, -0.81] \\
-F1 & -0.98 [-1.91, -0.05] \\
-Precision & -2.19 [-3.33, -1.09] \\
-Recall & +0.42 [-0.86, +1.73] \\
-Specificity & -2.88 [-4.29, -1.51] \\
+AUROC & $-$1.68 [$-$2.20, $-$1.15] \\
+AUPRC & $-$1.52 [$-$2.26, $-$0.81] \\
+F1 & $-$0.98 [$-$1.91, $-$0.05] \\
+Precision & $-$2.19 [$-$3.33, $-$1.09] \\
+Recall & +0.42 [$-$0.86, +1.73] \\
+Specificity & $-$2.88 [$-$4.29, $-$1.51] \\
 Brier & +1.87 [+1.38, +2.35] \\
 \bottomrule
 \end{tabular}

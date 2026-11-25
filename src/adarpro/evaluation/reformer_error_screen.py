@@ -263,6 +263,22 @@ def arm_first_from_sequence(sequence: pd.Series, local_position: pd.Series) -> n
     return local_position.to_numpy() < spacer
 
 
+def external_source_label(source: Path) -> str:
+    """Name a source that is not deposited by its folder and file name only, never by its absolute local path."""
+    return f"<external scoring workspace>/{source.parent.name}/{source.name} (not deposited; identified by source_sha256)"
+
+
+def local_path_strings(record) -> list[str]:
+    """Strings in a summary record that name an absolute local path (the public summaries record file names only)."""
+    if isinstance(record, dict):
+        return [text for value in record.values() for text in local_path_strings(value)]
+    if isinstance(record, list):
+        return [text for value in record for text in local_path_strings(value)]
+    if isinstance(record, str) and (record.startswith("/") or " /" in record or "(/" in record):
+        return [record]
+    return []
+
+
 def import_features(source: Path, output: Path, provenance: dict) -> dict:
     """Copy the outcome-independent Reformer site-feature table into the repository, with a provenance summary."""
     table = pd.read_parquet(source)
@@ -282,11 +298,13 @@ def import_features(source: Path, output: Path, provenance: dict) -> dict:
         "rows": int(len(table)),
         "key": "crop_uid = pair_id:local_position (equals pair_local_key in site_master)",
         "feature_columns": feats,
-        "source": str(source),
+        "source": external_source_label(source),
         "source_sha256": sha256_file(source),
         "output_sha256": sha256_file(output),
         **provenance,
     }
+    if local_path_strings(summary):
+        raise RuntimeError("the summary would record absolute local paths; give file names in --provenance-json")
     output.with_suffix(".summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     return summary
 
@@ -316,7 +334,7 @@ def import_loadings(source: Path, output: Path, features_summary: Path) -> dict:
         "columns": list(load.columns),
         "orientation": "each PC oriented so its loadings sum positive",
         "orthonormal_max_error": orth_err,
-        "source": str(source),
+        "source": external_source_label(source),
         "source_sha256": source_sha,
         "output_sha256": sha256_file(output),
         "matches_feature_summary_record": True,

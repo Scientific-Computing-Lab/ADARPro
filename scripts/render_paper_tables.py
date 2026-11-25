@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -25,6 +26,15 @@ def context_label(value: object) -> str:
 
 def interval(row: pd.Series, scale: float = 100.0) -> str:
     return f"{scale * row['median']:+.2f} [{scale * row['lower']:+.2f}, {scale * row['upper']:+.2f}]"
+
+
+def minus(text: str) -> str:
+    """Set negative numbers with a true minus sign in .tex output; CSV copies keep the ASCII hyphen.
+
+    Only a hyphen that starts a number is replaced, so hyphens inside words or labels
+    such as '96-nt' or 'Pair-first' are left alone.
+    """
+    return re.sub(r"(?<![\w\\{}$-])-(?=\.?\d)", "$-$", text)
 
 
 def write(name: str, content: str) -> None:
@@ -51,7 +61,6 @@ def locked_metrics() -> None:
         r"""\begin{table}[H]
 \centering
 \caption{\textbf{Ranking, classification, and probability accuracy improve across all five held-out endpoints.} Relative to reproduced AdarEdit, the selected predictor has higher AUROC, AUPRC, and F1 and lower Brier score. Precision and recall show the classification trade-off at thresholds frozen from the published validation partition before the final test. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{l@{\hspace{2\tabcolsep}\hspace{0.6em}}lrrrrrrr}
 \toprule
 Endpoint & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
@@ -60,7 +69,7 @@ Endpoint & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier
         + "\n".join(lines)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}""",
     )
 
@@ -194,7 +203,7 @@ def evidence_map() -> None:
             ),
         ),
         "Limited",
-        "No clear gain over binary training; added to graph + focal, small ranking gain, no F1 change, worse Brier.",
+        "No clear gain over binary training; added to the graph and focal-node combination, small ranking gain, no F1 change, worse Brier.",
         multitask,
     )
 
@@ -335,8 +344,8 @@ def evidence_map() -> None:
     )
     gate = "experiments/runs/hierarchical_gate/binary_natural/MuscleSkeletal/pair_bootstrap_ci.csv"
     add(
-        "Cross-fitted engagement gate",
-        "Biology × AI",
+        "Cross-fitted burden gate",
+        "Substrate propensity",
         "Expanded row-wise site predictor",
         effect(
             "auprc", select(gate, "auprc", model="expanded_plus_combined_engagement")
@@ -410,14 +419,14 @@ def evidence_map() -> None:
             select(genomic, "f1", model="baseline_plus_architecture_and_intrinsic"),
         ),
         "Not supported",
-        "No improvement beyond the graph representation.",
+        "No stable increment in this screen.",
         genomic,
     )
     rinalmo = "experiments/runs/foundation_residual/rinalmo_mega_target/MuscleSkeletal/pair_bootstrap_ci.csv"
     add(
         "Frozen RiNALMo target embedding",
         "Representation",
-        "Recalibrated cross-fitted baseline",
+        "Recalibrated outer-isolated graph reference",
         effect(
             "auroc",
             select(
@@ -437,7 +446,7 @@ def evidence_map() -> None:
             ),
         ),
         "Not supported",
-        "F1-only threshold effect; no AUROC/AUPRC gain; failed the preset rule.",
+        "F1 threshold effect; no AUROC/AUPRC gain; failed the preset rule.",
         rinalmo,
     )
     all_a = "experiments/runs/substrate_wide/joint_binary_partial_futility/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -453,7 +462,7 @@ def evidence_map() -> None:
             "f1", select(all_a, "f1", candidate="control", reference="pair_balanced")
         ),
         "Not supported",
-        "Prespecified two-fold futility criterion met.",
+        "Two-fold futility criterion met.",
         all_a,
     )
     unified = sources.relpath("experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv")
@@ -481,23 +490,25 @@ def evidence_map() -> None:
         "Not uniformly better across endpoints",
         "Mixed; descriptive",
         "Features and architecture change together; capacity is not isolated.",
-        "results/adaredit_baseline_metrics.csv",
+        "results/table1_within_context.csv",
     )
 
     df = pd.DataFrame(rows)
     SOURCE.mkdir(parents=True, exist_ok=True)
     df.to_csv(SOURCE / "table_s2_evidence_synthesis.csv", index=False)
     lines = [
-        f"{tex(row['axis'])} & {tex(row['hypothesis'])} & {tex(row['comparator'])} & "
-        f"{row['primary_effect']} & {tex(row['secondary_behavior'])} & "
-        f"{tex(row['status'])} & {tex(row['interpretation'])} \\\\"
+        minus(
+            f"{tex(row['axis'])} & {tex(row['hypothesis'])} & {tex(row['comparator'])} & "
+            f"{row['primary_effect']} & {tex(row['secondary_behavior'])} & "
+            f"{tex(row['status'])} & {tex(row['interpretation'])} \\\\"
+        )
         for _, row in df.iterrows()
     ]
     write(
         "table_s2_evidence_map.tex",
         r"""\begin{landscape}
 \begingroup
-\fontsize{7.0}{7.8}\selectfont
+\fontsize{7.0}{7.8}\selectfont\sffamily
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
@@ -555,14 +566,14 @@ def supervision_decomposition() -> None:
         ].to_numpy()
         rows.append(
             f"{label} & {metrics.loc['development_reference', metric]:.4f} & "
-            f"{metrics.loc['expanded_site', metric]:.4f} & {interval(add_labels)} & "
-            f"{metrics.loc['expanded_pair', metric]:.4f} & {interval(add_pair)} \\\\"
+            f"{metrics.loc['expanded_site', metric]:.4f} & {minus(interval(add_labels))} & "
+            f"{metrics.loc['expanded_pair', metric]:.4f} & {minus(interval(add_pair))} \\\\"
         )
     write(
         "table_s4_supervision_decomposition.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{More valid labels and more balanced substrate weights make separate contributions.} In muscle development data, recovering eligible high/low labels improves prediction under row-wise sampling. Pair-first weighting adds a further gain with the label pool and class balance fixed. The same-fold comparisons isolate the label and weighting effects; intervals are pair-clustered bootstrap intervals for each indicated step, in percentage points.}\label{tab:supervisiondecomposition}
+\caption{\textbf{More valid labels and more balanced substrate weights make separate contributions.} In muscle development data, recovering eligible high/low labels improves prediction under row-wise sampling. Pair-first weighting adds a further gain with the label pool and class balance fixed. The same-fold comparisons isolate the label and weighting effects; the $\Delta$ columns give bootstrap medians with pair-clustered intervals for each indicated step, in percentage points.}\label{tab:supervisiondecomposition}
 \begin{tabular}{lrrr@{\hspace{2\tabcolsep}\hspace{0.6em}}rr}
 \toprule
 Metric & Original reference & All high/low, row-wise & $\Delta$ from labels [95\% CI] & All high/low, pair-first & $\Delta$ from pair weighting [95\% CI] \\
@@ -583,16 +594,18 @@ def substrate_realization() -> None:
     for context, group in gap.groupby("context", sort=False):
         row = models.loc[context]
         rows.append(
-            f"{tex(context_label(context))} & {group['spearman'].iloc[0]:.3f} & "
-            f"{row['graph_only_r2']:.3f} & {row['geometry_plus_graph_r2']:.3f} & "
-            f"{100 * row['delta_r2_median']:+.2f} [{100 * row['delta_r2_lower']:+.2f}, {100 * row['delta_r2_upper']:+.2f}] & "
-            f"{row['any_high_auroc']:.3f} \\\\"
+            minus(
+                f"{tex(context_label(context))} & {group['spearman'].iloc[0]:.3f} & "
+                f"{row['graph_only_r2']:.3f} & {row['geometry_plus_graph_r2']:.3f} & "
+                f"{100 * row['delta_r2_median']:+.2f} [{100 * row['delta_r2_lower']:+.2f}, {100 * row['delta_r2_upper']:+.2f}] & "
+                f"{row['any_high_auroc']:.3f} \\\\"
+            )
         )
     write(
         "table_s3_substrate_realization.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{Genomic geometry improves prediction of the edited-site fraction in all four tissues.} Larger inter-arm gaps correlate with lower burden (Spearman $\rho$). Burden is the high-editing fraction among eligible high/low sites within a pair. Adding geometry to graph-derived summaries improves pair-level $R^2$; $\Delta R^2$ is relative to graph summaries alone, with a 95\% pair-clustered bootstrap interval. ``Any high'' asks whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes measure editing burden, not molecular realization or ADAR engagement.}\label{tab:substraterealization}
+\caption{\textbf{Genomic geometry improves prediction of the edited-site fraction in all four tissues.} Larger inter-arm gaps correlate with lower burden (Spearman $\rho$). Burden is the high-editing fraction among eligible high/low sites within a pair. Adding geometry to graph-derived summaries improves pair-level $R^2$; $\Delta R^2$ is relative to graph summaries alone, as a bootstrap median with a 95\% pair-clustered interval. ``Any high'' asks whether a pair contains at least one site with EditingIndex $\geq15\%$. These outcomes measure editing burden, not molecular realization or ADAR engagement.}\label{tab:substraterealization}
 \begin{tabular}{lrrrrr}
 \toprule
 Tissue & Gap--burden $\rho$ & Graph-only $R^2$ & Combined $R^2$ & $\Delta R^2$ [95\% CI], points & Any-high AUROC \\
@@ -614,7 +627,7 @@ def target_controls() -> None:
         ("Pair-first whole-duplex model", alignment, "pair_balanced"),
         ("Explicit focal node", focal, "focal"),
         ("Aligned target/helix-partner local predictor", alignment, "aligned_local"),
-        ("Matched-capacity +96-nt shift", alignment, "shifted_local"),
+        ("Matched-capacity 96-nt shift", alignment, "shifted_local"),
         ("Whole-duplex model averaged with aligned local predictor", alignment, "aligned_ensemble"),
         ("Whole-duplex model averaged with shifted local predictor", alignment, "shifted_ensemble"),
     ]:
@@ -644,7 +657,7 @@ def pair_balance() -> None:
     df = pd.read_csv(SOURCE / "figure3_pair_balance_ci.csv")
     rows = []
     for context, group in df.groupby("context", sort=False):
-        values = {row.metric: interval(row) for _, row in group.iterrows()}
+        values = {row.metric: minus(interval(row)) for _, row in group.iterrows()}
         rows.append(
             f"{tex(context_label(context))} & {values['auroc']} & {values['auprc']} & "
             f"{values['f1']} \\\\"
@@ -654,7 +667,6 @@ def pair_balance() -> None:
         r"""\begin{table}[H]
 \centering
 \caption{\textbf{Expanded pair-first learning improves ranking and classification across all five endpoints.} The combined change in label coverage and within-class pair weighting outperforms the same-fold internal AdarEdit reference; every interval is positive. Values are percentage-point median differences with 95\% pair-clustered bootstrap intervals. Combined is pooled, and these development comparisons do not isolate weighting from label recovery outside muscle.}\label{tab:pairbalance}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 Endpoint & $\Delta$AUROC [95\% CI] & $\Delta$AUPRC [95\% CI] & $\Delta$F1 [95\% CI] \\
@@ -663,7 +675,7 @@ Endpoint & $\Delta$AUROC [95\% CI] & $\Delta$AUPRC [95\% CI] & $\Delta$F1 [95\% 
         + "\n".join(rows)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}""",
     )
 
@@ -684,17 +696,16 @@ def false_positive_table() -> None:
         "table_s9_false_positives.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{False-positive reduction persists at matched recall.} At frozen validation-selected thresholds, rescue and damage percentages use baseline false positives and true positives, respectively; ``New FP'' counts new false positives. The final column matches published-baseline recall exactly. This rethresholding is post-test descriptive, not model selection.}\label{tab:falsepositives}
-\resizebox{\textwidth}{!}{%
+\caption{\textbf{False-positive reduction persists at matched recall.} At frozen validation-selected thresholds, rescue and damage percentages use AdarEdit's false positives and true positives, respectively; ``New FP'' counts new false positives. The final column matches AdarEdit's recall exactly. This rethresholding is post-test descriptive, not model selection.}\label{tab:falsepositives}
 \begin{tabular}{lrrrrr}
 \toprule
-Endpoint & Baseline FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
+Endpoint & AdarEdit FP & FP corrected (\%) & New FP & TP damaged (\%) & FP avoided at matched recall \\
 \midrule
 """
         + "\n".join(rows)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}""",
     )
 
@@ -711,16 +722,15 @@ def natural_prevalence() -> None:
     rows = []
     for _, row in df.iterrows():
         rows.append(
-            f"{tex(context_label(row['context']))} & {names[row['model']]} & {int(row['n'])} & "
+            f"{tex(context_label(row['context']))} & {names[row['model']]} & {int(row['n']):,} & "
             f"{row['auroc']:.4f} & {row['auprc']:.4f} & {row['f1']:.4f} & "
-            f"{row['precision']:.4f} & {row['recall']:.4f} & {int(row['fp'])} \\\\"
+            f"{row['precision']:.4f} & {row['recall']:.4f} & {int(row['fp']):,} \\\\"
         )
     write(
         "table_s7_natural_prevalence.tex",
         r"""\begin{table}[H]
 \centering
 \caption{\textbf{The predictive gains persist when all eligible high/low sites are retained.} In muscle and liver, the selected predictor improves ranking and F1 and reduces false positives relative to the pair-first whole-duplex model. All eligible high/low observations from unchanged development pairs are included; $n$ counts those observations, and thresholds come from fold-specific validation. This secondary evaluation retains the undownsampled class proportions but excludes intermediate editing levels; it is not population-wide prevalence.}\label{tab:natural}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \toprule
 Tissue & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
@@ -729,7 +739,7 @@ Tissue & Model & $n$ & AUROC & AUPRC & F1 & Precision & Recall & FP \\
         + "\n".join(rows)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}""",
     )
 
@@ -761,14 +771,13 @@ def unified() -> None:
     order = ["auroc", "auprc", "f1", "precision", "recall", "specificity", "brier"]
     lookup = {row.metric: row for _, row in ci.iterrows()}
     ci_rows = [
-        f"{METRIC_LABEL[metric]} & {interval(lookup[metric])} \\\\" for metric in order
+        f"{METRIC_LABEL[metric]} & {minus(interval(lookup[metric]))} \\\\" for metric in order
     ]
     write(
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the skeletal-muscle development comparison, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
-\resizebox{\textwidth}{!}{%
+\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the skeletal-muscle development comparison, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Unified-minus-combination differences are bootstrap medians with pair-clustered intervals; positive Brier differences are adverse.}\label{tab:unified}
 \begin{tabular}{lrrrrrrr}
 \toprule
 Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
@@ -777,7 +786,7 @@ Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
         + "\n".join(metric_rows)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \vspace{6pt}
 
 \begin{tabular}{lr}
@@ -813,10 +822,10 @@ def experiment_taxonomy() -> None:
         "table_s10_experiment_taxonomy.tex",
         r"""\begin{landscape}
 \begingroup
-\fontsize{7.5}{8.6}\selectfont
-\setlength{\tabcolsep}{1.5pt}
-\renewcommand{\arraystretch}{1.00}
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
+\fontsize{7.5}{8.6}\selectfont\sffamily
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}}
 \caption{\textbf{The search separates supported improvements from unsuccessful tests and questions that lack suitable data.} Rows connect each biological or modeling question to its candidate information, control, evidence regime, and disposition. Limited effects, unsupported formulations, deferred measurements, and superseded directions remain distinct. ``Deferred'' means suitable data or a validated resource was unavailable, not that the hypothesis failed. Table~\ref{tab:evidencemap} gives quantitative effects; historical priorities, stopping rules, and run artifacts remain in the machine-readable record.}\label{tab:taxonomy}\\
 \toprule
 Scale & Question & Candidate information or measurement & Comparator or control & Status and evidence regime & Principal outcome & Disposition \\
@@ -870,7 +879,7 @@ def gap_controls() -> None:
     labels = {
         "no_gap_stage": "Same stage without spacing",
         "shuffled_gap_stage": "Same stage, shuffled spacing",
-        "equal_average": "Equal average, no second stage",
+        "equal_average": "Equal-weight average, no second stage",
     }
     rows = []
     for context in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
@@ -881,14 +890,14 @@ def gap_controls() -> None:
                 row = frame[(frame.candidate == "gap_stage") & (frame.reference == reference) & (frame.metric == metric)]
                 if len(row) != 1:
                     raise RuntimeError(f"{context}: gap_stage/{reference}/{metric}")
-                cells.append(interval(row.iloc[0]))
+                cells.append(minus(interval(row.iloc[0])))
             rows.append(f"{context_label(context)} & {label} & " + " & ".join(cells) + r" \\")
     write(
         "table_s11_gap_controls.tex",
         r"""\begin{table}[H]
 \centering
 \footnotesize
-\caption{\textbf{The measured genomic spacing improves site prediction beyond matched second-stage controls.} The selected predictor's second stage combines the two networks' scores with the logarithm of the spacing between the Alu arms. Each row gives the selected predictor minus a comparator: the same second stage without spacing, the same stage given shuffled spacing, or the equal average of the two networks without a second stage. Values are percentage-point medians with 95\% pair-clustered intervals (2,000 replicates) on development out-of-fold predictions from one training run; for Brier score, negative values are improvements. Across the five tracked training runs, the skeletal-muscle AUROC gain averaged \GapRunsMuscleVsNoGapAUROCMean{} points over the stage without spacing and \GapRunsMuscleVsShuffledAUROCMean{} over shuffled spacing, with intervals excluding zero in \GapRunsMuscleVsNoGapAUROCExcl{} and \GapRunsMuscleVsShuffledAUROCExcl{} of the five runs; in the other four endpoints every AUROC, AUPRC, F1, and Brier interval against both controls excluded zero in all five runs (\texttt{experiments/runs/step11b/gap\_controls\_runs/}).}\label{tab:gapcontrols}
+\caption{\textbf{The measured genomic spacing improves site prediction beyond matched second-stage controls.} The selected predictor's second stage combines the two networks' scores with the logarithm of the spacing between the Alu arms. Each row gives the selected predictor minus a comparator: the same second stage without spacing, the same stage given shuffled spacing, or the equal-weight average of the two networks without a second stage. Values are percentage-point medians with 95\% pair-clustered intervals (2,000 replicates) on development out-of-fold predictions from one training run; for Brier score, negative values are improvements. Across the five tracked training runs, the skeletal-muscle AUROC gain averaged \GapRunsMuscleVsNoGapAUROCMean{} points over the stage without spacing and \GapRunsMuscleVsShuffledAUROCMean{} over shuffled spacing, with intervals excluding zero in \GapRunsMuscleVsNoGapAUROCExcl{} and \GapRunsMuscleVsShuffledAUROCExcl{} of the five runs; in the other four endpoints every AUROC, AUPRC, F1, and Brier interval against both controls excluded zero in all five runs (\texttt{experiments/runs/step11b/gap\_controls\_runs/}). In development, for each outer fold the stage was fitted on the training folds, using the scores of the networks trained for that fold; its penalty and threshold were chosen on the internal-validation fold, and it was applied to the held-out fold. Shuffled spacing permuted the spacing values once across the endpoint's development pairs, with a fixed seed.}\label{tab:gapcontrols}
 \begin{tabular}{llrrrr}
 \toprule
 Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
@@ -911,14 +920,14 @@ def seed_averaging() -> None:
             row = frame[(frame.model == "predictor") & (frame.metric == metric)]
             if len(row) != 1:
                 raise RuntimeError(f"{context}: predictor/{metric}")
-            cells.append(interval(row.iloc[0]))
+            cells.append(minus(interval(row.iloc[0])))
         rows.append(f"{context_label(context)} & " + " & ".join(cells) + r" \\")
     write(
         "table_s12_seed_averaging.tex",
         r"""\begin{table}[H]
 \centering
 \footnotesize
-\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals.}\label{tab:seedavg}
+\caption{\textbf{Averaging five independently trained copies of each component improves the selected predictor in every endpoint.} Each row gives the five-seed selected predictor minus the mean single-seed predictor on development out-of-fold predictions, as percentage-point medians with 95\% pair-clustered intervals (\SeedAvgBootstrapReplicates{} replicates).}\label{tab:seedavg}
 \begin{tabular}{lrrr}
 \toprule
 Endpoint & AUROC & AUPRC & F1 \\
@@ -938,7 +947,7 @@ def test_contrasts() -> None:
     labels = {
         "adaredit_reference": "Reproduced AdarEdit",
         "pnas_selected_predictor": "First-round predictor",
-        "equal_average": "Equal average, no second stage",
+        "equal_average": "Equal-weight average, no second stage",
     }
     frame = pd.read_csv(ROOT / sources.TEST_CONTRASTS)
     if set(frame.replicates) != {2000}:
@@ -953,14 +962,14 @@ def test_contrasts() -> None:
                 if len(row) != 1:
                     raise RuntimeError(f"{context}: gap_stage/{reference}/{metric}: {len(row)} rows")
                 r = row.iloc[0]
-                cells.append(f"{100 * r['estimate']:+.2f} [{100 * r['lower']:+.2f}, {100 * r['upper']:+.2f}]")
+                cells.append(minus(f"{100 * r['estimate']:+.2f} [{100 * r['lower']:+.2f}, {100 * r['upper']:+.2f}]"))
             rows.append(f"{context_label(context)} & {label} & " + " & ".join(cells) + r" \\")
     write(
         "table_s13_test_contrasts.tex",
         r"""\begin{table}[H]
 \centering
 \footnotesize
-\caption{\textbf{On the canonical test, the selected predictor improves on reproduced AdarEdit and on the first-round predictor in every endpoint.} Each row gives the selected predictor minus a comparator: reproduced supplied-checkpoint AdarEdit, the first-round predictor, or the equal average of the same two components without a second stage. Values are percentage-point differences with 95\% pair-clustered intervals (2,000 replicates); for Brier score, negative values are improvements. The five endpoints share test pairs and are one test scored five ways.}\label{tab:testcontrasts}
+\caption{\textbf{On the canonical test, the selected predictor improves on reproduced AdarEdit and on the first-round predictor in every endpoint.} Each row gives the selected predictor minus a comparator: reproduced supplied-checkpoint AdarEdit, the first-round predictor, or the equal-weight average of the same two components without a second stage. Values are percentage-point differences with 95\% pair-clustered intervals (2,000 replicates); for Brier score, negative values are improvements. The five endpoints share test pairs and are one test scored five ways.}\label{tab:testcontrasts}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrr}
 \toprule

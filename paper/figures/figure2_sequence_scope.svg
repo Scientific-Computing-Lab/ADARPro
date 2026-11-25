@@ -1033,13 +1033,13 @@
     <path d="M 325.039766 12.1275  L 498.415766 12.1275  " clip-path="url(#p018817eaff)" style="fill: none; stroke: #d99000; stroke-width: 1.4; stroke-linecap: square" />
    </g>
    <g id="text_120">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2166ac" x="64.975766" y="21.3255" transform="rotate(-0 64.975766 21.3255)">HUMAN</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #172126" x="64.975766" y="21.3255" transform="rotate(-0 64.975766 21.3255)">HUMAN</text>
    </g>
    <g id="text_121">
     <text style="font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #68737d" x="64.975766" y="35.1225" transform="rotate(-0 64.975766 35.1225)">Four tissues + Combined (pooled)</text>
    </g>
    <g id="text_122">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #d99000" x="325.039766" y="21.3255" transform="rotate(-0 325.039766 21.3255)">NONHUMAN</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #172126" x="325.039766" y="21.3255" transform="rotate(-0 325.039766 21.3255)">NONHUMAN</text>
    </g>
    <g id="text_123">
     <text style="font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #68737d" x="325.039766" y="35.1225" transform="rotate(-0 325.039766 35.1225)">Three independently constructed datasets</text>

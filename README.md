@@ -170,4 +170,10 @@ because it was unfavorable.
 
 The repository retains the GNU General Public License v3 supplied with the
 AdarEdit codebase; see [`LICENSE`](LICENSE). External datasets and pretrained
-weights remain governed by their original providers' terms.
+weights remain governed by their original providers' terms. Figure artwork
+adapted from DBCLS/TogoTV (CC BY 4.0) and Servier Medical Art (CC BY 3.0) is not
+covered by the software license; see
+[`paper/illustration_sources/README.md`](paper/illustration_sources/README.md)
+for sources and credits. The PNAS template files under `paper/template/` keep
+their own terms; the class and `jabbrv` files state the LaTeX Project Public
+License.

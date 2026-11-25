@@ -1,7 +1,6 @@
 \begin{table}[H]
 \centering
 \caption{\textbf{Ranking, classification, and probability accuracy improve across all five held-out endpoints.} Relative to reproduced AdarEdit, the selected predictor has higher AUROC, AUPRC, and F1 and lower Brier score. Precision and recall show the classification trade-off at thresholds frozen from the published validation partition before the final test. Combined is a pooled endpoint.}\label{tab:lockedmetrics}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{l@{\hspace{2\tabcolsep}\hspace{0.6em}}lrrrrrrr}
 \toprule
 Endpoint & Model & AUROC & AUPRC & F1 & Precision & Recall & Specificity & Brier \\
@@ -17,5 +16,5 @@ Skeletal muscle & Selected predictor & 0.9411 & 0.9513 & 0.8756 & 0.8727 & 0.878
 Combined & AdarEdit & 0.9331 & 0.9356 & 0.8674 & 0.8334 & 0.9043 & 0.8026 & 0.1043 \\
 Combined & Selected predictor & 0.9639 & 0.9687 & 0.9051 & 0.8870 & 0.9240 & 0.8714 & 0.0741 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \end{table}

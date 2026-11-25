@@ -36,4 +36,4 @@ and fails if any value differs from its corresponding matrix entry by more than
   architectures across the five human contexts and three species.
 
 The joint multi-tissue results are stored separately under
-`checkpoints/joint_*` and documented in `analyses/joint_model/`.
+`checkpoints/joint_*`.

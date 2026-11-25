@@ -433,7 +433,7 @@ def figure_search_space(output: Path, source: Path) -> None:
     ax_a.text(
         0.018,
         0.032,
-        "AI / MODELING SEARCH",
+        "MODELING SEARCH",
         ha="left",
         va="center",
         fontsize=6.8,
@@ -458,7 +458,7 @@ def figure_search_space(output: Path, source: Path) -> None:
     )
     protocol = [
         (0.045, "SEQUENCE–STRUCTURE\nREFERENCE", COLORS["navy"]),
-        (0.325, "PAIR-DISJOINT\nDEVELOPMENT OOF", COLORS["blue"]),
+        (0.325, "PAIR-DISJOINT\nDEVELOPMENT", COLORS["blue"]),
         (0.605, "SAME-FOLD +\nMATCHED CONTROLS", COLORS["teal"]),
         (0.885, "EFFECT + UNCERTAINTY\nEVIDENCE STATUS", COLORS["purple"]),
     ]
@@ -527,8 +527,7 @@ def figure_search_space(output: Path, source: Path) -> None:
             "INTRINSIC\nSUBSTRATE",
             [
                 ("positive", "Sequence +\npredicted fold"),
-                ("positive", "Geometry →\npair burden"),
-                ("unsupported", "Broad repeat /\ntranscript panel"),
+                ("positive", "Geometry → burden,\nsite rank"),
             ],
             "whole-duplex signal\n+ between-substrate propensity",
         ),
@@ -539,6 +538,7 @@ def figure_search_space(output: Path, source: Path) -> None:
             [
                 ("positive", "Same-site\ntissue variation"),
                 ("unsupported", "RBP × bulk\nabundance"),
+                ("unsupported", "Broad repeat /\ntranscript panel"),
                 ("limited", "Bulk\nH3K36me3"),
                 ("deferred", "Matched donor / cell\nin vivo state"),
             ],
@@ -568,12 +568,12 @@ def figure_search_space(output: Path, source: Path) -> None:
         (
             0.115,
             COLORS["navy"],
-            "AI / MODEL\nSUFFICIENCY",
+            "MODEL\nSUFFICIENCY",
             [
                 ("limited", "Graded objectives +\nshared tissues"),
                 ("unsupported", "Foundation\nrepresentations"),
                 ("unsupported", "All-A + joint\nintegration"),
-                ("positive", "Fixed prediction\nintegration"),
+                ("positive", "Two-view\nintegration"),
             ],
             "targeted changes help; generic\ncomplexity yields little more",
         ),
@@ -606,7 +606,15 @@ def figure_search_space(output: Path, source: Path) -> None:
             fontweight="bold",
             color=color,
         )
-        item_x = [0.205, 0.355, 0.505, 0.655]
+        # Four evenly spaced slots; the five-entry context row uses slots sized to its
+        # labels so its last entry still clears the map-update column at x = 0.810.
+        item_x = (
+            [0.205, 0.328, 0.430, 0.556, 0.657]
+            if len(items) == 5
+            else [0.205, 0.355, 0.505, 0.655]
+        )
+        if len(items) > len(item_x):
+            raise RuntimeError(f"Fig. 1B row {label!r}: {len(items)} entries, {len(item_x)} slots")
         for x, (kind, item) in zip(item_x, items):
             marker, marker_color = status[kind]
             ax_b.text(
@@ -681,7 +689,7 @@ def figure_search_space(output: Path, source: Path) -> None:
             0.300,
             COLORS["green"],
             "RECOVERABLE",
-            "Whole-duplex sequence–structure\nPair geometry at substrate level\nAligned target-local information\nPair-aware statistical weighting",
+            "Whole-duplex sequence–structure\nPair geometry and spacing\nAligned target-local information\nPair-aware statistical weighting",
         ),
         (
             0.345,
@@ -910,7 +918,7 @@ def figure1(output: Path, source: Path) -> None:
         c, 0.39, 0.507, "FROZEN SPECIFICATION", 7.1, COLORS["navy"], "bold", ha="center"
     )
     txt(c, 0.39, 0.444, "weights · preprocessing", 6.7, ha="center")
-    txt(c, 0.39, 0.395, "thresholds · fixed combination", 6.7, ha="center")
+    txt(c, 0.39, 0.395, "thresholds · second stage", 6.7, ha="center")
     c.plot([0.09, 0.70], [0.353, 0.353], color="#D4DEE3", lw=0.8)
     arrow(c, (0.39, 0.33), (0.39, 0.244), COLORS["navy"])
     c.plot([0.85, 0.85], [0.67, 0.270], color=COLORS["red"], lw=0.9)
@@ -1021,7 +1029,7 @@ def figure_scope(output: Path, source: Path) -> None:
         ),
     ]:
         context_key.plot([x0, x1], [0.85, 0.85], color=color, lw=1.4)
-        context_key.text(x0, 0.57, title, fontsize=7, fontweight="bold", color=color)
+        context_key.text(x0, 0.57, title, fontsize=7, fontweight="bold", color=COLORS["ink"])
         context_key.text(x0, 0.15, detail, fontsize=6.6, color=COLORS["gray"])
 
     panel_label(ax_a, "A")
@@ -1264,7 +1272,7 @@ def evidence_table() -> pd.DataFrame:
             "Representation",
             "Frozen RNA-language embeddings",
             "not supported",
-            "F1-only; no ranking gain",
+            "F1 effect; no ranking gain",
         ),
         (
             "Target representation",
@@ -1304,7 +1312,7 @@ def evidence_table() -> pd.DataFrame:
         (
             "Substrate & cellular context",
             "Substrate propensity",
-            "Hierarchical engagement gate",
+            "Cross-fitted burden gate",
             "limited",
             "Ranking gain; unstable F1",
         ),
@@ -1327,7 +1335,7 @@ def evidence_table() -> pd.DataFrame:
             "Biological context",
             "Transcript / repeat annotations*",
             "not supported",
-            "No site-level gain",
+            "No stable screen gain",
         ),
         (
             "Substrate & cellular context",
@@ -1622,10 +1630,10 @@ def figure2(output: Path, source: Path) -> None:
             ax_a.text(
                 0.072,
                 center_y + 0.011,
-                r"$\sigma(w_1z_1{+}w_2z_2{+}w_3s)$",  # the selected second stage (Fig. 5E), not the equal average
+                r"$\sigma(w_1z_1{+}w_2z_2{+}w_3s{+}b)$",  # the selected second stage (Fig. 5E), not the equal average
                 ha="center",
                 va="center",
-                fontsize=7.3,
+                fontsize=6.3,
                 color=COLORS["purple"],
             )
         else:
@@ -1673,7 +1681,7 @@ def figure2(output: Path, source: Path) -> None:
             ms=3.2,
             lw=1.1,
             color=color,
-            label=f"{CONTEXT_LABELS[context]}  ρ={rho:.2f}",
+            label=f"{CONTEXT_LABELS[context]}  ρ={rho:.2f}".replace("-", "−"),
         )
     ax_b.set_xlabel("Mean log$_{10}$(inter-arm gap + 1) within octile")
     ax_b.set_ylabel("Mean edited-site fraction")
@@ -2031,7 +2039,7 @@ def figure3(output: Path, source: Path) -> None:
     )
     ax_a.text(
         0.5,
-        0.755,
+        0.7625,
         "+ valid labels",
         ha="center",
         va="bottom",
@@ -2040,7 +2048,7 @@ def figure3(output: Path, source: Path) -> None:
     )
     ax_a.text(
         1.5,
-        0.755,
+        0.7625,
         "+ pair-aware weighting",
         ha="center",
         va="bottom",
@@ -2075,7 +2083,7 @@ def figure3(output: Path, source: Path) -> None:
     ax_b.set_title("Pair-first gains replicate", loc="left", fontweight="bold")
     ax_b.legend(
         frameon=False,
-        ncol=3,
+        ncol=1,
         loc="upper right",
         borderaxespad=0.4,
         fontsize=6.2,
@@ -2090,7 +2098,7 @@ def figure3(output: Path, source: Path) -> None:
         ("Whole-duplex\nonly", alignment_metrics, "pair_balanced"),
         ("Focal-node\ngraph", focal_metrics, "focal"),
         ("Aligned\nlocal", alignment_metrics, "aligned_local"),
-        (f"Shifted\n+{shift_nt} nt", alignment_metrics, "shifted_local"),
+        (f"Shifted\n{shift_nt} nt", alignment_metrics, "shifted_local"),
     ]:
         row = frame[frame.model == model].iloc[0]
         representation_rows.append(
@@ -2542,11 +2550,11 @@ def supplementary_figures(output: Path, source: Path) -> None:
                 np.arange(4),
                 subset[metric],
                 marker="o",
-                color=COLORS["navy"] if j == 0 else COLORS["amber"],
+                color=COLORS["amber"] if j == 0 else COLORS["teal"],
                 alpha=1 if j == 0 else 0.8,
                 label=CONTEXT_LABELS[context],
             )
-        axis.set_xticks(range(4), labels, rotation=20, ha="right")
+        axis.set_xticks(range(4), labels, rotation=30, ha="right")
         axis.set_title(metric.upper())
         clean_axis(axis, "y")
     axes[0].set_ylabel("Pair-disjoint development OOF")
@@ -2712,11 +2720,12 @@ def supplementary_figures(output: Path, source: Path) -> None:
     shown = shown.sort_values("order", ascending=False)
     figure, axis = plt.subplots(figsize=(5.7, 3.0))
     y = np.arange(len(shown))
+    # Red only when the whole 95% interval is on the adverse side; gray when it includes zero.
     colors = [
         COLORS["red"]
-        if (row.metric != "brier" and row["median"] < 0)
-        or (row.metric == "brier" and row["median"] > 0)
-        else COLORS["green"]
+        if (row.metric != "brier" and row["upper"] < 0)
+        or (row.metric == "brier" and row["lower"] > 0)
+        else COLORS["gray"]
         for _, row in shown.iterrows()
     ]
     for i, (_, row) in enumerate(shown.iterrows()):
@@ -3054,7 +3063,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
         loc="left",
         fontweight="bold",
     )
-    ax_c.legend(frameon=False, ncol=2, loc="lower right")
+    ax_c.legend(frameon=False, ncol=2, loc="upper left")
     panel_label(ax_c, "C")
     clean_axis(ax_c)
     figure.suptitle(
@@ -3099,8 +3108,8 @@ def supplementary_figures(output: Path, source: Path) -> None:
     model_labels = [
         "Internal\nreference",
         "Pair-first",
-        "Focal",
-        "Target-\ncentered",
+        "Focal\nnode",
+        "Local\npredictor",
         "Selected\npredictor",
     ]
     x = np.arange(len(models))
@@ -3158,7 +3167,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     ax_b.set_xlabel("Median eligible sites per pair")
     ax_b.set_ylabel("Log-loss gain from pair-first\n(>0 favors pair-first)")
     ax_b.set_title(
-        "Pair-first learning redistributes gain", loc="left", fontweight="bold"
+        "Pair-first gain by pair size", loc="left", fontweight="bold"
     )
     panel_label(ax_b, "B")
     clean_axis(ax_b, "both")
@@ -3200,7 +3209,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
         ax_d.plot(
             np.arange(len(order)) + (index - 0.5) * 0.08,
             values.mean_brier_difference,
-            marker="o" if candidate == "local" else "s",
+            marker="o",
             ms=4,
             lw=1.0,
             color=model_colors[candidate],
@@ -3228,12 +3237,30 @@ def supplementary_figures(output: Path, source: Path) -> None:
 def write_manifest(source: Path, output: Path) -> None:
     rows = []
     # Table sources have their own manifest and may be rebuilt after figures.
-    # Track only this renderer's sources plus the manually curated coverage map.
+    # Track this renderer's sources, the manually curated coverage map, and the copies of the
+    # post-analysis files that Fig. S7B/C read from experiments/runs/post_analysis/.
+    # read from the repository itself (not ROOT, which a staging build may redirect)
+    post_analysis = Path(__file__).resolve().parents[1] / "experiments/runs/post_analysis"
+    s7_copies = {
+        "matched_site_strict_switch_matrix.csv": post_analysis / "tissue_variation/strict_switch_matrix.csv",
+        "cross_tissue_pair_stability.csv": post_analysis / "pair_stability/cross_tissue_pair_stability.csv",
+        "matched_site_tissue_variation.csv": post_analysis / "tissue_variation/variation_summary.csv",
+    }
+    for name, original in s7_copies.items():
+        if (source / name).read_bytes() != original.read_bytes():
+            raise RuntimeError(f"{name} differs from {original.relative_to(ROOT).as_posix()}")
+    roles = {
+        "search_space_coverage.csv": "curated coverage map (the search-space figure checks only its scale names)",
+        "matched_site_strict_switch_matrix.csv": "quantitative figure source table (Fig. S7B input; copy)",
+        "cross_tissue_pair_stability.csv": "quantitative figure source table (Fig. S7C input; copy)",
+        "matched_site_tissue_variation.csv": "quantitative source table (matched-site summary behind Fig. S7 text values; copy)",
+    }
     figure_sources = [
         *source.glob("figure*.csv"),
         source / "search_space_coverage.csv",
         source / "within_duplex_discrimination.csv",
         source / "within_duplex_contrasts.csv",
+        *(source / name for name in s7_copies),
     ]
     for path in sorted(figure_sources):
         if path.name == "figure_source_manifest.csv":
@@ -3242,7 +3269,7 @@ def write_manifest(source: Path, output: Path) -> None:
             {
                 "artifact": path.relative_to(ROOT).as_posix(),
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "role": "quantitative figure source table",
+                "role": roles.get(path.name, "quantitative figure source table"),
             }
         )
     for path in sorted(output.glob("*.svg")):

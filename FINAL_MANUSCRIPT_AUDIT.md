@@ -1,5 +1,7 @@
 # Final manuscript audit
 
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
+
 > Historical pre-editorial audit. The submission-ready record superseding this
 > snapshot is `FINAL_EDITORIAL_AUDIT.md`.
 

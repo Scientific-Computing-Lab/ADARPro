@@ -9,7 +9,9 @@
 - First-round predictor family: `adarpro_pair_local_equal_logit_ensemble`.
 - Fusion: fixed 0.5/0.5 average of component logits; weights were not searched.
 - Frozen development code revision:
-  `0f50fac33bec8bad325e6745d83ceaacebe42fc1`.
+  `0f50fac33bec8bad325e6745d83ceaacebe42fc1`. This revision and the `git_sha`
+  values of first-round registry rows (completed up to 2026-08-25) refer to the
+  preserved research workspace, not to commits of this repository.
 - Final pipeline manifest SHA-256:
   `dd04f9786d52f57653da31b12dc777d10aa4247dfccd2b2c59ddff64ad395a1c`.
 - Locked metrics SHA-256:
@@ -26,7 +28,11 @@
 
 The original research workspace is preserved separately. The public release
 normalizes only machine-local paths; the source and release hashes for every
-such file are recorded in `provenance/source_workspace_inventory.csv`.
+such file are recorded in `provenance/source_workspace_inventory.csv`. That
+inventory was written on 2026-08-25 and has not been regenerated: it does not
+list files added later, and its release hashes are out of date for files
+changed since. `provenance/release_manifest.sha256` is the integrity record for
+the current checkout.
 
 ## Environment
 
@@ -60,6 +66,15 @@ python scripts/build_release_manifest.py --verify
 The authoritative-result check validates the final metrics, pair-clustered bootstrap
 direction, false-positive counts, frozen manifest/checkpoint hashes,
 single-use quarantine record, unified-model decision, and registry uniqueness.
+
+The `build-manifest` and `dry-run` subcommands of
+`src/adarpro/evaluation/final_locked_gap_stage.py` rebuild the specification
+from the frozen second-stage records
+`models/final_v2/gap_stage/<endpoint>/frozen_gap_stage.json`, which name their
+checkpoint folders by absolute paths of the checkout in which they were written,
+so these two subcommands run only from that location.
+`provenance/final_pipeline_manifest_v3.json` records repository-relative
+checkpoint paths, and `make verify` uses neither subcommand.
 
 ## Regenerating reported outputs
 

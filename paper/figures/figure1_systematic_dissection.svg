@@ -448,7 +448,7 @@
     <text style="font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="421.825159" y="174.349108" transform="rotate(-0 421.825159 174.349108)">weights · preprocessing</text>
    </g>
    <g id="text_46">
-    <text style="font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="421.825159" y="187.094008" transform="rotate(-0 421.825159 187.094008)">thresholds · fixed combination</text>
+    <text style="font-size: 6.7px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="421.825159" y="187.094008" transform="rotate(-0 421.825159 187.094008)">thresholds · second stage</text>
    </g>
    <g id="text_47">
     <text style="font-weight: 700; font-size: 7.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #172126" x="427.611493" y="238.3036" transform="rotate(-0 427.611493 238.3036)">Final evaluation</text>

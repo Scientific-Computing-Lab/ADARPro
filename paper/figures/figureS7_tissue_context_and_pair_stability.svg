@@ -947,48 +947,48 @@
    </g>
    <g id="legend_1">
     <g id="LineCollection_3">
-     <path d="M 313.040469 318.830625  L 320.240469 318.830625  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
+     <path d="M 70.924719 219.300268  L 78.124719 219.300268  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
     </g>
     <g id="line2d_66">
      <g>
-      <use xlink:href="#ma494c220e8" x="313.040469" y="318.830625" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#ma494c220e8" x="70.924719" y="219.300268" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_67">
      <g>
-      <use xlink:href="#ma494c220e8" x="320.240469" y="318.830625" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#ma494c220e8" x="78.124719" y="219.300268" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_68" />
     <g id="line2d_69">
      <g>
-      <use xlink:href="#mfb3d94e609" x="316.640469" y="318.830625" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#mfb3d94e609" x="74.524719" y="219.300268" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="text_69">
-     <text style="font-size: 7.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="329.600469" y="321.350625" transform="rotate(-0 329.600469 321.350625)">Mean EditingIndex</text>
+     <text style="font-size: 7.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="87.484719" y="221.820268" transform="rotate(-0 87.484719 221.820268)">Mean EditingIndex</text>
     </g>
     <g id="LineCollection_4">
-     <path d="M 407.226594 318.830625  L 414.426594 318.830625  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
+     <path d="M 165.110844 219.300268  L 172.310844 219.300268  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
     </g>
     <g id="line2d_70">
      <g>
-      <use xlink:href="#m99c14fd26d" x="407.226594" y="318.830625" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m99c14fd26d" x="165.110844" y="219.300268" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_71">
      <g>
-      <use xlink:href="#m99c14fd26d" x="414.426594" y="318.830625" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m99c14fd26d" x="172.310844" y="219.300268" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_72" />
     <g id="line2d_73">
      <g>
-      <use xlink:href="#md8d29ab07d" x="410.826594" y="318.830625" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#md8d29ab07d" x="168.710844" y="219.300268" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="text_70">
-     <text style="font-size: 7.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="423.786594" y="321.350625" transform="rotate(-0 423.786594 321.350625)">High-editing fraction</text>
+     <text style="font-size: 7.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="181.670844" y="221.820268" transform="rotate(-0 181.670844 221.820268)">High-editing fraction</text>
     </g>
    </g>
   </g>

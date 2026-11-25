@@ -1,5 +1,7 @@
 # PNAS reconceptualization plan: determinants and limits of A-to-I RNA editing
 
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
+
 This plan was completed before revision of the manuscript. It distinguishes the
 newer, leakage-controlled ADARPro campaign in this repository from upstream
 AdarEdit analyses retained in the adjacent historical repository snapshot. The

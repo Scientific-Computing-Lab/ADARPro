@@ -227,10 +227,10 @@
     <text style="font-weight: 700; font-size: 6.3px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #2a9d67" x="200.167602" y="101.859144" transform="rotate(-0 200.167602 101.859144)">F1</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="87.99956" y="141.516696" transform="rotate(-0 87.99956 141.516696)">+ valid labels</text>
+    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="87.99956" y="135.502735" transform="rotate(-0 87.99956 135.502735)">+ valid labels</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="158.104586" y="141.516696" transform="rotate(-0 158.104586 141.516696)">+ pair-aware weighting</text>
+    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: middle; fill: #68737d" x="158.104586" y="135.502735" transform="rotate(-0 158.104586 135.502735)">+ pair-aware weighting</text>
    </g>
    <g id="text_19">
     <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="45.936544" y="16.588885" transform="rotate(-0 45.936544 16.588885)">Label expansion and pair weighting both help</text>
@@ -516,70 +516,70 @@
    </g>
    <g id="legend_1">
     <g id="LineCollection_4">
-     <path d="M 388.612169 29.899072  L 394.812169 29.899072  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
+     <path d="M 455.987763 29.899072  L 462.187763 29.899072  " style="fill: none; stroke: #2166ac; stroke-width: 1.5" />
     </g>
     <g id="line2d_52">
      <g>
-      <use xlink:href="#m743a8be18d" x="388.612169" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m743a8be18d" x="455.987763" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_53">
      <g>
-      <use xlink:href="#m743a8be18d" x="394.812169" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#m743a8be18d" x="462.187763" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="line2d_54" />
     <g id="line2d_55">
      <g>
-      <use xlink:href="#mfb3d94e609" x="391.712169" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
+      <use xlink:href="#mfb3d94e609" x="459.087762" y="29.899072" style="fill: #2166ac; stroke: #2166ac" />
      </g>
     </g>
     <g id="text_35">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="399.772169" y="32.069072" transform="rotate(-0 399.772169 32.069072)">AUROC</text>
+     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="32.069072" transform="rotate(-0 467.147762 32.069072)">AUROC</text>
     </g>
     <g id="LineCollection_5">
-     <path d="M 430.22095 29.899072  L 436.42095 29.899072  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
+     <path d="M 455.987763 38.870666  L 462.187763 38.870666  " style="fill: none; stroke: #138d90; stroke-width: 1.5" />
     </g>
     <g id="line2d_56">
      <g>
-      <use xlink:href="#m7babdfb2cc" x="430.22095" y="29.899072" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m7babdfb2cc" x="455.987763" y="38.870666" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_57">
      <g>
-      <use xlink:href="#m7babdfb2cc" x="436.42095" y="29.899072" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#m7babdfb2cc" x="462.187763" y="38.870666" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="line2d_58" />
     <g id="line2d_59">
      <g>
-      <use xlink:href="#md8d29ab07d" x="433.32095" y="29.899072" style="fill: #138d90; stroke: #138d90" />
+      <use xlink:href="#md8d29ab07d" x="459.087762" y="38.870666" style="fill: #138d90; stroke: #138d90" />
      </g>
     </g>
     <g id="text_36">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="441.38095" y="32.069072" transform="rotate(-0 441.38095 32.069072)">AUPRC</text>
+     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="41.040666" transform="rotate(-0 467.147762 41.040666)">AUPRC</text>
     </g>
     <g id="LineCollection_6">
-     <path d="M 471.141919 29.899072  L 477.341919 29.899072  " style="fill: none; stroke: #2a9d67; stroke-width: 1.5" />
+     <path d="M 455.987763 47.84226  L 462.187763 47.84226  " style="fill: none; stroke: #2a9d67; stroke-width: 1.5" />
     </g>
     <g id="line2d_60">
      <g>
-      <use xlink:href="#m7f724fef2e" x="471.141919" y="29.899072" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#m7f724fef2e" x="455.987763" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="line2d_61">
      <g>
-      <use xlink:href="#m7f724fef2e" x="477.341919" y="29.899072" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#m7f724fef2e" x="462.187763" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="line2d_62" />
     <g id="line2d_63">
      <g>
-      <use xlink:href="#maea9429637" x="474.241919" y="29.899072" style="fill: #2a9d67; stroke: #2a9d67" />
+      <use xlink:href="#maea9429637" x="459.087762" y="47.84226" style="fill: #2a9d67; stroke: #2a9d67" />
      </g>
     </g>
     <g id="text_37">
-     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="482.301919" y="32.069072" transform="rotate(-0 482.301919 32.069072)">F1</text>
+     <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="467.147762" y="50.01226" transform="rotate(-0 467.147762 50.01226)">F1</text>
     </g>
    </g>
   </g>
@@ -629,7 +629,7 @@
      </g>
      <g id="text_41">
       <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(197.285231 358.147934)">Shifted</text>
-      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(198.261231 365.142134)">+96 nt</text>
+      <text style="font-size: 6.4px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif" transform="translate(200.130231 365.142134)">96 nt</text>
      </g>
     </g>
    </g>

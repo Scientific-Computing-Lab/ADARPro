@@ -3,7 +3,7 @@
 \input{template_compat.tex}
 \hyphenation{AUROC AUPRC}
 % Printed date (\today: page 1 and footers). The build pins SOURCE_DATE_EPOCH for reproducible PDF metadata.
-\day=24 \month=11 \year=2026
+\day=25 \month=11 \year=2026
 \hypersetup{pdftitle={Evidence-guided search maps predictive information across scales of human RNA editing}}
 
 \articletype{BIOLOGICAL SCIENCES}
@@ -113,7 +113,7 @@ Using the measured spacing directly improves site prediction. The selected predi
 
 \subsection*{Editing differs across tissues, but the tested bulk measurements do not resolve the variation}
 
-Editing outcomes varied among tissues even when genomic site identity was fixed. In a post-hoc analysis of development pairs, \NStrictSwitchSites{} of \NMatchedSitesTwoTissues{} sites observed in at least two individual tissues switched strictly between edited ($\geq 15\%$) and nonedited ($<1\%$) states. Among \NMatchedSitesFourTissues{} sites observed in all four tissues, \AllFourRangeFifteenPct{}\% spanned at least 15 EditingIndex points. Rankings of pairs by their observed mean EditingIndex, using identical site sets, still correlated across every tissue pair ($\rho=\PairMeanEditingRhoMin{}\text{--}\PairMeanEditingRhoMax{}$; SI Appendix, Fig.~\SIref{fig:s7_context}). Tissue-associated site differences coexist with correlated substrate rankings.
+Editing outcomes varied among tissues even when genomic site identity was fixed. In a post-hoc analysis of development pairs, \NStrictSwitchSites{} of \NMatchedSitesTwoTissues{} sites observed in at least two individual tissues switched strictly between edited ($\geq\PositiveThresholdPct{}\%$) and nonedited ($<\NegativeThresholdPct{}\%$) states. Among \NMatchedSitesFourTissues{} sites observed in all four tissues, \AllFourRangeFifteenPct{}\% spanned at least 15 EditingIndex points. Rankings of pairs by their observed mean EditingIndex, using identical site sets, still correlated across every tissue pair ($\rho=\PairMeanEditingRhoMin{}\text{--}\PairMeanEditingRhoMax{}$; SI Appendix, Fig.~\SIref{fig:s7_context}). Tissue-associated site differences coexist with correlated substrate rankings.
 
 RNA-binding proteins (RBPs) are plausible contributors to these differences because perturbing them can alter editing \cite{Freund2020,QuinonesValdez2019,Park2026,Yi2026}. We tested RBP binding maps from cell lines (ENCODE enhanced cross-linking and immunoprecipitation, eCLIP), sequence-based binding predictions, and tissue-average RBP expression. Sequence-based predictions complemented eCLIP because repeated Alu sequences make binding reads difficult to assign uniquely. These proxies describe binding potential and average abundance, not exposure of the assayed RNA to a regulator in the same cells.
 
