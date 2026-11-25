@@ -1,0 +1,12 @@
+flagship - equal average, 40 bootstrap seeds x 2000 pair resamples (sufficient-statistic implementation)
+       context metric  seeds  better  cannot  lower_min  lower_max  upper_min  upper_max
+        Artery  brier     40       0      40   -0.00813   -0.00747    0.00021    0.00071
+        Artery     f1     40       0      40   -0.00545   -0.00450    0.01062    0.01172
+         Brain  brier     40       0      40   -0.00656   -0.00616    0.00047    0.00095
+         Brain     f1     40       0      40   -0.00684   -0.00624    0.00467    0.00534
+      Combined  brier     40      36       4   -0.00790   -0.00745   -0.00037    0.00008
+      Combined     f1     40       6      34   -0.00061    0.00025    0.01110    0.01203
+         Liver  brier     40      40       0   -0.00915   -0.00848   -0.00061   -0.00017
+         Liver     f1     40      40       0    0.00434    0.00556    0.01989    0.02087
+MuscleSkeletal  brier     40       0      40   -0.00803   -0.00747    0.00036    0.00071
+MuscleSkeletal     f1     40       0      40   -0.01023   -0.00880    0.01026    0.01143

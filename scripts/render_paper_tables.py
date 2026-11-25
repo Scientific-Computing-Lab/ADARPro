@@ -383,9 +383,9 @@ def evidence_map() -> None:
     )
     rbp = "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv"
     add(
-        "RBP binding × bulk abundance",
+        "RBP binding, ILF2/ILF3/STRBP panel",
         "Biological context",
-        "Pooled-score reference (exploratory)",
+        "Pooled-score reference; muscle (exploratory)",
         effect(
             "auroc", select(rbp, "auroc", model="baseline_plus_biological_suppressors")
         ),
@@ -501,7 +501,7 @@ def evidence_map() -> None:
 \setlength{\tabcolsep}{1.8pt}
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
-\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information and, as measured spacing in the second stage, site-level ranking, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section~\ref{si:benchmark}). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
+\caption{\textbf{Targeted weighting and local representation yield clearer gains than most tested model extensions.} Genomic geometry adds pair-level information and, as measured spacing in the second stage, site-level ranking, whereas the tested contextual proxies lack consistent site-level gains. Each row names its comparator; different outcomes and references prevent a common ranking of effect sizes. Rows that name no tissue or endpoint count are skeletal-muscle development comparisons, except the descriptive last row. Values are percentage-point medians with 95\% pair-clustered intervals unless noted. RBP, transcript/repeat, chromatin, and target/contact screens reuse pooled first-stage OOF scores and remain exploratory, not fully nested (section~\ref{si:benchmark}). ``Not supported'' concerns the tested formulation and selection criterion.}\label{tab:evidencemap}\\
 \toprule
 Axis & Hypothesis & Comparator & Primary effect [95\% CI] & Secondary behavior & Evidence status & Interpretation \\
 \midrule

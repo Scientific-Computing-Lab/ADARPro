@@ -1,0 +1,18 @@
+== flagship - equal average: Brier split into refinement (ranking) and calibration; F1 frozen vs best
+       context  d_brier  d_refinement  d_calibration_loss  d_f1_frozen  d_f1_best
+        Artery -0.00366      -0.00426             0.00060      0.00314    0.00127
+         Brain -0.00278      -0.00360             0.00082     -0.00078    0.00348
+         Liver -0.00447      -0.00533             0.00086      0.01270    0.00536
+MuscleSkeletal -0.00350      -0.00347            -0.00002      0.00033    0.00327
+      Combined -0.00391      -0.00479             0.00088      0.00557    0.00338
+mean: d_brier -0.00366 = d_refinement -0.00429 + d_calibration 0.00063
+
+== AUROC gain over equal average: graph/CNN re-weighting vs the gap term (frozen weights, no refit)
+       context  d_auroc_total  d_auroc_from_reweighting  d_auroc_from_gap_term  d_auprc_total  d_auprc_from_gap_term  graph_to_cnn_weight_ratio_on_logits
+        Artery        0.00558                   0.00044                0.00514        0.00962                0.00905                              0.78985
+         Brain        0.00444                   0.00054                0.00390        0.00645                0.00581                              0.69774
+         Liver        0.00708                  -0.00056                0.00765        0.00724                0.00783                              1.18881
+MuscleSkeletal        0.00464                  -0.00024                0.00488        0.00548                0.00570                              1.07916
+      Combined        0.00497                   0.00048                0.00448        0.00586                0.00547                              0.63625
+check: max|AUROC(full linear score) - AUROC(flagship)| = 0.00e+00; max|AUROC(g+c logit sum) - AUROC(equal avg)| = 0.00e+00
+mean d_auroc total 0.00534: re-weighting 0.00013, gap term 0.00521

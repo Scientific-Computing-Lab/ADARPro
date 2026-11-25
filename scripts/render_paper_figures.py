@@ -1318,7 +1318,7 @@ def evidence_table() -> pd.DataFrame:
         (
             "Substrate & cellular context",
             "Biological context",
-            "RBP binding × bulk expression*",
+            "RBP binding × bulk abundance*",
             "not supported",
             "No consistent screen gain",
         ),
@@ -2563,32 +2563,32 @@ def supplementary_figures(output: Path, source: Path) -> None:
     selected = []
     specs = [
         (
-            "RBP suppressors",
+            "ILF2/ILF3/STRBP panel, muscle",
             "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_biological_suppressors"},
         ),
         (
-            "All predicted RBP binding",
+            "All predicted RBP binding, muscle",
             "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_all_predicted_binding"},
         ),
         (
-            "Matched random features",
+            "Matched random features, muscle",
             "experiments/runs/residual_pilot/MuscleSkeletal/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_matched_random"},
         ),
         (
-            "IRAlu geometry",
+            "Inverted-Alu geometry, muscle",
             "experiments/runs/genomic_residual_v2/MuscleSkeletal/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_geometry"},
         ),
         (
-            "H3K36me3, Liver",
+            "H3K36me3, liver",
             "experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_h3k36me3_multiscale_occupancy"},
         ),
         (
-            "H3K36me3 +1 Mb control",
+            "H3K36me3 +1 Mb control, liver",
             "experiments/runs/chromatin_residual/Liver/pair_bootstrap_ci.csv",
             {"model": "baseline_plus_shift1mb_control"},
         ),
