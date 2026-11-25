@@ -1,10 +1,12 @@
 # Reproducibility
 
+*This document mainly records the first-round submission and its first-round predictor; the current paper's selected predictor is listed in the identities below and recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+
 ## Immutable scientific identities
 
 - Upstream AdarEdit: `Scientific-Computing-Lab/AdarEdit` at
   `5c8b57d70cdc2eb1c5e168431013275bcc9ed0c5`.
-- Final selected family: `adarpro_pair_local_equal_logit_ensemble`.
+- First-round predictor family: `adarpro_pair_local_equal_logit_ensemble`.
 - Fusion: fixed 0.5/0.5 average of component logits; weights were not searched.
 - Frozen development code revision:
   `0f50fac33bec8bad325e6745d83ceaacebe42fc1`.
@@ -14,6 +16,13 @@
   `ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e`.
 - Canonical-test state: `final_consumed`, one evaluation, consumed
   2026-08-25 04:28:30 UTC.
+- Selected predictor family: `adarpro_gap_stage_graph_cnn_alone_5seed`
+  (`models/final_v2`).
+- Its frozen code revision: `251d98a218d9ccee49695b4beedd4cdc98c4d4e2`.
+- Its final pipeline manifest (`provenance/final_pipeline_manifest_v3.json`)
+  SHA-256: `568c8b9b397c75680be362f7912df0337ed535cd97f9b19d59a8525249ef628f`.
+- Its locked metrics (`results/adarpro/final_locked_test_v3/metrics.csv`)
+  SHA-256: `cb4d84c072380fd1c1c9c87c46d23def2a9d4eaf7cfde624d00f4706b658bfa0`.
 
 The original research workspace is preserved separately. The public release
 normalizes only machine-local paths; the source and release hashes for every
@@ -127,4 +136,8 @@ Development deltas are never added arithmetically to published test metrics.
 - `provenance/unified_model_selection_policy.json`: preregistered unified gates.
 - `provenance/unified_development_decision.json`: development-only decision.
 - `provenance/source_workspace_inventory.csv`: source-to-release inventory.
+- `provenance/final_pipeline_manifest_v3.json`: frozen identity of the selected predictor.
+- `provenance/model_selection_policy_v2.json` and `provenance/model_selection_policy_v2_amendment1.json`:
+  selection policy for the selected predictor's evaluation.
+- `provenance/test_quarantine_v3.json`: state and input hashes for that evaluation.
 - `provenance/release_manifest.sha256`: curated checkout integrity.

@@ -347,7 +347,7 @@
     <path d="M 64.085234 180.315375  L 399.463234 180.315375  " style="fill: none; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square" />
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="64.085234" y="13.907375" transform="rotate(-0 64.085234 13.907375)">Preregistered unified model did not surpass the two-model combination</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="64.085234" y="13.907375" transform="rotate(-0 64.085234 13.907375)">Unified model did not surpass the two-model combination</text>
    </g>
   </g>
  </g>

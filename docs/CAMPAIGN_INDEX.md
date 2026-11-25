@@ -1,5 +1,7 @@
 # ADARPro campaign index
 
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+
 This index maps the full campaign from hypothesis to evidence and decision.
 It is organized scientifically rather than as a leaderboard. `Combined` is a
 pooled GTEx endpoint, not a fifth tissue.
@@ -43,7 +45,7 @@ pooled GTEx endpoint, not a fifth tissue.
 | IRAlu-specific pretraining | Large task-matched unlabeled corpus may enable future transfer | >288,000 benchmark-excluded opposite-orientation pairs found; isoform connectivity, foldability, and redundancy controls unresolved | Defer as a new-data program | Feasibility only |
 | In vivo structure | Cellular structural state explains realized versus predicted duplexes | No tissue/donor-matched scalable structural resource supports a powered benchmark test | Defer; not a negative result | Resource feasibility |
 | Donor/sample state | Matched ADAR, interferon, splicing, and composition resolve tissue averaging | Editing outcomes are not available donor-matched at benchmark scale | Defer; not a negative result | Resource feasibility |
-| Fixed prediction integration | Pair-first whole-duplex-only and local-augmented graph predictors contain complementary errors | Prespecified 50:50 equal-logit fusion improved ranking/F1 and natural-prevalence performance; no weight search | **Select and freeze** | Development OOF/validation |
+| Fixed prediction integration | A pair-first whole-duplex-only graph predictor and a graph predictor with an added target/helix-partner local encoder contain complementary errors | Prespecified 50:50 equal-logit fusion improved ranking/F1 and natural-prevalence performance; no weight search | **Select and freeze** | Development OOF/validation |
 | Unified end-to-end model | Joint representations exploit the same principles better than fixed prediction fusion | Preregistered 65,698-parameter model underperformed ensemble in AUROC/AUPRC in every fold; worse Brier; repair gate not opened | Reject before test access | Preregistered development |
 | Final canonical evaluation | Frozen selected model improves original published benchmark | Positive AUROC/AUPRC/F1 pair-clustered intervals in all five endpoints; descriptive matched-recall FP reductions | Final locked result | One-use canonical test |
 

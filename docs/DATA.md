@@ -25,6 +25,18 @@ Principal resources include:
 
 - GRCh38 primary assembly FASTA (Ensembl release 84), source URL and SHA-256 in
   `provenance/grch38_reference.json`;
+- UCSC hg38 FASTA (`hg38.fa.gz`,
+  https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz; 455
+  sequences, 3,209,286,105 bp; original download date unavailable), uncompressed
+  SHA-256 `5be01555d98347fdb3714dc84c6f77c9d8bc774adcf32c6f7a8fa06f5baf5e51`,
+  used by `src/adarpro/mapping/bed_pair_gaps.py` to measure the spacing between
+  the paired Alus (identity in
+  `data/derived/genomic_mapping/bed_pair_gaps.provenance.json`);
+- GTEx v8 median expression for the RBP panel, retrieved from the GTEx Portal API
+  (https://gtexportal.org/api/v2) by `python -m adarpro.expression.gtex`, which
+  writes the raw API responses and the derived tables under
+  `data/external/gtex_expression/` (SHA-256 values in
+  `provenance/excluded_artifacts.csv`);
 - AdarEdit GTEx per-site EditingIndex tables, source and five SHA-256 values in
   `provenance/gtex_editing_tables.json`;
 - ENCODE eCLIP and H3K36me3 datasets, accessions/checksums in
@@ -104,7 +116,17 @@ Four deterministic derived matrices were excluded from Git because each is
 
 Their exact sizes and SHA-256 identities are in
 `provenance/excluded_artifacts.csv`; feature-building code, compact summaries,
-input identities, and downstream results are retained.
+input identities, and downstream results are retained. To regenerate them from
+the repository root, in this order:
+
+1. `python -m adarpro.rbp.rbpnet_predict --models-zip <RBPNet archive>` writes
+   `data/derived/rbp/rbpnet/rbpnet_site_features.parquet`. The archive is Zenodo
+   record 10185223 (doi:10.5281/zenodo.10185223), checked by size and MD5.
+2. `python -m adarpro.features.predicted_context` writes
+   `predicted_rbp_context_long.parquet`, `predicted_rbp_context_wide.parquet`
+   and `residual_model_matrix.parquet` under `data/derived/features/` from its
+   default inputs (the site master, RBPNet and PrismNet site features, GTEx
+   context expression, eCLIP context and mappability).
 
 ## Exploratory checkpoints and upstream archive
 

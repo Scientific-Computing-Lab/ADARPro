@@ -77,7 +77,7 @@ Genomic coordinates were reconstructed with the original strand-aware transforma
 
 \subsection*{Test quarantine, grouped folds, and inference}
 
-Canonical test paths and SHA-256 values were registered before development. Supplied-checkpoint reproduction permitted aggregate metrics; the reported models were scored on the canonical test once, in a single session, under an authorization bound to the frozen manifest. Discovery used the published train and validation pairs divided deterministically into \NOuterFolds{} outer folds by pair ID. In direct neural comparisons, training and preprocessing excluded both the outer fold and a separate internal-validation fold, which selected checkpoints and thresholds. Each neural OOF prediction therefore excluded its pair from training and selection.
+Canonical test paths and SHA-256 values were registered before development. Supplied-checkpoint reproduction permitted aggregate metrics; the selected predictor and the equal-weight average were scored on the canonical test once, in a single session, under an authorization bound to the frozen manifest. Discovery used the published train and validation pairs divided deterministically into \NOuterFolds{} outer folds by pair ID. In direct neural comparisons, training and preprocessing excluded both the outer fold and a separate internal-validation fold, which selected checkpoints and thresholds. Each neural OOF prediction therefore excluded its pair from training and selection.
 
 The early RNA-binding protein (RBP), genomic, chromatin, native-context folding, target-geometry, and initial substrate-profile residual screens used pooled \texttt{baseline\_oof\_logit} values. Their second-stage fitting and selection excluded the outer pair fold, but first-stage models generating second-stage training scores could include that fold. Consequently these are exploratory pooled-score screens, not fully nested end-to-end evaluations. Their shared-reference contrasts do not remove this dependency. Later hierarchical gates, stronger substrate-profile gates, and foundation fusion used explicitly outer-isolated first-stage fits. Pair-level geometry and matched-site tissue models used outcome-independent inputs and did not reuse the pooled baseline logits. Fully nested replication of the early screens remains necessary before treating their null increments as independently validated measurement limits.
 
@@ -201,7 +201,7 @@ The canonical benchmark is balanced for direct comparison, so its precision is n
 
 \input{generated/table_s7_natural_prevalence.tex}
 
-\section{Preregistered unified end-to-end experiment}\label{si:unified}
+\section{Unified end-to-end experiment under preregistered decision rules}\label{si:unified}
 
 Before the final test, a separate protocol specified one connected model. A shared three-layer graph attention encoder produced whole-duplex and focal-node states; the aligned local convolutional neural network (CNN) supplied the third view. The three projected representations and their pairwise elementwise interactions entered a 64-unit fusion layer, while a training-only substrate head carried fixed loss weight \UnifiedAuxWeight{}. The connected model had \UnifiedParameters{} trainable parameters versus \EnsembleParameters{} parameters across the two independently trained components. Training used pair-first class balance, \UnifiedEpochs{} epochs, Adam at learning rate $10^{-3}$ and weight decay $10^{-4}$, batch size \UnifiedBatchSize{}, and seed \UnifiedBaseSeed{}. The staged decision rules were preregistered and applied unchanged.
 
@@ -210,7 +210,7 @@ The unified model's AUROC and AUPRC were below the two-model combination in ever
 \begin{figure}[H]
 \centering
 \includesvg[width=0.84\textwidth]{figures/figureS4_unified_negative_result.svg}
-\caption{\textbf{Joint training worsens ranking and probability error relative to the two-model combination.} The connected model did not improve on independently trained, fixed-weight predictions in the preregistered muscle comparison; F1 was also lower. Bars are 95\% pair-clustered bootstrap intervals for unified minus the two-model combination in development OOF data. Negative AUROC/AUPRC differences and positive Brier differences are adverse. The branch stopped before the final test.}
+\caption{\textbf{Joint training worsens ranking and probability error relative to the two-model combination.} The connected model did not improve on independently trained, fixed-weight predictions in the muscle comparison; F1 was also lower. Bars are 95\% pair-clustered bootstrap intervals for unified minus the two-model combination in development OOF data. Negative AUROC/AUPRC differences and positive Brier differences are adverse. The branch stopped before the final test.}
 \label{fig:s4}
 \end{figure}
 

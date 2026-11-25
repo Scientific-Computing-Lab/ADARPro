@@ -2693,7 +2693,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     figure.tight_layout()
     save(figure, output, "figureS3_natural_prevalence")
 
-    # S4: preregistered unified comparison.
+    # S4: unified comparison (preregistered decision rules).
     unified = sources.read_csv(
         ROOT
         / "experiments/runs/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"
@@ -2745,7 +2745,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
     )
     axis.set_xlabel("Unified − two-model combination (percentage points)")
     axis.set_title(
-        "Preregistered unified model did not surpass the two-model combination",
+        "Unified model did not surpass the two-model combination",
         loc="left",
         fontweight="bold",
     )

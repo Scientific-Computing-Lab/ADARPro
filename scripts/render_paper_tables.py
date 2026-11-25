@@ -765,7 +765,7 @@ def unified() -> None:
         "table_s8_unified.tex",
         r"""\begin{table}[H]
 \centering
-\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the preregistered skeletal-muscle development protocol, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
+\caption{\textbf{The joint model loses ranking, classification, and probability accuracy.} In the skeletal-muscle development comparison, the unified architecture has lower AUROC, AUPRC, and F1 and higher Brier error than the two-model combination, and the branch stopped before the final test. Pair-clustered intervals give unified-minus-combination differences; positive Brier differences are adverse.}\label{tab:unified}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule

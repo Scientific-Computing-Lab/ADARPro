@@ -1,5 +1,7 @@
 # 07 — Final locked test
 
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+
 Status: complete. The canonical test authorization was consumed exactly once.
 
 ## Frozen candidate and execution

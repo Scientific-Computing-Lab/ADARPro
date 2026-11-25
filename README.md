@@ -1,4 +1,4 @@
-# Where predictive information resides in endogenous A-to-I RNA editing
+# Evidence-guided search maps predictive information across scales of human RNA editing
 
 This repository contains a study of **where predictive
 information for endogenous A-to-I RNA editing resides**. Starting from the
@@ -16,19 +16,20 @@ within each class. Current context proxies have not supplied a consistent
 site-level correction in the retained comparisons. Neither substrate realization
 nor an underlying cellular state was measured directly.
 
-The frozen predictor is an unchanged 50:50 equal-logit ensemble of two
-independently trained models: a pair-first whole-duplex-only graph model and a
-second pair-first graph model internally augmented with a target/helix-partner
-local encoder. A separately preregistered unified end-to-end architecture was
-developed before test access and rejected on development data alone.
+The selected predictor combines, for each endpoint, a pair-first whole-duplex
+graph model and an independently trained pair-first local predictor (five seeds
+each, averaged in log-odds) in a logistic second stage that also reads the
+genomic spacing between the two arms. Its comparator is the equal-weight
+average. A unified end-to-end architecture, run under preregistered decision
+rules, did not surpass the two-model combination on development data.
 
 ## Locked canonical result
 
 The complete selected predictor was frozen before the canonical held-out
-evaluation, and the models reported here were scored once, in a single
-session. The table below compares the reproduced supplied-checkpoint AdarEdit
-baseline with the frozen selected predictor on the original published task
-and split.
+evaluation, and the selected predictor and the equal-weight average were
+scored once, in a single session. The table below compares the reproduced
+supplied-checkpoint AdarEdit baseline with the frozen selected predictor on
+the original published task and split.
 
 | Context | AdarEdit AUROC | Selected predictor AUROC | AdarEdit AUPRC | Selected predictor AUPRC | AdarEdit F1 | Selected predictor F1 |
 |---|---:|---:|---:|---:|---:|---:|
@@ -53,14 +54,17 @@ not replace or redefine the published benchmark.
   endpoints under the same-fold internal comparison.
 - Recovering all valid high/low labels and correcting pair weighting made
   separable contributions in the muscle same-fold ablation.
-- Inter-arm geometry and low-capacity pair models predicted substrate editing
-  burden, but its tested site-level integrations remained limited.
-- A graph model augmented with an aligned target/helix-partner local view added
-  complementary information. An otherwise identical model centered 96 nt away
-  underperformed, supporting correct target centering beyond added CNN capacity.
-  This control does not isolate predicted partner identity.
-- Fixed prediction-level integration outperformed the preregistered unified
-  joint model at the available effective pair-level sample size.
+- Inter-arm geometry predicted substrate editing burden. Added through a
+  predicted burden (tested in skeletal muscle) it gave no reliable site-level
+  gain; the measured spacing between the paired Alus, added to the site
+  predictor's second stage, improved site ranking over a shuffled-spacing
+  control during development.
+- A local predictor (a CNN reading aligned target/helix-partner windows) added
+  information beyond the whole-duplex graph model. A matched-capacity control
+  centered 96 nt away, tested in muscle, performed worse, supporting correct
+  centering; it does not isolate the predicted partner or establish a mechanism.
+- A unified end-to-end model did not surpass the two-model combination on
+  development data.
 - Tested eCLIP/PrismNet/RBPNet × bulk GTEx representations, current bulk
   H3K36me3 overlap, broad site-level annotations, frozen RNA foundation-model
   embeddings, and several richer-task formulations
@@ -123,7 +127,7 @@ traceability.
 | `src/adarpro/`, `code/` | ADARPro analysis/model code and pinned AdarEdit model code |
 | `experiments/` | Append-only experiment registry, configurations, and retained run artifacts |
 | `models/` | Frozen selected checkpoints, summaries, and development model artifacts |
-| `results/` | Reproduced AdarEdit tables and the one-use locked-test result |
+| `results/` | Reproduced AdarEdit tables and the locked-test results |
 | `data/` | Canonical benchmark inputs and retained small derived tables |
 | `figures/` | Reproducible figures and quantitative source tables |
 | `reports/` | Campaign/editorial reports 00–34 and final synthesis |

@@ -316,7 +316,7 @@ def add_protocol_claims() -> None:
             value,
             display,
             unit,
-            "preregistered model specification",
+            "model specification (development rerun)",
             unified_path,
             claim_id.removeprefix("unified_"),
             "Results; SI unified-model section",
@@ -326,8 +326,9 @@ def add_protocol_claims() -> None:
 
     unified_config_path = unified_path.parent / "outer_0/config.json"
     unified_config = json.loads(unified_config_path.read_text(encoding="utf-8"))
-    decision_path = ROOT / "provenance/unified_development_decision.json"
-    decision = json.loads(decision_path.read_text(encoding="utf-8"))
+    # the rerun's own job record (same seed as the August decision record, 20260821)
+    unified_job_path = ROOT / "experiments/runs/step6/unified/unified_target_local_interaction_aux_v1/MuscleSkeletal/job.json"
+    unified_job = json.loads(unified_job_path.read_text(encoding="utf-8"))
     for claim_id, quantity, value, unit, macro, selector in (
         (
             "unified_batch_size",
@@ -339,11 +340,11 @@ def add_protocol_claims() -> None:
         ),
         (
             "unified_base_seed",
-            "Unified preregistered base seed",
-            decision["comparison"]["seed"],
+            "Unified base seed",
+            unified_job["seed"],
             "seed",
             "UnifiedBaseSeed",
-            "comparison.seed",
+            "seed",
         ),
     ):
         add(
@@ -352,8 +353,8 @@ def add_protocol_claims() -> None:
             value,
             f"{int(value)}" if unit == "seed" else f"{int(value):,}",
             unit,
-            "preregistered model specification",
-            unified_config_path if claim_id == "unified_batch_size" else decision_path,
+            "model specification (development rerun)",
+            unified_config_path if claim_id == "unified_batch_size" else unified_job_path,
             selector,
             "SI unified-model section",
             "integer (seed identifier)" if unit == "seed" else "integer with thousands separator",
@@ -373,7 +374,7 @@ def add_protocol_claims() -> None:
         ensemble_parameters,
         f"{ensemble_parameters:,}",
         "parameters",
-        "preregistered comparator specification",
+        "comparator specification",
         counts_path,
         "total_parameters (= components.graph + components.cnn_alone)",
         "Results; SI unified-model section",
@@ -929,11 +930,11 @@ def add_local_and_unified_claims() -> None:
             value = float(unified_metrics.loc[model, metric])
             add(
                 f"unified_{model}_{metric}",
-                f"Muscle preregistered {model} {metric}",
+                f"Muscle unified experiment {model} {metric}",
                 value,
                 f"{value:.4f}",
                 "metric",
-                "preregistered development OOF",
+                "development OOF under preregistered decision rules",
                 unified_metrics_path,
                 f"model={model}; column={metric}",
                 "Results; Figure S; Table S",
@@ -960,7 +961,7 @@ def add_local_and_unified_claims() -> None:
                 value,
                 f"{value:.4f}",
                 "metric difference",
-                "preregistered development OOF pair-clustered bootstrap",
+                "development OOF pair-clustered bootstrap under preregistered decision rules",
                 unified_ci_path,
                 f"candidate=unified; reference=frozen_ensemble; metric={metric}; column={part}",
                 "Results; Figure S4; Table S8",
