@@ -21,7 +21,8 @@ graph model and an independently trained pair-first local predictor (five seeds
 each, averaged in log-odds) in a logistic second stage that also reads the
 genomic spacing between the two arms. Its comparator is the equal-weight
 average. A unified end-to-end architecture, run under preregistered decision
-rules, did not surpass the two-model combination on development data.
+rules, did not surpass the two-model combination in skeletal-muscle
+development data.
 
 ## Locked canonical result
 
@@ -59,13 +60,14 @@ not replace or redefine the published benchmark.
   predicted burden (tested in skeletal muscle) it gave no reliable site-level
   gain; the measured spacing between the paired Alus, added to the site
   predictor's second stage, improved site ranking over a shuffled-spacing
-  control during development.
+  control during development (in skeletal muscle, not in every training run).
 - A local predictor (a CNN reading aligned target/helix-partner windows) added
-  information beyond the whole-duplex graph model. A matched-capacity control
+  information beyond the whole-duplex graph model in muscle and liver during
+  development. A matched-capacity control
   centered 96 nt away, tested in muscle, performed worse, supporting correct
   centering; it does not isolate the predicted partner or establish a mechanism.
-- A unified end-to-end model did not surpass the two-model combination on
-  development data.
+- A unified end-to-end model did not surpass the two-model combination in
+  skeletal-muscle development data.
 - Tested eCLIP/PrismNet/RBPNet × bulk GTEx representations, current bulk
   H3K36me3 overlap, broad site-level annotations, frozen RNA foundation-model
   embeddings, and several richer-task formulations

@@ -1359,6 +1359,37 @@ def add_gap_stage_claims() -> None:
         "Results (genomic organization)",
         "integer",
     )
+    # The same controls across the five tracked training runs (same module and settings; development OOF only).
+    spread_path = ROOT / "experiments/runs/step11b/gap_controls_runs/run_spread_summary.csv"
+    spread = pd.read_csv(spread_path)
+    if not (spread.runs == 5).all():
+        raise RuntimeError(f"{spread_path}: not every row has five runs; the SI says five")
+    controls = spread[spread.reference.isin(["no_gap_stage", "shuffled_gap_stage"])]
+    others = controls[controls.endpoint != "MuscleSkeletal"]
+    if len(others) != 4 * 2 * 4 or not (others.runs_excluding_zero_favourable == 5).all():
+        raise RuntimeError("gap-stage run spread: outside muscle, not every AUROC/AUPRC/F1/Brier interval excludes zero "
+                           "in all five runs; revise the Table S4 caption")
+    status = "development OOF pair-clustered bootstrap (five training runs)"
+    for reference, tag in (("no_gap_stage", "NoGap"), ("shuffled_gap_stage", "Shuffled")):
+        row = controls[(controls.endpoint == "MuscleSkeletal") & (controls.reference == reference)
+                       & (controls.metric == "auroc")]
+        if len(row) != 1:
+            raise RuntimeError(f"{spread_path}: expected one MuscleSkeletal/{reference}/auroc row, got {len(row)}")
+        row = row.iloc[0]
+        excluding = int(row["runs_excluding_zero_favourable"])
+        if excluding == 5:  # main p.4 says the muscle gains were not stable across training runs
+            raise RuntimeError(f"muscle AUROC vs {reference} excludes zero in all five runs; revise main p.4")
+        mean = 100 * float(row["mean_median"])
+        add(f"gap_runs_muscle_vs_{tag.lower()}_auroc_mean",
+            f"Skeletal muscle gap stage minus {reference} AUROC, mean of the five run medians", mean, f"{mean:.2f}",
+            "percentage points", status, spread_path,
+            f"endpoint=MuscleSkeletal; reference={reference}; metric=auroc; mean_median",
+            "SI gap-control table caption", "two decimals (percentage points)", f"GapRunsMuscleVs{tag}AUROCMean")
+        add(f"gap_runs_muscle_vs_{tag.lower()}_auroc_runs_excluding_zero",
+            f"Training runs (of five) whose skeletal-muscle AUROC interval vs {reference} excludes zero", excluding,
+            str(excluding), "runs", status, spread_path,
+            f"endpoint=MuscleSkeletal; reference={reference}; metric=auroc; runs_excluding_zero_favourable",
+            "SI gap-control table caption; SI P", "integer", f"GapRunsMuscleVs{tag}AUROCExcl")
 
 
 def add_seed_averaging_claims() -> None:

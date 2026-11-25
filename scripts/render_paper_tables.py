@@ -328,7 +328,7 @@ def evidence_map() -> None:
         rf"AUROC {min(gap_med['no_gap_stage']):+.2f} to {max(gap_med['no_gap_stage']):+.2f} / "
         rf"{min(gap_med['shuffled_gap_stage']):+.2f} to {max(gap_med['shuffled_gap_stage']):+.2f} points (5 endpoints)",
         f"vs shuffled: AUROC, AUPRC, Brier intervals exclude 0 in {excludes['auroc']}, {excludes['auprc']}, "
-        f"{excludes['brier']} of 5; F1 in {excludes['f1']} of 5",
+        f"{excludes['brier']} of 5; F1 in {excludes['f1']} of 5; muscle not in every training run",
         "Selected",
         "The measured spacing improves site ranking.",
         "experiments/runs/step11b/gap_controls",
@@ -888,7 +888,7 @@ def gap_controls() -> None:
         r"""\begin{table}[H]
 \centering
 \footnotesize
-\caption{\textbf{The measured genomic spacing improves site prediction beyond matched second-stage controls.} The selected predictor's second stage combines the two networks' scores with the logarithm of the spacing between the Alu arms. Each row gives the selected predictor minus a comparator: the same second stage without spacing, the same stage given shuffled spacing, or the equal average of the two networks without a second stage. Values are percentage-point medians with 95\% pair-clustered intervals (2,000 replicates) on development out-of-fold predictions from one training run; for Brier score, negative values are improvements.}\label{tab:gapcontrols}
+\caption{\textbf{The measured genomic spacing improves site prediction beyond matched second-stage controls.} The selected predictor's second stage combines the two networks' scores with the logarithm of the spacing between the Alu arms. Each row gives the selected predictor minus a comparator: the same second stage without spacing, the same stage given shuffled spacing, or the equal average of the two networks without a second stage. Values are percentage-point medians with 95\% pair-clustered intervals (2,000 replicates) on development out-of-fold predictions from one training run; for Brier score, negative values are improvements. Across the five tracked training runs, the skeletal-muscle AUROC gain averaged \GapRunsMuscleVsNoGapAUROCMean{} points over the stage without spacing and \GapRunsMuscleVsShuffledAUROCMean{} over shuffled spacing, with intervals excluding zero in \GapRunsMuscleVsNoGapAUROCExcl{} and \GapRunsMuscleVsShuffledAUROCExcl{} of the five runs; in the other four endpoints every AUROC, AUPRC, F1, and Brier interval against both controls excluded zero in all five runs (\texttt{experiments/runs/step11b/gap\_controls\_runs/}).}\label{tab:gapcontrols}
 \begin{tabular}{llrrrr}
 \toprule
 Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
