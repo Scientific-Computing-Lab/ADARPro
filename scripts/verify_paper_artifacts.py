@@ -90,7 +90,7 @@ def verify_pnas_fields() -> None:
 
 def verify_claim_traceability() -> None:
     # The first-round claim map (paper/first_round_records/claim_traceability.csv) is provenance only;
-    # every number in the current paper is traced by the numerical claim ledger (U4, WD51).
+    # every number in the current paper is traced by the numerical claim ledger.
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     with ledger_path.open(newline="", encoding="utf-8") as handle:
         ledger = list(csv.DictReader(handle))
@@ -137,7 +137,7 @@ def verify_quantitative_sources() -> None:
                 "historical image-model assets entered the active figure build"
             )
 
-    # Evaluation 3 (R9): the paper reports AdarEdit and the selected predictor from final_locked_test_v3.
+    # Evaluation 3: the paper reports AdarEdit and the selected predictor from final_locked_test_v3.
     locked = pd.read_csv(V3_METRICS)
     locked = locked[locked.model.isin(V3_MODELS)]
     source = pd.read_csv(PAPER / "source_tables/figure4_locked_metrics.csv")

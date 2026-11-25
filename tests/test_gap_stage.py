@@ -1,4 +1,4 @@
-"""Gap-only second stage (D39/D40). Reference values are computed independently of the code under test where noted:
+"""Gap-only second stage. Reference values are computed independently of the code under test where noted:
 the gap by plain coordinate arithmetic, the planted effect by construction of the synthetic labels."""
 
 from pathlib import Path

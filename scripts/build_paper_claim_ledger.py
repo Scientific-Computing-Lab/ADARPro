@@ -24,7 +24,7 @@ CONTEXT_MACRO = {
     "MuscleSkeletal": "Muscle",
     "Combined": "Combined",
 }
-# Test set (R9): the selected predictor is the gap stage (evaluation 3); AdarEdit is unchanged.
+# Test set: the selected predictor is the gap stage (evaluation 3); AdarEdit is unchanged.
 MODEL_MACRO = {
     sources.TEST_BASELINE: "AdarEdit",
     sources.TEST_CANDIDATE: "ADARPro",
@@ -361,7 +361,7 @@ def add_protocol_claims() -> None:
             macro,
         )
 
-    # PNAS read this from its report's prose; step 11c counts graph + CNN alone from the step-4 checkpoints
+    # The first release read this from its report's prose; the re-run (experiments/runs/step11c/parameter_counts/) counts graph + CNN alone from the trained checkpoints
     report_path = ROOT / "reports/20_unified_end_to_end_result.md"
     counts_path = sources.path(report_path)
     counts = sources.read_json(report_path)
@@ -430,7 +430,7 @@ def add_protocol_claims() -> None:
 
 
 def add_locked_claims() -> None:
-    """Test-set claims (R9: evaluation 3 via paper_sources; the selected predictor is the gap stage)."""
+    """Test-set claims (evaluation 3 via paper_sources; the selected predictor is the gap stage)."""
     pnas_metrics = ROOT / "results/adarpro/final_locked_test/metrics.csv"
     path = sources.path(pnas_metrics)
     frame = sources.read_csv(pnas_metrics)  # AdarEdit and the gap stage only
@@ -573,7 +573,7 @@ def add_locked_claims() -> None:
                 "one decimal after conversion to percent",
                 f"{macro_suffix}{which}",
             )
-    # U3 (WD51): the rescue rate is gross; the text also prints the net false-positive reduction,
+    # The rescue rate is gross; the text also prints the net false-positive reduction,
     # (rescued - new false positives) / baseline false positives, as an endpoint-free range.
     net = ((transitions.loc[CONTEXTS, "fp_rescued"] - transitions.loc[CONTEXTS, "new_fp"])
            / transitions.loc[CONTEXTS, "baseline_fp"]).astype(float)
@@ -613,7 +613,7 @@ def add_locked_claims() -> None:
 
 def add_test_contrast_claims() -> None:
     """Evaluation 3: the selected predictor (gap stage) minus PNAS's selected predictor and minus the equal average,
-    per endpoint, in percentage points (R9). Claims only, plus summary macros, for wording the text may add."""
+    per endpoint, in percentage points. Claims only, plus summary macros, for wording the text may add."""
     path = ROOT / sources.TEST_CONTRASTS
     frame = pd.read_csv(path)
     metrics_path = sources.path(ROOT / "results/adarpro/final_locked_test/metrics.csv")
@@ -1262,9 +1262,9 @@ def add_post_analysis_claims() -> None:
     )
     within = pd.read_csv(within_path)
     for context in ("Liver", "MuscleSkeletal"):
-        # The *WithinEnsemble* macros are the selected predictor's (D48): the gap_stage rows. Their claim ids keep
+        # The *WithinEnsemble* macros are the selected predictor's: the gap_stage rows. Their claim ids keep
         # PNAS's "fixed_ensemble" (PNAS's selected predictor) so the ledger's ids stay those of
-        # step11b/claim_sources.csv; the selector names the row actually read.
+        # the source map in scripts/paper_sources.py; the selector names the row actually read.
         for candidate, claim_tag, label, stem in (
             ("target_local", "target_local", "target_local", "WithinLocal"),
             ("gap_stage", "fixed_ensemble", "selected predictor (gap_stage)", "WithinEnsemble"),
@@ -1296,7 +1296,7 @@ def add_post_analysis_claims() -> None:
 
 
 def add_gap_stage_claims() -> None:
-    """Gap stage vs its controls (step 11b, D51): development OOF, one run (seed 20260821), 2,000 pair replicates.
+    """Gap stage vs its controls (experiments/runs/step11b/gap_controls): development OOF, one run (seed 20260821), 2,000 pair replicates.
     Also the sign of the frozen final second stage's spacing weight in every endpoint (models/final_v2)."""
     references = (("no_gap_stage", "NoGap"), ("shuffled_gap_stage", "Shuffled"), ("equal_average", "EqualAverage"))
     medians: dict[tuple[str, str], list[float]] = {}
@@ -1393,7 +1393,7 @@ def add_gap_stage_claims() -> None:
 
 
 def add_seed_averaging_claims() -> None:
-    """Five-seed vs single-seed selected predictor (step 11 seed curve, development OOF; D5)."""
+    """Five-seed vs single-seed selected predictor (seed-averaging curve, experiments/runs/step11/seed_curve; development OOF)."""
     medians = []
     for context in CONTEXTS:
         path = ROOT / f"experiments/runs/step11/seed_curve/{context}/d_avg.csv"
@@ -1421,7 +1421,7 @@ def add_seed_averaging_claims() -> None:
 
 
 def add_reformer_claims() -> None:
-    """Reformer RBP error screen on the selected predictor's development OOF predictions (R8, COMPUTE D57-D64).
+    """Reformer RBP error screen on the selected predictor's development OOF predictions (experiments/runs/r8_reformer).
     Numbers printed in SI P.3; guards keep the paragraph's wording true."""
     import json
     run = ROOT / "experiments/runs/r8_reformer/gap_seed20260821"
@@ -1435,7 +1435,7 @@ def add_reformer_claims() -> None:
             raise RuntimeError(f"Reformer: {pc} is weighted toward dsRNA binders; SI P.3 says neither is")
     if not reading["sweep_max_abs_d"] < 0.2:
         raise RuntimeError("Reformer: aggregate binding separates false positives at some confidence cut")
-    status = "development OOF, four tissues pooled (R8)"
+    status = "development OOF, four tissues pooled (Reformer screen)"
     use = "SI P.3 (RBPs, Reformer screen)"
     add("reformer_models", "Reformer RNA-binding models scored", pcs["models"], str(pcs["models"]), "models", status,
         run / "pc_summary.json", "models", use, "integer", "ReformerModels")
@@ -1460,7 +1460,7 @@ def add_reformer_claims() -> None:
         add(f"reformer_{pc.lower()}_variance", f"Share of variance of the 225 z-scored Reformer models on {pc}", share,
             f"{share:.0f}", "percent", status, run / "pc_summary.json", f"variance_explained.{pc}", use, "integer percent",
             f"Reformer{word}Variance")
-    # Fable item 18: SI P.3 states the screen's small-effect rule and the largest individual-model effect.
+    # SI P.3 states the screen's small-effect rule and the largest individual-model effect.
     screen = ROOT / "src/adarpro/evaluation/reformer_error_screen.py"
     found = re.search(r"^SMALL_EFFECT = ([0-9.]+)$", screen.read_text(encoding="utf-8"), flags=re.M)
     if not found:

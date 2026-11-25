@@ -1,5 +1,5 @@
 """How often do the knife-edge flagship - equal-average verdicts flip across bootstrap seeds?
-Brier and F1 only (fast numpy), 2000 pair resamples per seed, 40 seeds (1..40), my resampler, every endpoint.
+Brier and F1 only (fast numpy), 2000 pair resamples per seed, 40 seeds (1..40), the pair resampler below, every endpoint.
 Outputs: s03c_borderline_seeds.csv, s03c_borderline_seeds.txt
 """
 from __future__ import annotations

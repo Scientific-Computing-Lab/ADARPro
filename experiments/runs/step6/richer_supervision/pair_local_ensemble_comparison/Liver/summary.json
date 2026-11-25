@@ -8,5 +8,5 @@
   "canonical_test_access": false,
   "pairs": 508,
   "rows": 15509,
-  "scope": "Liver canonical development OOF; fixed pair plus local ensemble (step 6: pair_balanced = graph, local = CNN alone, pair_local_ensemble = graph + CNN alone; step-4 run, seed 20260821)"
+  "scope": "Liver canonical development OOF; fixed pair plus local ensemble (pair_balanced = graph, local = CNN alone, pair_local_ensemble = graph + CNN alone; networks from experiments/runs/step4, seed 20260821)"
 }

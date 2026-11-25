@@ -1,5 +1,5 @@
-"""Step 11b (D48): the gap stage at natural prevalence (guards) and the within-duplex gap_stage role. The strong check of
-the natural-prevalence module is on real data: its refitted stage must reproduce step 9's predictions exactly."""
+"""The gap stage at natural prevalence (guards) and the within-duplex gap_stage role. The strong check of
+the natural-prevalence module is on real data: its refitted stage must reproduce the gap-stage run's predictions exactly."""
 
 import numpy as np
 import pandas as pd

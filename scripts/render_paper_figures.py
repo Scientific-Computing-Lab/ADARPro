@@ -1767,7 +1767,7 @@ GAP_STAGE_COLUMNS = ["graph_logit", "cnn_logit", "gap"]  # whole-duplex graph, l
 
 
 def final_predictor_specification() -> dict:
-    """The selected predictor as frozen in models/final_v2/gap_stage/<endpoint>/frozen_gap_stage.json (D45): the
+    """The selected predictor as frozen in models/final_v2/gap_stage/<endpoint>/frozen_gap_stage.json: the
     second stage's input columns and the number of seeds averaged per component, identical in every endpoint."""
     per_endpoint = {}
     for context in CONTEXTS:
@@ -2215,7 +2215,7 @@ def figure3(output: Path, source: Path) -> None:
 def final_tables(
     source: Path,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    # Test set (R9): evaluation 3 through paper_sources; AdarEdit and the selected predictor (gap stage) only.
+    # Test set: evaluation 3 through paper_sources; AdarEdit and the selected predictor (gap stage) only.
     metrics = sources.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
     rows = []
     for context in CONTEXTS:
@@ -2330,7 +2330,7 @@ def figure4(output: Path, source: Path) -> None:
     )
     ax_b.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_b.invert_yaxis()
-    f1_values = np.concatenate([base.f1.to_numpy(), cand.f1.to_numpy()])  # limits follow the data (R9)
+    f1_values = np.concatenate([base.f1.to_numpy(), cand.f1.to_numpy()])  # limits follow the data
     ax_b.set_xlim(np.floor(100 * f1_values.min() - 1.0) / 100, f1_values.max() + 0.008)
     ax_b.set_xlabel("F1")
     ax_b.set_title("Absolute held-out F1", loc="left", fontweight="bold")
@@ -2361,7 +2361,7 @@ def figure4(output: Path, source: Path) -> None:
     ax_c.axvline(0, color=COLORS["ink"], lw=0.7)
     ax_c.set_yticks(y, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_c.invert_yaxis()
-    brier_high = float((-brier["lower"]).max())  # right end of the widest reduction interval (R9: data-driven)
+    brier_high = float((-brier["lower"]).max())  # right end of the widest reduction interval (data-driven)
     step = 0.02 if brier_high > 0.04 else 0.01
     top = (np.floor(brier_high / step) + 1) * step
     ax_c.set_xticks(np.arange(0.0, top + step / 2, step))
@@ -3094,7 +3094,7 @@ def supplementary_figures(output: Path, source: Path) -> None:
         "pair_first",
         "focal",
         "target_local",
-        "gap_stage",  # the selected predictor (D48); the equal-weight average is in the source file
+        "gap_stage",  # the selected predictor; the equal-weight average is in the source file
     ]
     model_labels = [
         "Internal\nreference",

@@ -8,5 +8,5 @@
   "canonical_test_access": false,
   "pairs": 585,
   "rows": 5967,
-  "scope": "Muscle canonical development OOF; unified model (with the fix) versus the selected fixed ensemble (step 6: frozen_ensemble = graph + CNN alone development OOF, local = CNN alone; step-4 run, seed 20260821)"
+  "scope": "Muscle canonical development OOF; unified model (with the fix) versus the selected fixed ensemble (frozen_ensemble = graph + CNN alone development OOF, local = CNN alone; networks from experiments/runs/step4, seed 20260821)"
 }

@@ -19,7 +19,7 @@ Inputs: the per-row canonical-test predictions of that session, which are not de
 results are; `results/adarpro/final_locked_test_v3/`). The scripts therefore document the computation; they cannot
 be rerun from a public clone. They are copies of the scripts as run, with absolute local paths replaced by
 `<repository>` (the repository root) and `<this folder>` (the folder that held the scripts and their outputs when they
-were run), and with the first line of each docstring reworded to drop internal labels; nothing else was changed.
+were run), and with the opening docstring lines reworded to drop internal labels; nothing else was changed.
 
 Note on `06_drop_topk.csv`: its producing script is not part of this deposit. The method: each pair's influence on the AUROC difference was measured by leaving it out
 (influence = the difference on all rows minus the difference without that pair); pairs were ordered by influence, the

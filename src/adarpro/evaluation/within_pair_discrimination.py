@@ -22,7 +22,7 @@ MODEL_LABELS = {
     "focal": "Focal representation",
     "target_local": "Target-centered local",
     "fixed_ensemble": "Fixed ensemble",
-    "gap_stage": "Gap stage",  # PNAS integration (D48): only ever supplied through --prediction
+    "gap_stage": "Gap stage",  # the selected predictor: only ever supplied through --prediction
 }
 
 

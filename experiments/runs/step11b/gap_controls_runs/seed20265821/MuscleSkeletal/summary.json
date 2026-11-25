@@ -9,5 +9,5 @@
   "canonical_test_access": false,
   "pairs": 585,
   "rows": 5967,
-  "scope": "MuscleSkeletal canonical development OOF, run 20265821 (Fable item 12): the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone; same module and settings as step 11b gap_controls (run 20260821)"
+  "scope": "MuscleSkeletal canonical development OOF, run 20265821: the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone; same module and settings as experiments/runs/step11b/gap_controls (run 20260821)"
 }

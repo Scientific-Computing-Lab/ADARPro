@@ -3,8 +3,8 @@
 
 The printed controls (SI Table S4) come from one training run, 20260821, compared by
 `python -m adarpro.evaluation.richer_supervision` (experiments/runs/step11b/gap_controls/<endpoint>/). The same module,
-with the same settings (2,000 pair resamples, bootstrap seed 20260821), was run on the four further step-9 runs
-(experiments/runs/step11b/gap_controls_runs/seed<run>/<endpoint>/). This script reads the five pair_bootstrap_ci.csv
+with the same settings (2,000 pair resamples, bootstrap seed 20260821), was run on the four further training runs
+(experiments/runs/step9/seed<run>; outputs in experiments/runs/step11b/gap_controls_runs/seed<run>/<endpoint>/). This script reads the five pair_bootstrap_ci.csv
 files per endpoint and writes, for the selected second stage minus each control:
 
   run_spread.csv          one row per endpoint x reference x metric x run (median and 95% pair-clustered interval)

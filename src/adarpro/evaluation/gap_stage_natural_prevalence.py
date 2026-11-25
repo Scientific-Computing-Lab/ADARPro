@@ -1,13 +1,13 @@
-"""The gap stage at natural prevalence (PNAS integration step 11b, D48), development rows only.
+"""The gap stage at natural prevalence, development rows only.
 
-For each outer fold k, the gap stage is fitted exactly as in step 9 (``gap_stage.fit_arm_model``: PNAS's gate scheme on
-the canonical rows, scores from the outer-k checkpoints, read from step 11's score cache) and applied to that fold's
+For each outer fold k, the gap stage is fitted exactly as in the gap-stage runs (``gap_stage.fit_arm_model``: PNAS's gate scheme on
+the canonical rows, scores from the outer-k checkpoints, read from the run's all-row score cache) and applied to that fold's
 raw high/low sites. Those sites' graph and CNN-alone scores are the outer-k models' natural-prevalence predictions
 (``expanded_natural_prevalence``), and the gap is the pair's log1p(start2 - end1) from ``pair_intrinsic_features``.
 The threshold is the stage's inner-fold F1 threshold, as for every natural-prevalence model.
 
-Anchor (stops on failure): the fitted stage applied to the canonical rows of fold k reproduces the run's step-9 gap
-stage out-of-fold predictions exactly. Output: an out-of-fold prediction file in the format of PNAS's comparison
+Anchor (stops on failure): the fitted stage applied to the canonical rows of fold k reproduces the run's gap-stage
+out-of-fold predictions (experiments/runs/step9) exactly. Output: an out-of-fold prediction file in the format of PNAS's comparison
 script (``richer_supervision``).
 """
 
@@ -71,7 +71,7 @@ def run(
     if set(master["source_split"].unique()) - {"train", "valid"}:
         raise RuntimeError("natural-prevalence gap stage received a sealed split")
     canonical = master[master["context"] == context].copy().reset_index(drop=True)
-    gaps, _, _ = shuffled_gap_values(pair_gap_table(canonical), DEFAULT_SHUFFLE_SEED)  # exactly step 9's table
+    gaps, _, _ = shuffled_gap_values(pair_gap_table(canonical), DEFAULT_SHUFFLE_SEED)  # exactly the gap-stage runs' table
     all_gaps = pair_gap_table(master)  # every development pair, for raw sites of pairs outside this context's rows
     scores = pd.read_parquet(score_cache)
     natural = natural_rows(graph_natural_path, cnn_natural_path, context)
@@ -96,7 +96,7 @@ def run(
         anchor_max = max(anchor_max, float(np.max(np.abs(saved["probability"].to_numpy()
                                                            - canonical_outer["probability"].to_numpy()))))
         if not np.array_equal(saved["prediction"].to_numpy(), canonical_outer["prediction"].to_numpy()):
-            raise RuntimeError(f"fold {outer_fold}: the refitted stage does not reproduce step 9's predictions")
+            raise RuntimeError(f"fold {outer_fold}: the refitted stage does not reproduce the gap-stage run's predictions")
         rows = natural[natural["development_fold"] == outer_fold].copy()
         features = pd.DataFrame({"graph_logit": logit(rows["graph_probability"]),
                                  "cnn_logit": logit(rows["cnn_probability"]), "gap": rows["gap"].to_numpy()})
@@ -106,7 +106,7 @@ def run(
         outputs.append(rows)
         selections.append({"outer_fold": outer_fold, **selection})
     if anchor_max > 1e-9:
-        raise RuntimeError(f"refitted stage does not reproduce step 9 exactly: {anchor_max}")
+        raise RuntimeError(f"refitted stage does not reproduce the gap-stage run exactly: {anchor_max}")
     predictions = pd.concat(outputs, ignore_index=True).sort_values("example_id").reset_index(drop=True)
     if len(predictions) != len(natural) or predictions["example_id"].duplicated().any():
         raise RuntimeError("natural-prevalence rows lost or duplicated")
@@ -148,12 +148,12 @@ def main() -> None:
     parser.add_argument("--repository", type=Path, default=Path.cwd())
     parser.add_argument("--site-master", type=Path, default=Path("data/derived/site_master.parquet"))
     parser.add_argument("--context", required=True)
-    parser.add_argument("--score-cache", type=Path, required=True, help="step 11's all-row scores for the run")
+    parser.add_argument("--score-cache", type=Path, required=True, help="the run's all-row score cache (experiments/runs/step11/scores)")
     parser.add_argument("--graph-natural", type=Path, required=True)
     parser.add_argument("--cnn-natural", type=Path, required=True)
-    parser.add_argument("--anchor", type=Path, required=True, help="the run's step-9 gap-stage oof_predictions.parquet")
+    parser.add_argument("--anchor", type=Path, required=True, help="the run's gap-stage oof_predictions.parquet (experiments/runs/step9)")
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--seed", type=int, required=True, help="the run seed (the stage's solver seed, as step 9)")
+    parser.add_argument("--seed", type=int, required=True, help="the run seed (the stage's solver seed, as in the gap-stage run)")
     parser.add_argument("--run-tag")
     args = parser.parse_args()
     root = args.repository.resolve()

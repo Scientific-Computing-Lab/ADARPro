@@ -252,29 +252,29 @@
   ],
   "inputs": {
     "Artery": {
-      "fixed_ensemble": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/ensembles/graph_cnn/Artery/oof_predictions.parquet",
-      "pair_first": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced/Artery/oof_predictions.parquet",
-      "target_local": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced_cnn/Artery/oof_predictions.parquet"
+      "fixed_ensemble": "experiments/runs/step4/ensembles/graph_cnn/Artery/oof_predictions.parquet",
+      "pair_first": "experiments/runs/step4/binary_pair_balanced/Artery/oof_predictions.parquet",
+      "target_local": "experiments/runs/step4/binary_pair_balanced_cnn/Artery/oof_predictions.parquet"
     },
     "Brain": {
-      "fixed_ensemble": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/ensembles/graph_cnn/Brain/oof_predictions.parquet",
-      "pair_first": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced/Brain/oof_predictions.parquet",
-      "target_local": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced_cnn/Brain/oof_predictions.parquet"
+      "fixed_ensemble": "experiments/runs/step4/ensembles/graph_cnn/Brain/oof_predictions.parquet",
+      "pair_first": "experiments/runs/step4/binary_pair_balanced/Brain/oof_predictions.parquet",
+      "target_local": "experiments/runs/step4/binary_pair_balanced_cnn/Brain/oof_predictions.parquet"
     },
     "Combined": {
-      "fixed_ensemble": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/ensembles/graph_cnn/Combined/oof_predictions.parquet",
-      "pair_first": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced/Combined/oof_predictions.parquet",
-      "target_local": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced_cnn/Combined/oof_predictions.parquet"
+      "fixed_ensemble": "experiments/runs/step4/ensembles/graph_cnn/Combined/oof_predictions.parquet",
+      "pair_first": "experiments/runs/step4/binary_pair_balanced/Combined/oof_predictions.parquet",
+      "target_local": "experiments/runs/step4/binary_pair_balanced_cnn/Combined/oof_predictions.parquet"
     },
     "Liver": {
-      "fixed_ensemble": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/ensembles/graph_cnn/Liver/oof_predictions.parquet",
-      "pair_first": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced/Liver/oof_predictions.parquet",
-      "target_local": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced_cnn/Liver/oof_predictions.parquet"
+      "fixed_ensemble": "experiments/runs/step4/ensembles/graph_cnn/Liver/oof_predictions.parquet",
+      "pair_first": "experiments/runs/step4/binary_pair_balanced/Liver/oof_predictions.parquet",
+      "target_local": "experiments/runs/step4/binary_pair_balanced_cnn/Liver/oof_predictions.parquet"
     },
     "MuscleSkeletal": {
-      "fixed_ensemble": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/ensembles/graph_cnn/MuscleSkeletal/oof_predictions.parquet",
-      "pair_first": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced/MuscleSkeletal/oof_predictions.parquet",
-      "target_local": "/private8/Projects/Eli_S/ADARPro_pnas/experiments/runs/step4/binary_pair_balanced_cnn/MuscleSkeletal/oof_predictions.parquet"
+      "fixed_ensemble": "experiments/runs/step4/ensembles/graph_cnn/MuscleSkeletal/oof_predictions.parquet",
+      "pair_first": "experiments/runs/step4/binary_pair_balanced/MuscleSkeletal/oof_predictions.parquet",
+      "target_local": "experiments/runs/step4/binary_pair_balanced_cnn/MuscleSkeletal/oof_predictions.parquet"
     }
   },
   "mixed_pairs": {

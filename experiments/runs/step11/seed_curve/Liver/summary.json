@@ -41,7 +41,7 @@
       "predictions_identical": true
     }
   },
-  "averaging": "each network's scores averaged over the subset's runs in log-odds, then one gap stage (D45)",
+  "averaging": "each network's scores averaged over the subset's runs in log-odds, then one gap stage",
   "bootstrap_replicates": 1000,
   "canonical_test_access": false,
   "context": "Liver",

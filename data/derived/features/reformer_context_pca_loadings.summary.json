@@ -11,7 +11,7 @@
   ],
   "orientation": "each PC oriented so its loadings sum positive",
   "orthonormal_max_error": 2.1094237467877974e-15,
-  "source": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_pca_loadings.csv",
+  "source": "<external scoring workspace>/results/R5_pca_loadings.csv (not deposited; identified by source_sha256)",
   "source_sha256": "2508acb57c761531f7d2d0d7e67507bedddbfdc960965788a1872c4897734ce2",
   "output_sha256": "2508acb57c761531f7d2d0d7e67507bedddbfdc960965788a1872c4897734ce2",
   "matches_feature_summary_record": true

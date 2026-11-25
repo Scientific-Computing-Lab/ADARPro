@@ -120,7 +120,7 @@ def test_readout_equals_the_hybrid_local_branch():
 
 # (e) mode routing
 def test_the_cnn_mode_routes_to_the_graph_free_network():
-    # step 6 added the shifted CNN alone (an alignment control, never a final mode)
+    # the shifted CNN alone is an alignment control, never a final mode
     assert CNN in MODES and CNN in FINAL_MODES and CNN_MODES == (CNN, "binary_pair_balanced_shifted_cnn")
     assert "binary_pair_balanced_shifted_cnn" not in FINAL_MODES
     for mode in CNN_MODES:

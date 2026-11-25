@@ -1,9 +1,9 @@
-"""Reformer RBP error screen on a predictor's development out-of-fold predictions (PNAS integration R8, D57).
+"""Reformer RBP error screen on a predictor's development out-of-fold predictions.
 
 Question: does sequence-predicted RBP binding (Reformer, 225 eCLIP-trained models) separate a predictor's confident
 errors from correctly classified sites at the same editing level?
 
-Design (fixed before any look, ``pnas_integration/r8_reformer/PLAN.md``):
+Design (fixed before any look):
 
 - Rows: the predictor's development out-of-fold predictions for the four individual tissues, pooled (Combined is
   excluded: it re-uses the same sites).
@@ -17,9 +17,8 @@ Design (fixed before any look, ``pnas_integration/r8_reformer/PLAN.md``):
   correct, with a 95% interval from resampling whole duplexes (B = 1000) and BH-FDR across the features.
 - Also: edited against unedited (does not involve the predictor), and a sweep of the false-alarm confidence cut.
 
-The statistics follow the earlier error screen this design comes from line for line; the random streams (one for
-the placebo, one for every bootstrap, both seeded) are consumed in the same order, so the same inputs give the same
-numbers.
+The random streams (one for the placebo, one for every bootstrap, both seeded) are consumed in a fixed order, so the
+same inputs give the same numbers.
 
 Inputs are outcome-independent site features on canonical train+valid rows only; no test file is read.
 """
@@ -231,7 +230,7 @@ def screen(frame: pd.DataFrame, feat_cols: list[str], seed: int = SEED) -> dict[
 
 
 def read_panel(df: pd.DataFrame) -> dict:
-    """The fixed reading rule (PLAN.md Part A section 4) applied to one panel's composition-controlled rows."""
+    """The fixed reading rule (set with the design, before any look) applied to one panel's composition-controlled rows."""
     real = df[df["visibility"] != "placebo"]
     sig = real[(real["q_compCtrl"] < 0.05) & (np.sign(real["lo_compCtrl"]) == np.sign(real["hi_compCtrl"]))]
     agg = real[real["feature"].isin(["total_binding", "PC1"])]

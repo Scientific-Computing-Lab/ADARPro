@@ -1,4 +1,4 @@
-"""Seed-averaging curve for the gap-stage predictor (PNAS integration step 11, D45), development rows only.
+"""Seed-averaging curve for the gap-stage predictor, development rows only.
 
 For every subset of the development runs (sizes 1..5), each network's out-of-fold-model scores are averaged over the
 subset's runs in log-odds, and one gap stage is fitted on top with PNAS's gate scheme (``gap_stage.fit_arm``: fit on
@@ -6,7 +6,8 @@ the three training folds, penalty and threshold on the inner fold, applied to th
 the same averaged scores: the equal average of the two averaged networks (threshold on the inner fold, as
 ``fixed_checkpoint_ensemble``) and each averaged network alone (threshold on the inner fold).
 
-Anchor: every one-run subset must reproduce step 9's gap-stage and equal-average out-of-fold predictions exactly.
+Anchor: every one-run subset must reproduce that run's gap-stage and equal-average out-of-fold predictions
+(experiments/runs/step9) exactly.
 Headline: d_avg = metric(all runs averaged) - mean metric of the single runs, with a pair bootstrap (runs fixed).
 """
 
@@ -56,7 +57,7 @@ def four(labels: np.ndarray, probability: np.ndarray, prediction: np.ndarray) ->
 def subset_predictions(canonical, context, gaps, scores: dict, subset: tuple) -> dict[str, pd.DataFrame]:
     """Out-of-fold predictions of the four models for one subset of runs (canonical order within each fold).
 
-    The stage's solver seed is the subset's first run seed, so a one-run subset is fitted exactly as step 9 fitted
+    The stage's solver seed is the subset's first run seed, so a one-run subset is fitted exactly as the gap-stage run fitted
     that run (gap_stage --seed <run seed>)."""
     seed = subset[0]
     labels = canonical["label"].to_numpy()
@@ -144,7 +145,7 @@ def run(
                         anchor[f"seed{subset[0]}_{name}"] = {"max_abs_probability_difference": dp,
                                                              "predictions_identical": same}
                         if dp > 1e-9 or not same:
-                            raise RuntimeError(f"one-run subset does not reproduce step 9: {subset} {name} ({dp})")
+                            raise RuntimeError(f"one-run subset does not reproduce its gap-stage run: {subset} {name} ({dp})")
             if k == len(seeds):
                 kept["all"] = predictions
     curve = pd.DataFrame(rows)
@@ -197,7 +198,7 @@ def run(
         "scope": "seed-averaging curve of the gap-stage predictor; development rows only",
         "context": context, "runs": seeds, "subsets": int(curve["subset"].nunique()),
         "rows": len(canonical), "pairs": int(canonical["pair_id"].nunique()),
-        "averaging": "each network's scores averaged over the subset's runs in log-odds, then one gap stage (D45)",
+        "averaging": "each network's scores averaged over the subset's runs in log-odds, then one gap stage",
         "anchor_step9": anchor, "maximum_reproduction_difference": {str(s): r for s, r in reproduction.items()},
         "bootstrap_replicates": bootstrap_replicates, "canonical_test_access": False,
     }
@@ -246,7 +247,7 @@ def main() -> None:
                         help="SEED=PATH, PATH holding binary_pair_balanced/<context> and binary_pair_balanced_cnn/<context>")
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--anchor-dir", type=Path, help="step 9's runs (…/step9); one-run subsets must reproduce them")
+    parser.add_argument("--anchor-dir", type=Path, help="the gap-stage runs (experiments/runs/step9); one-run subsets must reproduce them")
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--bootstrap-replicates", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=20260821)

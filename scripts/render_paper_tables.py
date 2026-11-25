@@ -33,7 +33,7 @@ def write(name: str, content: str) -> None:
 
 
 def locked_metrics() -> None:
-    df = pd.read_csv(SOURCE / "figure4_locked_metrics.csv")  # written by render_paper_figures from evaluation 3 (R9)
+    df = pd.read_csv(SOURCE / "figure4_locked_metrics.csv")  # written by render_paper_figures from evaluation 3
     model_names = {
         sources.TEST_BASELINE: "AdarEdit",
         sources.TEST_CANDIDATE: "Selected predictor",
@@ -933,7 +933,7 @@ Endpoint & AUROC & AUPRC & F1 \\
 
 
 def test_contrasts() -> None:
-    """Selected predictor minus each comparator on the canonical test (evaluation 3, R9): point difference with 95%
+    """Selected predictor minus each comparator on the canonical test (evaluation 3): point difference with 95%
     pair-clustered interval, in percentage points. Aggregate contrasts file only."""
     labels = {
         "adaredit_reference": "Reproduced AdarEdit",

@@ -9,5 +9,5 @@
   "canonical_test_access": false,
   "pairs": 612,
   "rows": 19391,
-  "scope": "Brain canonical development OOF, run 20260821 (step 11b, D51): the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone"
+  "scope": "Brain canonical development OOF, run 20260821: the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone"
 }

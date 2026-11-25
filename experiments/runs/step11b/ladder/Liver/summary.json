@@ -9,5 +9,5 @@
   "canonical_test_access": false,
   "pairs": 508,
   "rows": 15509,
-  "scope": "Liver canonical development OOF, run 20260821 (step 11b, D48): pair_balanced = our graph, local = CNN alone, pair_local_ensemble = graph + CNN alone, gap_stage = the flagship (step 9)"
+  "scope": "Liver canonical development OOF, run 20260821: pair_balanced = pair-first graph, local = CNN alone, pair_local_ensemble = graph + CNN alone, gap_stage = the selected gap-stage predictor"
 }

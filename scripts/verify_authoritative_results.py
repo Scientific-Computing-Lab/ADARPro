@@ -34,7 +34,7 @@ EXPECTED_MANIFEST_HASH = (
 EXPECTED_METRICS_HASH = (
     "ddd5352c48e84bb121e21d89e5d1777a3657caa06f28fa94ef1e8b3c58a74a0e"
 )
-# Evaluation 3 (the integration's selected predictor), pinned like the first.
+# Evaluation 3 (the revision's selected predictor), pinned like the first.
 FINAL_V3 = ROOT / "results/adarpro/final_locked_test_v3"
 V3_CANDIDATE = "adarpro_gap_stage_graph_cnn_alone_5seed"
 EXPECTED_V3_MANIFEST_HASH = (
@@ -57,7 +57,7 @@ POST_HOC_DEVELOPMENT_RUNS = {
         "post_hoc_matched_site_pair_propensity_stability"
     ),
 }
-# The 2026-11 integration (branch Eli/updates-and-improvements) appended 273 runs,
+# The 2026-11 revision (second development round) appended 273 runs,
 # including the evaluation recorded in provenance/test_quarantine_v3.json. Keep
 # the count exact and name every row with canonical-test access, as above.
 INTEGRATION_RUN_COUNT = 273

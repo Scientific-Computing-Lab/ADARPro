@@ -1,4 +1,4 @@
-"""Step 11 (D45-D46): seed averaging in log-odds, the seed-curve CLI guards, and the frozen final gap stage.
+"""Seed averaging in log-odds, the seed-curve CLI guards, and the frozen final gap stage.
 Expected values are computed independently of the code under test where noted (numpy log-odds, a fresh sklearn fit)."""
 
 import numpy as np

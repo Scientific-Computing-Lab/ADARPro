@@ -43,50 +43,50 @@
     "PC4",
     "PC5"
   ],
-  "source": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_rbp_features.parquet",
+  "source": "<external scoring workspace>/results/R5_rbp_features.parquet (not deposited; identified by source_sha256)",
   "source_sha256": "5222c57fec0e559ba4930ccae957b6edb87474f47c397b615c51b63300e7d56c",
   "output_sha256": "5222c57fec0e559ba4930ccae957b6edb87474f47c397b615c51b63300e7d56c",
-  "producer": "s14 RBP pass, R5 (genomic +/-256), 2026-10-05; decision record s14 decisions.md:107-129",
+  "producer": "Reformer scoring run on genomic +/-256 nt windows, 2026-10-05, outside this repository; scripts and inputs listed under files",
   "window": "hg38 [pos-256, pos+256) around the edited A, reverse-complemented on the minus strand; A at index 255 (+) or 256 (-); one window per site (no partner arm)",
   "scores": "Reformer, 225 RBP models (eCLIP-trained, HepG2/K562 names), per-base score; focal = score at the A; max25 = max over +/-25 nt; total_binding = mean max25 over 225; PC1-PC5 of z-scored max25, oriented so loadings sum positive",
-  "fasta": "/private8/Projects/Eli_S/Alu_sequences/hg38.fa",
-  "site_coordinates": "adarpro/short_context/s3_out/site_master_cropped_foldfix.parquet (equal to the clone's site_master chromosome/position/strand on 79,135/79,135 rows, checked 2026-11-24)",
-  "reformer_repo": "/private8/Projects/Eli_S/0_RBP_Analysis/Reformer (model/Reformer/model.bin)",
+  "fasta": "<local copy of UCSC hg38>/hg38.fa (https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz)",
+  "site_coordinates": "<external scoring workspace>/site_master_cropped_foldfix.parquet (equal to this repository's data/derived/site_master.parquet chromosome/position/strand on 79,135/79,135 rows, checked 2026-11-24)",
+  "reformer_repo": "local checkout of https://github.com/xilinshen/Reformer (model/Reformer/model.bin; revision and model.bin SHA-256 in docs/DATA.md)",
   "cluster_jobs": [
     "32357049",
     "32357050"
   ],
   "files": {
     "build_inputs_script": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/scripts/R5_build_genomic.py",
+      "path": "<external scoring workspace>/scripts/R5_build_genomic.py",
       "sha256": "a9c049bc4296860606cd5007bf5d91ab222bab6009af69ec5af7f6a1c96175a7"
     },
     "score_script": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/scripts/R5_score.py",
+      "path": "<external scoring workspace>/scripts/R5_score.py",
       "sha256": "edfe44201a730134dcc17a254e4f4b7afb4dcdb3cda94a6fcb73c08a64cfa79f"
     },
     "score_sbatch": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/scripts/R5.sbatch",
+      "path": "<external scoring workspace>/scripts/R5.sbatch",
       "sha256": "a0a4ab3f5f5fabe6c3e60bad933d4faf4b2c7d1c7520a0a77e01cbd645a4550d"
     },
     "feature_script": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/scripts/R5b_features.py",
+      "path": "<external scoring workspace>/scripts/R5b_features.py",
       "sha256": "4dd00e6b75ab663ad839bb1a991f42c569036bebeb4f3fd5f775bc8da62622f8"
     },
     "inputs_tsv": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_genomic_inputs.tsv",
+      "path": "<external scoring workspace>/results/R5_genomic_inputs.tsv",
       "sha256": "b16a22e51f98434574d1cc7f2f186ac77b1ca6cb170f87fe0ba37941fc033d75"
     },
     "model_prefix_codes": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R2_prefix_codes.tsv",
+      "path": "<external scoring workspace>/results/R2_prefix_codes.tsv",
       "sha256": "0908b21cf6867ef9b268511bd96eb9dacad690a6f589b9b7ba1450e87c9efc25"
     },
     "scores_csv_gz": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_genomic_scores.csv.gz",
+      "path": "<external scoring workspace>/results/R5_genomic_scores.csv.gz",
       "sha256": "6068fe147d4e861acdccf29231944a51b7a787a5606a5b9db6b8c8f3e82ec3b3"
     },
     "pca_loadings": {
-      "path": "/private8/Projects/Eli_S/adarpro/short_context/s14_mistakes/results/R5_pca_loadings.csv",
+      "path": "<external scoring workspace>/results/R5_pca_loadings.csv",
       "sha256": "2508acb57c761531f7d2d0d7e67507bedddbfdc960965788a1872c4897734ce2"
     }
   }

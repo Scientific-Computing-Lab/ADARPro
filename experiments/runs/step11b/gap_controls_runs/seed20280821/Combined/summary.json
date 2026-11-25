@@ -9,5 +9,5 @@
   "canonical_test_access": false,
   "pairs": 705,
   "rows": 19098,
-  "scope": "Combined canonical development OOF, run 20280821 (Fable item 12): the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone; same module and settings as step 11b gap_controls (run 20260821)"
+  "scope": "Combined canonical development OOF, run 20280821: the gap stage vs the no-gap stage, the shuffled-gap stage and the equal average of graph + CNN alone; same module and settings as experiments/runs/step11b/gap_controls (run 20260821)"
 }

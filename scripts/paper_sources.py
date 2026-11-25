@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-"""Development result files the paper scripts read: PNAS's run -> the run that re-produces it on our models (D48).
+"""Development result files the paper scripts read: PNAS's run -> the run that re-produces it on the current models.
 
 The paper scripts (`build_paper_claim_ledger.py`, `render_paper_figures.py`, `render_paper_tables.py`) name PNAS's
 result paths at their read sites and pass them through this module, which returns the clone file that replaces each
 one and applies the row filter that makes the new file hold the same rows as PNAS's.
 
-The map is COMPUTE's source map (working folder `step11b/claim_sources.csv`, written by `step11b/claim_sources.py`;
-steps 6, 11b and 11c, all FINAL), plus `SIBLINGS`: files of the same PNAS run directories that the scripts also read
-and that COMPUTE's new directories hold under the same name.
+The map (`SOURCES`) covers the re-run directories experiments/runs/step6, step11b and step11c, all final, plus
+`SIBLINGS`: files of the same PNAS run directories that the scripts also read and that the re-run directories hold
+under the same name.
 
 Row filters. Most new files keep PNAS's role names and columns, so the scripts' own role selection stays as it is and
 no filter is needed. Two need one:
   * PNAS's `binary_pair_balanced/<endpoint>/pair_bootstrap_ci.csv` has no role columns (it holds only graph minus
     reference); the step-11b ladder holds every candidate against every other, so its graph-minus-reference rows are
     selected.
-  * the step-11b natural-prevalence `metrics.csv` adds the gap stage (flagship, "Selected predictor") to PNAS's four
-    models; the rows are restricted to those five (WRITING shows the selected predictor in Fig. S3 and Table S7,
-    D48), so any further role COMPUTE adds there does not reach the paper unannounced.
+  * the step-11b natural-prevalence `metrics.csv` adds the gap stage ("Selected predictor") to PNAS's four
+    models; the rows are restricted to those five (the paper shows the selected predictor in Fig. S3 and Table S7),
+    so any further role added to that file does not reach the paper unannounced.
 
-Test-set files (R9; D56): PNAS's locked test (`results/adarpro/final_locked_test/`, `figures/final/source_tables/`)
+Test-set files: PNAS's locked test (`results/adarpro/final_locked_test/`, `figures/final/source_tables/`)
 -> evaluation 3 (`results/adarpro/final_locked_test_v3/`, `figures/final_v3/source_tables/`), aggregate files only
 (never the per-row `*_predictions.parquet` / `*_pair_bootstrap.parquet`). The v3 files keep PNAS's names and columns;
 "the selected predictor" is now `TEST_CANDIDATE` (the gap stage), AdarEdit stays `TEST_BASELINE`. Two need a row
@@ -61,7 +61,7 @@ for _endpoint in ("Liver", "MuscleSkeletal"):
         {},
     )
 for _pnas, _new in (
-    # step 11b: PNAS's graph experiments retrained in our campaign, and the flagship's post-hoc analyses
+    # experiments/runs/step11b: PNAS's graph experiments retrained on the current models, and the selected predictor's post-hoc analyses
     ("richer_supervision/pair_balance_comparison/metrics.csv", "step11b/richer_supervision/pair_balance_comparison/metrics.csv"),
     ("richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv",
      "step11b/richer_supervision/pair_balance_comparison/pair_bootstrap_ci.csv"),
@@ -74,7 +74,7 @@ for _pnas, _new in (
     ("post_analysis/within_duplex/within_duplex_summary.csv", "step11b/post_analysis/within_duplex/within_duplex_summary.csv"),
     ("target_local_interpretation/MuscleSkeletal/geometry_strata.csv",
      "step11b/target_local_interpretation/MuscleSkeletal/geometry_strata.csv"),
-    # step 6: the CNN fix and graph + CNN alone
+    # experiments/runs/step6: the local predictor with the partner-lane extension, and graph + CNN alone
     ("richer_supervision/local_alignment_control/MuscleSkeletal/metrics.csv",
      "step6/richer_supervision/local_alignment_control/MuscleSkeletal/metrics.csv"),
     ("richer_supervision/local_alignment_control/MuscleSkeletal/pair_bootstrap_ci.csv",
@@ -82,7 +82,7 @@ for _pnas, _new in (
     ("unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv",
      "step6/unified/comparison_primary/MuscleSkeletal/pair_bootstrap_ci.csv"),
     ("unified/comparison_primary/MuscleSkeletal/metrics.csv", "step6/unified/comparison_primary/MuscleSkeletal/metrics.csv"),
-    # step 11c: the three graph analyses R4 found; the parameter count of graph + CNN alone (R5a)
+    # experiments/runs/step11c: three further graph analyses re-run on the current models; the parameter count of graph + CNN alone
     ("richer_supervision/pair_balance_diagnostic/raw_site_count_quintiles.csv",
      "step11c/richer_supervision/pair_balance_diagnostic/raw_site_count_quintiles.csv"),
     ("richer_supervision/pooling_controls_final/pair_bootstrap_ci.csv",
@@ -91,10 +91,10 @@ for _pnas, _new in (
      "step11c/richer_supervision/natural_prevalence/fixed_ensemble_multitask_comparison/pair_bootstrap_ci.csv"),
 ):
     SOURCES[f"{RUNS}/{_pnas}"] = (f"{RUNS}/{_new}", {})
-# PNAS took the ensemble's parameter count from a report's prose; step 11c counts it from the checkpoints (JSON).
+# PNAS took the ensemble's parameter count from a report's prose; the re-run counts it from the checkpoints (experiments/runs/step11c/parameter_counts/, JSON).
 SOURCES["reports/20_unified_end_to_end_result.md"] = (f"{RUNS}/step11c/parameter_counts/MuscleSkeletal_graph_cnn_alone.json", {})
 
-# Files of the same PNAS run directories that the scripts read, held by COMPUTE's new directories under the same name.
+# Files of the same PNAS run directories that the scripts read, held by the re-run directories under the same name.
 SIBLINGS: dict[str, str] = {
     f"{RUNS}/richer_supervision/pair_local_ensemble_comparison/{_endpoint}/metrics.csv":
         f"{RUNS}/step6/richer_supervision/pair_local_ensemble_comparison/{_endpoint}/metrics.csv"
@@ -105,7 +105,7 @@ SIBLINGS.update({
         f"{RUNS}/step6/richer_supervision/pair_local_ensemble_comparison/MuscleSkeletal/summary.json",
     f"{RUNS}/richer_supervision/local_alignment_control/MuscleSkeletal/summary.json":
         f"{RUNS}/step6/richer_supervision/local_alignment_control/MuscleSkeletal/summary.json",
-    # the unified model's own training run, retrained in step 6 beside its comparison_primary evaluation
+    # the unified model's own training run, retrained (experiments/runs/step6) beside its comparison_primary evaluation
     f"{RUNS}/unified/unified_target_local_interaction_aux_v1/MuscleSkeletal/summary.json":
         f"{RUNS}/step6/unified/unified_target_local_interaction_aux_v1/MuscleSkeletal/summary.json",
     f"{RUNS}/unified/unified_target_local_interaction_aux_v1/MuscleSkeletal/outer_0/config.json":
@@ -114,7 +114,7 @@ SIBLINGS.update({
 for _pnas, _new in SIBLINGS.items():
     SOURCES[_pnas] = (_new, {})
 
-# Test set (R9): PNAS's locked evaluation -> evaluation 3. Aggregate files only.
+# Test set: PNAS's locked evaluation -> evaluation 3. Aggregate files only.
 TEST = "results/adarpro/final_locked_test"
 TEST_V3 = "results/adarpro/final_locked_test_v3"
 TEST_FIGURES = "figures/final/source_tables"
