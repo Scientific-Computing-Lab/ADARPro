@@ -1,4 +1,4 @@
-"""Shared helpers for the independent recompute audit (audit_step14/C_recompute).
+"""Shared helpers for the post-hoc checks in this folder.
 
 Written from scratch with numpy / pandas / scikit-learn only. Nothing from adarpro is imported.
 Definitions were READ (not imported) from these adarpro source lines, and are restated here:

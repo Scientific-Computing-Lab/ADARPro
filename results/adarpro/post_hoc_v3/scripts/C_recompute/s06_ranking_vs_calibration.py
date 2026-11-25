@@ -1,4 +1,4 @@
-"""Claim (i) "the gap stage helps on the test mainly through ranking": descriptive decomposition, no refitting.
+"""The gain over the equal average: ranking versus calibration. Descriptive decomposition, no refitting.
 
 For flagship vs equal average (same 10 networks), per endpoint:
   1. Brier = calibration loss + refinement loss, refinement = Brier after the best monotone (isotonic, PAV)

@@ -1,6 +1,6 @@
 # Final repository and paper audit
 
-*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
 
 The repository-consolidation record below is retained for provenance. Current
 manuscript counts, editorial decisions, and verification status are recorded in

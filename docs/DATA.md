@@ -119,14 +119,19 @@ Their exact sizes and SHA-256 identities are in
 input identities, and downstream results are retained. To regenerate them from
 the repository root, in this order:
 
-1. `python -m adarpro.rbp.rbpnet_predict --models-zip <RBPNet archive>` writes
+1. `python -m adarpro.expression.gtex` downloads the GTEx v8 expression inputs
+   into `data/external/gtex_expression/` (compare with the SHA-256 values in
+   `provenance/excluded_artifacts.csv`).
+2. `python -m adarpro.rbp.rbpnet_predict --models-zip <RBPNet archive>` writes
    `data/derived/rbp/rbpnet/rbpnet_site_features.parquet`. The archive is Zenodo
    record 10185223 (doi:10.5281/zenodo.10185223), checked by size and MD5.
-2. `python -m adarpro.features.predicted_context` writes
+3. `python -m adarpro.features.predicted_context` writes
    `predicted_rbp_context_long.parquet`, `predicted_rbp_context_wide.parquet`
    and `residual_model_matrix.parquet` under `data/derived/features/` from its
    default inputs (the site master, RBPNet and PrismNet site features, GTEx
-   context expression, eCLIP context and mappability).
+   context expression, eCLIP context and mappability). It also rewrites the
+   tracked `prismnet_context_long.parquet` and `prismnet_context_wide.parquet`
+   in the same folder.
 
 ## Exploratory checkpoints and upstream archive
 

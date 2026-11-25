@@ -1,6 +1,6 @@
 # Reproducibility
 
-*This document mainly records the first-round submission and its first-round predictor; the current paper's selected predictor is listed in the identities below and recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+*This document mainly records the first-round submission and its first-round predictor; the current paper's selected predictor is listed in the identities below and recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
 
 ## Immutable scientific identities
 
@@ -137,7 +137,4 @@ Development deltas are never added arithmetically to published test metrics.
 - `provenance/unified_development_decision.json`: development-only decision.
 - `provenance/source_workspace_inventory.csv`: source-to-release inventory.
 - `provenance/final_pipeline_manifest_v3.json`: frozen identity of the selected predictor.
-- `provenance/model_selection_policy_v2.json` and `provenance/model_selection_policy_v2_amendment1.json`:
-  selection policy for the selected predictor's evaluation.
-- `provenance/test_quarantine_v3.json`: state and input hashes for that evaluation.
 - `provenance/release_manifest.sha256`: curated checkout integrity.

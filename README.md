@@ -26,10 +26,11 @@ rules, did not surpass the two-model combination on development data.
 ## Locked canonical result
 
 The complete selected predictor was frozen before the canonical held-out
-evaluation, and the reported results of the selected predictor and the
-equal-weight average were produced in a single session. The table below
-compares the reproduced supplied-checkpoint AdarEdit baseline with the frozen
-selected predictor on the original published task and split.
+evaluation, and the reported canonical-test results of the selected
+predictor and the equal-weight average were produced in a single session.
+The table below compares the reproduced supplied-checkpoint AdarEdit
+baseline with the frozen selected predictor on the original published task
+and split.
 
 | Context | AdarEdit AUROC | Selected predictor AUROC | AdarEdit AUPRC | Selected predictor AUPRC | AdarEdit F1 | Selected predictor F1 |
 |---|---:|---:|---:|---:|---:|---:|

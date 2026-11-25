@@ -1,6 +1,6 @@
 # ADARPro campaign index
 
-*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/summary.json`.*
+*This document records the first-round submission and its first-round predictor; the current paper's selected predictor is recorded in `provenance/final_pipeline_manifest_v3.json` and `results/adarpro/final_locked_test_v3/metrics.csv`.*
 
 This index maps the full campaign from hypothesis to evidence and decision.
 It is organized scientifically rather than as a leaderboard. `Combined` is a
