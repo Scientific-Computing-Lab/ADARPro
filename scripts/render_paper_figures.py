@@ -1318,9 +1318,9 @@ def evidence_table() -> pd.DataFrame:
         (
             "Substrate & cellular context",
             "Biological context",
-            "RBP binding × bulk abundance*",
+            "RBP binding*; abundance in matched sites",
             "not supported",
-            "No consistent screen gain",
+            "No consistent gain",
         ),
         (
             "Substrate & cellular context",

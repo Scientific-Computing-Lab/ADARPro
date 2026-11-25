@@ -12,7 +12,7 @@ Substrate & cellular context,Substrate propensity,Pair geometry / editing burden
 Substrate & cellular context,Substrate propensity,"Genomic spacing, second stage",selected,Beats shuffled spacing
 Substrate & cellular context,Substrate propensity,Hierarchical engagement gate,limited,Ranking gain; unstable F1
 Substrate & cellular context,Biological context,Bulk H3K36me3 overlap*,limited,Metric-specific screen effects
-Substrate & cellular context,Biological context,RBP binding × bulk abundance*,not supported,No consistent screen gain
+Substrate & cellular context,Biological context,RBP binding*; abundance in matched sites,not supported,No consistent gain
 Substrate & cellular context,Biological context,Transcript / repeat annotations*,not supported,No site-level gain
 Substrate & cellular context,Cellular state,Matched donor/cell multimodality,deferred,Matched data unavailable
 Substrate & cellular context,RNA state,Matched in vivo structure / isoforms,deferred,Matched data unavailable

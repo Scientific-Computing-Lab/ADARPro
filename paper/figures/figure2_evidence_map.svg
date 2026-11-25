@@ -504,7 +504,7 @@
     <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="194.926257" transform="rotate(-0 402.970344 194.926257)">Metric-specific screen effects</text>
    </g>
    <g id="text_51">
-    <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="204.274599" transform="rotate(-0 124.006344 204.274599)">RBP binding × bulk abundance*</text>
+    <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="204.274599" transform="rotate(-0 124.006344 204.274599)">RBP binding*; abundance in matched sites</text>
    </g>
    <g id="PathCollection_16">
     <g clip-path="url(#p6dae58ae3d)">
@@ -515,7 +515,7 @@
     <text style="font-size: 6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #c64242" x="330.394344" y="204.134048" transform="rotate(-0 330.394344 204.134048)">Not supported</text>
    </g>
    <g id="text_53">
-    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="204.197935" transform="rotate(-0 402.970344 204.197935)">No consistent screen gain</text>
+    <text style="font-size: 6.25px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="402.970344" y="204.197935" transform="rotate(-0 402.970344 204.197935)">No consistent gain</text>
    </g>
    <g id="text_54">
     <text style="font-size: 6.55px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="124.006344" y="213.555554" transform="rotate(-0 124.006344 213.555554)">Transcript / repeat annotations*</text>
