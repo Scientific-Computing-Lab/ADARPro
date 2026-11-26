@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -984,6 +985,70 @@ Endpoint & Comparator & AUROC & AUPRC & F1 & Brier \\
     )
 
 
+def nonhuman_transfer() -> None:
+    """The frozen selected predictor of each human endpoint on AdarEdit's three nonhuman test sets, without
+    retraining (results/adarpro/nonhuman_transfer). AUROC; differences in AUROC points with 95% region-bootstrap
+    intervals; AUPRC is descriptive."""
+    run = ROOT / "results/adarpro/nonhuman_transfer"
+    contrasts, metrics = pd.read_csv(run / "contrasts.csv"), pd.read_csv(run / "metrics.csv")
+    replicates = json.loads((run / "run_record.json").read_text())["bootstrap"]["replicates"]
+    if replicates != 2000:
+        raise RuntimeError(f"nonhuman transfer: {replicates} replicates, the caption says 2,000")
+    verdict = {"BEATS": "better", "WORSE": "worse"}
+
+    def cell(contrast: str, endpoint: str, species: str) -> pd.Series:
+        rows = contrasts[(contrasts.contrast == contrast) & (contrasts.endpoint == endpoint)
+                         & (contrasts.species == species)]
+        if len(rows) != 1:
+            raise RuntimeError(f"nonhuman transfer: {contrast} {endpoint} {species}: {len(rows)} rows")
+        return rows.iloc[0]
+
+    def auc(endpoint: str, species: str, model: str, column: str = "auroc") -> float:
+        rows = metrics[(metrics.endpoint == endpoint) & (metrics.species == species) & (metrics.model == model)]
+        if len(rows) != 1:
+            raise RuntimeError(f"nonhuman transfer: {endpoint} {species} {model}: {len(rows)} rows")
+        return float(rows.iloc[0][column])
+
+    def difference(row: pd.Series) -> str:
+        return minus(f"{100 * row.delta:.2f} [{100 * row.L95:.2f}, {100 * row.U95:.2f}]")
+
+    rows = []
+    for endpoint in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
+        for species in ["Octopus", "Ptychodera", "Strongylocentrotus"]:
+            human = cell("selected_minus_adaredit_human_stronger", endpoint, species)
+            own = cell("selected_minus_adaredit_animal_stronger", endpoint, species)
+            spacing = cell("selected_minus_no_gap", endpoint, species)
+            rows.append(" & ".join([
+                context_label(endpoint), species if species == "Octopus" else rf"\textit{{{species}}}",
+                f"{int(human.n_sites):,}", str(int(human.n_regions)),
+                f"{human.auroc_a:.3f}", f"{auc(endpoint, species, 'adaredit_human_baseline'):.3f}",
+                f"{auc(endpoint, species, 'adaredit_human_bioaware'):.3f}", difference(human),
+                verdict.get(human.word, "n.d."), f"{own.auroc_b:.3f}", difference(own), verdict.get(own.word, "n.d."),
+                f"{spacing.auroc_b:.3f}", difference(spacing), f"{auc(endpoint, species, 'selected', 'auprc'):.3f}",
+                f"{auc(endpoint, species, 'adaredit_human_stronger', 'auprc'):.3f}",
+            ]) + r" \\")
+    write(
+        "table_nonhuman_transfer.tex",
+        r"""\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{Transfer of the frozen selected predictor to nonhuman datasets.} Each row is the selected predictor of one human endpoint, trained only on human data, scored without retraining on one nonhuman test set (\textit{Ptychodera}, an acorn worm; \textit{Strongylocentrotus}, a sea urchin). AdarEdit's supplied compact and Bio-aware checkpoints are shown for the same human endpoint; $\Delta$ is the selected predictor minus the better of the two. AdarEdit trained on that animal is the better of its two checkpoints trained on that animal's own data. The spacing effect is the selected predictor minus the same networks without the genomic-spacing stage. Differences are in AUROC points with 95\% intervals from 2,000 paired bootstrap replicates resampling whole genomic regions; better and worse mean the interval excludes zero; n.d., could not be distinguished. AUPRC is descriptive.}\label{tab:nonhuman}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrlrrlrrrr}
+\toprule
+ & & & & \multicolumn{5}{c}{AUROC, same human endpoint} & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{2}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
+\cmidrule(lr){5-9}\cmidrule(lr){10-12}\cmidrule(lr){13-14}\cmidrule(lr){15-16}
+Endpoint & Animal & Sites & Regions & Selected & Compact & Bio-aware & $\Delta$ [95\%] & & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & Selected & Better AdarEdit \\
+\midrule
+"""
+        + "\n".join(rows)
+        + r"""
+\bottomrule
+\end{tabular}}
+\end{table}""",
+    )
+
+
 def manifest() -> None:
     entries = []
     for path in sorted(OUTPUT.glob("table_*.tex")):
@@ -1006,8 +1071,9 @@ def main() -> None:
     gap_controls()
     seed_averaging()
     test_contrasts()
+    nonhuman_transfer()
     manifest()
-    print("PASS: rendered 13 SI tables from authoritative artifacts")
+    print("PASS: rendered 14 SI tables from authoritative artifacts")
 
 
 if __name__ == "__main__":

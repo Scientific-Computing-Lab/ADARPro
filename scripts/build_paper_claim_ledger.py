@@ -1647,6 +1647,198 @@ def add_reformer_claims() -> None:
         "two decimals", "ReformerFalsePosLargestBinderD")
 
 
+def add_nonhuman_claims() -> None:
+    """Transfer of the frozen selected predictor to AdarEdit's three nonhuman test sets, without retraining
+    (results/adarpro/nonhuman_transfer, written by src/adarpro/evaluation/nonhuman_transfer.py). Numbers printed in
+    Results, Methods, Discussion, Fig. 6F and the SI; the guards keep the words around them true."""
+    run = ROOT / "results/adarpro/nonhuman_transfer"
+    contrasts, metrics = pd.read_csv(run / "contrasts.csv"), pd.read_csv(run / "metrics.csv")
+    f1 = pd.read_csv(run / "f1.csv")
+    gaps = pd.read_csv(run / "gap_summary.csv").set_index("species")
+    record = json.loads((run / "run_record.json").read_text())
+    animals = ["Octopus", "Ptychodera", "Strongylocentrotus"]
+    vs_human, vs_own = "selected_minus_adaredit_human_stronger", "selected_minus_adaredit_animal_stronger"
+    spacing, vs_compact = "selected_minus_no_gap", "selected_minus_adaredit_human_baseline"
+    no_gap_vs_human = "no_gap_minus_adaredit_human_stronger"
+    status = "nonhuman test sets; frozen predictor, no retraining"
+    use = "Results, Methods, Discussion, Fig. 6F, SI (nonhuman transfer)"
+    if sorted(contrasts.species.unique()) != animals or sorted(contrasts.endpoint.unique()) != sorted(CONTEXTS):
+        raise RuntimeError("nonhuman transfer: expected 5 endpoints x 3 animals")
+
+    def cell(contrast: str, endpoint: str, species: str) -> pd.Series:
+        rows = contrasts[(contrasts.contrast == contrast) & (contrasts.endpoint == endpoint)
+                         & (contrasts.species == species)]
+        if len(rows) != 1:
+            raise RuntimeError(f"nonhuman transfer: {contrast} {endpoint} {species}: {len(rows)} rows")
+        return rows.iloc[0]
+
+    def metric(endpoint: str, species: str, model: str, column: str) -> float:
+        rows = metrics[(metrics.endpoint == endpoint) & (metrics.species == species) & (metrics.model == model)]
+        if len(rows) != 1:
+            raise RuntimeError(f"nonhuman transfer: metrics {endpoint} {species} {model}: {len(rows)} rows")
+        return float(rows.iloc[0][column])
+
+    def points(value: float) -> str:
+        return f"$-${abs(100 * value):.2f}" if value < 0 else f"{100 * value:.2f}"
+
+    contrasts["verdict"] = contrasts.word.str.split(" (", regex=False).str[0]
+
+    def verdicts(contrast: str) -> pd.DataFrame:
+        return contrasts[contrasts.contrast == contrast]
+
+    def put(name: str, quantity: str, value, display: str, unit: str, artifact: Path, selector: str,
+            rounding: str) -> None:
+        add(f"nonhuman_{name}", quantity, value, display, unit, status, artifact, selector, use, rounding,
+            f"Nonhuman{name}")
+
+    cpath, mpath = run / "contrasts.csv", run / "metrics.csv"
+    for sp in animals:
+        r1, d2, r3 = cell(vs_human, "Artery", sp), cell(vs_own, "Artery", sp), cell(spacing, "Artery", sp)
+        at = f"contrast={vs_human}; endpoint=Artery; species={sp}"
+        put(f"ArteryAUROC{sp}", f"Artery-trained selected predictor AUROC, {sp} test set", float(r1.auroc_a),
+            f"{r1.auroc_a:.3f}", "AUROC", cpath, at + "; auroc_a", "three decimals")
+        put(f"AdarEditArteryAUROC{sp}", f"Stronger AdarEdit artery checkpoint AUROC, {sp} ({r1.b_column})",
+            float(r1.auroc_b), f"{r1.auroc_b:.3f}", "AUROC", cpath, at + "; auroc_b", "three decimals")
+        for column, tag in (("delta", ""), ("L95", "Low"), ("U95", "High")):
+            put(f"ArteryDelta{tag}{sp}", f"Selected predictor minus stronger AdarEdit, Artery, {sp}: {column}",
+                float(r1[column]), points(r1[column]), "AUROC points", cpath, at + f"; {column} x 100",
+                "two decimals")
+        put(f"ArteryWord{sp}", f"Verdict, selected predictor vs stronger AdarEdit, Artery, {sp}", r1.word,
+            r1.word.split(" (")[0], "verdict", cpath, at + "; word", "verdict text")
+        ao = f"contrast={vs_own}; endpoint=Artery; species={sp}"
+        put(f"AdarEditOwnAUROC{sp}", f"AdarEdit trained on {sp}'s own data, AUROC ({d2.b_column})",
+            float(d2.auroc_b), f"{d2.auroc_b:.3f}", "AUROC", cpath, ao + "; auroc_b", "three decimals")
+        for column, tag in (("delta", ""), ("L95", "Low"), ("U95", "High")):
+            put(f"OwnDelta{tag}{sp}", f"Artery-trained selected predictor minus AdarEdit trained on {sp}: {column}",
+                float(d2[column]), points(d2[column]), "AUROC points", cpath, ao + f"; {column} x 100", "two decimals")
+        put(f"SpacingDelta{sp}", f"No-spacing equal average minus selected predictor, Artery, {sp}", -float(r3.delta),
+            points(-r3.delta), "AUROC points", cpath, f"contrast={spacing}; endpoint=Artery; species={sp}; -delta x 100",
+            "two decimals")
+        sel = f"endpoint=Artery; species={sp}; model=selected"
+        put(f"TestSites{sp}", f"{sp} test sites", int(metric("Artery", sp, "selected", "n_sites")),
+            f"{int(metric('Artery', sp, 'selected', 'n_sites')):,}", "sites", mpath, sel + "; n_sites", "integer")
+        put(f"TestRegions{sp}", f"{sp} test genomic regions", int(metric("Artery", sp, "selected", "n_regions")),
+            str(int(metric("Artery", sp, "selected", "n_regions"))), "regions", mpath, sel + "; n_regions", "integer")
+        d3 = cell(no_gap_vs_human, "Artery", sp)
+        put(f"NoGapArteryAUROC{sp}", f"Artery-trained networks without the spacing stage, AUROC, {sp}",
+            float(d3.auroc_a), f"{d3.auroc_a:.3f}", "AUROC", cpath,
+            f"contrast={no_gap_vs_human}; endpoint=Artery; species={sp}; auroc_a", "three decimals")
+        for model, tag in (("selected", "Selected"), ("adaredit_human_stronger", "AdarEdit")):
+            value = metric("Artery", sp, model, "auprc")
+            put(f"AUPRC{tag}{sp}", f"AUPRC (description), Artery, {sp}, {model}", value, f"{value:.3f}", "AUPRC",
+                mpath, f"endpoint=Artery; species={sp}; model={model}; auprc", "three decimals")
+
+    counts = {"Better": (vs_human, "BEATS"), "Worse": (vs_human, "WORSE"), "ReferenceBetter": (vs_compact, "BEATS"),
+              "OwnTied": (vs_own, "cannot be told apart"), "OwnWorse": (vs_own, "WORSE"),
+              "SpacingTied": (spacing, "cannot be told apart"), "SpacingWorse": (spacing, "WORSE"),
+              "NoGapBetter": (no_gap_vs_human, "BEATS"), "NoGapWorse": (no_gap_vs_human, "WORSE")}
+    n = {}
+    for tag, (contrast, verdict) in counts.items():
+        n[tag] = int((verdicts(contrast).verdict == verdict).sum())
+        put(f"{tag}Count", f"Transfers: {contrast} = {verdict}", n[tag], str(n[tag]), "transfers", cpath,
+            f"contrast={contrast}; word starts with {verdict}; all 15 endpoint x animal cells", "integer")
+    transfers = int((contrasts.contrast == vs_human).sum())
+    put("TransferCount", "Endpoint x animal transfers", transfers, str(transfers), "transfers", cpath,
+        f"contrast={vs_human}; rows", "integer")
+    better = verdicts(vs_human)[verdicts(vs_human).verdict == "BEATS"]
+    for tag, value in (("Min", better.delta.min()), ("Max", better.delta.max())):
+        put(f"BetterDelta{tag}", f"{tag} AUROC gain over the transfers where the predictor is better", float(value),
+            points(value), "AUROC points", cpath, f"contrast={vs_human}; word=BEATS; delta {tag.lower()} x 100",
+            "two decimals")
+    put("BootstrapReplicates", "Region-bootstrap replicates", int(record["bootstrap"]["replicates"]),
+        f"{int(record['bootstrap']['replicates']):,}", "replicates", run / "run_record.json", "bootstrap.replicates",
+        "integer")
+    artery = f1[f1.endpoint == "Artery"]
+    shares = {"Selected": artery[artery.model == "selected"].share_called_edited,
+              "AdarEdit": artery[artery.model == "adaredit_human_stronger"].share_called_edited,
+              "Observed": artery[artery.model == "selected"].share_edited}
+    for tag, share in shares.items():
+        if len(share) != 3:
+            raise RuntimeError(f"nonhuman transfer: f1 rows for {tag}")
+        for end, value in (("Min", share.min()), ("Max", share.max())):
+            put(f"Called{tag}{end}", f"Artery: share of sites called edited at the frozen threshold ({tag}), {end}",
+                float(value), f"{100 * value:.0f}", "percent", run / "f1.csv",
+                f"endpoint=Artery; {tag}: share {'edited' if tag == 'Observed' else 'called edited'}; {end.lower()}",
+                "integer percent")
+    human = ["Artery", "Brain", "Combined", "Liver", "MuscleSkeletal"]
+    matrices = {v: pd.read_csv(ROOT / f"results/matrix_{v}_auroc.csv", index_col=0) for v in ("baseline", "bioaware")}
+    best = {}
+    for v, tag in (("baseline", "Compact"), ("bioaware", "BioAware")):
+        best[tag] = [matrices[v].loc[human, sp].idxmax() for sp in animals]
+        k = sum(b == "Artery" for b in best[tag])
+        put(f"ArteryBestSource{tag}Count", f"Animals for which artery is AdarEdit's best human source ({v})", k, str(k),
+            "animals", ROOT / f"results/matrix_{v}_auroc.csv", f"best human row per animal: {best[tag]}", "integer")
+    stronger = pd.DataFrame({sp: [max(matrices["baseline"].loc[h, sp], matrices["bioaware"].loc[h, sp]) for h in human]
+                             for sp in animals}, index=human)
+    best["Better"] = [stronger[sp].idxmax() for sp in animals]
+    k_best = sum(b == "Artery" for b in best["Better"])
+    put("ArteryBestSourceBetterCount", "Animals for which artery is AdarEdit's best human source (better checkpoint)",
+        k_best, str(k_best), "animals", ROOT / "results/matrix_bioaware_auroc.csv",
+        f"higher of matrix_baseline_auroc / matrix_bioaware_auroc, best human row per animal: {best['Better']}",
+        "integer")
+    gpath = run / "gap_summary.csv"
+    human_median = float(gaps.human_median_gap_bp.iloc[0])
+    put("HumanMedianGap", "Median genomic gap, human artery training sites (nt)", human_median, f"{human_median:.0f}",
+        "nt", gpath, "human_median_gap_bp", "integer")
+    for tag, value in (("Min", gaps.median_gap_bp.min()), ("Max", gaps.median_gap_bp.max())):
+        put(f"MedianGap{tag}", f"Median genomic gap at the nonhuman test sites, {tag} over animals (nt)", float(value),
+            f"{value:.0f}", "nt", gpath, f"median_gap_bp {tag.lower()}", "integer")
+    for tag, value in (("Min", gaps.share_below_human_p1.min()), ("Max", gaps.share_below_human_p1.max())):
+        put(f"BelowHumanPOne{tag}", f"Share of nonhuman test sites below the human training 1st percentile, {tag}",
+            float(value), f"{100 * value:.0f}", "percent", gpath, f"share_below_human_p1 {tag.lower()} x 100",
+            "integer percent")
+    artery_sel = [float(cell(vs_human, "Artery", sp).auroc_a) for sp in animals]
+    for tag, value in (("Min", min(artery_sel)), ("Max", max(artery_sel))):
+        put(f"ArteryAUROC{tag}", f"Artery-trained selected predictor AUROC, {tag} over the three animals", value,
+            f"{value:.3f}", "AUROC", cpath, f"contrast={vs_human}; endpoint=Artery; auroc_a {tag.lower()}",
+            "three decimals")
+    k_artery = int(((verdicts(vs_human).endpoint == "Artery") & (verdicts(vs_human).verdict == "BEATS")).sum())
+    put("ArteryBetterCount", "Animals where the artery-trained predictor beats the stronger AdarEdit artery checkpoint",
+        k_artery, str(k_artery), "animals", cpath, f"contrast={vs_human}; endpoint=Artery; word=BEATS", "integer")
+    r3 = contrasts[contrasts.contrast == spacing]
+    k_lower = int((r3.delta < 0).sum())
+    put("SpacingLowerCount", "Transfers where the spacing stage lowered AUROC (point estimate)", k_lower, str(k_lower),
+        "transfers", cpath, f"contrast={spacing}; delta < 0", "integer")
+    per_endpoint = verdicts(vs_human).assign(b=lambda t: t.verdict == "BEATS").groupby("endpoint").b.sum()
+    k_min = int(per_endpoint.min())
+    put("MinBetterPerEndpoint", "Fewest animals (of three) where the predictor is better, over the five endpoints",
+        k_min, str(k_min), "animals", cpath, f"contrast={vs_human}; min over endpoints of the BEATS count", "integer")
+    locked = sources.read_csv(ROOT / "results/adarpro/final_locked_test/metrics.csv")
+    locked = locked[(locked.model == sources.TEST_CANDIDATE) & (locked.context == "Artery")]
+    if len(locked) != 1:
+        raise RuntimeError("nonhuman transfer: the selected predictor's artery test row")
+    value = float(locked.auroc.iloc[0])
+    add("nonhuman_LockedArteryAUROC", "Selected predictor AUROC on the human artery held-out pairs", value,
+        f"{value:.3f}", "AUROC", "canonical held-out", sources.path(ROOT / "results/adarpro/final_locked_test/metrics.csv"),
+        f"context=Artery; model={sources.TEST_CANDIDATE}; column=auroc", "Discussion (nonhuman transfer)",
+        "three decimals", "LockedArteryAUROC")
+
+    # The words of the text that are not macros must stay true.
+    artery = {sp: cell(vs_human, "Artery", sp).word.split(" (")[0] for sp in animals}
+    if artery != {"Octopus": "BEATS", "Ptychodera": "BEATS", "Strongylocentrotus": "cannot be told apart"}:
+        raise RuntimeError(f"nonhuman transfer: artery verdicts {artery}; Results says better, better, within noise")
+    if {cell(vs_human, "Artery", sp).b_column for sp in animals} != {"adaredit_bioaware_Artery"}:
+        raise RuntimeError("nonhuman transfer: the stronger AdarEdit artery checkpoint is not Bio-aware everywhere")
+    if k_best != 2 or k_artery != 2 or sum(b == "Artery" for b in best["Compact"]) != 2:
+        raise RuntimeError("nonhuman transfer: 'two of the three animals' no longer holds")
+    if n["Worse"] != 0 or n["NoGapWorse"] != 0:
+        raise RuntimeError("nonhuman transfer: 'worse in none' no longer holds")
+    if k_min != 2:
+        raise RuntimeError("nonhuman transfer: 'better in at least two of the three animals' no longer holds")
+    own_artery = {cell(vs_own, "Artery", sp).word.split(" (")[0] for sp in animals}
+    if own_artery != {"cannot be told apart"}:
+        raise RuntimeError("nonhuman transfer: the artery predictor is now distinguishable from AdarEdit on the animal")
+    own_worse = set(verdicts(vs_own)[verdicts(vs_own).verdict == "WORSE"].endpoint)
+    if not own_worse <= {"Liver", "MuscleSkeletal"}:
+        raise RuntimeError(f"nonhuman transfer: lower than AdarEdit on the animal from {own_worse}")
+    if (verdicts(spacing).verdict == "BEATS").any():
+        raise RuntimeError("nonhuman transfer: the spacing stage helps in some transfer; Results says it did not")
+    auprc = {sp: metric("Artery", sp, "selected", "auprc") > metric("Artery", sp, "adaredit_human_stronger", "auprc")
+             for sp in animals}
+    if auprc != {"Octopus": True, "Ptychodera": True, "Strongylocentrotus": False}:
+        raise RuntimeError(f"nonhuman transfer: AUPRC higher {auprc}; SI says octopus and acorn worm, not sea urchin")
+
+
 def write_outputs() -> None:
     ledger_path = PAPER / "numerical_claim_ledger.csv"
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1682,6 +1874,7 @@ def main() -> None:
     add_seed_averaging_claims()
     add_final_training_claims()
     add_reformer_claims()
+    add_nonhuman_claims()
     write_outputs()
 
 

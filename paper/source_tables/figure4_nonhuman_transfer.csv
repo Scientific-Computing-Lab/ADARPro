@@ -1,0 +1,4 @@
+species,selected_auroc,adaredit_human_auroc,adaredit_human_checkpoint,adaredit_own_auroc,adaredit_own_checkpoint,delta,lower,upper,verdict,n_sites,n_regions
+Octopus,0.880578482109623,0.8560671494536669,adaredit_bioaware_Artery,0.8715617953467918,adaredit_bioaware_Octopus,0.024511332655956,0.003915716237,0.0435601973682814,BEATS,1678,186
+Ptychodera,0.8364705439488048,0.7872697157914549,adaredit_bioaware_Artery,0.8225228684359119,adaredit_baseline_Ptychodera,0.0492008281573499,0.0145749254767111,0.0810736350660648,BEATS,1634,72
+Strongylocentrotus,0.8132772704739598,0.8112207142805825,adaredit_bioaware_Artery,0.8601200525903627,adaredit_baseline_Strongylocentrotus,0.0020565561933773,-0.0649913436219334,0.0553161964500955,cannot be told apart,1493,131

@@ -2293,17 +2293,79 @@ def final_tables(
     return metrics, confidence, transitions, merged
 
 
+NONHUMAN_ANIMALS = ["Octopus", "Ptychodera", "Strongylocentrotus"]  # labelled as in Fig. 3
+
+
+def nonhuman_transfer_table(source: Path) -> pd.DataFrame:
+    """Fig. 6F: the artery-trained selected predictor on AdarEdit's nonhuman test sets, without retraining, against
+    the stronger of AdarEdit's two supplied artery checkpoints and AdarEdit trained on that animal's own data."""
+    contrasts = pd.read_csv(ROOT / "results/adarpro/nonhuman_transfer/contrasts.csv")
+    artery = contrasts[contrasts.endpoint == "Artery"]
+    rows = []
+    for species in NONHUMAN_ANIMALS:
+        human = artery[(artery.contrast == "selected_minus_adaredit_human_stronger") & (artery.species == species)]
+        own = artery[(artery.contrast == "selected_minus_adaredit_animal_stronger") & (artery.species == species)]
+        if len(human) != 1 or len(own) != 1:
+            raise RuntimeError(f"nonhuman transfer: Artery {species} contrast rows")
+        human, own = human.iloc[0], own.iloc[0]
+        if human.auroc_a != own.auroc_a or human.b_column != "adaredit_bioaware_Artery":
+            raise RuntimeError(f"nonhuman transfer: Artery {species}: predictor AUROC or AdarEdit checkpoint differs")
+        rows.append({"species": species, "selected_auroc": human.auroc_a, "adaredit_human_auroc": human.auroc_b,
+                     "adaredit_human_checkpoint": human.b_column, "adaredit_own_auroc": own.auroc_b,
+                     "adaredit_own_checkpoint": own.b_column, "delta": human.delta, "lower": human.L95,
+                     "upper": human.U95, "verdict": human.word.split(" (")[0], "n_sites": int(human.n_sites),
+                     "n_regions": int(human.n_regions)})
+    table = pd.DataFrame(rows)
+    copy_source(table, source, "figure4_nonhuman_transfer.csv")
+    return table
+
+
+def draw_nonhuman_transfer(ax: plt.Axes, table: pd.DataFrame) -> None:
+    """Dumbbells as in panel B: grey = AdarEdit (Bio-aware, artery), green = selected predictor, open circle =
+    AdarEdit trained on that animal; right column = difference from AdarEdit in AUROC points (bold green: the 95%
+    region-bootstrap interval excludes zero)."""
+    panel_label(ax, "F")
+    y = np.arange(len(table))
+    for index, row in table.iterrows():
+        ax.plot([row.adaredit_human_auroc, row.selected_auroc], [index, index], color="#CBD3D8", lw=2, zorder=1)
+    ax.scatter(table.adaredit_human_auroc, y, color=COLORS["gray"], s=24, zorder=2, label="AdarEdit (Bio-aware)")
+    ax.scatter(table.selected_auroc, y, color=COLORS["green"], s=24, zorder=3, label="Selected predictor")
+    ax.scatter(table.adaredit_own_auroc, y, facecolor="white", edgecolor=COLORS["ink"], linewidth=0.8, s=22,
+               zorder=4, label="AdarEdit trained on that animal")
+    x_column = 0.927
+    ax.text(x_column, -0.62, "Δ points", ha="center", va="center", fontsize=6.2, color=COLORS["ink"])
+    for index, row in table.iterrows():
+        better = row.verdict == "BEATS"
+        ax.text(x_column, index, f"{100 * row.delta:+.1f}", ha="center", va="center", fontsize=6.4,
+                color=COLORS["green"] if better else COLORS["gray"], fontweight="bold" if better else "normal")
+    ax.set_yticks(y, list(table.species))
+    ax.invert_yaxis()
+    low = np.floor(100 * min(table.adaredit_human_auroc.min(), table.selected_auroc.min(),
+                             table.adaredit_own_auroc.min()) - 1.0) / 100
+    ax.set_xlim(low, 0.945)
+    ax.set_xticks(list(np.arange(np.ceil(low * 50) / 50, 0.905, 0.02)))
+    ax.spines["bottom"].set_bounds(low, 0.905)
+    ax.set_ylim(len(table) - 0.4, -1.45)
+    ax.set_xlabel("AUROC on nonhuman test sets")
+    ax.set_title("Transfer to other animals without retraining", loc="left", fontweight="bold")
+    ax.legend(frameon=False, ncol=2, fontsize=6.2, loc="upper left", borderaxespad=0.2, handletextpad=0.3,
+              columnspacing=0.9, labelspacing=0.25)
+    clean_axis(ax)
+
+
 def figure4(output: Path, source: Path) -> None:
     metrics, confidence, transitions, _matched = final_tables(source)
+    nonhuman = nonhuman_transfer_table(source)
     figure = plt.figure(figsize=(7.0, 7.0))
     grid = figure.add_gridspec(
-        3, 2, height_ratios=[1.12, 0.82, 0.88], hspace=0.52, wspace=0.42
+        3, 2, height_ratios=[1.0, 0.86, 0.88], hspace=0.55, wspace=0.42
     )
-    ax_a = figure.add_subplot(grid[0, :])
-    ax_b = figure.add_subplot(grid[1, 0])
-    ax_c = figure.add_subplot(grid[1, 1])
-    ax_d = figure.add_subplot(grid[2, 0])
-    ax_e = figure.add_subplot(grid[2, 1])
+    ax_a = figure.add_subplot(grid[0, 0])
+    ax_b = figure.add_subplot(grid[0, 1])
+    ax_c = figure.add_subplot(grid[1, 0])
+    ax_d = figure.add_subplot(grid[1, 1])
+    ax_e = figure.add_subplot(grid[2, 0])
+    ax_f = figure.add_subplot(grid[2, 1])
 
     panel_label(ax_a, "A")
     metric_colors = {
@@ -2334,19 +2396,20 @@ def figure4(output: Path, source: Path) -> None:
     ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
     ax_a.set_yticks(positions, [CONTEXT_LABELS[x] for x in CONTEXTS])
     ax_a.invert_yaxis()
-    ax_a.set_xlabel("Selected predictor − AdarEdit (points; 95% pair-clustered CI)")
+    ax_a.set_xlabel("Selected predictor − AdarEdit\n(points; 95% pair-clustered CI)")
     ax_a.set_title(
         "Frozen canonical held-out evaluation",
         loc="left",
         fontweight="bold",
     )
-    ax_a.legend(
+    ax_a.legend(  # half width: one column at the upper right
         frameon=False,
-        ncol=3,
-        loc="lower right",
-        borderaxespad=0.35,
-        columnspacing=1.0,
+        ncol=1,
+        loc="upper right",
+        fontsize=6.2,
+        borderaxespad=0.2,
         handletextpad=0.35,
+        labelspacing=0.3,
     )
     clean_axis(ax_a)
 
@@ -2562,6 +2625,7 @@ def figure4(output: Path, source: Path) -> None:
     )
     ax_e.set_xlim(0, 1)
     ax_e.set_ylim(0, 1)
+    draw_nonhuman_transfer(ax_f, nonhuman)
     figure.subplots_adjust(left=0.12, right=0.99, top=0.97, bottom=0.07)
     save(figure, output, "figure4_locked_validation")
 
@@ -3277,6 +3341,106 @@ def supplementary_figures(output: Path, source: Path) -> None:
     save(figure, output, "figureS8_post_analysis_diagnostics")
 
 
+def figure_nonhuman_transfer_si(output: Path, source: Path) -> None:
+    """SI figure: (A) the selected predictor minus the stronger AdarEdit checkpoint of the same human endpoint, all 15
+    endpoint x animal transfers; (B) the genomic gap the spacing stage reads, at the nonhuman test sites and at the
+    human artery training sites the stage was fitted on (results/adarpro/nonhuman_transfer)."""
+    run = ROOT / "results/adarpro/nonhuman_transfer"
+    contrasts = pd.read_csv(run / "contrasts.csv")
+    r1 = contrasts[contrasts.contrast == "selected_minus_adaredit_human_stronger"]
+    if len(r1) != 15:
+        raise RuntimeError(f"nonhuman transfer: {len(r1)} transfers, expected 15")
+    hist = pd.read_csv(run / "gap_histogram.csv")
+    summary = pd.read_csv(run / "gap_summary.csv").set_index("species")
+    copy_source(r1[["endpoint", "species", "b_column", "auroc_a", "auroc_b", "delta", "L95", "U95", "word",
+                    "n_sites", "n_regions"]], source, "figureS_nonhuman_transfer_contrasts.csv")
+    copy_source(hist, source, "figureS_nonhuman_transfer_gap_histogram.csv")
+    copy_source(summary.reset_index(), source, "figureS_nonhuman_transfer_gap_summary.csv")
+    r1 = r1.set_index(["species", "endpoint"])
+    n_better = int((r1.word == "BEATS").sum())
+    n_worse = int((r1.word == "WORSE").sum())
+
+    figure = plt.figure(figsize=(7.0, 3.6))
+    grid = figure.add_gridspec(3, 2, width_ratios=[0.84, 1.16], wspace=0.50, hspace=0.62)
+    ax_a = figure.add_subplot(grid[:, 0])
+    axes_b = [figure.add_subplot(grid[k, 1]) for k in range(3)]
+
+    panel_label(ax_a, "A")
+    ticks, labels, y, group_y = [], [], 0.0, {}
+    for species in NONHUMAN_ANIMALS:
+        group_y[species] = y
+        y += 0.9
+        for endpoint in CONTEXTS:
+            row = r1.loc[(species, endpoint)]
+            color = COLORS["green"] if row.word == "BEATS" else COLORS["gray"]
+            ax_a.errorbar(100 * row.delta, y, xerr=[[100 * (row.delta - row.L95)], [100 * (row.U95 - row.delta)]],
+                          fmt="o", ms=3.6, capsize=1.8, lw=1.0, color=color, zorder=3)
+            ticks.append(y)
+            labels.append(CONTEXT_LABELS.get(endpoint, endpoint))
+            y += 1.0
+        y += 0.35
+    for species, y0 in group_y.items():
+        ax_a.text(-0.02, y0 + 0.15, species, transform=ax_a.get_yaxis_transform(), ha="right", va="center",
+                  fontsize=6.6, fontweight="bold", color=COLORS["ink"])
+    ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
+    ax_a.set_yticks(ticks, labels)
+    ax_a.set_ylim(y - 0.2, -0.5)
+    ax_a.set_xlabel("Selected predictor − better AdarEdit\nhuman-trained model (AUROC points; 95% CI)")
+    ax_a.set_title(f"Better in {n_better} of 15 transfers, worse in {'none' if n_worse == 0 else n_worse}",
+                   loc="left", fontweight="bold")
+    clean_axis(ax_a)
+
+    human = hist[hist.group == "human artery training"]
+    edges = np.r_[human.bin_left.to_numpy(), human.bin_right.to_numpy()[-1]]
+    human_median = float(summary.human_median_gap_bp.iloc[0])
+    human_p1 = float(np.log1p(summary.human_p1_gap_bp.iloc[0]))
+    ticks_bp = [10, 100, 1_000, 10_000]
+    for k, (ax, species) in enumerate(zip(axes_b, NONHUMAN_ANIMALS)):
+        animal = hist[hist.group == species]
+        if not np.array_equal(animal.bin_left.to_numpy(), human.bin_left.to_numpy()):
+            raise RuntimeError(f"nonhuman transfer: {species} gap bins differ from the human bins")
+        ax.hist(human.bin_left, bins=edges, weights=human.share_percent, color="#C9D2D8",
+                label="Human artery training", zorder=1)
+        ax.hist(animal.bin_left, bins=edges, weights=animal.share_percent, histtype="step", lw=1.2,
+                color=COLORS["blue"], label="Nonhuman test", zorder=3)
+        median = float(summary.loc[species, "median_gap_bp"])
+        below = float(summary.loc[species, "share_below_human_p1"])
+        ax.axvline(np.log1p(human_median), color=COLORS["gray"], ls="--", lw=0.9, zorder=2)
+        ax.axvline(np.log1p(median), color=COLORS["blue"], ls="--", lw=0.9, zorder=4)
+        ax.axvline(human_p1, color=COLORS["ink"], ls=":", lw=0.9, zorder=4)
+        ax.text(0.0, 1.04, f"{species}: median {median:.0f} nt; {100 * below:.0f}% below the human 1st percentile",
+                transform=ax.transAxes, ha="left", va="bottom", fontsize=6.2, color=COLORS["ink"])
+        ax.set_ylim(0, 1.75 * ax.get_ylim()[1])
+        ax.set_xlim(edges[0], edges[-1])
+        ax.set_xticks([np.log1p(t) for t in ticks_bp], [f"{t:,}" for t in ticks_bp] if k == 2 else [])
+        ax.set_yticks([])
+        clean_axis(ax)
+        ax.spines["left"].set_visible(False)
+    panel_label(axes_b[0], "B")
+    axes_b[0].set_title("Arms lie closer than in human training", loc="left", fontweight="bold", pad=13)
+    axes_b[0].legend(frameon=True, facecolor="white", edgecolor="none", framealpha=1.0, loc="upper right",
+                     fontsize=6.2, borderaxespad=0.0, borderpad=0.2, handlelength=1.4,
+                     labels=[f"Human artery training (median {human_median:.0f} nt)", "Nonhuman test"])
+    axes_b[2].set_xlabel("Genomic gap between the arms (nt, log scale)")
+    axes_b[1].set_ylabel("Share of sites", labelpad=4)
+    figure.subplots_adjust(left=0.17, right=0.98, top=0.91, bottom=0.17)
+    # SI figures print at text width: every visible text at 6 pt or more there.
+    renderer = figure.canvas.get_renderer()
+    texts = [t for t in figure.findobj(mtext.Text) if t.get_visible() and t.get_text().strip()]
+    for _ in range(5):
+        width = figure.get_tightbbox(renderer).width + 2 * float(plt.rcParams["savefig.pad_inches"])
+        scale = TEXTWIDTH_IN / width
+        small = [t for t in texts if t.get_fontsize() * scale < 6.0]
+        if not small:
+            break
+        for t in small:
+            t.set_fontsize(1.01 * 6.0 / scale)
+    width = figure.get_tightbbox(renderer).width + 2 * float(plt.rcParams["savefig.pad_inches"])
+    if min(t.get_fontsize() for t in texts) * TEXTWIDTH_IN / width < 6.0:
+        raise RuntimeError("figureS_nonhuman_transfer: smallest text would print below 6 pt")
+    save(figure, output, "figureS_nonhuman_transfer")
+
+
 def write_manifest(source: Path, output: Path) -> None:
     rows = []
     # Table sources have their own manifest and may be rebuilt after figures.
@@ -3363,6 +3527,7 @@ def main() -> None:
     figure3(output, source)
     figure4(output, source)
     supplementary_figures(output, source)
+    figure_nonhuman_transfer_si(output, source)
     write_manifest(source, output)
     print(f"PASS: rendered {len(list(output.glob('*.pdf')))} vector figures")
 
