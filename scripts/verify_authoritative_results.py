@@ -58,9 +58,11 @@ POST_HOC_DEVELOPMENT_RUNS = {
     ),
 }
 # The 2026-11 revision (second development round) appended 273 runs,
-# including the evaluation recorded in provenance/test_quarantine_v3.json. Keep
-# the count exact and name every row with canonical-test access, as above.
-INTEGRATION_RUN_COUNT = 273
+# including the evaluation recorded in provenance/test_quarantine_v3.json, and
+# then 20 development rows: the spacing controls repeated across the five tracked
+# training runs (paired_richer_supervision_comparison, no canonical-test access).
+# Keep the count exact and name every row with canonical-test access, as above.
+INTEGRATION_RUN_COUNT = 293
 CANONICAL_TEST_ACCESS_RUNS = {
     "final_locked_test_adarpro_pair_local_equal_logit_ensemble": (
         "single_consumed_canonical_test_evaluation"
