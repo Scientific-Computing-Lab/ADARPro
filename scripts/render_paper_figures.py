@@ -1100,6 +1100,7 @@ def figure_scope(output: Path, source: Path) -> None:
     ax_a.axhline(3.5, color=COLORS["blue"], lw=0.6, alpha=0.45)
     ax_a.axhline(human_n - 0.5, color=COLORS["gray"], lw=0.9, ls="--")
     ax_a.set_yticks(ypos, labels)
+    italicize_genera(ax_a.get_yticklabels())
     ax_a.invert_yaxis()
     ax_a.set_xlim(0.75, 0.95)
     ax_a.set_xlabel("Within-context performance")
@@ -1134,6 +1135,7 @@ def figure_scope(output: Path, source: Path) -> None:
     ax_b.set_ylim(len(contexts) - 0.5, -0.5)
     ax_b.set_xticks(np.arange(len(contexts)), labels, rotation=47, ha="right")
     ax_b.set_yticks(np.arange(len(contexts)), labels)
+    italicize_genera(ax_b.get_xticklabels() + ax_b.get_yticklabels())
     ax_b.axhline(human_n - 0.5, color="white", lw=1.2)
     ax_b.axvline(human_n - 0.5, color="white", lw=1.2)
     ax_b.axhline(3.5, color="white", lw=0.55, alpha=0.8)
@@ -2294,6 +2296,20 @@ def final_tables(
 
 
 NONHUMAN_ANIMALS = ["Octopus", "Ptychodera", "Strongylocentrotus"]  # labelled as in Fig. 3
+# Genus names print in italics, as in the captions and the SI table; "Octopus" is read as the common name.
+ITALIC_GENERA = {"Ptychodera", "Strongylocentrotus"}
+
+
+def italicize_genera(texts: list[mtext.Text]) -> None:
+    """Set the labels that are genus names in italics (Figs. 3, 6F and the SI transfer figure)."""
+    for text in texts:
+        if text.get_text() in ITALIC_GENERA:
+            text.set_fontstyle("italic")
+
+
+def genus_in_text(name: str) -> str:
+    """A genus name inside a longer label, in italics (mathtext, Nimbus Sans italic)."""
+    return rf"$\mathit{{{name}}}$" if name in ITALIC_GENERA else name
 
 
 def nonhuman_transfer_table(source: Path) -> pd.DataFrame:
@@ -2339,6 +2355,7 @@ def draw_nonhuman_transfer(ax: plt.Axes, table: pd.DataFrame) -> None:
         ax.text(x_column, index, f"{100 * row.delta:+.1f}", ha="center", va="center", fontsize=6.4,
                 color=COLORS["green"] if better else COLORS["gray"], fontweight="bold" if better else "normal")
     ax.set_yticks(y, list(table.species))
+    italicize_genera(ax.get_yticklabels())
     ax.invert_yaxis()
     low = np.floor(100 * min(table.adaredit_human_auroc.min(), table.selected_auroc.min(),
                              table.adaredit_own_auroc.min()) - 1.0) / 100
@@ -3381,12 +3398,13 @@ def figure_nonhuman_transfer_si(output: Path, source: Path) -> None:
         y += 0.35
     for species, y0 in group_y.items():
         ax_a.text(-0.02, y0 + 0.15, species, transform=ax_a.get_yaxis_transform(), ha="right", va="center",
-                  fontsize=6.6, fontweight="bold", color=COLORS["ink"])
+                  fontsize=6.6, fontweight="bold", color=COLORS["ink"],
+                  fontstyle="italic" if species in ITALIC_GENERA else "normal")
     ax_a.axvline(0, color=COLORS["ink"], lw=0.8)
     ax_a.set_yticks(ticks, labels)
     ax_a.set_ylim(y - 0.2, -0.5)
     ax_a.set_xlabel("Selected predictor − better AdarEdit\nhuman-trained model (AUROC points; 95% CI)")
-    ax_a.set_title(f"Better in {n_better} of 15 transfers, worse in {'none' if n_worse == 0 else n_worse}",
+    ax_a.set_title(f"Better in {n_better} of {len(r1)} transfers, worse in {'none' if n_worse == 0 else n_worse}",
                    loc="left", fontweight="bold")
     clean_axis(ax_a)
 
@@ -3408,7 +3426,8 @@ def figure_nonhuman_transfer_si(output: Path, source: Path) -> None:
         ax.axvline(np.log1p(human_median), color=COLORS["gray"], ls="--", lw=0.9, zorder=2)
         ax.axvline(np.log1p(median), color=COLORS["blue"], ls="--", lw=0.9, zorder=4)
         ax.axvline(human_p1, color=COLORS["ink"], ls=":", lw=0.9, zorder=4)
-        ax.text(0.0, 1.04, f"{species}: median {median:.0f} nt; {100 * below:.0f}% below the human 1st percentile",
+        ax.text(0.0, 1.04,
+                f"{genus_in_text(species)}: median {median:.0f} nt; {100 * below:.0f}% below the human 1st percentile",
                 transform=ax.transAxes, ha="left", va="bottom", fontsize=6.2, color=COLORS["ink"])
         ax.set_ylim(0, 1.75 * ax.get_ylim()[1])
         ax.set_xlim(edges[0], edges[-1])
@@ -3445,7 +3464,7 @@ def write_manifest(source: Path, output: Path) -> None:
     rows = []
     # Table sources have their own manifest and may be rebuilt after figures.
     # Track this renderer's sources, the manually curated coverage map, and the copies of the
-    # post-analysis files that Fig. S7B/C read from experiments/runs/post_analysis/.
+    # post-analysis files that Fig. S8B/C read from experiments/runs/post_analysis/.
     # read from the repository itself (not ROOT, which a staging build may redirect)
     post_analysis = Path(__file__).resolve().parents[1] / "experiments/runs/post_analysis"
     s7_copies = {
@@ -3458,9 +3477,9 @@ def write_manifest(source: Path, output: Path) -> None:
             raise RuntimeError(f"{name} differs from {original.relative_to(ROOT).as_posix()}")
     roles = {
         "search_space_coverage.csv": "curated coverage map (the search-space figure checks only its scale names)",
-        "matched_site_strict_switch_matrix.csv": "quantitative figure source table (Fig. S7B input; copy)",
-        "cross_tissue_pair_stability.csv": "quantitative figure source table (Fig. S7C input; copy)",
-        "matched_site_tissue_variation.csv": "quantitative source table (matched-site summary behind Fig. S7 text values; copy)",
+        "matched_site_strict_switch_matrix.csv": "quantitative figure source table (Fig. S8B input; copy)",
+        "cross_tissue_pair_stability.csv": "quantitative figure source table (Fig. S8C input; copy)",
+        "matched_site_tissue_variation.csv": "quantitative source table (matched-site summary behind Fig. S8 text values; copy)",
     }
     figure_sources = [
         *source.glob("figure*.csv"),

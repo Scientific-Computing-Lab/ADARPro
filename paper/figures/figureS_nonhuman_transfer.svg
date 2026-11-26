@@ -458,10 +458,10 @@
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #172126" x="68.067469" y="35.177802" transform="rotate(-0 68.067469 35.177802)">Octopus</text>
    </g>
    <g id="text_23">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #172126" x="68.067469" y="98.064139" transform="rotate(-0 68.067469 98.064139)">Ptychodera</text>
+    <text style="font-style: italic; font-weight: 700; font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #172126" x="68.067469" y="98.064139" transform="rotate(-0 68.067469 98.064139)">Ptychodera</text>
    </g>
    <g id="text_24">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #172126" x="68.067469" y="161.03246" transform="rotate(-0 68.067469 161.03246)">Strongylocentrotus</text>
+    <text style="font-style: italic; font-weight: 700; font-size: 6.6px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: end; fill: #172126" x="68.067469" y="161.03246" transform="rotate(-0 68.067469 161.03246)">Strongylocentrotus</text>
    </g>
    <g id="text_25">
     <text style="font-weight: 700; font-size: 9.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start" x="70.810842" y="20.907375" transform="rotate(-0 70.810842 20.907375)">Better in 11 of 15 transfers, worse in none</text>
@@ -956,7 +956,71 @@
     <path d="M 289.627482 145.430243  L 289.627482 138.203324  L 294.032676 138.203324  L 294.032676 120.811067  L 298.43787 120.811067  L 298.43787 142.015325  L 302.843065 142.015325  L 302.843065 141.618241  L 307.248259 141.618241  L 307.248259 133.358905  L 311.653454 133.358905  L 311.653454 138.362157  L 316.058648 138.362157  L 316.058648 145.430243  L 320.463842 145.430243  L 320.463842 141.697658  L 324.869037 141.697658  L 324.869037 145.430243  L 329.274231 145.430243  L 329.274231 145.430243  L 333.679426 145.430243  L 333.679426 145.430243  L 338.08462 145.430243  L 338.08462 145.430243  L 342.489815 145.430243  L 342.489815 145.430243  L 346.895009 145.430243  L 346.895009 145.430243  L 351.300203 145.430243  L 351.300203 145.112576  L 355.705398 145.112576  L 355.705398 139.394574  L 360.110592 139.394574  L 360.110592 141.459408  L 364.515787 141.459408  L 364.515787 135.741406  L 368.920981 135.741406  L 368.920981 139.871074  L 373.326176 139.871074  L 373.326176 136.059073  L 377.73137 136.059073  L 377.73137 142.650659  L 382.136564 142.650659  L 382.136564 141.062325  L 386.541759 141.062325  L 386.541759 142.809492  L 390.946953 142.809492  L 390.946953 144.794909  L 395.352148 144.794909  L 395.352148 142.968325  L 399.757342 142.968325  L 399.757342 141.777075  L 404.162536 141.777075  L 404.162536 139.712241  L 408.567731 139.712241  L 408.567731 138.918074  L 412.972925 138.918074  L 412.972925 145.430243  L 417.37812 145.430243  L 417.37812 141.300575  L 421.783314 141.300575  L 421.783314 145.430243  L 426.188509 145.430243  L 426.188509 145.430243  L 430.593703 145.430243  L 430.593703 145.430243  L 434.998897 145.430243  L 434.998897 145.430243  L 439.404092 145.430243  L 439.404092 145.430243  L 443.809286 145.430243  L 443.809286 145.430243  L 448.214481 145.430243  L 448.214481 145.430243  L 452.619675 145.430243  L 452.619675 145.430243  L 457.024869 145.430243  L 457.024869 145.430243  L 461.430064 145.430243  L 461.430064 145.430243  L 465.835258 145.430243  L 465.835258 145.430243  L 470.240453 145.430243  L 470.240453 145.430243  L 474.645647 145.430243  L 474.645647 145.430243  L 479.050842 145.430243  L 479.050842 145.430243  " clip-path="url(#p19f3ca6f1a)" style="fill: none; stroke: #2166ac; stroke-width: 1.2; stroke-linejoin: miter" />
    </g>
    <g id="text_32">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #172126" x="289.627482" y="97.031591" transform="rotate(-0 289.627482 97.031591)">Ptychodera: median 64 nt; 48% below the human 1st percentile</text>
+    
+    <g style="fill: #172126" transform="translate(289.627482 97.018998)">
+     <text>
+      <tspan x="0" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">P</tspan>
+      <tspan x="4.12706" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="5.847183" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">y</tspan>
+      <tspan x="8.940933" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">c</tspan>
+      <tspan x="12.034683" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">h</tspan>
+      <tspan x="15.47493" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="18.915176" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">d</tspan>
+      <tspan x="22.355423" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="25.79567" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">r</tspan>
+      <tspan x="27.856094" y="-0.125" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">a</tspan>
+      <tspan x="31.296341" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">:</tspan>
+      <tspan x="33.016464" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="34.736588" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">m</tspan>
+      <tspan x="39.890762" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="43.331009" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">d</tspan>
+      <tspan x="46.771255" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">i</tspan>
+      <tspan x="48.144867" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">a</tspan>
+      <tspan x="51.585114" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="55.02536" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="56.745483" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">6</tspan>
+      <tspan x="60.18573" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">4</tspan>
+      <tspan x="63.625977" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="65.3461" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="68.786346" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="70.50647" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">;</tspan>
+      <tspan x="72.226593" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="73.946716" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">4</tspan>
+      <tspan x="77.386963" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">8</tspan>
+      <tspan x="80.827209" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">%</tspan>
+      <tspan x="86.327896" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="88.048019" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">b</tspan>
+      <tspan x="91.488266" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="94.928513" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">l</tspan>
+      <tspan x="96.302124" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="99.742371" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">w</tspan>
+      <tspan x="104.209732" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="105.929855" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="107.649979" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">h</tspan>
+      <tspan x="111.090225" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="114.530472" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="116.250595" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">h</tspan>
+      <tspan x="119.690842" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">u</tspan>
+      <tspan x="123.131088" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">m</tspan>
+      <tspan x="128.285263" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">a</tspan>
+      <tspan x="131.72551" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="135.165756" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="136.88588" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">1</tspan>
+      <tspan x="140.326126" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">s</tspan>
+      <tspan x="143.419876" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="145.139999" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="146.860123" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">p</tspan>
+      <tspan x="150.300369" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="153.740616" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">r</tspan>
+      <tspan x="155.801041" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">c</tspan>
+      <tspan x="158.894791" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="162.335037" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="165.775284" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="167.495407" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">i</tspan>
+      <tspan x="168.869019" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">l</tspan>
+      <tspan x="170.24263" y="-0.125" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+     </text>
+    </g>
    </g>
    <g id="line2d_90">
     <path d="M 356.342433 145.430243  L 356.342433 100.192507  " clip-path="url(#p19f3ca6f1a)" style="fill: none; stroke-dasharray: 3.33,1.44; stroke-dashoffset: 0; stroke: #2166ac; stroke-width: 0.9" />
@@ -1166,7 +1230,79 @@
     <path d="M 289.627482 218.715375  L 289.627482 213.135028  L 294.032676 213.135028  L 294.032676 194.096199  L 298.43787 194.096199  L 298.43787 208.539449  L 302.843065 208.539449  L 302.843065 199.512418  L 307.248259 199.512418  L 307.248259 214.940435  L 311.653454 214.940435  L 311.653454 218.058864  L 316.058648 218.058864  L 316.058648 217.894736  L 320.463842 217.894736  L 320.463842 210.344855  L 324.869037 210.344855  L 324.869037 217.402352  L 329.274231 217.402352  L 329.274231 215.925202  L 333.679426 215.925202  L 333.679426 218.715375  L 338.08462 218.715375  L 338.08462 218.715375  L 342.489815 218.715375  L 342.489815 218.715375  L 346.895009 218.715375  L 346.895009 213.299156  L 351.300203 213.299156  L 351.300203 217.402352  L 355.705398 217.402352  L 355.705398 213.627412  L 360.110592 213.627412  L 360.110592 197.214628  L 364.515787 197.214628  L 364.515787 202.794975  L 368.920981 202.794975  L 368.920981 199.840673  L 373.326176 199.840673  L 373.326176 197.542884  L 377.73137 197.542884  L 377.73137 209.524216  L 382.136564 209.524216  L 382.136564 211.986134  L 386.541759 211.986134  L 386.541759 210.016599  L 390.946953 210.016599  L 390.946953 207.882938  L 395.352148 207.882938  L 395.352148 213.955668  L 399.757342 213.955668  L 399.757342 216.417585  L 404.162536 216.417585  L 404.162536 201.64608  L 408.567731 201.64608  L 408.567731 214.119795  L 412.972925 214.119795  L 412.972925 217.238224  L 417.37812 217.238224  L 417.37812 214.776307  L 421.783314 214.776307  L 421.783314 218.715375  L 426.188509 218.715375  L 426.188509 213.955668  L 430.593703 213.955668  L 430.593703 217.074097  L 434.998897 217.074097  L 434.998897 218.058864  L 439.404092 218.058864  L 439.404092 218.715375  L 443.809286 218.715375  L 443.809286 216.909969  L 448.214481 216.909969  L 448.214481 218.715375  L 452.619675 218.715375  L 452.619675 218.715375  L 457.024869 218.715375  L 457.024869 218.715375  L 461.430064 218.715375  L 461.430064 218.715375  L 465.835258 218.715375  L 465.835258 218.715375  L 470.240453 218.715375  L 470.240453 218.715375  L 474.645647 218.715375  L 474.645647 218.715375  L 479.050842 218.715375  L 479.050842 218.715375  " clip-path="url(#pe28c0ed7e1)" style="fill: none; stroke: #2166ac; stroke-width: 1.2; stroke-linejoin: miter" />
    </g>
    <g id="text_38">
-    <text style="font-size: 6.2px; font-family: 'Nimbus Sans', 'Helvetica', 'Arial', sans-serif; text-anchor: start; fill: #172126" x="289.627482" y="170.316723" transform="rotate(-0 289.627482 170.316723)">Strongylocentrotus: median 97 nt; 30% below the human 1st percentile</text>
+    
+    <g style="fill: #172126" transform="translate(289.627482 170.30413)">
+     <text>
+      <tspan x="0" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">S</tspan>
+      <tspan x="4.12706" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="5.847183" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">r</tspan>
+      <tspan x="7.907608" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="11.347855" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="14.788101" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">g</tspan>
+      <tspan x="18.228348" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">y</tspan>
+      <tspan x="21.322098" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">l</tspan>
+      <tspan x="22.695709" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="26.135956" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">c</tspan>
+      <tspan x="29.229706" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="32.669952" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="36.110199" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="37.830322" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">r</tspan>
+      <tspan x="39.890747" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="43.330994" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="45.051117" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">u</tspan>
+      <tspan x="48.491364" y="-0.046875" style="font-style: italic; font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">s</tspan>
+      <tspan x="51.585114" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">:</tspan>
+      <tspan x="53.305237" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="55.02536" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">m</tspan>
+      <tspan x="60.179535" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="63.619781" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">d</tspan>
+      <tspan x="67.060028" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">i</tspan>
+      <tspan x="68.43364" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">a</tspan>
+      <tspan x="71.873886" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="75.314133" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="77.034256" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">9</tspan>
+      <tspan x="80.474503" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">7</tspan>
+      <tspan x="83.914749" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="85.634872" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="89.075119" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="90.795242" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">;</tspan>
+      <tspan x="92.515366" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="94.235489" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">3</tspan>
+      <tspan x="97.675735" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">0</tspan>
+      <tspan x="101.115982" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">%</tspan>
+      <tspan x="106.616669" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="108.336792" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">b</tspan>
+      <tspan x="111.777039" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="115.217285" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">l</tspan>
+      <tspan x="116.590897" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">o</tspan>
+      <tspan x="120.031143" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">w</tspan>
+      <tspan x="124.498505" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="126.218628" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="127.938751" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">h</tspan>
+      <tspan x="131.378998" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="134.819244" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="136.539368" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">h</tspan>
+      <tspan x="139.979614" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">u</tspan>
+      <tspan x="143.419861" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">m</tspan>
+      <tspan x="148.574036" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">a</tspan>
+      <tspan x="152.014282" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="155.454529" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="157.174652" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">1</tspan>
+      <tspan x="160.614899" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">s</tspan>
+      <tspan x="163.708649" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="165.428772" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126"> </tspan>
+      <tspan x="167.148895" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">p</tspan>
+      <tspan x="170.589142" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="174.029388" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">r</tspan>
+      <tspan x="176.089813" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">c</tspan>
+      <tspan x="179.183563" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+      <tspan x="182.62381" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">n</tspan>
+      <tspan x="186.064056" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">t</tspan>
+      <tspan x="187.78418" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">i</tspan>
+      <tspan x="189.157791" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">l</tspan>
+      <tspan x="190.531403" y="-0.046875" style="font-size: 6.2px; font-family: 'Nimbus Sans'; fill: #172126">e</tspan>
+     </text>
+    </g>
    </g>
    <g id="line2d_101">
     <path d="M 366.167012 218.715375  L 366.167012 173.477639  " clip-path="url(#pe28c0ed7e1)" style="fill: none; stroke-dasharray: 3.33,1.44; stroke-dashoffset: 0; stroke: #2166ac; stroke-width: 0.9" />

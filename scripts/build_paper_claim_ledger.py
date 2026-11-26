@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -1242,7 +1243,7 @@ def add_post_analysis_claims() -> None:
             "post-hoc descriptive development analysis",
             summary_path,
             quantity,
-            "Results; SI post-hoc scale diagnostics; Figure S7",
+            "Results; SI post-hoc scale diagnostics; Figure S8",
             "integer with thousands separator",
             macro,
         )
@@ -1261,11 +1262,11 @@ def add_post_analysis_claims() -> None:
             "post-hoc descriptive development analysis with pair-clustered interval",
             variation_path,
             f"group=all_four_tissues; metric=fraction_range_ge_{threshold}; column=value",
-            "Results; SI post-hoc scale diagnostics; Figure S7",
+            "Results; SI post-hoc scale diagnostics; Figure S8",
             "one decimal after multiplication by 100",
             macro,
         )
-    # Fig. S7A caption names the marked thresholds: they must equal the module constant, the figure's
+    # Fig. S8A caption names the marked thresholds: they must equal the module constant, the figure's
     # marker loop and the thresholds summarized in variation_summary.csv.
     range_module = ROOT / "src/adarpro/evaluation/tissue_context_variation.py"
     found = re.search(
@@ -1282,7 +1283,7 @@ def add_post_analysis_claims() -> None:
         (ROOT / "scripts/render_paper_figures.py").read_text(encoding="utf-8"),
     )
     if len(drawn) != 1 or [int(part) for part in drawn[0].split(",")] != thresholds:
-        raise RuntimeError("Fig. S7A marker thresholds differ from RANGE_THRESHOLDS")
+        raise RuntimeError("Fig. S8A marker thresholds differ from RANGE_THRESHOLDS")
     summarized = sorted(
         int(metric.rsplit("_", 1)[1])
         for metric in all_four.index
@@ -1292,14 +1293,14 @@ def add_post_analysis_claims() -> None:
         raise RuntimeError(f"{variation_path}: summarized thresholds {summarized} differ from {thresholds}")
     add(
         "range_thresholds_marked",
-        "EditingIndex range thresholds marked in Fig. S7A",
+        "EditingIndex range thresholds marked in Fig. S8A",
         ", ".join(str(value) for value in thresholds),
         ", ".join(str(value) for value in thresholds[:-1]) + f", and {thresholds[-1]}",
         "EditingIndex percentage points",
         "post-hoc descriptive development analysis",
         range_module,
         "RANGE_THRESHOLDS",
-        "SI Figure S7 caption",
+        "SI Figure S8 caption",
         "integers",
         "RangeThresholdList",
     )
@@ -1325,7 +1326,7 @@ def add_post_analysis_claims() -> None:
                 "post-hoc descriptive matched-site development analysis",
                 stability_path,
                 f"metric={metric}; {bound.lower()}(spearman)",
-                "Results; SI post-hoc scale diagnostics; Figure S7",
+                "Results; SI post-hoc scale diagnostics; Figure S8",
                 "three decimals",
                 f"{stem}{bound}",
             )
@@ -1362,7 +1363,7 @@ def add_post_analysis_claims() -> None:
                     "post-hoc descriptive development OOF pair-bootstrap",
                     within_path,
                     f"context={context}; candidate={candidate}; column={column}",
-                    "Results; SI post-hoc scale diagnostics; Figure S8",
+                    "Results; SI post-hoc scale diagnostics; Figure S9",
                     "two decimals after multiplication by 100",
                     f"{context_stem}{stem}{suffix}",
                 )
@@ -1787,6 +1788,23 @@ def add_nonhuman_claims() -> None:
         put(f"BelowHumanPOne{tag}", f"Share of nonhuman test sites below the human training 1st percentile, {tag}",
             float(value), f"{100 * value:.0f}", "percent", gpath, f"share_below_human_p1 {tag.lower()} x 100",
             "integer percent")
+    # SI gap-histogram caption: the sites left of the axis (one set of bins, from log1p(3 nt)).
+    hpath = run / "gap_histogram.csv"
+    hist = pd.read_csv(hpath)
+    groups = hist.groupby("group")[["group_sites", "group_sites_below_range"]].first()
+    human_group = groups.loc["human artery training"]
+    if (groups.drop(index="human artery training").group_sites_below_range != 0).any():
+        raise RuntimeError("nonhuman transfer: a nonhuman test site lies left of the gap histogram; SI says none does")
+    axis_min = math.expm1(float(hist.bin_left.min()))
+    put("GapAxisMin", "Smallest genomic gap on the SI gap-histogram axis (nt)", axis_min, f"{axis_min:.0f}", "nt",
+        hpath, "expm1(min bin_left)", "integer")
+    n_left = int(human_group.group_sites_below_range)
+    put("HumanBelowAxisSites", "Human artery training sites left of the SI gap-histogram axis", n_left, f"{n_left:,}",
+        "sites", hpath, "group=human artery training; group_sites_below_range", "integer")
+    share_left = 100 * n_left / int(human_group.group_sites)
+    put("HumanBelowAxisPercent", "Share of human artery training sites left of the SI gap-histogram axis",
+        share_left, f"{share_left:.1f}", "percent", hpath,
+        "group=human artery training; 100 x group_sites_below_range / group_sites", "one decimal")
     artery_sel = [float(cell(vs_human, "Artery", sp).auroc_a) for sp in animals]
     for tag, value in (("Min", min(artery_sel)), ("Max", max(artery_sel))):
         put(f"ArteryAUROC{tag}", f"Artery-trained selected predictor AUROC, {tag} over the three animals", value,
@@ -1833,6 +1851,9 @@ def add_nonhuman_claims() -> None:
         raise RuntimeError(f"nonhuman transfer: lower than AdarEdit on the animal from {own_worse}")
     if (verdicts(spacing).verdict == "BEATS").any():
         raise RuntimeError("nonhuman transfer: the spacing stage helps in some transfer; Results says it did not")
+    if not all(float(cell(spacing, "Artery", sp).delta) < 0 for sp in animals):
+        raise RuntimeError("nonhuman transfer: removing the spacing stage no longer raises artery AUROC on every animal; "
+                           "SI says it raised it")
     auprc = {sp: metric("Artery", sp, "selected", "auprc") > metric("Artery", sp, "adaredit_human_stronger", "auprc")
              for sp in animals}
     if auprc != {"Octopus": True, "Ptychodera": True, "Strongylocentrotus": False}:
