@@ -1012,18 +1012,24 @@ def nonhuman_transfer() -> None:
     def difference(row: pd.Series) -> str:
         return minus(f"{100 * row.delta:.2f} [{100 * row.L95:.2f}, {100 * row.U95:.2f}]")
 
-    rows = []
+    # Two stacked halves of one table, so that it prints at the size of the other SI tables (16 columns in one
+    # tabular had to be shrunk to about 5 pt): the upper half against AdarEdit trained on the same human endpoint,
+    # the lower half against AdarEdit trained on the animal, without the spacing stage, and AUPRC.
+    upper, lower = [], []
     for endpoint in ["Artery", "Brain", "Liver", "MuscleSkeletal", "Combined"]:
         for species in ["Octopus", "Ptychodera", "Strongylocentrotus"]:
             human = cell("selected_minus_adaredit_human_stronger", endpoint, species)
             own = cell("selected_minus_adaredit_animal_stronger", endpoint, species)
             spacing = cell("selected_minus_no_gap", endpoint, species)
-            rows.append(" & ".join([
-                context_label(endpoint), species if species == "Octopus" else rf"\textit{{{species}}}",
+            key = [context_label(endpoint), species if species == "Octopus" else rf"\textit{{{species}}}"]
+            upper.append(" & ".join(key + [
                 f"{int(human.n_sites):,}", str(int(human.n_regions)),
                 f"{human.auroc_a:.3f}", f"{auc(endpoint, species, 'adaredit_human_baseline'):.3f}",
                 f"{auc(endpoint, species, 'adaredit_human_bioaware'):.3f}", difference(human),
-                verdict.get(human.word, "n.d."), f"{own.auroc_b:.3f}", difference(own), verdict.get(own.word, "n.d."),
+                verdict.get(human.word, "n.d."),
+            ]) + r" \\")
+            lower.append(" & ".join(key + [
+                f"{own.auroc_b:.3f}", difference(own), verdict.get(own.word, "n.d."),
                 f"{spacing.auroc_b:.3f}", difference(spacing), f"{auc(endpoint, species, 'selected', 'auprc'):.3f}",
                 f"{auc(endpoint, species, 'adaredit_human_stronger', 'auprc'):.3f}",
             ]) + r" \\")
@@ -1033,18 +1039,30 @@ def nonhuman_transfer() -> None:
 \centering
 \footnotesize
 \caption{\textbf{Transfer of the frozen selected predictor to nonhuman datasets.} Each row is the selected predictor of one human endpoint, trained only on human data, scored without retraining on one nonhuman test set (\textit{Ptychodera}, an acorn worm; \textit{Strongylocentrotus}, a sea urchin). AdarEdit's supplied compact and Bio-aware checkpoints are shown for the same human endpoint; $\Delta$ is the selected predictor minus the better of the two. AdarEdit trained on that animal is the better of its two checkpoints trained on that animal's own data. The spacing effect is the selected predictor minus the same networks without the genomic-spacing stage. Differences are in AUROC points with 95\% intervals from 2,000 paired bootstrap replicates resampling whole genomic regions; better and worse mean the interval excludes zero; n.d., the two cannot be told apart. AUPRC is descriptive.}\label{tab:nonhuman}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrrlrrlrrrr}
+\begin{tabular}{llrrrrrrl}
 \toprule
- & & & & \multicolumn{5}{c}{AUROC, same human endpoint} & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{2}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
-\cmidrule(lr){5-9}\cmidrule(lr){10-12}\cmidrule(lr){13-14}\cmidrule(lr){15-16}
-Endpoint & Animal & Sites & Regions & Selected & Compact & Bio-aware & $\Delta$ [95\%] & & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & Selected & Better AdarEdit \\
+ & & & & \multicolumn{5}{c}{AUROC, same human endpoint} \\
+\cmidrule(lr){5-9}
+Endpoint & Animal & Sites & Regions & Selected & Compact & Bio-aware & $\Delta$ [95\%] & \\
 \midrule
 """
-        + "\n".join(rows)
+        + "\n".join(upper)
         + r"""
 \bottomrule
-\end{tabular}}
+\end{tabular}
+
+\vspace{6pt}
+\begin{tabular}{llrrlrrrr}
+\toprule
+ & & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{2}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Endpoint & Animal & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & Selected & Better AdarEdit \\
+\midrule
+"""
+        + "\n".join(lower)
+        + r"""
+\bottomrule
+\end{tabular}
 \end{table}""",
     )
 
