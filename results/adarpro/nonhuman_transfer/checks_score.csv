@@ -1,0 +1,7 @@
+check,expected,observed,pass
+score Artery: averages and stage recomputed from the stored networks == stored,exact,,True
+score Brain: averages and stage recomputed from the stored networks == stored,exact,,True
+score Liver: averages and stage recomputed from the stored networks == stored,exact,,True
+score MuscleSkeletal: averages and stage recomputed from the stored networks == stored,exact,,True
+score Combined: averages and stage recomputed from the stored networks == stored,exact,,True
+"score: all scores finite; selected predictor in (0, 1)",True,True,True

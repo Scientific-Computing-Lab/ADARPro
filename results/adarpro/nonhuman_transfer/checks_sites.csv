@@ -1,0 +1,126 @@
+check,expected,observed,pass
+sites Octopus: prebalancing file sha256 == the release pin,6a1e94248be0,6a1e94248be0,True
+sites Octopus/valid: valid.jsonl sha256 == the release pin,21264454a7f8,21264454a7f8,True
+sites Octopus/valid: valid.metadata.csv sha256 == the release pin,cd83afa05109,cd83afa05109,True
+sites Octopus/valid: rows,1242,"1242 JSONL, 1242 metadata",True
+sites Octopus/valid: metadata species and split,Octopus/valid,['Octopus']/['valid'],True
+sites Octopus/valid: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Octopus/valid: target base is A,0,0,True
+sites Octopus/valid: sequence length == structure length,0,0,True
+sites Octopus/valid: Local_Position == target + 1 (1-based),0,0,True
+sites Octopus/valid: every source_row_id joins a prebalancing row,1242,1242,True
+sites Octopus/valid: Chr agrees with the prebalancing row,0,0,True
+sites Octopus/valid: Position agrees with the prebalancing row,0,0,True
+sites Octopus/valid: Strand agrees with the prebalancing row,0,0,True
+sites Octopus/valid: Local_Position agrees with the prebalancing row,0,0,True
+sites Octopus/valid: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 0 rows),0,0,True
+sites Octopus/valid: structure == prebalancing mfe_struct,0,0,True
+sites Octopus/valid: region_id == Chr:Strand:cluster,0,0,True
+sites Octopus/valid: the 10-N linker sits where the arm coordinates put it,1242,1242,True
+sites Octopus/valid: arm lengths + linker == molecule length,1242,1242,True
+sites Octopus/valid: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Octopus/valid: no negative gap,0,0,True
+sites Octopus/test: test.jsonl sha256 == the release pin,8c78c54b6fb8,8c78c54b6fb8,True
+sites Octopus/test: test.metadata.csv sha256 == the release pin,6a32252c31c9,6a32252c31c9,True
+sites Octopus/test: rows,1678,"1678 JSONL, 1678 metadata",True
+sites Octopus/test: metadata species and split,Octopus/test,['Octopus']/['test'],True
+sites Octopus/test: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Octopus/test: target base is A,0,0,True
+sites Octopus/test: sequence length == structure length,0,0,True
+sites Octopus/test: Local_Position == target + 1 (1-based),0,0,True
+sites Octopus/test: every source_row_id joins a prebalancing row,1678,1678,True
+sites Octopus/test: Chr agrees with the prebalancing row,0,0,True
+sites Octopus/test: Position agrees with the prebalancing row,0,0,True
+sites Octopus/test: Strand agrees with the prebalancing row,0,0,True
+sites Octopus/test: Local_Position agrees with the prebalancing row,0,0,True
+sites Octopus/test: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 1 rows),0,0,True
+sites Octopus/test: structure == prebalancing mfe_struct,0,0,True
+sites Octopus/test: region_id == Chr:Strand:cluster,0,0,True
+sites Octopus/test: the 10-N linker sits where the arm coordinates put it,1678,1678,True
+sites Octopus/test: arm lengths + linker == molecule length,1678,1678,True
+sites Octopus/test: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Octopus/test: no negative gap,0,0,True
+sites Ptychodera: prebalancing file sha256 == the release pin,d6e9a8ec61a5,d6e9a8ec61a5,True
+sites Ptychodera/valid: valid.jsonl sha256 == the release pin,1baac3a47903,1baac3a47903,True
+sites Ptychodera/valid: valid.metadata.csv sha256 == the release pin,5f2cef5e93cc,5f2cef5e93cc,True
+sites Ptychodera/valid: rows,1213,"1213 JSONL, 1213 metadata",True
+sites Ptychodera/valid: metadata species and split,Ptychodera/valid,['Ptychodera']/['valid'],True
+sites Ptychodera/valid: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Ptychodera/valid: target base is A,0,0,True
+sites Ptychodera/valid: sequence length == structure length,0,0,True
+sites Ptychodera/valid: Local_Position == target + 1 (1-based),0,0,True
+sites Ptychodera/valid: every source_row_id joins a prebalancing row,1213,1213,True
+sites Ptychodera/valid: Chr agrees with the prebalancing row,0,0,True
+sites Ptychodera/valid: Position agrees with the prebalancing row,0,0,True
+sites Ptychodera/valid: Strand agrees with the prebalancing row,0,0,True
+sites Ptychodera/valid: Local_Position agrees with the prebalancing row,0,0,True
+sites Ptychodera/valid: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 11 rows),0,0,True
+sites Ptychodera/valid: structure == prebalancing mfe_struct,0,0,True
+sites Ptychodera/valid: region_id == Chr:Strand:cluster,0,0,True
+sites Ptychodera/valid: the 10-N linker sits where the arm coordinates put it,1213,1213,True
+sites Ptychodera/valid: arm lengths + linker == molecule length,1213,1213,True
+sites Ptychodera/valid: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Ptychodera/valid: no negative gap,0,0,True
+sites Ptychodera/test: test.jsonl sha256 == the release pin,1885921f545f,1885921f545f,True
+sites Ptychodera/test: test.metadata.csv sha256 == the release pin,fcb3e181e859,fcb3e181e859,True
+sites Ptychodera/test: rows,1634,"1634 JSONL, 1634 metadata",True
+sites Ptychodera/test: metadata species and split,Ptychodera/test,['Ptychodera']/['test'],True
+sites Ptychodera/test: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Ptychodera/test: target base is A,0,0,True
+sites Ptychodera/test: sequence length == structure length,0,0,True
+sites Ptychodera/test: Local_Position == target + 1 (1-based),0,0,True
+sites Ptychodera/test: every source_row_id joins a prebalancing row,1634,1634,True
+sites Ptychodera/test: Chr agrees with the prebalancing row,0,0,True
+sites Ptychodera/test: Position agrees with the prebalancing row,0,0,True
+sites Ptychodera/test: Strand agrees with the prebalancing row,0,0,True
+sites Ptychodera/test: Local_Position agrees with the prebalancing row,0,0,True
+sites Ptychodera/test: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 13 rows),0,0,True
+sites Ptychodera/test: structure == prebalancing mfe_struct,0,0,True
+sites Ptychodera/test: region_id == Chr:Strand:cluster,0,0,True
+sites Ptychodera/test: the 10-N linker sits where the arm coordinates put it,1634,1634,True
+sites Ptychodera/test: arm lengths + linker == molecule length,1634,1634,True
+sites Ptychodera/test: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Ptychodera/test: no negative gap,0,0,True
+sites Strongylocentrotus: prebalancing file sha256 == the release pin,4cd73a168cd6,4cd73a168cd6,True
+sites Strongylocentrotus/valid: valid.jsonl sha256 == the release pin,0734c7104a59,0734c7104a59,True
+sites Strongylocentrotus/valid: valid.metadata.csv sha256 == the release pin,a08ed4f162f7,a08ed4f162f7,True
+sites Strongylocentrotus/valid: rows,1268,"1268 JSONL, 1268 metadata",True
+sites Strongylocentrotus/valid: metadata species and split,Strongylocentrotus/valid,['Strongylocentrotus']/['valid'],True
+sites Strongylocentrotus/valid: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Strongylocentrotus/valid: target base is A,0,0,True
+sites Strongylocentrotus/valid: sequence length == structure length,0,0,True
+sites Strongylocentrotus/valid: Local_Position == target + 1 (1-based),0,0,True
+sites Strongylocentrotus/valid: every source_row_id joins a prebalancing row,1268,1268,True
+sites Strongylocentrotus/valid: Chr agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/valid: Position agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/valid: Strand agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/valid: Local_Position agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/valid: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 1 rows),0,0,True
+sites Strongylocentrotus/valid: structure == prebalancing mfe_struct,0,0,True
+sites Strongylocentrotus/valid: region_id == Chr:Strand:cluster,0,0,True
+sites Strongylocentrotus/valid: the 10-N linker sits where the arm coordinates put it,1268,1268,True
+sites Strongylocentrotus/valid: arm lengths + linker == molecule length,1268,1268,True
+sites Strongylocentrotus/valid: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Strongylocentrotus/valid: no negative gap,0,0,True
+sites Strongylocentrotus/test: test.jsonl sha256 == the release pin,cdd86187476f,cdd86187476f,True
+sites Strongylocentrotus/test: test.metadata.csv sha256 == the release pin,127203dc6cc8,127203dc6cc8,True
+sites Strongylocentrotus/test: rows,1493,"1493 JSONL, 1493 metadata",True
+sites Strongylocentrotus/test: metadata species and split,Strongylocentrotus/test,['Strongylocentrotus']/['test'],True
+sites Strongylocentrotus/test: alphabet after U->T,subset of ACGTN,ACGNT,True
+sites Strongylocentrotus/test: target base is A,0,0,True
+sites Strongylocentrotus/test: sequence length == structure length,0,0,True
+sites Strongylocentrotus/test: Local_Position == target + 1 (1-based),0,0,True
+sites Strongylocentrotus/test: every source_row_id joins a prebalancing row,1493,1493,True
+sites Strongylocentrotus/test: Chr agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/test: Position agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/test: Strand agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/test: Local_Position agrees with the prebalancing row,0,0,True
+sites Strongylocentrotus/test: sequence == prebalancing small_ds_seq (target base as A; source target base not A in 5 rows),0,0,True
+sites Strongylocentrotus/test: structure == prebalancing mfe_struct,0,0,True
+sites Strongylocentrotus/test: region_id == Chr:Strand:cluster,0,0,True
+sites Strongylocentrotus/test: the 10-N linker sits where the arm coordinates put it,1493,1493,True
+sites Strongylocentrotus/test: arm lengths + linker == molecule length,1493,1493,True
+sites Strongylocentrotus/test: gap == bases strictly between the arms (hi_start - lo_end - 1),equal,,True
+sites Strongylocentrotus/test: no negative gap,0,0,True
+sites: one gap per molecule,0,0,True
+sites: no region in both validation and test,0,0,True

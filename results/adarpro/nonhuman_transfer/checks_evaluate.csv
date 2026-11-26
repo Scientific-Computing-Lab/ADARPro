@@ -1,0 +1,12 @@
+check,expected,observed,pass
+evaluate: every test row has AdarEdit per-site scores,24025,24025,True
+labels Octopus: JSONL == metadata,1678,0 differ,True
+"labels Octopus: edited > 0.15, unedited < 0.001 (AdarEdit's rule)",1678,1678,True
+labels Ptychodera: JSONL == metadata,1634,0 differ,True
+"labels Ptychodera: edited > 0.15, unedited < 0.001 (AdarEdit's rule)",1634,1634,True
+labels Strongylocentrotus: JSONL == metadata,1493,0 differ,True
+"labels Strongylocentrotus: edited > 0.15, unedited < 0.001 (AdarEdit's rule)",1493,1493,True
+anchor: each archive's labels == the JSONL labels line by line (48 archives),48,48,True
+anchor: AdarEdit AUROC recomputed == its published matrices (48 cells),<= 1e-9,5.0e-11,True
+anchor: AdarEdit F1 at its own threshold == its published matrices (48 cells),<= 1e-9,4.8e-11,True
+evaluate: weighted AUROC (unit weights) == sklearn on every cell x model,<= 1e-12,2.2e-16,True

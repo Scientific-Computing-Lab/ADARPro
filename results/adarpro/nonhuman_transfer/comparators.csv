@@ -1,0 +1,19 @@
+train,eval,kind,baseline_auroc,bioaware_auroc,comparator,column
+Artery,Octopus,human,0.8382515043,0.8560671495,bioaware,adaredit_bioaware_Artery
+Brain,Octopus,human,0.8098634563,0.815249899,bioaware,adaredit_bioaware_Brain
+Liver,Octopus,human,0.758746143,0.7859557271,bioaware,adaredit_bioaware_Liver
+MuscleSkeletal,Octopus,human,0.7860814779,0.7908973716,bioaware,adaredit_bioaware_MuscleSkeletal
+Combined,Octopus,human,0.8158606883,0.8027689593,baseline,adaredit_baseline_Combined
+Octopus,Octopus,own animal,0.8647310156,0.8715617953,bioaware,adaredit_bioaware_Octopus
+Artery,Ptychodera,human,0.7871951816,0.7872697158,bioaware,adaredit_bioaware_Artery
+Brain,Ptychodera,human,0.8016465274,0.7806090721,baseline,adaredit_baseline_Brain
+Liver,Ptychodera,human,0.7432388481,0.7357221909,baseline,adaredit_baseline_Liver
+MuscleSkeletal,Ptychodera,human,0.7339025033,0.7256450216,baseline,adaredit_baseline_MuscleSkeletal
+Combined,Ptychodera,human,0.8086534914,0.7020598532,baseline,adaredit_baseline_Combined
+Ptychodera,Ptychodera,own animal,0.8225228684,0.8097097685,baseline,adaredit_baseline_Ptychodera
+Artery,Strongylocentrotus,human,0.7904719482,0.8112207143,bioaware,adaredit_bioaware_Artery
+Brain,Strongylocentrotus,human,0.7595634353,0.784987499,bioaware,adaredit_bioaware_Brain
+Liver,Strongylocentrotus,human,0.6925493394,0.7546277005,bioaware,adaredit_bioaware_Liver
+MuscleSkeletal,Strongylocentrotus,human,0.7299642932,0.737950736,bioaware,adaredit_bioaware_MuscleSkeletal
+Combined,Strongylocentrotus,human,0.7670254115,0.7493758487,baseline,adaredit_baseline_Combined
+Strongylocentrotus,Strongylocentrotus,own animal,0.8601200526,0.7967565684,baseline,adaredit_baseline_Strongylocentrotus
