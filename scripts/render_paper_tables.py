@@ -1030,7 +1030,8 @@ def nonhuman_transfer() -> None:
             ]) + r" \\")
             lower.append(" & ".join(key + [
                 f"{own.auroc_b:.3f}", difference(own), verdict.get(own.word, "n.d."),
-                f"{spacing.auroc_b:.3f}", difference(spacing), f"{auc(endpoint, species, 'selected', 'auprc'):.3f}",
+                f"{spacing.auroc_b:.3f}", difference(spacing), verdict.get(spacing.word, "n.d."),
+                f"{auc(endpoint, species, 'selected', 'auprc'):.3f}",
                 f"{auc(endpoint, species, 'adaredit_human_stronger', 'auprc'):.3f}",
             ]) + r" \\")
     write(
@@ -1038,6 +1039,7 @@ def nonhuman_transfer() -> None:
         r"""\begin{table}[H]
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4.5pt}
 \caption{\textbf{Transfer of the frozen selected predictor to nonhuman datasets.} Each row is the selected predictor of one human endpoint, trained only on human data, scored without retraining on one nonhuman test set (\textit{Ptychodera}, an acorn worm; \textit{Strongylocentrotus}, a sea urchin). AdarEdit's supplied compact and Bio-aware checkpoints are shown for the same human endpoint; $\Delta$ is the selected predictor minus the better of the two. AdarEdit trained on that animal is the better of its two checkpoints trained on that animal's own data. The spacing effect is the selected predictor minus the same networks without the genomic-spacing stage. Differences are in AUROC points with 95\% intervals from 2,000 paired bootstrap replicates resampling whole genomic regions; better and worse mean the interval excludes zero; n.d., the two cannot be told apart. AUPRC is descriptive.}\label{tab:nonhuman}
 \begin{tabular}{llrrrrrrl}
 \toprule
@@ -1052,11 +1054,11 @@ Endpoint & Animal & Sites & Regions & Selected & Compact & Bio-aware & $\Delta$ 
 \end{tabular}
 
 \vspace{6pt}
-\begin{tabular}{llrrlrrrr}
+\begin{tabular}{llrrlrrlrr}
 \toprule
- & & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{2}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
-\cmidrule(lr){3-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-Endpoint & Animal & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & Selected & Better AdarEdit \\
+ & & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{3}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}\cmidrule(lr){9-10}
+Endpoint & Animal & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & & Selected & Better AdarEdit \\
 \midrule
 """
         + "\n".join(lower)

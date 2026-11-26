@@ -1,6 +1,7 @@
 \begin{table}[H]
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4.5pt}
 \caption{\textbf{Transfer of the frozen selected predictor to nonhuman datasets.} Each row is the selected predictor of one human endpoint, trained only on human data, scored without retraining on one nonhuman test set (\textit{Ptychodera}, an acorn worm; \textit{Strongylocentrotus}, a sea urchin). AdarEdit's supplied compact and Bio-aware checkpoints are shown for the same human endpoint; $\Delta$ is the selected predictor minus the better of the two. AdarEdit trained on that animal is the better of its two checkpoints trained on that animal's own data. The spacing effect is the selected predictor minus the same networks without the genomic-spacing stage. Differences are in AUROC points with 95\% intervals from 2,000 paired bootstrap replicates resampling whole genomic regions; better and worse mean the interval excludes zero; n.d., the two cannot be told apart. AUPRC is descriptive.}\label{tab:nonhuman}
 \begin{tabular}{llrrrrrrl}
 \toprule
@@ -27,27 +28,27 @@ Combined & \textit{Strongylocentrotus} & 1,493 & 131 & 0.815 & 0.767 & 0.749 & 4
 \end{tabular}
 
 \vspace{6pt}
-\begin{tabular}{llrrlrrrr}
+\begin{tabular}{llrrlrrlrr}
 \toprule
- & & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{2}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
-\cmidrule(lr){3-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-Endpoint & Animal & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & Selected & Better AdarEdit \\
+ & & \multicolumn{3}{c}{AdarEdit trained on that animal} & \multicolumn{3}{c}{Without spacing stage} & \multicolumn{2}{c}{AUPRC} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}\cmidrule(lr){9-10}
+Endpoint & Animal & AUROC & $\Delta$ [95\%] & & AUROC & Spacing effect [95\%] & & Selected & Better AdarEdit \\
 \midrule
-Artery & Octopus & 0.872 & 0.90 [$-$1.14, 3.11] & n.d. & 0.884 & $-$0.37 [$-$1.36, 0.65] & 0.905 & 0.862 \\
-Artery & \textit{Ptychodera} & 0.823 & 1.39 [$-$4.00, 7.55] & n.d. & 0.855 & $-$1.84 [$-$3.60, $-$0.01] & 0.846 & 0.777 \\
-Artery & \textit{Strongylocentrotus} & 0.860 & $-$4.68 [$-$12.95, 1.53] & n.d. & 0.821 & $-$0.75 [$-$2.29, 0.71] & 0.736 & 0.777 \\
-Brain & Octopus & 0.872 & 0.85 [$-$1.20, 3.05] & n.d. & 0.883 & $-$0.33 [$-$1.30, 0.65] & 0.903 & 0.835 \\
-Brain & \textit{Ptychodera} & 0.823 & 0.84 [$-$4.42, 6.70] & n.d. & 0.845 & $-$1.42 [$-$3.11, 0.38] & 0.832 & 0.791 \\
-Brain & \textit{Strongylocentrotus} & 0.860 & $-$1.94 [$-$6.07, 2.04] & n.d. & 0.849 & $-$0.79 [$-$2.25, 0.62] & 0.816 & 0.747 \\
-Liver & Octopus & 0.872 & $-$1.40 [$-$3.63, 1.03] & n.d. & 0.864 & $-$0.60 [$-$1.67, 0.47] & 0.881 & 0.803 \\
-Liver & \textit{Ptychodera} & 0.823 & $-$2.77 [$-$8.83, 3.75] & n.d. & 0.818 & $-$2.30 [$-$4.30, $-$0.23] & 0.794 & 0.738 \\
-Liver & \textit{Strongylocentrotus} & 0.860 & $-$4.91 [$-$8.39, $-$1.08] & worse & 0.824 & $-$1.33 [$-$2.83, 0.12] & 0.776 & 0.727 \\
-Skeletal muscle & Octopus & 0.872 & $-$4.65 [$-$7.35, $-$1.90] & worse & 0.823 & 0.17 [$-$0.48, 0.83] & 0.851 & 0.813 \\
-Skeletal muscle & \textit{Ptychodera} & 0.823 & $-$5.13 [$-$12.30, 2.25] & n.d. & 0.783 & $-$1.22 [$-$2.39, 0.00] & 0.758 & 0.715 \\
-Skeletal muscle & \textit{Strongylocentrotus} & 0.860 & $-$6.92 [$-$10.27, $-$3.44] & worse & 0.794 & $-$0.29 [$-$1.04, 0.44] & 0.749 & 0.697 \\
-Combined & Octopus & 0.872 & $-$0.85 [$-$3.51, 1.71] & n.d. & 0.861 & 0.24 [$-$0.74, 1.22] & 0.884 & 0.823 \\
-Combined & \textit{Ptychodera} & 0.823 & $-$0.59 [$-$5.88, 5.52] & n.d. & 0.828 & $-$1.12 [$-$2.99, 0.97] & 0.816 & 0.799 \\
-Combined & \textit{Strongylocentrotus} & 0.860 & $-$4.48 [$-$11.38, 0.88] & n.d. & 0.817 & $-$0.13 [$-$1.65, 1.30] & 0.755 & 0.673 \\
+Artery & Octopus & 0.872 & 0.90 [$-$1.14, 3.11] & n.d. & 0.884 & $-$0.37 [$-$1.36, 0.65] & n.d. & 0.905 & 0.862 \\
+Artery & \textit{Ptychodera} & 0.823 & 1.39 [$-$4.00, 7.55] & n.d. & 0.855 & $-$1.84 [$-$3.60, $-$0.01] & worse & 0.846 & 0.777 \\
+Artery & \textit{Strongylocentrotus} & 0.860 & $-$4.68 [$-$12.95, 1.53] & n.d. & 0.821 & $-$0.75 [$-$2.29, 0.71] & n.d. & 0.736 & 0.777 \\
+Brain & Octopus & 0.872 & 0.85 [$-$1.20, 3.05] & n.d. & 0.883 & $-$0.33 [$-$1.30, 0.65] & n.d. & 0.903 & 0.835 \\
+Brain & \textit{Ptychodera} & 0.823 & 0.84 [$-$4.42, 6.70] & n.d. & 0.845 & $-$1.42 [$-$3.11, 0.38] & n.d. & 0.832 & 0.791 \\
+Brain & \textit{Strongylocentrotus} & 0.860 & $-$1.94 [$-$6.07, 2.04] & n.d. & 0.849 & $-$0.79 [$-$2.25, 0.62] & n.d. & 0.816 & 0.747 \\
+Liver & Octopus & 0.872 & $-$1.40 [$-$3.63, 1.03] & n.d. & 0.864 & $-$0.60 [$-$1.67, 0.47] & n.d. & 0.881 & 0.803 \\
+Liver & \textit{Ptychodera} & 0.823 & $-$2.77 [$-$8.83, 3.75] & n.d. & 0.818 & $-$2.30 [$-$4.30, $-$0.23] & worse & 0.794 & 0.738 \\
+Liver & \textit{Strongylocentrotus} & 0.860 & $-$4.91 [$-$8.39, $-$1.08] & worse & 0.824 & $-$1.33 [$-$2.83, 0.12] & n.d. & 0.776 & 0.727 \\
+Skeletal muscle & Octopus & 0.872 & $-$4.65 [$-$7.35, $-$1.90] & worse & 0.823 & 0.17 [$-$0.48, 0.83] & n.d. & 0.851 & 0.813 \\
+Skeletal muscle & \textit{Ptychodera} & 0.823 & $-$5.13 [$-$12.30, 2.25] & n.d. & 0.783 & $-$1.22 [$-$2.39, 0.00] & n.d. & 0.758 & 0.715 \\
+Skeletal muscle & \textit{Strongylocentrotus} & 0.860 & $-$6.92 [$-$10.27, $-$3.44] & worse & 0.794 & $-$0.29 [$-$1.04, 0.44] & n.d. & 0.749 & 0.697 \\
+Combined & Octopus & 0.872 & $-$0.85 [$-$3.51, 1.71] & n.d. & 0.861 & 0.24 [$-$0.74, 1.22] & n.d. & 0.884 & 0.823 \\
+Combined & \textit{Ptychodera} & 0.823 & $-$0.59 [$-$5.88, 5.52] & n.d. & 0.828 & $-$1.12 [$-$2.99, 0.97] & n.d. & 0.816 & 0.799 \\
+Combined & \textit{Strongylocentrotus} & 0.860 & $-$4.48 [$-$11.38, 0.88] & n.d. & 0.817 & $-$0.13 [$-$1.65, 1.30] & n.d. & 0.755 & 0.673 \\
 \bottomrule
 \end{tabular}
 \end{table}

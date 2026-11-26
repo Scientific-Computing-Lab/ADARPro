@@ -37,7 +37,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import socket
 import subprocess
 import time
 from pathlib import Path
@@ -129,7 +128,7 @@ def wauc(score: np.ndarray, y: np.ndarray, W: np.ndarray) -> np.ndarray:
 
 
 def word(lo: float, hi: float) -> str:
-    return "BEATS" if lo > 0 else "WORSE" if hi < 0 else "cannot be told apart (NOT SHOWN)"
+    return "BEATS" if lo > 0 else "WORSE" if hi < 0 else "cannot be told apart"
 
 
 def best_f1(y: np.ndarray, s: np.ndarray) -> float:
@@ -639,7 +638,7 @@ def main() -> None:
         thresholds = {v: pd.read_csv(repository / f"results/matrix_{v}_threshold.csv", index_col=0)
                       for v in ADAREDIT_VARIANTS}
         record = {"what": "nonhuman transfer evaluation: AdarEdit's nonhuman test labels read against frozen scores",
-                  "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "host": socket.gethostname(),
+                  "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "repository_head": git_head(repository), "scores": {"path": score_path.name,
                                                                        "sha256": sha256_file(score_path)},
                   "inputs": {rel: sha256_file(args.adaredit_root / rel) for rel in

@@ -1,7 +1,6 @@
 {
  "what": "nonhuman transfer evaluation: AdarEdit's nonhuman test labels read against frozen scores",
  "time_utc": "2026-11-26T10:25:46Z",
- "host": "alu17",
  "repository_head": "85092e86eac816d365734aa5b5d02117959c93d6",
  "scores": {
   "path": "scores.parquet",
@@ -22,7 +21,7 @@
  },
  "outputs": {
   "metrics.csv": "1da6c78d37bae67ecff7d2064b60a9499918649777f2f8db9ead5ce030947380",
-  "contrasts.csv": "de5eae631db8303ae5b6160a0c191fbd10cbbe6715639027ed0a2a79a0305b91",
+  "contrasts.csv": "21209349451dc54c3a7e47e323368042a971266876635ddadeeb6b6afd8fd47d",
   "f1.csv": "584682f196fdf8a9174ccd2b31fce3be9b771128ae57cecdc7b6d89ed98a6b65"
  }
 }

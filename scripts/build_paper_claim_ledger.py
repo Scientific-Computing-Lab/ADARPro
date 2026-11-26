@@ -1817,6 +1817,9 @@ def add_nonhuman_claims() -> None:
     k_lower = int((r3.delta < 0).sum())
     put("SpacingLowerCount", "Transfers where the spacing stage lowered AUROC (point estimate)", k_lower, str(k_lower),
         "transfers", cpath, f"contrast={spacing}; delta < 0", "integer")
+    k_lower_tied = int(((r3.delta < 0) & (r3.verdict == "cannot be told apart")).sum())
+    put("SpacingLowerTiedCount", "Of those, transfers whose interval includes zero", k_lower_tied, str(k_lower_tied),
+        "transfers", cpath, f"contrast={spacing}; delta < 0 and word = cannot be told apart", "integer")
     per_endpoint = verdicts(vs_human).assign(b=lambda t: t.verdict == "BEATS").groupby("endpoint").b.sum()
     k_min = int(per_endpoint.min())
     put("MinBetterPerEndpoint", "Fewest animals (of three) where the predictor is better, over the five endpoints",
@@ -1858,6 +1861,25 @@ def add_nonhuman_claims() -> None:
              for sp in animals}
     if auprc != {"Octopus": True, "Ptychodera": True, "Strongylocentrotus": False}:
         raise RuntimeError(f"nonhuman transfer: AUPRC higher {auprc}; SI says octopus and acorn worm, not sea urchin")
+    # Discussion: "better than AdarEdit's artery-trained models in two of the three animals" (both checkpoints).
+    beats_artery = {name: set(verdicts(c)[(verdicts(c).endpoint == "Artery") & (verdicts(c).verdict == "BEATS")].species)
+                    for name, c in (("stronger", vs_human), ("compact", vs_compact))}
+    if beats_artery["stronger"] != beats_artery["compact"] or len(beats_artery["compact"]) != 2:
+        raise RuntimeError(f"nonhuman transfer: artery wins {beats_artery}; Discussion says both artery models, two animals")
+    # SI: "OwnTied intervals included zero and OwnWorse were negative" covers every transfer.
+    if (verdicts(vs_own).verdict == "BEATS").any():
+        raise RuntimeError("nonhuman transfer: the predictor beats AdarEdit trained on the animal somewhere; SI omits it")
+    # Discussion: "Transfer was also incomplete (AUROC on human held-out pairs)" and "much closer than human Alu arms".
+    if not max(artery_sel) < float(locked.auroc.iloc[0]):
+        raise RuntimeError("nonhuman transfer: an animal AUROC reaches the human held-out AUROC; 'incomplete' is wrong")
+    if not float(gaps.median_gap_bp.max()) < human_median:
+        raise RuntimeError("nonhuman transfer: a nonhuman median gap reaches the human median; 'much closer' is wrong")
+    # Results: "lowered AUROC in SpacingLowerCount (SpacingLowerTiedCount not distinguishable from zero)": the rest are WORSE.
+    if int(((r3.delta < 0) & (r3.verdict == "WORSE")).sum()) != k_lower - k_lower_tied:
+        raise RuntimeError("nonhuman transfer: a lower spacing-stage estimate is neither within noise nor WORSE")
+    # SI: "(only the acorn-worm difference distinguishable from zero)" for the artery spacing comparison.
+    if set(r3[(r3.endpoint == "Artery") & (r3.verdict != "cannot be told apart")].species) != {"Ptychodera"}:
+        raise RuntimeError("nonhuman transfer: the artery spacing differences beyond noise are not exactly the acorn worm")
 
 
 def write_outputs() -> None:
